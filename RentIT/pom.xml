@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.rentit</groupId>
-    <artifactId>RentIT</artifactId>
+    <artifactId>RentIT_API</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>RentIT</name>
     <description>RentIT</description>
