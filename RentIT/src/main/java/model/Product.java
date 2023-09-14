@@ -10,7 +10,10 @@ public class Product {
     private final long id;
     private final String name;
     private final String description;
-    private final float pricePerDay;
+    private final float dayPrice;
+    private final float weekPrice;
+    private final float monthPrice;
+    private final float deposit;
     private final String city;
     private final float productValue;
     private final int minLeasePeriod;
