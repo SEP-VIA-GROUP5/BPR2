@@ -4,11 +4,10 @@ import lombok.Builder;
 
 
 import java.util.List;
-import java.util.UUID;
 
 @Builder
 public class Product {
-    private final UUID id;
+    private final long id;
     private final String name;
     private final String description;
     private final float pricePerDay;
