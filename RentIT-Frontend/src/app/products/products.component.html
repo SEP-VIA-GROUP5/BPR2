@@ -1,1 +1,13 @@
-<p>main-page works!</p>
+<nb-card
+  [nbSpinner]="isFetching$ | async" nbSpinnerSize="large" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <h1> Here are some products for you</h1>
+  </nb-card-header>
+  <nb-card-body *ngIf="products$ | async as products">
+    <product *ngFor="let product of products"
+             [product]="product"
+    ></product>
+  </nb-card-body>
+  <nb-card-body>
+  </nb-card-body>
+</nb-card>
