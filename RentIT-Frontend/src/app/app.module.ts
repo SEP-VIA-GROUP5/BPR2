@@ -55,7 +55,7 @@ export const NEBULAR_MODULES = [
   NbButtonModule,
   NbEvaIconsModule,
   NbActionsModule,
-  NbMenuModule,
+  NbMenuModule.forRoot(),
   NbCardModule,
   NbIconModule,
   NbSpinnerModule,

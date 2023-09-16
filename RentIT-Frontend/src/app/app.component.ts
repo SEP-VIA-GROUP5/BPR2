@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {NbSidebarService} from "@nebular/theme";
+import {NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
+import {GENERAL_MENU_ITEMS, ICONS} from "src/app/constants";
 
 @Component({
   selector: 'app-root',
@@ -7,9 +8,13 @@ import {NbSidebarService} from "@nebular/theme";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  sidebarVisible = true;
 
-  constructor(private sidebarService: NbSidebarService) {
+  menuItems: NbMenuItem[] = GENERAL_MENU_ITEMS;
+  sidebarVisible: boolean = true;
+
+  constructor(
+    private nbMenuService: NbMenuService,
+    private sidebarService: NbSidebarService) {
   }
 
   toggleSidebar() {
@@ -17,5 +22,10 @@ export class AppComponent {
     this.sidebarService.toggle(this.sidebarVisible);
     this.sidebarVisible = !this.sidebarVisible;
     return false;
+  }
+
+  // enums
+  getIconsEnum() {
+    return ICONS;
   }
 }
