@@ -8,7 +8,9 @@
     "update-snapshot": "npm test -- -u",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "full-test" : "update-snapshot && build && start"
+    "full-test" : "update-snapshot && build && start",
+    "component": "ng generate component",
+    "service" : "ng generate service",
   },
   "private": true,
   "dependencies": {
