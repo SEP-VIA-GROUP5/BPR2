@@ -5,6 +5,7 @@ export enum ICONS {
   CUBE_FILL = 'cube',
   FORWARD_ARROW_IOS = "arrow-ios-forward-outline",
   FORWARD_BACK_IOS = "arrow-ios-back-outline",
+  SEARCH = 'search',
 }
 export enum GENERAL_MENU_ITEM_URLS {
   PRODUCTS = '/products',

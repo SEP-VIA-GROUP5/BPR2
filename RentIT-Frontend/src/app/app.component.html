@@ -1,15 +1,22 @@
 <nb-layout>
-  <nb-layout-header subheader>
-    <a href="#" (click)="toggleSidebar()">
-      <nb-icon *ngIf="sidebarVisible"
-               [icon]="getIconsEnum().FORWARD_ARROW_IOS">
-      </nb-icon>
-      <nb-icon *ngIf="!sidebarVisible"
-               [icon]="getIconsEnum().FORWARD_ARROW_IOS">
-      </nb-icon>
-      <i class="nb-menu"></i>
-    </a>
+  <nb-layout-header subheader class="header-container">
+    <div class="left-section">
+      <a href="#" (click)="toggleSidebar()">
+        <nb-icon *ngIf="sidebarVisible" [icon]="getIconsEnum().FORWARD_ARROW_IOS"></nb-icon>
+        <nb-icon *ngIf="!sidebarVisible" [icon]="getIconsEnum().FORWARD_BACK_IOS"></nb-icon>
+        <i class="nb-menu"></i>
+      </a>
+    </div>
+
+    <div class="center-section">
+      <search-bar [icon]="getIconsEnum().SEARCH"></search-bar>
+    </div>
+
+    <div class="right-section">
+<!--      TODO for later when we add bottom on the right side-->
+    </div>
   </nb-layout-header>
+
 
   <nb-sidebar [responsive]="true">
     <div>
