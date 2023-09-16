@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "USE_LOCAL_ENV=true node switch-files.js && ng serve",
+    "start:local": "ng serve",
     "build": "ng build",
     "update-snapshot": "npm test -- -u",
     "watch": "ng build --watch --configuration development",

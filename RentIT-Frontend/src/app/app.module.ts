@@ -29,10 +29,11 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import {AgGridModule} from "ag-grid-angular";
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ProductComponent } from './products/components/product/product.component';
+import {ProductsState} from "src/app/products/products.state";
 
 
 export const STATES = [
-
+  ProductsState,
 ];
 
 export const PAGE_COMPONENTS = [
@@ -42,7 +43,8 @@ export const PAGE_COMPONENTS = [
 ];
 
 export const CORE_COMPONENTS = [
-
+  SearchBarComponent,
+  ProductComponent,
 ];
 
 export const PROVIDERS = [
@@ -76,8 +78,6 @@ export const NEBULAR_MODULES = [
   declarations: [
    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
-    SearchBarComponent,
-    ProductComponent,
   ],
   imports: [
     BrowserModule,
