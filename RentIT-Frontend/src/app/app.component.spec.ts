@@ -1,35 +1,69 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import { Spectator } from "@ngneat/spectator";
+import { createComponentFactory } from "@ngneat/spectator/jest";
+import { NgxsModule, Store } from "@ngxs/store";
+import { RouterTestingModule } from "@angular/router/testing";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HttpClientModule } from "@angular/common/http";
+import { of } from "rxjs";
+import {NEBULAR_MODULES, PROVIDERS, STATES} from "./app.module";
+import {AppRoutingModule} from "./app-routing.module";
+import {AppComponent} from "./app.component";
 
-describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+// const productsServiceMock = {
+//   getProducts: jest.fn().mockReturnValue(of([])),
+// };
+
+describe('app > app.component.spec.ts', () => {
+  let spectator: Spectator<AppComponent>;
+
+  const createComponent = createComponentFactory({
+    component: AppComponent,
+    imports: [
+      RouterTestingModule,
+      BrowserModule,
+      HttpClientModule,
+      AppRoutingModule,
+      BrowserAnimationsModule,
+      NgxsModule.forRoot(STATES),
+      ...NEBULAR_MODULES,
+    ],
+    providers: [
+      ...PROVIDERS,
+      Store,
+      // {
+      //   provide: ProductsService,
+      //   useValue: productsServiceMock
+      // },
+    ],
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  beforeEach(() => {
+    spectator = createComponent();
+  });
+
+  it('should create', () => {
+    expect(spectator.component).toBeTruthy();
+  });
+
+  it('should match snapshot', async () => {
+    spectator.detectChanges();
+    await spectator.fixture.whenStable();
+    spectator.detectChanges();
+    await spectator.fixture.whenRenderingDone();
+
+    // assert
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   it(`should have as title 'RentIT-Frontend'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    const app = spectator.fixture.componentInstance;
     expect(app.title).toEqual('RentIT-Frontend');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('RentIT-Frontend app is running!');
-  });
+  // it('should render title', () => {
+  //   spectator.detectChanges();
+  //   const compiled = spectator.fixture.nativeElement as HTMLElement;
+  //   expect(compiled.querySelector('.content span')?.textContent).toContain('RentIT-Frontend app is running!');
+  // });
 });

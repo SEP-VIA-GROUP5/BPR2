@@ -6,6 +6,32 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import {HttpClientModule} from "@angular/common/http";
+import {NgxsModule} from "@ngxs/store";
+import {environment} from "../environment/environment.prod";
+import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
+
+
+export const STATES = [
+
+];
+
+export const PAGE_COMPONENTS = [
+
+];
+
+export const CORE_COMPONENTS = [
+
+];
+
+export const PROVIDERS = [
+
+];
+
+export const NEBULAR_MODULES = [
+  NbLayoutModule,
+  NbThemeModule.forRoot({name: 'default'}),
+];
 
 @NgModule({
   declarations: [
@@ -13,13 +39,22 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    //NgxsModules setup
+    NgxsModule.forRoot(STATES, {
+      developmentMode : !environment.production,
+    }),
+    NgxsLoggerPluginModule.forRoot({disabled: environment.production}),
     NbThemeModule.forRoot({ name: 'corporate' }),
     NbLayoutModule,
     NbEvaIconsModule,
   ],
   providers: [],
+  exports: [
+    NEBULAR_MODULES,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
