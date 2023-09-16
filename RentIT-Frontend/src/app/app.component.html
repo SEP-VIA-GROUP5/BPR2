@@ -1,10 +1,18 @@
 <nb-layout>
-
   <nb-layout-header subheader>
-    <a href="#" (click)="toggle()"><i class="nb-menu"></i></a>
+    <a href="#" (click)="toggleSidebar()">
+      <nb-icon *ngIf="sidebarVisible"
+               icon="arrow-ios-back-outline">
+      </nb-icon>
+      <nb-icon *ngIf="!sidebarVisible"
+               icon="arrow-ios-forward-outline">
+      </nb-icon>
+      <i class="nb-menu"></i>
+    </a>
   </nb-layout-header>
 
-  <nb-sidebar></nb-sidebar>
+  <nb-sidebar [responsive]="true">
+  </nb-sidebar>
 
   <nb-layout-column class="colored-column-basic">
     <router-outlet></router-outlet>

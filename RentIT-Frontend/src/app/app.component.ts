@@ -7,11 +7,15 @@ import {NbSidebarService} from "@nebular/theme";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  sidebarVisible = true;
+
   constructor(private sidebarService: NbSidebarService) {
   }
 
-  toggle() {
-    this.sidebarService.toggle(true);
+  toggleSidebar() {
+    // Toggle the sidebar state
+    this.sidebarService.toggle(this.sidebarVisible);
+    this.sidebarVisible = !this.sidebarVisible;
     return false;
   }
 }
