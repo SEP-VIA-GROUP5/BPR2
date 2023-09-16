@@ -1,22 +1,25 @@
 package model;
 
 import lombok.Builder;
-
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Builder
 public class Product {
-    private final long id;
-    private final String name;
-    private final String description;
-    private final float dayPrice;
-    private final float weekPrice;
-    private final float monthPrice;
-    private final float deposit;
-    private final String city;
-    private final float productValue;
-    private final int minLeasePeriod;
-    private final String category;
-    private final List<String> tags;
+    private long id;
+    private String name;
+    private String description;
+    private float dayPrice;
+    private float weekPrice;
+    private float monthPrice;
+    private float deposit;
+    private String city;
+    private float productValue;
+    private int minLeasePeriod;
+    private String category;
+    private List<String> tags;
 }
