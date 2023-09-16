@@ -10,6 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {NgxsModule} from "@ngxs/store";
 import {environment} from "../environment/environment.prod";
 import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
+import { MainPageComponent } from './main-page/main-page.component';
 
 
 export const STATES = [
@@ -17,7 +18,8 @@ export const STATES = [
 ];
 
 export const PAGE_COMPONENTS = [
-
+  AppComponent,
+  MainPageComponent
 ];
 
 export const CORE_COMPONENTS = [
@@ -35,7 +37,8 @@ export const NEBULAR_MODULES = [
 
 @NgModule({
   declarations: [
-    AppComponent
+   PAGE_COMPONENTS,
+    ...CORE_COMPONENTS,
   ],
   imports: [
     BrowserModule,
