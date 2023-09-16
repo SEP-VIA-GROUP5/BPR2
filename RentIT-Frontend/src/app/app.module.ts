@@ -11,6 +11,7 @@ import {NgxsModule} from "@ngxs/store";
 import {environment} from "../environment/environment.prod";
 import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
 import { MainPageComponent } from './main-page/main-page.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 export const STATES = [
@@ -19,7 +20,8 @@ export const STATES = [
 
 export const PAGE_COMPONENTS = [
   AppComponent,
-  MainPageComponent
+  MainPageComponent,
+  NotFoundComponent,
 ];
 
 export const CORE_COMPONENTS = [
