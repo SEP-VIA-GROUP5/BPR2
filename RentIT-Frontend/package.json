@@ -10,7 +10,7 @@
     "test": "ng test",
     "full-test" : "update-snapshot && build && start",
     "component": "ng generate component",
-    "service" : "ng generate service",
+    "service" : "ng generate service"
   },
   "private": true,
   "dependencies": {
