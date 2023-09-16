@@ -2,7 +2,7 @@
 import {Product} from "src/model/product";
 import {mockedTags} from "src/mocks/tags.mock";
 
-export const products: Product[] = [
+export const mockedProducts: Product[] = [
   {
     productId: 1231,
     name: "GoPro",
