@@ -6,5 +6,5 @@ import model.Product;
 import java.util.List;
 
 public interface IProductMapper {
-    List<Product> getNProductsByPage(int pageNum);
+    List<Product> getNProductsByPage(int pageNum, int n);
 }
