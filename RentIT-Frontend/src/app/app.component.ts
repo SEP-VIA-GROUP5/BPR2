@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {NbSidebarService} from "@nebular/theme";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'RentIT-Frontend';
+  constructor(private sidebarService: NbSidebarService) {
+  }
+
+  toggle() {
+    this.sidebarService.toggle(true);
+    return false;
+  }
 }

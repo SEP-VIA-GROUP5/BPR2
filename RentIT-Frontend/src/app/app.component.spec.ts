@@ -48,11 +48,6 @@ describe('app > app.component.spec.ts', () => {
     expect(spectator.fixture).toMatchSnapshot();
   });
 
-  it(`should have as title 'RentIT-Frontend'`, () => {
-    const app = spectator.fixture.componentInstance;
-    expect(app.title).toEqual('RentIT-Frontend');
-  });
-
   // it('should render title', () => {
   //   spectator.detectChanges();
   //   const compiled = spectator.fixture.nativeElement as HTMLElement;
