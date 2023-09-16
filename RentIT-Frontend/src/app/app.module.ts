@@ -28,6 +28,7 @@ import { ProductsComponent } from './products/products.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {AgGridModule} from "ag-grid-angular";
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { ProductComponent } from './product/product.component';
 
 
 export const STATES = [
@@ -76,6 +77,7 @@ export const NEBULAR_MODULES = [
    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
     SearchBarComponent,
+    ProductComponent,
   ],
   imports: [
     BrowserModule,
