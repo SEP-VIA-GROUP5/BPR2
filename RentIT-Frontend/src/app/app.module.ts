@@ -27,6 +27,7 @@ import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
 import { ProductsComponent } from './products/products.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {AgGridModule} from "ag-grid-angular";
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 
 export const STATES = [
@@ -74,6 +75,7 @@ export const NEBULAR_MODULES = [
   declarations: [
    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,
