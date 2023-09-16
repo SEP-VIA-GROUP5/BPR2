@@ -10,7 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {NgxsModule} from "@ngxs/store";
 import {environment} from "../environment/environment.prod";
 import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
-import { MainPageComponent } from './main-page/main-page.component';
+import { ProductsComponent } from './products/products.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 
@@ -20,7 +20,7 @@ export const STATES = [
 
 export const PAGE_COMPONENTS = [
   AppComponent,
-  MainPageComponent,
+  ProductsComponent,
   NotFoundComponent,
 ];
 
