@@ -1,0 +1,38 @@
+nb-layout {
+  nb-layout-header.subheader {
+    height: 75px;
+  }
+
+  ::ng-deep nb-layout-header nav {
+    margin: 14px;
+  }
+
+  nb-layout-header {
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .left-section {
+      flex: 1;
+    }
+
+    .center-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .right-section {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  nb-sidebar {
+    top: 0;
+  }
+}

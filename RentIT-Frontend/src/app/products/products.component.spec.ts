@@ -6,15 +6,19 @@ import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
 import { of } from "rxjs";
-import {NEBULAR_MODULES, PROVIDERS, STATES} from "./app.module";
-import {AppRoutingModule} from "./app-routing.module";
-import {AppComponent} from "./app.component";
+import {ProductsComponent} from "./products.component";
+import {AppRoutingModule} from "../app-routing.module";
+import {NEBULAR_MODULES, PROVIDERS, STATES} from "../app.module";
 
-describe('app > app.component.spec.ts', () => {
-  let spectator: Spectator<AppComponent>;
+// const productsServiceMock = {
+//   getProducts: jest.fn().mockReturnValue(of([])),
+// };
+
+describe('app > products > products.component.spec.ts', () => {
+  let spectator: Spectator<ProductsComponent>;
 
   const createComponent = createComponentFactory({
-    component: AppComponent,
+    component: ProductsComponent,
     imports: [
       RouterTestingModule,
       BrowserModule,
@@ -27,6 +31,10 @@ describe('app > app.component.spec.ts', () => {
     providers: [
       ...PROVIDERS,
       Store,
+      // {
+      //   provide: ProductsService,
+      //   useValue: productsServiceMock
+      // },
     ],
   });
 
@@ -48,9 +56,5 @@ describe('app > app.component.spec.ts', () => {
     expect(spectator.fixture).toMatchSnapshot();
   });
 
-  // it('should render title', () => {
-  //   spectator.detectChanges();
-  //   const compiled = spectator.fixture.nativeElement as HTMLElement;
-  //   expect(compiled.querySelector('.content span')?.textContent).toContain('RentIT-Frontend app is running!');
-  // });
+  // TODO add test later when data is available
 });

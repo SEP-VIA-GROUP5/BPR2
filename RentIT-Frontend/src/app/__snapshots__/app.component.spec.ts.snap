@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`app > app.component.spec.ts should match snapshot 1`] = `
+<app-root
+  title={[Function String]}
+>
+  App component
+</app-root>
+`;
