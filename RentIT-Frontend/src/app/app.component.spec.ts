@@ -10,10 +10,6 @@ import {NEBULAR_MODULES, PROVIDERS, STATES} from "./app.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
 
-// const productsServiceMock = {
-//   getProducts: jest.fn().mockReturnValue(of([])),
-// };
-
 describe('app > app.component.spec.ts', () => {
   let spectator: Spectator<AppComponent>;
 
@@ -31,10 +27,6 @@ describe('app > app.component.spec.ts', () => {
     providers: [
       ...PROVIDERS,
       Store,
-      // {
-      //   provide: ProductsService,
-      //   useValue: productsServiceMock
-      // },
     ],
   });
 
