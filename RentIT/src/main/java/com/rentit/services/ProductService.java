@@ -1,7 +1,7 @@
-package services;
+package com.rentit.services;
 
-import dao.interfaces.IProductMapper;
-import model.Product;
+import com.rentit.dao.interfaces.IProductMapper;
+import com.rentit.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
