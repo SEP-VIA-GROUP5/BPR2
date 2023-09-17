@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
+import {GENERAL_MENU_ITEMS, ICONS} from "src/app/constants";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'RentIT-Frontend';
+
+  menuItems: NbMenuItem[] = GENERAL_MENU_ITEMS;
+  sidebarVisible: boolean = true;
+
+  constructor(
+    private nbMenuService: NbMenuService,
+    private sidebarService: NbSidebarService) {
+  }
+
+  toggleSidebar() {
+    // Toggle the sidebar state
+    this.sidebarService.toggle(this.sidebarVisible);
+    this.sidebarVisible = !this.sidebarVisible;
+    return false;
+  }
+
+  // enums
+  getIconsEnum() {
+    return ICONS;
+  }
 }
