@@ -1,7 +1,7 @@
-package dao.interfaces;
+package com.rentit.dao.interfaces;
 
 
-import model.Product;
+import com.rentit.model.Product;
 
 import java.util.List;
 

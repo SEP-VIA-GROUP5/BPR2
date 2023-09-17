@@ -1,4 +1,4 @@
-package model;
+package com.rentit.model;
 
 import lombok.Builder;
 import lombok.Getter;
