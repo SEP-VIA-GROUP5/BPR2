@@ -24,7 +24,7 @@ import {
   NbDialogModule,
   NbToastrModule,
   NbSidebarModule,
-  NbUserModule
+  NbUserModule, NbBadgeModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {HttpClientModule} from "@angular/common/http";
@@ -79,6 +79,8 @@ export const NEBULAR_MODULES = [
   NbSelectModule,
   NbTabsetModule,
   NbPopoverModule,
+  NbUserModule,
+  NbBadgeModule,
 ];
 
 @NgModule({
@@ -98,7 +100,6 @@ export const NEBULAR_MODULES = [
     NgxsLoggerPluginModule.forRoot({disabled: environment.production}),
     NbThemeModule.forRoot({name: 'corporate'}),
     NEBULAR_MODULES,
-    NbUserModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
