@@ -7,15 +7,20 @@ import {produce} from "immer";
 import {ICONS} from "src/app/constants";
 import {mockedProducts} from "src/mocks/products.mock";
 import { environment } from "src/environments/environment.dev";
+import { ProductsService } from "src/api/products.service";
 
 export interface ProductsStateModel {
   isFetching: boolean;
   products: Product[];
+  pageNumber: number;
+  pageSize: number;
 }
 
 export const defaultsState: ProductsStateModel = {
   isFetching: false,
   products: [],
+  pageNumber: 1,
+  pageSize: 12,
 }
 
 @State<ProductsStateModel>({
@@ -27,31 +32,25 @@ export const defaultsState: ProductsStateModel = {
 export class ProductsState {
   constructor(
     private toastrService: NbToastrService,
+    private productsService: ProductsService,
   ) {
   }
 
   @Action(ProductsFetch)
-  async moviesFetchNextPage(
+  async productsFetch(
     {getState, setState}: StateContext<ProductsStateModel>) {
 
+    let pageNumber = getState().pageNumber;
+    let pageSize = getState().pageSize;
     let newState = produce(getState(), draft => {
       draft.isFetching = true;
     })
     setState(newState);
 
-    // TODO here the service api will be called and fetch the actual products, for now mock
-
     let products = [];
 
-    if(environment.mocked) {
-      const delay = ms => new Promise(res => setTimeout(res, ms));
-      await delay(2000);
-      products = mockedProducts;
-    }
-
     try {
-      // mock
-      // products = await productsService.getProducts();
+      products = await this.productsService.getProductsPerPage(pageNumber, pageSize);
     } catch (error) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : error,
@@ -63,6 +62,8 @@ export class ProductsState {
 
     newState = produce(getState(), draft => {
       draft.products = products;
+      draft.pageNumber = pageNumber + 1;
+      draft.pageSize = pageSize;
       draft.isFetching = false;
     })
     setState(newState);
