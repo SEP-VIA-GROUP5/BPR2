@@ -24,7 +24,7 @@ import {
   NbDialogModule,
   NbToastrModule,
   NbSidebarModule,
-  NbUserModule, NbBadgeModule
+  NbUserModule, NbBadgeModule, NbTagModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {HttpClientModule} from "@angular/common/http";
@@ -81,6 +81,7 @@ export const NEBULAR_MODULES = [
   NbPopoverModule,
   NbUserModule,
   NbBadgeModule,
+  NbTagModule,
 ];
 
 @NgModule({

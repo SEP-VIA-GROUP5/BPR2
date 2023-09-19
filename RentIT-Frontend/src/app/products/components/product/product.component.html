@@ -8,19 +8,24 @@
     <div class="seller-info">
       <img src="https://via.placeholder.com/50/4479e7/ffffff?Text=IMG" alt="Seller profile picture">
     </div>
-    <div class="product-prices">
-      <p *ngIf="product.dayPrice">{{product.dayPrice}}€ / day </p>
-      <p *ngIf="product.weekPrice">{{product.weekPrice}}€ / week </p>
-      <p *ngIf="product.monthPrice">{{product.monthPrice}}€ / month </p>
+    <div class="product-prices" *ngIf="product.dayPrice">
+      <p>{{product.dayPrice}}€ / day </p>
     </div>
 
     <div class="product-details">
-      <p class="">
-        <nb-icon
-        [icon]="ICONS.MAP_OUTLINE"></nb-icon>
-        {{product.city}}
-      </p>
-
+      <div class="first-row">
+        <p class="product-min-lease">
+          Minimum lease period <b>{{product.minLeasePeriod}} days</b>
+        </p>
+        <p class="product-location">
+          <nb-icon
+            [icon]="ICONS.MAP_OUTLINE"></nb-icon>
+          {{product.city}}
+        </p>
+      </div>
+      <div class="second-row">
+        <p class="product-name"> {{product.name}}</p>
+      </div>
     </div>
   </nb-card-body>
 </nb-card>

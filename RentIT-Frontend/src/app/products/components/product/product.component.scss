@@ -1,5 +1,6 @@
 nb-card {
   border-radius: 20px;
+  height: 339px;
 }
 
 nb-card-header {
@@ -7,6 +8,10 @@ nb-card-header {
   position: relative;
   border-bottom: 20px;
   height: 120px;
+}
+
+nb-card-body {
+  cursor: default;
 }
 
 .header-image {
@@ -23,17 +28,16 @@ nb-card-header {
 }
 
 .product-prices {
-  cursor: default;
   background: #02e2fb;
   width: fit-content;
   height: fit-content;
-  padding: 0px 10px 0px 10px;
-  border-radius: 20px;
+  padding: 0 10px;
+  border-radius: 20px 0px 20px 20px;
   position: relative;
-  left: 237px;
-  top: -8px;
+  left: 270px;
+  top: 68px;
   opacity: 100%;
-  box-shadow: -6px 0px 7px 1px;
+  box-shadow: -6px 0 7px 1px;
 
   p {
     color: #ffffff;
@@ -42,13 +46,37 @@ nb-card-header {
 }
 .seller-info {
   position: absolute;
-  bottom: 215px;
+  bottom: 88px;
   left: 0;
 
   img {
     width: 50px;
     height: 50px;
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: 20px 20px 20px 0;
+  }
+}
+
+.product-details {
+  display: block;
+  position: relative;
+  top: 64px;
+
+  .first-row {
+    display: flex;
+    justify-content: space-between;
+
+    .product-min-lease {
+      font-style: italic;
+    }
+  }
+
+  .second-row {
+    .product-name {
+      display:flex;
+      justify-content: space-around;
+      font-size: 1.5em;
+      margin:0;
+    }
   }
 }
