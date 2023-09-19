@@ -1,12 +1,26 @@
 <nb-card [id]="product.productId" [size]="'medium'">
   <nb-card-header>
-    <img src="assets/placeholder_for_image.png" style="max-width: 300px; width: 100%;" alt="Product's image">
+    <div class="header-image">
+      <img class="product-image" src="assets/placeholder_for_image.png" alt="Product's image">
+    </div>
   </nb-card-header>
   <nb-card-body>
-    <nb-user size="large"
-             name="John Doe"
-             title="Engineer"
-             picture="https://via.placeholder.com/50/4479e7/ffffff?Text=IMG">
-    </nb-user>
+    <div class="seller-info">
+      <img src="https://via.placeholder.com/50/4479e7/ffffff?Text=IMG" alt="Seller profile picture">
+    </div>
+    <div class="product-prices">
+      <p *ngIf="product.dayPrice">{{product.dayPrice}}€ / day </p>
+      <p *ngIf="product.weekPrice">{{product.weekPrice}}€ / week </p>
+      <p *ngIf="product.monthPrice">{{product.monthPrice}}€ / month </p>
+    </div>
+
+    <div class="product-details">
+      <p class="">
+        <nb-icon
+        [icon]="ICONS.MAP_OUTLINE"></nb-icon>
+        {{product.city}}
+      </p>
+
+    </div>
   </nb-card-body>
 </nb-card>

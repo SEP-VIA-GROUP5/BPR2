@@ -1,3 +1,54 @@
+nb-card {
+  border-radius: 20px;
+}
+
 nb-card-header {
   padding: 0;
+  position: relative;
+  border-bottom: 20px;
+  height: 120px;
+}
+
+.header-image {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.product-image {
+  width: 378px;
+  height: 239px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.product-prices {
+  cursor: default;
+  background: #02e2fb;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px 10px 0px 10px;
+  border-radius: 20px;
+  position: relative;
+  left: 237px;
+  top: -8px;
+  opacity: 100%;
+  box-shadow: -6px 0px 7px 1px;
+
+  p {
+    color: #ffffff;
+    margin-bottom: 5px;
+  }
+}
+.seller-info {
+  position: absolute;
+  bottom: 215px;
+  left: 0;
+
+  img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 20px;
+  }
 }
