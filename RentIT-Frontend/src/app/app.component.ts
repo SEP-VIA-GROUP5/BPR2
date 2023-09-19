@@ -11,6 +11,7 @@ export class AppComponent {
 
   menuItems: NbMenuItem[] = GENERAL_MENU_ITEMS;
   sidebarVisible: boolean = true;
+  protected readonly ICONS = ICONS;
 
   constructor(
     private nbMenuService: NbMenuService,
@@ -22,10 +23,5 @@ export class AppComponent {
     this.sidebarService.toggle(this.sidebarVisible);
     this.sidebarVisible = !this.sidebarVisible;
     return false;
-  }
-
-  // enums
-  getIconsEnum() {
-    return ICONS;
   }
 }
