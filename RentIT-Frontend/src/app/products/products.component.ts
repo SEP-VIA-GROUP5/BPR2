@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from "@ngxs/store";
 import {ProductsFetch, ProductsReset} from "src/app/products/products.actions";
-import {ProductsSelector} from "src/app/products/productsSelector";
+import {ProductsSelector} from "src/app/products/products.selector";
 import {Observable} from "rxjs";
 import {Product} from "src/model/product";
 
