@@ -22,12 +22,12 @@ import {
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {HttpClientModule} from "@angular/common/http";
 import {NgxsModule} from "@ngxs/store";
-import {environment} from "../environment/environment.prod";
+import {environment} from "src/environments/environment.prod";
 import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
 import { ProductsComponent } from './products/products.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {AgGridModule} from "ag-grid-angular";
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { SearchBarComponent } from '@components/search-bar/search-bar.component';
 import { ProductComponent } from './products/components/product/product.component';
 import {ProductsState} from "src/app/products/products.state";
 

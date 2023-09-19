@@ -4,9 +4,9 @@ import {Injectable} from "@angular/core";
 import {NbToastrService} from "@nebular/theme";
 import {ProductsFetch, ProductsReset} from "src/app/products/products.actions";
 import {produce} from "immer";
-import {environment} from "src/environment/environment.dev-local";
 import {ICONS} from "src/app/constants";
 import {mockedProducts} from "src/mocks/products.mock";
+import { environment } from "src/environments/environment.dev";
 
 export interface ProductsStateModel {
   isFetching: boolean;
@@ -42,6 +42,7 @@ export class ProductsState {
     // TODO here the service api will be called and fetch the actual products, for now mock
 
     let products = [];
+
     if(environment.mocked) {
       const delay = ms => new Promise(res => setTimeout(res, ms));
       await delay(2000);

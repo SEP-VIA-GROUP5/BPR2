@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "USE_LOCAL_ENV=true node switch-files.js && ng serve",
+    "start": "ng serve --configuration=mock",
     "start:local": "ng serve",
     "build": "ng build",
     "update-snapshot": "npm test -- -u",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "jest --runInBand",
     "full-test": "update-snapshot && build && start",
     "component": "ng generate component",
     "service": "ng generate service"

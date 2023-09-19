@@ -51,7 +51,7 @@
               "outputHashing": "all",
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.mock.ts",
+                  "replace": "src/environments/environment.dev.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
@@ -63,6 +63,14 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.dev.ts",
+                  "with": "src/environments/environment.mock.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -75,6 +83,9 @@
             },
             "development": {
               "browserTarget": "RentIT-Frontend:build:development"
+            },
+            "mock": {
+              "browserTarget": "RentIT-Frontend:build:mock"
             }
           },
           "defaultConfiguration": "development"
