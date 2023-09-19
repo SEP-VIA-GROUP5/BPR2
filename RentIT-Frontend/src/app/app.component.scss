@@ -8,6 +8,10 @@ nb-layout {
   }
 
   nb-layout-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 
     .header-container {
       display: flex;
@@ -30,6 +34,10 @@ nb-layout {
       display: flex;
       justify-content: flex-end;
     }
+  }
+
+  .colored-column-basic {
+    margin-top: 72px;
   }
 
   nb-sidebar {

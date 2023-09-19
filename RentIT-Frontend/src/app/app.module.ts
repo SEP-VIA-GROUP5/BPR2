@@ -17,7 +17,14 @@ import {
   NbInputModule,
   NbMenuModule,
   NbSearchModule,
-  NbListModule, NbSpinnerModule, NbIconModule, NbActionsModule, NbDialogModule, NbToastrModule, NbSidebarModule
+  NbListModule,
+  NbSpinnerModule,
+  NbIconModule,
+  NbActionsModule,
+  NbDialogModule,
+  NbToastrModule,
+  NbSidebarModule,
+  NbUserModule, NbBadgeModule, NbTagModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {HttpClientModule} from "@angular/common/http";
@@ -72,6 +79,9 @@ export const NEBULAR_MODULES = [
   NbSelectModule,
   NbTabsetModule,
   NbPopoverModule,
+  NbUserModule,
+  NbBadgeModule,
+  NbTagModule,
 ];
 
 @NgModule({
@@ -89,7 +99,7 @@ export const NEBULAR_MODULES = [
       developmentMode: !environment.production,
     }),
     NgxsLoggerPluginModule.forRoot({disabled: environment.production}),
-    NbThemeModule.forRoot({ name: 'corporate' }),
+    NbThemeModule.forRoot({name: 'corporate'}),
     NEBULAR_MODULES,
   ],
   providers: [],

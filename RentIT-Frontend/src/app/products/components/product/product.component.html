@@ -1,8 +1,31 @@
-<nb-card [id]="product.productId">
+<nb-card [id]="product.productId" [size]="'medium'">
   <nb-card-header>
-    <img src="assets/placeholder_for_image.png" width="300px" height="300px">
+    <div class="header-image">
+      <img class="product-image" src="assets/placeholder_for_image.png" alt="Product's image">
+    </div>
   </nb-card-header>
   <nb-card-body>
-<!--    TODO use nb-user for user image: https://akveo.github.io/nebular/docs/components/user-avatar/overview#nbusercomponent-->
+    <div class="seller-info">
+      <img src="https://via.placeholder.com/50/4479e7/ffffff?Text=IMG" alt="Seller profile picture">
+    </div>
+    <div class="product-prices" *ngIf="product.dayPrice">
+      <p>{{product.dayPrice}}€ / day </p>
+    </div>
+
+    <div class="product-details">
+      <div class="first-row">
+        <p class="product-min-lease">
+          Minimum lease period <b>{{product.minLeasePeriod}} days</b>
+        </p>
+        <p class="product-location">
+          <nb-icon
+            [icon]="ICONS.MAP_OUTLINE"></nb-icon>
+          {{product.city}}
+        </p>
+      </div>
+      <div class="second-row">
+        <p class="product-name"> {{product.name}}</p>
+      </div>
+    </div>
   </nb-card-body>
 </nb-card>

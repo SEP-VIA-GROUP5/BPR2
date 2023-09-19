@@ -6,6 +6,7 @@ export enum ICONS {
   FORWARD_BACK_IOS = "arrow-ios-back-outline",
   SEARCH = 'search',
   ALERT_CIRCLE_OUTLINE = 'alert-circle-outline',
+  MAP_OUTLINE = 'map-outline',
 }
 export enum GENERAL_MENU_ITEM_URLS {
   PRODUCTS = '/products',

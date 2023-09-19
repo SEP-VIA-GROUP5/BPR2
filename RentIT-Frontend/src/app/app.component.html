@@ -1,15 +1,15 @@
 <nb-layout>
-  <nb-layout-header subheader class="header-container">
+  <nb-layout-header subheader>
     <div class="left-section">
       <a href="#" (click)="toggleSidebar()">
-        <nb-icon *ngIf="sidebarVisible" [icon]="getIconsEnum().FORWARD_ARROW_IOS"></nb-icon>
-        <nb-icon *ngIf="!sidebarVisible" [icon]="getIconsEnum().FORWARD_BACK_IOS"></nb-icon>
+        <nb-icon *ngIf="sidebarVisible" [icon]="ICONS.FORWARD_ARROW_IOS"></nb-icon>
+        <nb-icon *ngIf="!sidebarVisible" [icon]="ICONS.FORWARD_BACK_IOS"></nb-icon>
         <i class="nb-menu"></i>
       </a>
     </div>
 
     <div class="center-section">
-      <search-bar [icon]="getIconsEnum().SEARCH"></search-bar>
+      <search-bar [icon]="ICONS.SEARCH"></search-bar>
     </div>
 
     <div class="right-section">

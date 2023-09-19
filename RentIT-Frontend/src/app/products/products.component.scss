@@ -1,0 +1,15 @@
+nb-card {
+  height: 85vh;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+/* Apply margin to the last item in each row */
+.last-in-row {
+  margin-right: 0;
+}
