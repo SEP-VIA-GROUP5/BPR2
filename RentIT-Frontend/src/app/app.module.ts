@@ -37,6 +37,8 @@ import {AgGridModule} from "ag-grid-angular";
 import { SearchBarComponent } from '@components/search-bar/search-bar.component';
 import { ProductComponent } from './products/components/product/product.component';
 import {ProductsState} from "src/app/products/products.state";
+import { ProductsService } from 'src/api/products.service';
+import { ApiService } from 'src/core/services/api.service';
 
 
 export const STATES = [
@@ -55,7 +57,8 @@ export const CORE_COMPONENTS = [
 ];
 
 export const PROVIDERS = [
-
+  ApiService,
+  ProductsService,
 ];
 
 export const NEBULAR_MODULES = [
