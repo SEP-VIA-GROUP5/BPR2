@@ -7,6 +7,7 @@ export enum ICONS {
   SEARCH = 'search',
   ALERT_CIRCLE_OUTLINE = 'alert-circle-outline',
   MAP_OUTLINE = 'map-outline',
+  LIST_OUTLINE = 'list-outline',
 }
 export enum GENERAL_MENU_ITEM_URLS {
   PRODUCTS = '/products',
