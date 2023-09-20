@@ -1,9 +1,8 @@
 <nb-layout>
-  <nb-layout-header subheader>
+  <nb-layout-header>
     <div class="left-section">
       <a href="#" (click)="toggleSidebar()">
-        <nb-icon *ngIf="sidebarVisible" [icon]="ICONS.FORWARD_ARROW_IOS"></nb-icon>
-        <nb-icon *ngIf="!sidebarVisible" [icon]="ICONS.FORWARD_BACK_IOS"></nb-icon>
+        <nb-icon [icon]="ICONS.LIST_OUTLINE"></nb-icon>
         <i class="nb-menu"></i>
       </a>
     </div>
@@ -13,17 +12,15 @@
     </div>
 
     <div class="right-section">
-<!--      TODO for later when we add bottom on the right side-->
+      <a href="">
+        <img src="assets/logo.svg" alt="Image" width="100%" height="auto"/>
+      </a>
     </div>
   </nb-layout-header>
 
 
   <nb-sidebar [responsive]="true">
     <div>
-      <a href="">
-        <img *ngIf="sidebarVisible" src="assets/logo.svg" alt="Image" width="100%" height="auto"/>
-        <img *ngIf="!sidebarVisible" src="assets/favicon.svg" alt="Image" width="48px" height="auto"/>
-      </a>
       <nb-menu tag="menu" [items]="menuItems"></nb-menu>
     </div>
   </nb-sidebar>
