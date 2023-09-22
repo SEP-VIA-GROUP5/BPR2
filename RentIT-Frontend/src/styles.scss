@@ -1,5 +1,5 @@
 @use 'themes' as *;
-
+@use 'bootstrap' as *;
 @use '@nebular/theme/styles/globals' as *;
 
 @include nb-install() {
