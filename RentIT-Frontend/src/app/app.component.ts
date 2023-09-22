@@ -24,4 +24,8 @@ export class AppComponent {
     this.sidebarVisible = !this.sidebarVisible;
     return false;
   }
+
+  getImageBySize() {
+    return window.screen.width <= 472 ? 'assets/favicon.svg' : 'assets/logo.svg' ;
+  }
 }

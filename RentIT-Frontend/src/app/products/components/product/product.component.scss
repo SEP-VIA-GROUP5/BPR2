@@ -1,3 +1,30 @@
+@media only screen and (max-width: 472px) {
+  .product-image {
+    width: 33.26vh;
+  }
+  .product-prices {
+    left: 209px;
+  }
+
+  .product-details {
+    .first-row {
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 473px) {
+  .product-image {
+    width: 39.7vh;
+  }
+
+  .product-prices {
+    left: 270px;
+  }
+}
+
 nb-card {
   border-radius: 20px;
   height: 339px;
@@ -21,7 +48,6 @@ nb-card-body {
 }
 
 .product-image {
-  width: 378px;
   height: 239px;
   object-fit: cover;
   border-radius: 20px;
@@ -34,7 +60,6 @@ nb-card-body {
   padding: 0 10px;
   border-radius: 20px 0px 20px 20px;
   position: relative;
-  left: 270px;
   top: 68px;
   opacity: 100%;
   box-shadow: -6px 0 7px 1px;
@@ -44,6 +69,7 @@ nb-card-body {
     margin-bottom: 5px;
   }
 }
+
 .seller-info {
   position: absolute;
   bottom: 88px;
@@ -73,10 +99,10 @@ nb-card-body {
 
   .second-row {
     .product-name {
-      display:flex;
+      display: flex;
       justify-content: space-around;
       font-size: 1.5em;
-      margin:0;
+      margin: 0;
     }
   }
 }
