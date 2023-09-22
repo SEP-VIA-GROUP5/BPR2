@@ -40,6 +40,7 @@ import {ProductsState} from "src/app/products/products.state";
 import { ProductsService } from 'src/api/products.service';
 import { ApiService } from 'src/core/services/api.service';
 import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
+import { BreadcrumbsComponent } from '../core/components/breadcrumbs/breadcrumbs.component';
 
 
 export const STATES = [
@@ -92,6 +93,7 @@ export const NEBULAR_MODULES = [
   declarations: [
    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
+    BreadcrumbsComponent,
   ],
   imports: [
     BrowserModule,

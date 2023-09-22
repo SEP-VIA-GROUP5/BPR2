@@ -1,4 +1,5 @@
 import {NbMenuItem} from "@nebular/theme";
+import {BreadcrumbItem} from "src/app/app.store";
 
 export enum ICONS {
   CUBE_OUTLINE = 'cube-outline',
@@ -26,4 +27,12 @@ export const GENERAL_MENU_ITEMS: NbMenuItem[] = [
     link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
   },
 ];
+
+export const GENERAL_BREADCRUMB_ITEMS: BreadcrumbItem[] = [
+  {
+    id: BREADCRUMB_KEYS.PRODUCTS,
+    name: BREADCRUMB_KEYS.PRODUCTS,
+    link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
+  }
+]
 
