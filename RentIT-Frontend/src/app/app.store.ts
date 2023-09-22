@@ -4,6 +4,7 @@ import {Product} from "src/model/product";
 import {Injectable} from "@angular/core";
 import {NbToastrService} from "@nebular/theme";
 import {ProductsService} from "src/api/products.service";
+import {ActivatedRoute} from "@angular/router";
 
 export interface BreadcrumbItem {
   id: string,
@@ -14,7 +15,8 @@ export interface BreadcrumbItem {
 
 export class UpdateBreadcrumbItems {
   static readonly type = '[App] Update breadcrumb items';
-  constructor(breadcrumbItem: BreadcrumbItem) {
+  constructor(breadcrumbItem: BreadcrumbItem,
+              activatedRoute: ActivatedRoute) {
   }
 }
 

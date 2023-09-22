@@ -1,0 +1,109 @@
+nb-card {
+  border-radius: 20px;
+  height: 339px;
+}
+
+nb-card-header {
+  padding: 0;
+  position: relative;
+  border-bottom: 20px;
+  height: 120px;
+}
+
+nb-card-body {
+  cursor: default;
+}
+
+.header-image {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.product-image {
+  height: 239px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.product-prices {
+  background: #02e2fb;
+  width: fit-content;
+  height: fit-content;
+  padding: 0 10px;
+  border-radius: 20px 0px 20px 20px;
+  position: relative;
+  top: 68px;
+  opacity: 100%;
+  box-shadow: -6px 0 7px 1px;
+
+  p {
+    color: #ffffff;
+    margin-bottom: 5px;
+  }
+}
+
+.seller-info {
+  position: absolute;
+  bottom: 88px;
+  left: 0;
+
+  img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 20px 20px 20px 0;
+  }
+}
+
+.product-details {
+  display: block;
+  position: relative;
+  top: 64px;
+
+  .first-row {
+    display: flex;
+    justify-content: space-between;
+
+    .product-min-lease {
+      font-style: italic;
+    }
+  }
+
+  .second-row {
+    .product-name {
+      display: flex;
+      justify-content: space-around;
+      font-size: 1.5em;
+      margin: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 472px) {
+  .product-image {
+    width: 317.3px;
+  }
+
+  .product-prices {
+    left: 209px;
+  }
+
+  .product-details {
+    .first-row {
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 473px) {
+  .product-image {
+    width: 378.3px;
+  }
+
+  .product-prices {
+    left: 270px;
+  }
+}

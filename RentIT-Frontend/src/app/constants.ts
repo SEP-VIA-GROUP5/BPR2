@@ -33,6 +33,16 @@ export const GENERAL_BREADCRUMB_ITEMS: BreadcrumbItem[] = [
     id: BREADCRUMB_KEYS.PRODUCTS,
     name: BREADCRUMB_KEYS.PRODUCTS,
     link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
+  },
+  {
+    id: 'test',
+    name: 'test',
+    link: '/dada',
+    icon: ICONS.FORWARD_BACK_IOS
   }
 ]
+
+export function findBreadcrumbItemsByUrl(url: string) {
+
+}
 

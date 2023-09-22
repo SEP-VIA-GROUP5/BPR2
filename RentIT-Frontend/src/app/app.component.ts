@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import {NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
 import {GENERAL_MENU_ITEMS, ICONS} from "src/app/constants";
+import {Select} from "@ngxs/store";
+import {ProductsSelector} from "src/app/products/products.selector";
+import {Observable} from "rxjs";
+import {AppSelector, BreadcrumbItem} from "src/app/app.store";
 
 @Component({
   selector: 'app-root',
@@ -12,6 +16,7 @@ import {GENERAL_MENU_ITEMS, ICONS} from "src/app/constants";
                       <nb-icon [icon]="ICONS.LIST_OUTLINE"></nb-icon>
                       <i class="nb-menu"></i>
                   </a>
+                <breadcrumbs></breadcrumbs>
               </div>
 
               <div class="center-section">
@@ -37,6 +42,8 @@ import {GENERAL_MENU_ITEMS, ICONS} from "src/app/constants";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  @Select(AppSelector.breadcrumbItems)
+  breadcrumbItems$: Observable<BreadcrumbItem[]>;
 
   menuItems: NbMenuItem[] = GENERAL_MENU_ITEMS;
   sidebarVisible: boolean = true;

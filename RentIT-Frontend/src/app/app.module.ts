@@ -41,6 +41,8 @@ import { ProductsService } from 'src/api/products.service';
 import { ApiService } from 'src/core/services/api.service';
 import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
 import { BreadcrumbsComponent } from '../core/components/breadcrumbs/breadcrumbs.component';
+import {CommonModule} from "@angular/common";
+import { ProductOverviewComponent } from './products/product-overview/product-overview.component';
 
 
 export const STATES = [
@@ -51,6 +53,7 @@ export const PAGE_COMPONENTS = [
   AppComponent,
   ProductsComponent,
   NotFoundComponent,
+  ProductOverviewComponent,
 ];
 
 export const CORE_COMPONENTS = [
@@ -94,10 +97,12 @@ export const NEBULAR_MODULES = [
    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
     BreadcrumbsComponent,
+    ProductOverviewComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    CommonModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     //NgxsModules setup
