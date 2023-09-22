@@ -1,12 +1,3 @@
-@media only screen and (max-width: 472px) {
-  nb-layout {
-    .right-section {
-      position: relative;
-      top: 7px;
-    }
-  }
-}
-
 nb-layout {
   nb-layout-header.subheader {
     height: 75px;
@@ -44,5 +35,26 @@ nb-layout {
 
   nb-sidebar {
     top: 0;
+  }
+}
+
+@media only screen and (max-width: 472px) {
+  nb-layout {
+    nb-layout-header.subheader {
+      height: 50px;
+    }
+
+    .right-section {
+      position: relative;
+      top: 7px;
+    }
+
+    .colored-column-basic {
+      margin-top: 50px;
+    }
+
+    nb-sidebar {
+      top: 50px;
+    }
   }
 }
