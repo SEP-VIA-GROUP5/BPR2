@@ -2,12 +2,15 @@ import {NgModule} from '@angular/core';
 import {ExtraOptions, RouterModule, Routes} from '@angular/router';
 import {ProductsComponent} from "src/app/products/products.component";
 import {NotFoundComponent} from "src/app/not-found/not-found.component";
-import {GENERAL_MENU_ITEM_URLS} from "src/app/constants";
+import {BREADCRUMB_KEYS, GENERAL_MENU_ITEM_URLS} from "src/app/constants";
 
 export const routes: Routes = [
   {
     path: GENERAL_MENU_ITEM_URLS.PRODUCTS.substring(1),
     component: ProductsComponent,
+    data: {
+      breadcrumb: BREADCRUMB_KEYS.PRODUCTS,
+    }
   },
   {
     path: '',

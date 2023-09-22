@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   template: `
     <ng-container>
       <nb-form-field>
-        <input [style]="{ width: '318px' }" nbInput shape="round" placeholder="For example: GoPro" (input)="onInputChange($event)">
+        <input class="input-search" nbInput shape="round" placeholder="For example: GoPro" (input)="onInputChange($event)">
         <nb-icon nbSuffix pack="eva" [icon]="icon"></nb-icon>
       </nb-form-field>
     </ng-container>
@@ -18,6 +18,5 @@ export class SearchBarComponent {
   onInputChange(event: any) {
     const typedValue = event.target.value;
     // TODO here the action for search will be called
-    console.log('Typed value:', typedValue);
   }
 }

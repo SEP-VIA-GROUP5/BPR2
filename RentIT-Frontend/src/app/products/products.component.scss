@@ -5,11 +5,29 @@ nb-card {
 .product-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 0 30px;
+  gap: 48px;
 }
 
-/* Apply margin to the last item in each row */
 .last-in-row {
   margin-right: 0;
+}
+
+@media only screen and (max-width: 472px) {
+  h1 {
+    font-size: 18px;
+  }
+
+  nb-card-body {
+    padding: 0;
+  }
+
+  .product-grid {
+    padding: 0;
+  }
+}
+
+@media only screen and (min-width: 473px) {
+  .product-grid {
+    padding: 0 30px;
+  }
 }

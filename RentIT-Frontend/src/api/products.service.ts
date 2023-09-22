@@ -16,10 +16,18 @@ export class ProductsService {
 
   PATH_CONTROLLER = 'product';
 
-  getProductsPerPage(pageNumber, pageSize): Promise<Product[]> {
-    if(environment.mocked) {
+  async getProductsPerPage(pageNumber, pageSize): Promise<Product[]> {
+    if (environment.mocked) {
+      await this.delayIfMocked();
       return Promise.resolve(mockedProducts);
     }
     return this.apiService.get(`${this.PATH_CONTROLLER}/page/${pageNumber}/${pageSize}`).toPromise();
+  }
+
+  private async delayIfMocked() {
+    if(environment.mocked) {
+      const delay = ms => new Promise(res => setTimeout(res, ms));
+      await delay(2000);
+    }
   }
 }

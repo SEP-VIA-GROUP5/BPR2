@@ -8,14 +8,20 @@ export enum ICONS {
   ALERT_CIRCLE_OUTLINE = 'alert-circle-outline',
   MAP_OUTLINE = 'map-outline',
   LIST_OUTLINE = 'list-outline',
+  ARROW_IOS_DOWNWARD_OUTLINE = "arrow-ios-downward-outline",
 }
+
 export enum GENERAL_MENU_ITEM_URLS {
   PRODUCTS = '/products',
 }
 
+export enum BREADCRUMB_KEYS {
+  PRODUCTS = 'Products',
+}
+
 export const GENERAL_MENU_ITEMS: NbMenuItem[] = [
   {
-    title: 'Products',
+    title: BREADCRUMB_KEYS.PRODUCTS,
     icon: ICONS.CUBE_OUTLINE,
     link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
   },

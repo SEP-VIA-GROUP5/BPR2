@@ -11,4 +11,8 @@ export class ProductComponent {
   @Input() product : Product;
 
   protected readonly ICONS = ICONS;
+
+  getCardBySize() {
+    return window.screen.width <= 472 ? 'small' : 'medium' ;
+  }
 }
