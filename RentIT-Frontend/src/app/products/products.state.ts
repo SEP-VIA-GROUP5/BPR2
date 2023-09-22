@@ -14,6 +14,7 @@ export interface ProductsStateModel {
   products: Product[];
   pageNumber: number;
   pageSize: number;
+  endOfList: boolean;
 }
 
 export const defaultsState: ProductsStateModel = {
@@ -21,6 +22,7 @@ export const defaultsState: ProductsStateModel = {
   products: [],
   pageNumber: 1,
   pageSize: 12,
+  endOfList: false,
 }
 
 @State<ProductsStateModel>({
@@ -47,10 +49,10 @@ export class ProductsState {
     })
     setState(newState);
 
-    let products = [];
+    let nextProducts = [];
 
     try {
-      products = await this.productsService.getProductsPerPage(pageNumber, pageSize);
+      nextProducts = await this.productsService.getProductsPerPage(pageNumber, pageSize);
     } catch (error) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : error,
@@ -61,9 +63,10 @@ export class ProductsState {
     }
 
     newState = produce(getState(), draft => {
-      draft.products = products;
+      let currentProducts = draft.products;
+      draft.products = [...currentProducts,...nextProducts];
       draft.pageNumber = pageNumber + 1;
-      draft.pageSize = pageSize;
+      draft.endOfList = nextProducts.length !== draft.pageSize;
       draft.isFetching = false;
     })
     setState(newState);

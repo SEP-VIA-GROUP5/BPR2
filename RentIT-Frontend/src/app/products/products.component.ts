@@ -4,6 +4,7 @@ import {ProductsFetch, ProductsReset} from "src/app/products/products.actions";
 import {ProductsSelector} from "src/app/products/products.selector";
 import {Observable} from "rxjs";
 import {Product} from "src/model/product";
+import {ICONS} from "src/app/constants";
 
 @Component({
   selector: 'app-products',
@@ -15,8 +16,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
   isFetching$: Observable<boolean>;
   @Select(ProductsSelector.products)
   products$: Observable<Product[]>
+  @Select(ProductsSelector.endOfList)
+  endOfList$: Observable<boolean>;
 
-  alive : boolean = true;
+  protected readonly ICONS = ICONS;
+  alive: boolean = true;
 
   constructor(
     private store: Store,
@@ -24,6 +28,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(new ProductsFetch());
+  }
+
+  loadNextProducts() {
     this.store.dispatch(new ProductsFetch());
   }
 

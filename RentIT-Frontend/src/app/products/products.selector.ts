@@ -11,4 +11,9 @@ export class ProductsSelector {
   static products(state: ProductsStateModel) {
     return state.products;
   }
+
+  @Selector([ProductsState])
+  static endOfList(state: ProductsStateModel) {
+    return state.endOfList;
+  }
 }

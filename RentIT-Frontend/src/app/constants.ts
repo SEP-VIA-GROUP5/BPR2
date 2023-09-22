@@ -8,6 +8,7 @@ export enum ICONS {
   ALERT_CIRCLE_OUTLINE = 'alert-circle-outline',
   MAP_OUTLINE = 'map-outline',
   LIST_OUTLINE = 'list-outline',
+  ARROW_IOS_DOWNWARD_OUTLINE = "arrow-ios-downward-outline",
 }
 
 export enum GENERAL_MENU_ITEM_URLS {

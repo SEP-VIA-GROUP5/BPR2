@@ -10,4 +10,11 @@
       ></product>
     </div>
   </nb-card-body>
+  <nb-card-footer class="footer-page">
+    <button [disabled]="endOfList$ | async" nbButton status="primary"
+            [nbTooltip]="(endOfList$ | async) ? 'No more products to load' : 'Load more products'"
+            (click)="loadNextProducts()">
+      <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>
+    </button>
+  </nb-card-footer>
 </nb-card>
