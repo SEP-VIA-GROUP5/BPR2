@@ -13,6 +13,7 @@
         <result property="productValue" column="product_value"/>
         <result property="minLeasePeriod" column="min_lease_period"/>
         <result property="category" column="category"/>
+        <result property="image" column="image"/>
     </resultMap>
 
     <select id="getNProductsByPage" resultMap="ProductResultMap">

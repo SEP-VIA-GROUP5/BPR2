@@ -21,4 +21,5 @@ public class Product {
     private int minLeasePeriod;
     private String category;
     private List<String> tags;
+    private String image;
 }
