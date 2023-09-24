@@ -1,4 +1,5 @@
 import {Tag} from "src/model/tag";
+import {Image} from "src/model/image";
 
 export interface Product {
   productId: number;
@@ -12,5 +13,6 @@ export interface Product {
   city: string;
   minLeasePeriod?: number | null;
   category: string;
-  tag: Tag; //TODO probably this will come as array
+  tag: string[];
+  images: Image[];
 }
