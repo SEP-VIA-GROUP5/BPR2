@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    private long id;
+    private int id;
     private String name;
     private String description;
     private float dayPrice;
@@ -21,5 +21,5 @@ public class Product {
     private int minLeasePeriod;
     private String category;
     private List<String> tags;
-    private String image;
+    private List<Image> images;
 }
