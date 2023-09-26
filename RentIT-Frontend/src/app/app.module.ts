@@ -31,30 +31,24 @@ import {HttpClientModule} from "@angular/common/http";
 import {NgxsModule} from "@ngxs/store";
 import {environment} from "src/environments/environment.dev";
 import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
-import { ProductsComponent } from './products/products.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {AgGridModule} from "ag-grid-angular";
-import { SearchBarComponent } from '@components/search-bar/search-bar.component';
-import { ProductComponent } from './products/components/product/product.component';
-import {ProductsState} from "src/app/products/products.state";
+import { SearchBarComponent } from 'src/core/components/search-bar/search-bar.component';
 import { ProductsService } from 'src/api/products.service';
 import { ApiService } from 'src/core/services/api.service';
 import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
 
 
 export const STATES = [
-  ProductsState,
 ];
 
 export const PAGE_COMPONENTS = [
   AppComponent,
-  ProductsComponent,
   NotFoundComponent,
 ];
 
 export const CORE_COMPONENTS = [
   SearchBarComponent,
-  ProductComponent,
 ];
 
 export const PROVIDERS = [
@@ -107,7 +101,7 @@ export const NEBULAR_MODULES = [
     NbThemeModule.forRoot({name: 'corporate'}),
     NEBULAR_MODULES,
   ],
-  providers: [],
+  providers: [PROVIDERS],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
