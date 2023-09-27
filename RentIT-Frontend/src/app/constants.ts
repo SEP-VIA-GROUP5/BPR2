@@ -1,18 +1,19 @@
-import {NbMenuItem} from "@nebular/theme";
+import { NbMenuItem } from '@nebular/theme';
 
 export enum ICONS {
   CUBE_OUTLINE = 'cube-outline',
-  FORWARD_ARROW_IOS = "arrow-ios-forward-outline",
-  FORWARD_BACK_IOS = "arrow-ios-back-outline",
+  FORWARD_ARROW_IOS = 'arrow-ios-forward-outline',
+  FORWARD_BACK_IOS = 'arrow-ios-back-outline',
   SEARCH = 'search',
   ALERT_CIRCLE_OUTLINE = 'alert-circle-outline',
   MAP_OUTLINE = 'map-outline',
   LIST_OUTLINE = 'list-outline',
-  ARROW_IOS_DOWNWARD_OUTLINE = "arrow-ios-downward-outline",
+  ARROW_IOS_DOWNWARD_OUTLINE = 'arrow-ios-downward-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
   PRODUCTS = '/products',
+  AUTHENTICATION = '/authentication',
 }
 
 export enum BREADCRUMB_KEYS {
@@ -26,4 +27,3 @@ export const GENERAL_MENU_ITEMS: NbMenuItem[] = [
     link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
   },
 ];
-

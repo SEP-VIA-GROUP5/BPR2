@@ -1,12 +1,19 @@
-import {NgModule} from '@angular/core';
-import {ExtraOptions, RouterModule, Routes} from '@angular/router';
-import {NotFoundComponent} from "src/app/not-found/not-found.component";
-import {GENERAL_MENU_ITEM_URLS} from "src/app/constants";
+import { NgModule } from '@angular/core';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { NotFoundComponent } from 'src/app/not-found/not-found.component';
+import { GENERAL_MENU_ITEM_URLS } from 'src/app/constants';
+import { AuthenticationComponent } from './authentication/authentication.component';
 
 export const routes: Routes = [
   {
     path: GENERAL_MENU_ITEM_URLS.PRODUCTS.substring(1),
-    loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
+    loadChildren: () =>
+      import('./products/products.module').then((m) => m.ProductsModule),
+  },
+  {
+    path: GENERAL_MENU_ITEM_URLS.AUTHENTICATION.substring(1),
+    title: 'Authentication',
+    component: AuthenticationComponent,
   },
   {
     path: '',
@@ -17,16 +24,15 @@ export const routes: Routes = [
     path: '**',
     title: "Oops! Couldn't find this page!",
     component: NotFoundComponent,
-  }
+  },
 ];
 
 const routerOptions: ExtraOptions = {
-  onSameUrlNavigation: 'reload'
+  onSameUrlNavigation: 'reload',
 };
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, routerOptions)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
