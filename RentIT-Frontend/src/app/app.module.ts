@@ -24,7 +24,7 @@ import {
   NbDialogModule,
   NbToastrModule,
   NbSidebarModule,
-  NbUserModule, NbBadgeModule, NbTagModule
+  NbUserModule, NbBadgeModule, NbTagModule, NbContextMenuModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {HttpClientModule} from "@angular/common/http";
@@ -47,6 +47,7 @@ export const STATES = [
 export const PAGE_COMPONENTS = [
   AppComponent,
   NotFoundComponent,
+  AuthenticationComponent,
 ];
 
 export const CORE_COMPONENTS = [
@@ -86,13 +87,13 @@ export const NEBULAR_MODULES = [
   NbUserModule,
   NbBadgeModule,
   NbTagModule,
+  NbContextMenuModule,
 ];
 
 @NgModule({
   declarations: [
    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
-    AuthenticationComponent,
   ],
   imports: [
     BrowserModule,
