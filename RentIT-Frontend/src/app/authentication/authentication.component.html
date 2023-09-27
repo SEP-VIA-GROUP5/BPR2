@@ -1,2 +1,35 @@
-d
-a
+<div class="authentication-container">
+  <nb-card size="medium">
+    <nb-card-body>
+      <ng-container *ngIf="isLoggedInTemplate; then login; else register"></ng-container>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<ng-template #register>
+  REGISTER
+</ng-template>
+
+<ng-template #login>
+  <h1> Login </h1>
+  <p> Don't have an account? <a (click)="switchTemplates()">Register</a></p>
+  <form class="form-fields">
+    <nb-form-field>
+      <input [(ngModel)]="userContent.email" type="email" name="email" nbInput shape="round" placeholder="Email"
+             required email ngModel>
+    </nb-form-field>
+    <nb-form-field>
+      <input [(ngModel)]="userContent.password" [type]="getInputType()" nbInput type="password" shape="round"
+             placeholder="Password" required>
+      <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+        <nb-icon [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE"
+                 pack="eva"
+                 [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+        </nb-icon>
+      </button>
+    </nb-form-field>
+    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero status="primary" shape="semi-round"
+            (click)="onFormSubmit()" type="submit">Login
+    </button>
+  </form>
+</ng-template>

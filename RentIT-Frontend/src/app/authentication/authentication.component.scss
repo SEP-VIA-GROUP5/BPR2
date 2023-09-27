@@ -1,0 +1,29 @@
+.authentication-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 38%;
+
+  nb-card {
+    border-radius: 20px 20px 20px 20px;
+  }
+
+  a {
+    cursor: pointer;
+  }
+
+  .form-fields {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 20px;
+
+    nb-form-field {
+      width: 300em;
+      margin-bottom: 23px;
+    }
+    .submit-button {
+      width: 22.6em;
+      margin-bottom: 23px;
+    }
+  }
+}

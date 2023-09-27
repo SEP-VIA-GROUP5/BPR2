@@ -9,6 +9,9 @@ export enum ICONS {
   MAP_OUTLINE = 'map-outline',
   LIST_OUTLINE = 'list-outline',
   ARROW_IOS_DOWNWARD_OUTLINE = 'arrow-ios-downward-outline',
+  AT_OUTLINE = 'at-outline',
+  EYE_OUTLINE = 'eye-outline',
+  EYE_OFF_OUTLINE = 'eye-off-2-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
@@ -27,3 +30,8 @@ export const GENERAL_MENU_ITEMS: NbMenuItem[] = [
     link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
   },
 ];
+
+export const isEmail = (email: string): boolean => {
+    let regexp = new RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
+    return regexp.test(email);
+}
