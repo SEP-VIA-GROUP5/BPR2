@@ -37,6 +37,8 @@ import { SearchBarComponent } from 'src/core/components/search-bar/search-bar.co
 import { ProductsService } from 'src/api/products.service';
 import { ApiService } from 'src/core/services/api.service';
 import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
+import { AuthenticationComponent } from './authentication/authentication.component';
+import {FormsModule} from "@angular/forms";
 
 
 export const STATES = [
@@ -55,6 +57,10 @@ export const PROVIDERS = [
   ApiService,
   ProductsService,
 ];
+
+export const NG_MODULES = [
+  FormsModule,
+]
 
 export const NEBULAR_MODULES = [
   NbSidebarModule.forRoot(),
@@ -86,6 +92,7 @@ export const NEBULAR_MODULES = [
   declarations: [
    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
+    AuthenticationComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,6 +107,7 @@ export const NEBULAR_MODULES = [
     NgxsLoggerPluginModule.forRoot({disabled: environment.production}),
     NbThemeModule.forRoot({name: 'corporate'}),
     NEBULAR_MODULES,
+    NG_MODULES,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
