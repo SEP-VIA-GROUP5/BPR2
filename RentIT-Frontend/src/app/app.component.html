@@ -15,6 +15,11 @@
       <a href="">
         <img [src]="getImageBySize()" alt="Image" width="100%" height="auto"/>
       </a>
+      <nb-user name="Anonymous"
+               title="You are not logged"
+               [nbContextMenu]="items"
+               nbContextMenuTag="my-context-menu">
+      </nb-user>
     </div>
   </nb-layout-header>
 
