@@ -1,5 +1,5 @@
 <div class="authentication-container">
-  <nb-card size="medium">
+  <nb-card size="medium" [ngStyle]="!isLoggedInTemplate ? { height: '80vh'} : {}">
     <nb-card-body>
       <ng-container *ngIf="isLoggedInTemplate; then login; else register"></ng-container>
     </nb-card-body>
@@ -7,7 +7,49 @@
 </div>
 
 <ng-template #register>
-  REGISTER
+  <h1> Register </h1>
+  <p> Already having an account? <a (click)="switchTemplates()">Log in</a></p>
+  <form class="form-fields">
+    <nb-form-field>
+      <input [(ngModel)]="userContent.email" type="email" name="email" nbInput shape="round" placeholder="Email"
+             required email ngModel>
+    </nb-form-field>
+    <nb-form-field>
+      <input [(ngModel)]="userContent.fullName" type="text" name="fullName" nbInput shape="round" placeholder="Full name"
+             required>
+    </nb-form-field>
+    <nb-form-field>
+      <input [(ngModel)]="userContent.username" type="text" name="username" nbInput shape="round" placeholder="Username"
+             required>
+    </nb-form-field>
+    <nb-form-field>
+      <input [(ngModel)]="userContent.location" type="text" name="location" nbInput shape="round" placeholder="Location"
+             required>
+    </nb-form-field>
+    <nb-form-field>
+      <input [(ngModel)]="userContent.password" [type]="getInputType()" nbInput type="password" shape="round"
+             placeholder="Password" required>
+      <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+        <nb-icon [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE"
+                 pack="eva"
+                 [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+        </nb-icon>
+      </button>
+    </nb-form-field>
+    <nb-form-field>
+      <input [(ngModel)]="userContent.repeatPassword" [type]="getInputType()" nbInput type="password" shape="round"
+             placeholder="Repeat password" required>
+      <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+        <nb-icon [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE"
+                 pack="eva"
+                 [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+        </nb-icon>
+      </button>
+    </nb-form-field>
+    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero status="primary" shape="semi-round"
+            (click)="onFormSubmit()" type="submit">Register
+    </button>
+  </form>
 </ng-template>
 
 <ng-template #login>

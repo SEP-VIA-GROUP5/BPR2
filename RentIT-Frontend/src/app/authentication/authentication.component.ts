@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
-import {User} from "src/model/user";
-import {defaultUserContent} from "src/app/authentication/constants/constants";
-import { ICONS } from '../constants';
+import {defaultUserContent, UserContent} from "src/app/authentication/constants/constants";
+import {ICONS} from '../constants';
 
 @Component({
   selector: 'app-authentication',
@@ -9,11 +8,10 @@ import { ICONS } from '../constants';
   styleUrls: ['./authentication.component.scss']
 })
 export class AuthenticationComponent {
-  userContent: User = defaultUserContent();
+  userContent: UserContent = defaultUserContent();
   protected readonly ICONS = ICONS;
   isLoggedInTemplate: boolean = true; // false = register template is loaded
-
-  showPassword = true;
+  showPassword = false;
 
   getInputType() {
     if (this.showPassword) {
@@ -31,25 +29,23 @@ export class AuthenticationComponent {
   }
 
   isButtonDisabled() {
-    if(this.isLoggedInTemplate) {
+    if (this.isLoggedInTemplate) {
       return this.userContent.password.length <= 0 || this.userContent.email.length <= 0;
-    }
-    else {
-      console.log("register");
+    } else {
+      return Object.values(this.userContent).find(value => value.length <= 0) !== undefined;
     }
   }
 
   onInput(event) {
-      console.log(event);
+    console.log(event);
   }
 
   onFormSubmit() {
-    if(this.isLoggedInTemplate) {
+    if (this.isLoggedInTemplate) {
       console.log(this.userContent);
       // TODO add email validator in ngxs states
       // TODO add password validator in ngxs states
-    }
-    else {
+    } else {
       // TODO add email validator in ngxs states
       // TODO add password validator in ngxs states
       // TODO add username and fullName validator in ngxs states

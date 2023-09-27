@@ -1,11 +1,16 @@
 import {User} from "src/model/user";
 
-export const defaultUserContent = () : User => {
+export interface UserContent extends User {
+  repeatPassword: string,
+}
+
+export const defaultUserContent = () : UserContent => {
   return {
     username: '',
-    email: undefined,
+    email: '',
     password: '',
-    fullName: undefined,
-    location: undefined
+    repeatPassword: '',
+    fullName: '',
+    location: '',
   }
 }
