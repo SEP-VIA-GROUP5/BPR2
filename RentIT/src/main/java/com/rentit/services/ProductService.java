@@ -3,11 +3,11 @@ package com.rentit.services;
 import com.rentit.dao.interfaces.IProductMapper;
 import com.rentit.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class ProductService {
     @Autowired
     private IProductMapper productMapper;

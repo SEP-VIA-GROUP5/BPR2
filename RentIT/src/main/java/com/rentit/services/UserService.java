@@ -1,0 +1,69 @@
+package com.rentit.services;
+
+import com.rentit.model.User;
+import com.rentit.services.enums.ResponseMessage;
+import com.rentit.utils.HashUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+
+
+@Service
+public class UserService {
+    @Autowired
+    private HashUtil hashUtil;
+
+    @Autowired
+    private IUserMapper userMapper;
+
+    public ResponseMessage loginUser(User user) {
+        if(user != null){
+            if(user.getUserName() != null){
+                User dbUser = userMapper.getUserByUsername(user.getUserName());
+                if(dbUser == null){
+                    return ResponseMessage.CREDENTIALS_ERROR;
+                }
+                if(Arrays.equals(hashUtil.hash(user.getPassword(), dbUser.getHashedPassword().getSalt()).getHashedString(),
+                        dbUser.getHashedPassword().getHashedString())){
+                    return ResponseMessage.SUCCESS;
+                }
+                else{
+                    return ResponseMessage.CREDENTIALS_ERROR;
+                }
+            }
+            if(user.getEmail() != null){
+                User dbUser = userMapper.getUserByEmail(user.getEmail());
+                if(dbUser == null){
+                    return ResponseMessage.CREDENTIALS_ERROR;
+                }
+                if(Arrays.equals(hashUtil.hash(user.getPassword(), dbUser.getHashedPassword().getSalt()).getHashedString(),
+                        dbUser.getHashedPassword().getHashedString())){
+                    return ResponseMessage.SUCCESS;
+                }
+                else{
+                    return ResponseMessage.CREDENTIALS_ERROR;
+                }
+            }
+        }
+        return ResponseMessage.INTERNAL_ERROR;
+    }
+
+    public ResponseMessage registerUser(User user){
+        if(user != null){
+            if(userMapper.getUserByUsername(user.getUserName())!=null){
+                return ResponseMessage.EXISTING_USERNAME;
+            }
+            if(userMapper.getUserByEmail(user.getEmail())!=null){
+                return ResponseMessage.EXISTING_EMAIL;
+            }
+            if(!user.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")){
+                return ResponseMessage.PASSWORD_ERROR;
+            }
+            user.setHashedPassword(hashUtil.hash(user.getPassword(),null));
+            userMapper.registerUser(user);
+            return ResponseMessage.SUCCESS;
+        }
+        return ResponseMessage.INTERNAL_ERROR;
+    }
+}
