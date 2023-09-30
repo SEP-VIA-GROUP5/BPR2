@@ -1,5 +1,6 @@
 package com.rentit.services;
 
+import com.rentit.dao.interfaces.IUserMapper;
 import com.rentit.model.User;
 import com.rentit.services.enums.ResponseMessage;
 import com.rentit.utils.HashUtil;
@@ -19,19 +20,6 @@ public class UserService {
 
     public ResponseMessage loginUser(User user) {
         if(user != null){
-            if(user.getUserName() != null){
-                User dbUser = userMapper.getUserByUsername(user.getUserName());
-                if(dbUser == null){
-                    return ResponseMessage.CREDENTIALS_ERROR;
-                }
-                if(Arrays.equals(hashUtil.hash(user.getPassword(), dbUser.getHashedPassword().getSalt()).getHashedString(),
-                        dbUser.getHashedPassword().getHashedString())){
-                    return ResponseMessage.SUCCESS;
-                }
-                else{
-                    return ResponseMessage.CREDENTIALS_ERROR;
-                }
-            }
             if(user.getEmail() != null){
                 User dbUser = userMapper.getUserByEmail(user.getEmail());
                 if(dbUser == null){
@@ -51,9 +39,6 @@ public class UserService {
 
     public ResponseMessage registerUser(User user){
         if(user != null){
-            if(userMapper.getUserByUsername(user.getUserName())!=null){
-                return ResponseMessage.EXISTING_USERNAME;
-            }
             if(userMapper.getUserByEmail(user.getEmail())!=null){
                 return ResponseMessage.EXISTING_EMAIL;
             }

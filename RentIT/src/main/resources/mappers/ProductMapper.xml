@@ -18,7 +18,7 @@
 
     <select id="getNProductsByPage" resultMap="ProductResultMap">
         SELECT DISTINCT *
-        FROM Product
+        FROM product
         ORDER BY product_id
             LIMIT ${(pageNum - 1) * n}, #{n}
     </select>
