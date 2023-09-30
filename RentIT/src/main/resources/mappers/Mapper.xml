@@ -9,5 +9,6 @@
     <mappers>
         <mapper resource="mappers/ProductMapper.xml"/>
         <mapper resource="mappers/ImageMapper.xml"/>
+        <mapper resource="mappers/UserMapper.xml"/>
     </mappers>
 </configuration>
