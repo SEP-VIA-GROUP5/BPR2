@@ -16,7 +16,7 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(value = "/page/{pageNum}/{n}", method = RequestMethod.GET)
-    public List<Product> getPageOfProducts(@PathVariable int pageNum, @PathVariable int n){
+    public List<Product> getPageOfProducts(@PathVariable int pageNum, @PathVariable int n) {
         return productService.getNProductsByPage(pageNum, n);
     }
 }
