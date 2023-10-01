@@ -12,8 +12,8 @@ public class ProductService {
     @Autowired
     private IProductMapper productMapper;
 
-    public List<Product> getNProductsByPage(int pageNum, int n){
-        if(pageNum > 0 && n > 0){
+    public List<Product> getNProductsByPage(int pageNum, int n) {
+        if (pageNum > 0 && n > 0) {
             return productMapper.getNProductsByPage(pageNum, n);
         }
         return null;

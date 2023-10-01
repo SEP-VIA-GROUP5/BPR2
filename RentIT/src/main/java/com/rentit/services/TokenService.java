@@ -1,12 +1,12 @@
 package com.rentit.services;
 
-import org.jvnet.hk2.annotations.Service;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class TokenService {
 
     private final JwtEncoder encoder;
-    public static int duration = 1; //in hours
+    public static final int duration = 1; //in hours
 
     public TokenService(JwtEncoder encoder) {
         this.encoder = encoder;

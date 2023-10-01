@@ -12,12 +12,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -28,23 +26,13 @@ public class SecurityConfig {
     public SecurityConfig(RsaKeyProperties rsaKeys) {
         this.rsaKeys = rsaKeys;
     }
-    @Bean
-    public InMemoryUserDetailsManager users() {
-        return new InMemoryUserDetailsManager(
-                User.withUsername("name")
-                        .password("{noop}password")
-                        .authorities("read")
-                        .build()
-        );
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests( auth -> auth
-                        .requestMatchers("/product/**").permitAll()
-                        .requestMatchers("/user/login").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/product/**", "/user/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
