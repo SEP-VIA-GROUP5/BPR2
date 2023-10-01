@@ -6,7 +6,7 @@ import * as CryptoJS from 'crypto-js';
 })
 export class LocalStorageService {
 
-  key = "123";
+  key = "secret key 123";
 
   constructor() {
   }
