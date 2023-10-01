@@ -31,6 +31,10 @@ export const GENERAL_MENU_ITEMS: NbMenuItem[] = [
   },
 ];
 
+export const NOT_LOGGED_IN_CONTEXT_MENU: NbMenuItem[] = [
+  { title: 'Log in' },
+]
+
 export const isEmail = (email: string): boolean => {
     let regexp = new RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
     return regexp.test(email);
