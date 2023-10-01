@@ -39,6 +39,7 @@ import { ApiService } from 'src/core/services/api.service';
 import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
 import { AuthenticationComponent } from './authentication/authentication.component';
 import {FormsModule} from "@angular/forms";
+import {LocalStorageService} from "src/core/services/local-storage.service";
 
 
 export const STATES = [
@@ -56,6 +57,7 @@ export const CORE_COMPONENTS = [
 
 export const PROVIDERS = [
   ApiService,
+  LocalStorageService,
   ProductsService,
 ];
 

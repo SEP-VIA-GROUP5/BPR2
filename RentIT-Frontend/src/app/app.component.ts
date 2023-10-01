@@ -21,8 +21,7 @@ export class AppComponent implements OnInit {
   constructor(
     private nbMenuService: NbMenuService,
     private sidebarService: NbSidebarService,
-    private router: Router,
-    @Inject(NB_WINDOW) private window) {
+    private router: Router) {
   }
 
   ngOnInit() {
@@ -35,7 +34,6 @@ export class AppComponent implements OnInit {
   }
 
   toggleSidebar() {
-    // Toggle the sidebar state
     this.sidebarService.toggle(this.sidebarVisible);
     this.sidebarVisible = !this.sidebarVisible;
     return false;
