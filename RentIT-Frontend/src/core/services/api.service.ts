@@ -31,12 +31,12 @@ export class ApiService<T> {
     return this.http.delete<T>(`${environment.api_url}${path}`, { headers });
   }
 
-  async call(mockedReturned: Object, apiCall: Promise<T>) {
+  async call(mockedReturned: T, apiCall: Observable<T>)  {
     if (environment.mocked) {
       await this.delayIfMocked();
       return Promise.resolve(mockedReturned !== null ? mockedReturned  : null);
     }
-    return apiCall;
+    return apiCall.toPromise();
   }
 
   async delayIfMocked() {

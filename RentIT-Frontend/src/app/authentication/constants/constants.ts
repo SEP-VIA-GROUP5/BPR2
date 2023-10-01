@@ -6,11 +6,11 @@ export interface UserContent extends User {
 
 export const defaultUserContent = () : UserContent => {
   return {
-    username: '',
     email: '',
     password: '',
     repeatPassword: '',
-    fullName: '',
+    lastName: '',
+    firstName: '',
     location: '',
   }
 }

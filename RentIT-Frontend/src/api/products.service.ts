@@ -2,7 +2,6 @@ import { ApiService } from "src/core/services/api.service";
 import { Injectable } from "@angular/core";
 import { Product } from "src/model/product";
 import { mockedProducts } from "src/mocks/products.mock";
-import { simulateAPICall } from "src/constants";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +14,7 @@ export class ProductsService {
 
   PATH_CONTROLLER = 'product';
 
-  async getProductsPerPage(pageNumber, pageSize): Promise<Product[]> {
-    await simulateAPICall(mockedProducts);
-    return this.apiService.get(`${this.PATH_CONTROLLER}/page/${pageNumber}/${pageSize}`).toPromise();
+  async getProductsPerPage(pageNumber: number, pageSize: number): Promise<Product[]> {
+    return await this.apiService.call(mockedProducts, this.apiService.get(`${this.PATH_CONTROLLER}/page/${pageNumber}/${pageSize}`));
   }
 }
