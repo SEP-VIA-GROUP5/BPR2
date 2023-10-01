@@ -24,7 +24,7 @@ import {AppSelector, AppState} from "src/app/app.state";
 
         <div class="right-section">
           <a href="">
-            <img [ngSrc]="getImageBySize()" alt="Image" width="100%" height="auto"/>
+            <img [src]="getImageBySize()" alt="Image" width="100%" height="auto"/>
           </a>
           <nb-user name="Anonymous"
                    title="You are not logged"
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
 
   @Select(AppSelector.sidebarMenu)
   sidebarMenu$: Observable<NbMenuItem[]>;
-  @Select(AppSelector.sidebarMenu)
+  @Select(AppSelector.contextMenu)
   contextMenu$: Observable<NbMenuItem[]>;
 
   sidebarVisible: boolean = true;

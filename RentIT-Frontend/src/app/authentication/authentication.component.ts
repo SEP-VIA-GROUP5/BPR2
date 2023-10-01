@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {defaultUserContent, UserContent} from "src/app/authentication/constants/constants";
 import {ICONS} from '../constants';
 import {Store} from "@ngxs/store";
+import {Login, Register} from "src/app/authentication/authentication.actions";
 
 @Component({
   selector: 'app-authentication',
@@ -51,9 +52,11 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
   onFormSubmit() {
     if (this.isLoggedInTemplate) {
       console.log(this.userContent);
+      this.store.dispatch(new Login(this.userContent));
       // TODO add email validator in ngxs states
       // TODO add password validator in ngxs states
     } else {
+      this.store.dispatch(new Register(this.userContent));
       // TODO add email validator in ngxs states
       // TODO add password validator in ngxs states
       // TODO add username and fullName validator in ngxs states

@@ -14,7 +14,7 @@ export const defaultsState: AuthenticationStateModel = {
 }
 
 @State<AuthenticationStateModel>({
-  name: 'appPage',
+  name: 'authenticationPage',
   defaults: defaultsState,
 })
 
