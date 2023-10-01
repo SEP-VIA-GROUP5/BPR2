@@ -15,6 +15,12 @@ export class LocalStorageService {
     localStorage.setItem(key, this.encrypt(value));
   }
 
+  public performMultiSavings(data: Map<string, string>) {
+    data.forEach((value: string, key: string) => {
+     localStorage.setItem(key, value);
+    })
+  }
+
   public getData(key: string) {
     let data = localStorage.getItem(key) || "";
     return this.decrypt(data);
