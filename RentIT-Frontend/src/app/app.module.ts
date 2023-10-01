@@ -40,9 +40,12 @@ import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
 import { AuthenticationComponent } from './authentication/authentication.component';
 import {FormsModule} from "@angular/forms";
 import {LocalStorageService} from "src/core/services/local-storage.service";
+import {AppState} from "src/app/app.state";
+import {NgOptimizedImage} from "@angular/common";
 
 
 export const STATES = [
+  AppState,
 ];
 
 export const PAGE_COMPONENTS = [
@@ -111,6 +114,7 @@ export const NEBULAR_MODULES = [
     NbThemeModule.forRoot({name: 'corporate'}),
     NEBULAR_MODULES,
     NG_MODULES,
+    NgOptimizedImage,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

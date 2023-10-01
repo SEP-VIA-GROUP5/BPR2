@@ -3,14 +3,50 @@ import {NB_WINDOW, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/t
 import {GENERAL_MENU_ITEMS, ICONS} from "src/app/constants";
 import {filter, map} from "rxjs/operators";
 import {Router} from "@angular/router";
+import {Store} from "@ngxs/store";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  template: `
+      <nb-layout>
+          <nb-layout-header>
+              <div class="left-section">
+                  <nb-icon [icon]="ICONS.LIST_OUTLINE" (click)="toggleSidebar()"></nb-icon>
+                  <i class="nb-menu"></i>=
+              </div>
+
+              <div class="center-section">
+                  <search-bar [icon]="ICONS.SEARCH"></search-bar>
+              </div>
+
+              <div class="right-section">
+                  <a href="">
+                      <img [ngSrc]="getImageBySize()" alt="Image" width="100%" height="auto"/>
+                  </a>
+                  <nb-user name="Anonymous"
+                           title="You are not logged"
+                           [nbContextMenu]="items"
+                           nbContextMenuTag="my-context-menu">
+                  </nb-user>
+              </div>
+          </nb-layout-header>
+
+
+          <nb-sidebar [responsive]="true">
+              <div>
+                  <nb-menu tag="menu" [items]="menuItems"></nb-menu>
+              </div>
+          </nb-sidebar>
+
+          <nb-layout-column class="colored-column-basic">
+              <router-outlet></router-outlet>
+          </nb-layout-column>
+      </nb-layout>`,
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
 
+  // TODO move in redux states
   menuItems: NbMenuItem[] = GENERAL_MENU_ITEMS;
   items = [
     { title: 'Log in' },
@@ -21,6 +57,7 @@ export class AppComponent implements OnInit {
   constructor(
     private nbMenuService: NbMenuService,
     private sidebarService: NbSidebarService,
+    private store: Store,
     private router: Router) {
   }
 
