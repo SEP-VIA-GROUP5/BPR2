@@ -12,6 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,6 +67,7 @@ public class UserService {
         List<GrantedAuthority> grantedAuths = new ArrayList<>();
         grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
         Authentication auth = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), grantedAuths);
-        return Token.builder().tokenName("Authentication").tokenBody(tokenService.generateToken(auth)).expires(TokenService.duration).build();
+        Instant expires = Instant.now().plus(TokenService.duration, ChronoUnit.HOURS);
+        return Token.builder().tokenName("Authentication").tokenBody(tokenService.generateToken(auth)).expires(expires).build();
     }
 }
