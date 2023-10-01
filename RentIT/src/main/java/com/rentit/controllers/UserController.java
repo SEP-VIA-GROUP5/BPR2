@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 @RestController
 @RequestMapping("/user")
@@ -35,7 +33,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
-    public Token loginUser(@RequestBody User user, HttpServletResponse response) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+    public Token loginUser(@RequestBody User user, HttpServletResponse response) throws IOException {
         ResponseMessage responseMessage = userService.loginUser(user);
 
         switch (responseMessage) {
