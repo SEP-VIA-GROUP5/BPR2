@@ -30,4 +30,19 @@ export class ApiService<T> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.delete<T>(`${environment.api_url}${path}`, { headers });
   }
+
+  async call(mockedReturned: T, apiCall: Observable<T>)  {
+    if (environment.mocked) {
+      await this.delayIfMocked();
+      return Promise.resolve(mockedReturned !== null ? mockedReturned  : null);
+    }
+    return apiCall.toPromise();
+  }
+
+  async delayIfMocked() {
+    if(environment.mocked) {
+      const delay = ms => new Promise(res => setTimeout(res, ms));
+      await delay(2000);
+    }
+  }
 }

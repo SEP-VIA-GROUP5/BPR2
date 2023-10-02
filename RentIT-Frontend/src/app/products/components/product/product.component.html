@@ -1,6 +1,7 @@
 <nb-card [id]="product.productId" [size]="getCardBySize()">
   <nb-card-header>
     <div class="header-image">
+<!--      TODO use ngSrc-->
       <img class="product-image" *ngIf="product.images.length > 0" [src]="product.images[0].imageUrl" alt="Product's image">
       <img class="product-image" *ngIf="product.images.length === 0" src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg" alt="No available product image"/>
     </div>
