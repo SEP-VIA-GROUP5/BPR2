@@ -63,10 +63,17 @@ public class UserService {
         return ResponseMessage.INTERNAL_ERROR;
     }
 
+    public User getUserFromToken(String authHeader){
+        String token = authHeader.substring(7);
+        int userId = Integer.parseInt(tokenService.decodeToken(token,  "sub"));
+        return userMapper.getUserById(userId);
+    }
+
     public Token authenticateUser(User user) {
         List<GrantedAuthority> grantedAuths = new ArrayList<>();
         grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-        Authentication auth = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), grantedAuths);
+        User dbUser = userMapper.getUserByEmail(user.getEmail());
+        Authentication auth = new UsernamePasswordAuthenticationToken(dbUser.getId(), user.getPassword(), grantedAuths);
         Instant expires = Instant.now().plus(TokenService.duration, ChronoUnit.HOURS);
         return Token.builder().tokenName("Authentication").tokenBody(tokenService.generateToken(auth)).expires(expires).build();
     }
