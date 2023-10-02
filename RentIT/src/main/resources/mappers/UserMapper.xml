@@ -21,9 +21,9 @@
         <result property="location" column="location" javaType="java.lang.String"/>
     </resultMap>
     <select id="getUserById" resultMap="UserWithoutPassResultMap">
-        SELECT username, f_name, l_name, email
-        FROM users
-        WHERE id = #{id};
+        SELECT f_name, l_name, email, location
+        FROM user
+        WHERE user_id = #{id};
     </select>
     <select id="getUserByEmail" resultMap="UserResultMap">
         SELECT *
