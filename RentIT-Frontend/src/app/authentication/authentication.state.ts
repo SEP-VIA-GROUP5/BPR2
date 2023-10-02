@@ -1,16 +1,23 @@
-import {Action, State, StateContext} from "@ngxs/store";
+import {Action, State, StateContext, Store} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {produce} from "immer";
 import {Login, Logout, Register} from "src/app/authentication/authentication.actions";
 import {UserService} from "src/api/user.service";
 import {User} from "src/model/user";
+import {ContextMenuState, GENERAL_MENU_ITEM_URLS, ICONS} from "src/app/constants";
+import {NbToastrService} from "@nebular/theme";
+import {UpdateContextMenuState} from "src/app/app.state";
+import {Router} from "@angular/router";
 
 export interface AuthenticationStateModel {
   isFetching: boolean;
+  statusCode: number;
 }
 
 export const defaultsState: AuthenticationStateModel = {
   isFetching: false,
+  // no status
+  statusCode: 0
 }
 
 @State<AuthenticationStateModel>({
@@ -21,7 +28,10 @@ export const defaultsState: AuthenticationStateModel = {
 @Injectable()
 export class AuthenticationState {
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private toastrService: NbToastrService,
+    private store: Store,
+    private router: Router,
   ) {
   }
 
@@ -39,7 +49,25 @@ export class AuthenticationState {
       ...action.user
     } as User;
 
-    await this.userService.register(user);
+    try {
+      await this.userService.register(user);
+    }
+    catch (error) {
+      if (error.status === 401) {
+        this.toastrService.warning(
+          'The account exists or credentials are incorrect',
+          'Something went wrong',
+          {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+        );
+      }
+      else {
+        // TODO handle other errors global method
+      }
+      newState = produce(getState(), draft => {
+        draft.statusCode = error.status;
+      })
+      setState(newState);
+    }
 
     newState = produce(getState(), draft => {
       draft.isFetching = false;
@@ -54,6 +82,7 @@ export class AuthenticationState {
 
     let newState = produce(getState(), draft => {
       draft.isFetching = true;
+      draft.statusCode = 0;
     })
     setState(newState);
 
@@ -61,7 +90,27 @@ export class AuthenticationState {
       ...action.user
     } as User;
 
-    await this.userService.login(user);
+    try {
+      await this.userService.login(user);
+    }
+
+    catch (error) {
+      if (error.status === 401) {
+        this.toastrService.warning(
+          'The account does not exist or credentials are incorrect',
+          'Something went wrong',
+          {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+        );
+      }
+      else {
+        // TODO handle other errors global method
+      }
+      newState = produce(getState(), draft => {
+          draft.statusCode = error.status;
+        })
+      setState(newState);
+    }
+
 
     newState = produce(getState(), draft => {
       draft.isFetching = false;

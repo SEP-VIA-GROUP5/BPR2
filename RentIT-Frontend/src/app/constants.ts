@@ -20,21 +20,37 @@ export enum BREADCRUMB_KEYS {
   PRODUCTS = 'Products',
 }
 
+export enum CONTEXT_MENU_TITLES {
+  LOG_IN = 'Log in',
+  LOG_OUT = 'Log out',
+}
+
 export function GENERAL_MENU_ITEMS(): NbMenuItem[] {
   return [
     {
       title: BREADCRUMB_KEYS.PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
       link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
-      expanded: false,
-      selected: false,
     },
   ];
 }
 
-export let NOT_LOGGED_IN_CONTEXT_MENU: NbMenuItem[] = [
-  {title: 'Log in'},
-]
+export function LOGGED_OUT_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
+  return [
+    {
+      title: CONTEXT_MENU_TITLES.LOG_IN,
+      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION
+    },
+  ]
+}
+
+export function LOGGED_IN_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
+  return [
+    {
+      title: CONTEXT_MENU_TITLES.LOG_OUT,
+    }
+  ]
+}
 
 export const isEmail = (email: string): boolean => {
   let regexp = new RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
@@ -48,5 +64,9 @@ export enum LocalStorageEnum {
 
 export enum SidebarMenuState {
   GENERAL_ITEMS,
+}
 
+export enum ContextMenuState {
+  LOGGED_OUT,
+  LOGGED_IN
 }

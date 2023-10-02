@@ -6,4 +6,9 @@ export class AuthenticationSelector {
   static isFetching(state: AuthenticationStateModel) {
     return state.isFetching;
   }
+
+  @Selector([AuthenticationState])
+  static statusCode(state: AuthenticationStateModel) {
+    return state.statusCode;
+  }
 }

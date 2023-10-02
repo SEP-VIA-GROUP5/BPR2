@@ -1,12 +1,20 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {NB_WINDOW, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
-import {GENERAL_MENU_ITEMS, ICONS, NOT_LOGGED_IN_CONTEXT_MENU, SidebarMenuState} from "src/app/constants";
-import {filter, map} from "rxjs/operators";
+import {
+  CONTEXT_MENU_TITLES,
+  ContextMenuState,
+  GENERAL_MENU_ITEMS,
+  ICONS, LOGGED_IN_CONTEXT_MENU_ITEMS,
+  LOGGED_OUT_CONTEXT_MENU_ITEMS,
+  SidebarMenuState
+} from "src/app/constants";
+import {filter, map, takeUntil} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {Select, Store} from "@ngxs/store";
-import {Observable} from "rxjs";
-import {AppSelector} from "src/app/app.state";
+import {Observable, Subject} from "rxjs";
+import {AppSelector, UpdateContextMenuState} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
+import {Logout} from "src/app/authentication/authentication.actions";
 
 @Component({
   selector: 'app-root',
@@ -26,9 +34,10 @@ import {UserService} from "src/api/user.service";
           <a href="">
             <img [src]="getImageBySize()" alt="Image" width="100%" height="auto"/>
           </a>
-          <nb-user *ngIf="!(isFetching$ | async)" name="Nikita Poltoratsky"
-                   title="full-stack developer"
-                   [nbContextMenu]="getContextMenu()"
+          <nb-user
+                   [picture]="this.userService.isLoggedIn() ? 'user s picture' : 'https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max'"
+                   [name]="this.userService.isLoggedIn() ? 'here i will have the user info' : 'Not logged in'"
+                   [nbContextMenu]="contextMenuItems"
                    nbContextMenuTag="my-context-menu">
           </nb-user>
         </div>
@@ -48,49 +57,65 @@ import {UserService} from "src/api/user.service";
     </nb-layout>`,
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
   @Select(AppSelector.sidebarMenuState)
   sidebarMenuState$: Observable<SidebarMenuState>;
+  @Select(AppSelector.contextMenuState)
+  contextMenuState$: Observable<ContextMenuState>;
 
   @Select(AppSelector.isFetching)
   isFetching$: Observable<boolean>;
 
   sidebarMenuItems: NbMenuItem[];
-
   sidebarVisible: boolean = true;
+  contextMenuItems: NbMenuItem[];
   protected readonly ICONS = ICONS;
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private nbMenuService: NbMenuService,
     private sidebarService: NbSidebarService,
-    private userService: UserService,
+    public userService: UserService,
     private router: Router,
     private store: Store,
     @Inject(NB_WINDOW) private window) {
   }
 
   ngOnInit() {
-    this.sidebarMenuState$.subscribe(sidebarMenuState => {
+    this.store.dispatch(new UpdateContextMenuState(
+      this.userService.isLoggedIn() ? ContextMenuState.LOGGED_IN : ContextMenuState.LOGGED_OUT
+    ));
+    this.contextMenuState$.pipe(takeUntil(this.destroy$))
+      .subscribe(contextMenuState => {
+        this.contextMenuItems = this.getContextMenuItems(contextMenuState);
+      })
+    this.sidebarMenuState$.pipe(takeUntil(this.destroy$))
+      .subscribe(sidebarMenuState => {
       this.sidebarMenuItems = this.getSidebarMenuItems(sidebarMenuState);
     })
 
     this.nbMenuService.onItemClick()
       .pipe(
         filter(({ tag }) => tag === 'my-context-menu'),
-        map(({ item: { title } }) => title),
+        map(({ item: { title, link } }) => ({ title, link })),
       )
-      .subscribe(title => this.router.navigate(['/authentication']));
+      .subscribe(({ title, link }) => {
+        // You can use the 'title' and 'link' variables here as needed
+        if(title === CONTEXT_MENU_TITLES.LOG_OUT) {
+          this.store.dispatch(new Logout());
+        }
+        else {
+          this.router.navigate([link]);
+        }
+        console.log(`Clicked menu item: ${title}, Link: ${link}`);
+      });
   }
 
   toggleSidebar() {
     this.sidebarService.toggle(this.sidebarVisible);
     this.sidebarVisible = !this.sidebarVisible;
     return false;
-  }
-
-  getContextMenu() {
-    return this.userService.isLoggedIn() ? [] : NOT_LOGGED_IN_CONTEXT_MENU;
   }
 
   getImageBySize() {
@@ -101,5 +126,17 @@ export class AppComponent implements OnInit {
     switch (sidebarMenuState) {
       case SidebarMenuState.GENERAL_ITEMS: return GENERAL_MENU_ITEMS();
     }
+  }
+
+  getContextMenuItems(contextMenuState: ContextMenuState) {
+    switch (contextMenuState) {
+      case ContextMenuState.LOGGED_OUT: return LOGGED_OUT_CONTEXT_MENU_ITEMS();
+      case ContextMenuState.LOGGED_IN: return LOGGED_IN_CONTEXT_MENU_ITEMS();
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

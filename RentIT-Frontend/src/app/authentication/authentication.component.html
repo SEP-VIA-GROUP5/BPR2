@@ -44,7 +44,7 @@
         </nb-icon>
       </button>
     </nb-form-field>
-    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero status="primary" shape="semi-round"
+    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
             (click)="onFormSubmit()" type="submit">Register
     </button>
   </div>
@@ -68,7 +68,7 @@
         </nb-icon>
       </button>
     </nb-form-field>
-    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero status="primary" shape="semi-round"
+    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
             (click)="onFormSubmit()" type="submit">Login
     </button>
   </div>

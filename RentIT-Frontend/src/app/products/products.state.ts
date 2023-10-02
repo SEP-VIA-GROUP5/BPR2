@@ -60,7 +60,6 @@ export class ProductsState {
         'Something went wrong',
         {icon: ICONS.ALERT_CIRCLE_OUTLINE}
       );
-      console.error('error');
     }
 
     newState = produce(getState(), draft => {
