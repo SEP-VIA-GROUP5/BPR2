@@ -36,11 +36,14 @@ export class UserService {
 
   // TODO bug here
   isLoggedIn(): boolean {
-    let token: Token = JSON.parse(this.localStorageService.getData(LocalStorageEnum.TOKEN));
-    if (token && token.expires) {
-      console.log(new Date(token.expires));
-      console.log(token.expires);
-      let dateString = token.expires;
+    let tokenFromLocalStorage = this.localStorageService.getData(LocalStorageEnum.TOKEN);
+    if (tokenFromLocalStorage === "") return false;
+
+    let tokenParsed: Token = JSON.parse(this.localStorageService.getData(LocalStorageEnum.TOKEN));
+    if (tokenParsed && tokenParsed.expires) {
+      console.log(new Date(tokenParsed.expires));
+      console.log(tokenParsed.expires);
+      let dateString = tokenParsed.expires;
       let dateParts = dateString.split(/[-T:.Z]/);
       let year = parseInt(dateParts[0]);
       let month = parseInt(dateParts[1]) - 1; // Months are zero-based (0 = January, 1 = February, etc.)

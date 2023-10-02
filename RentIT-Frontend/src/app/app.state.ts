@@ -2,24 +2,24 @@ import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {NbMenuItem} from "@nebular/theme";
 import {produce} from "immer";
-import {GENERAL_MENU_ITEMS} from "src/app/constants";
+import {SidebarMenuState} from "src/app/constants";
 
 export class UpdateSidebarMenu {
   static readonly type = '[App] Update menu items';
-  constructor(public menuItems: NbMenuItem[]) {
+  constructor(public sidebarMenuState: SidebarMenuState) {
   }
 }
 
 export interface AppStateModel {
   isFetching: boolean;
   sidebarVisible: boolean;
-  sidebarMenu: NbMenuItem[];
+  sidebarMenuState: SidebarMenuState;
 }
 
 export const defaultsState: AppStateModel = {
   isFetching: false,
   sidebarVisible: true,
-  sidebarMenu: GENERAL_MENU_ITEMS,
+  sidebarMenuState: SidebarMenuState.GENERAL_ITEMS,
 }
 
 @State<AppStateModel>({
@@ -39,7 +39,7 @@ export class AppState {
     action: UpdateSidebarMenu) {
 
     let newState = produce(getState(), draft => {
-      draft.sidebarMenu = action.menuItems;
+      draft.sidebarMenuState = action.sidebarMenuState;
     })
     setState(newState);
   }
@@ -47,8 +47,8 @@ export class AppState {
 
 export class AppSelector {
   @Selector([AppState])
-  static sidebarMenu(state: AppStateModel) {
-    return state.sidebarMenu;
+  static sidebarMenuState(state: AppStateModel) {
+    return state.sidebarMenuState;
   }
 
   @Selector([AppState])

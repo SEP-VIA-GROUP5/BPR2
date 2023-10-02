@@ -1,4 +1,4 @@
-import { NbMenuItem } from '@nebular/theme';
+import {NbMenuItem} from '@nebular/theme';
 
 export enum ICONS {
   CUBE_OUTLINE = 'cube-outline',
@@ -20,21 +20,25 @@ export enum BREADCRUMB_KEYS {
   PRODUCTS = 'Products',
 }
 
-export const GENERAL_MENU_ITEMS: NbMenuItem[] = [
-  {
-    title: BREADCRUMB_KEYS.PRODUCTS,
-    icon: ICONS.CUBE_OUTLINE,
-    link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
-  },
-];
+export function GENERAL_MENU_ITEMS(): NbMenuItem[] {
+  return [
+    {
+      title: BREADCRUMB_KEYS.PRODUCTS,
+      icon: ICONS.CUBE_OUTLINE,
+      link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
+      expanded: false,
+      selected: false,
+    },
+  ];
+}
 
-export const NOT_LOGGED_IN_CONTEXT_MENU: NbMenuItem[] = [
-  { title: 'Log in' },
+export let NOT_LOGGED_IN_CONTEXT_MENU: NbMenuItem[] = [
+  {title: 'Log in'},
 ]
 
 export const isEmail = (email: string): boolean => {
-    let regexp = new RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
-    return regexp.test(email);
+  let regexp = new RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
+  return regexp.test(email);
 }
 
 export enum LocalStorageEnum {
@@ -42,3 +46,7 @@ export enum LocalStorageEnum {
   USER = 'email',
 }
 
+export enum SidebarMenuState {
+  GENERAL_ITEMS,
+
+}

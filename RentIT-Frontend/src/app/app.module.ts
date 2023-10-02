@@ -118,7 +118,6 @@ export const NEBULAR_MODULES = [
     NbThemeModule.forRoot({name: 'corporate'}),
     NEBULAR_MODULES,
     NG_MODULES,
-    NgOptimizedImage,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

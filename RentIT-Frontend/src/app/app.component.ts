@@ -1,10 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {NB_WINDOW, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
-import {GENERAL_MENU_ITEMS, ICONS, NOT_LOGGED_IN_CONTEXT_MENU} from "src/app/constants";
+import {GENERAL_MENU_ITEMS, ICONS, NOT_LOGGED_IN_CONTEXT_MENU, SidebarMenuState} from "src/app/constants";
 import {filter, map} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {Select, Store} from "@ngxs/store";
-import {ProductsSelector} from "src/app/products/products.selector";
 import {Observable} from "rxjs";
 import {AppSelector} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
@@ -38,7 +37,8 @@ import {UserService} from "src/api/user.service";
 
       <nb-sidebar [responsive]="true">
         <div>
-          <nb-menu tag="menu" [items]="sidebarMenu$ | async"></nb-menu>
+          <nb-menu tag="menu" [items]="sidebarMenuItems">
+          </nb-menu>
         </div>
       </nb-sidebar>
 
@@ -50,10 +50,13 @@ import {UserService} from "src/api/user.service";
 })
 export class AppComponent implements OnInit {
 
-  @Select(AppSelector.sidebarMenu)
-  sidebarMenu$: Observable<NbMenuItem[]>;
+  @Select(AppSelector.sidebarMenuState)
+  sidebarMenuState$: Observable<SidebarMenuState>;
+
   @Select(AppSelector.isFetching)
   isFetching$: Observable<boolean>;
+
+  sidebarMenuItems: NbMenuItem[];
 
   sidebarVisible: boolean = true;
   protected readonly ICONS = ICONS;
@@ -68,6 +71,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sidebarMenuState$.subscribe(sidebarMenuState => {
+      this.sidebarMenuItems = this.getSidebarMenuItems(sidebarMenuState);
+    })
+
     this.nbMenuService.onItemClick()
       .pipe(
         filter(({ tag }) => tag === 'my-context-menu'),
@@ -88,5 +95,11 @@ export class AppComponent implements OnInit {
 
   getImageBySize() {
     return window.screen.width <= 472 ? 'assets/favicon.svg' : 'assets/logo.svg' ;
+  }
+
+  getSidebarMenuItems(sidebarMenuState: SidebarMenuState) {
+    switch (sidebarMenuState) {
+      case SidebarMenuState.GENERAL_ITEMS: return GENERAL_MENU_ITEMS();
+    }
   }
 }
