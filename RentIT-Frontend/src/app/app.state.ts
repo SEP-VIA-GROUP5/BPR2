@@ -2,7 +2,7 @@ import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {NbMenuItem} from "@nebular/theme";
 import {produce} from "immer";
-import {GENERAL_MENU_ITEMS, NOT_LOGGED_IN_CONTEXT_MENU} from "src/app/constants";
+import {GENERAL_MENU_ITEMS} from "src/app/constants";
 
 export class UpdateSidebarMenu {
   static readonly type = '[App] Update menu items';
@@ -10,23 +10,16 @@ export class UpdateSidebarMenu {
   }
 }
 
-export class UpdateContextMenu {
-  static readonly type = '[App] Update context menu';
-  constructor(public menuItems: NbMenuItem[]) {
-  }
-}
-
-
 export interface AppStateModel {
+  isFetching: boolean;
   sidebarVisible: boolean;
   sidebarMenu: NbMenuItem[];
-  contextMenu: NbMenuItem[];
 }
 
 export const defaultsState: AppStateModel = {
+  isFetching: false,
   sidebarVisible: true,
   sidebarMenu: GENERAL_MENU_ITEMS,
-  contextMenu: NOT_LOGGED_IN_CONTEXT_MENU,
 }
 
 @State<AppStateModel>({
@@ -50,17 +43,6 @@ export class AppState {
     })
     setState(newState);
   }
-
-  @Action(UpdateSidebarMenu)
-  async updateContextMenu(
-    {getState, setState}: StateContext<AppStateModel>,
-    action: UpdateSidebarMenu) {
-
-    let newState = produce(getState(), draft => {
-      draft.contextMenu = action.menuItems;
-    })
-    setState(newState);
-  }
 }
 
 export class AppSelector {
@@ -70,7 +52,7 @@ export class AppSelector {
   }
 
   @Selector([AppState])
-  static contextMenu(state: AppStateModel) {
-    return state.contextMenu;
+  static isFetching(state: AppStateModel) {
+    return state.isFetching;
   }
 }

@@ -10,7 +10,6 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {FormsModule} from "@angular/forms";
 
 export const PRODUCTS_NG_MODULES = [
-  NgOptimizedImage,
 ]
 
 export const PRODUCTS_NEBULAR_COMPONENTS = [

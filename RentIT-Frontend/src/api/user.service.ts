@@ -1,10 +1,10 @@
-import {Injectable} from "@angular/core";
-import {ApiService} from "src/core/services/api.service";
-import {User} from "src/model/user";
-import {Token } from "src/model/token";
-import {LocalStorageService} from "src/core/services/local-storage.service";
-import {LocalStorageEnum} from "src/app/constants";
-import {isDateBeforeNow} from "src/core/utils/date.utils";
+import { Injectable } from "@angular/core";
+import { ApiService } from "src/core/services/api.service";
+import { User } from "src/model/user";
+import { Token } from "src/model/token";
+import { LocalStorageService } from "src/core/services/local-storage.service";
+import { LocalStorageEnum } from "src/app/constants";
+import { isDateBeforeNow, toUTCDate } from "src/core/utils/date.utils";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,7 @@ export class UserService {
   constructor(
     private apiService: ApiService<User | Token>,
     private localStorageService: LocalStorageService
-  ) {
-  }
+  ) {}
 
   PATH_CONTROLLER = 'user';
 
@@ -23,22 +22,39 @@ export class UserService {
   }
 
   async login(user: User) {
-    let response = this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/login`, user));
+    let response = await this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/login`, { email: user.email, password: user.password }));
     if (this.isTokenObject(response) && response) {
       this.localStorageService.saveData(LocalStorageEnum.TOKEN, JSON.stringify(response));
-      this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify({email: user.email} as User));
+      this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify({ email: user.email } as User));
     }
     return response;
   }
 
   logout() {
-    this.localStorageService.saveData(LocalStorageEnum.TOKEN, null);
-    this.localStorageService.saveData(LocalStorageEnum.USER, null);
+    this.localStorageService.clearData();
   }
 
-  isLoggedIn() : boolean {
-    let token : Token = JSON.parse(this.localStorageService.getData(LocalStorageEnum.TOKEN));
-    return isDateBeforeNow(new Date(token.expires)) && true;
+  // TODO bug here
+  isLoggedIn(): boolean {
+    let token: Token = JSON.parse(this.localStorageService.getData(LocalStorageEnum.TOKEN));
+    if (token && token.expires) {
+      console.log(new Date(token.expires));
+      console.log(token.expires);
+      let dateString = token.expires;
+      let dateParts = dateString.split(/[-T:.Z]/);
+      let year = parseInt(dateParts[0]);
+      let month = parseInt(dateParts[1]) - 1; // Months are zero-based (0 = January, 1 = February, etc.)
+      let day = parseInt(dateParts[2]);
+      let hour = parseInt(dateParts[3]);
+      let minute = parseInt(dateParts[4]);
+      let second = parseInt(dateParts[5]);
+      let millisecond = parseInt(dateParts[6]);
+
+      let date = new Date(Date.UTC(year, month, day, hour, minute, second, millisecond));
+      console.log(date);
+      // return isDateBeforeNow(expiresUTCDate);
+    }
+    return false;
   }
 
   private isTokenObject(obj: any): obj is Token {
@@ -52,5 +68,4 @@ export class UserService {
       typeof obj.expires === 'string'
     );
   }
-
 }

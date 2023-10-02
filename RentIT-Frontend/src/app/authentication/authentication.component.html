@@ -9,7 +9,7 @@
 <ng-template #register>
   <h1> Register </h1>
   <p> Already having an account? <a (click)="switchTemplates()">Log in</a></p>
-  <form class="form-fields">
+  <div class="form-fields">
     <nb-form-field>
       <input [(ngModel)]="userContent.email" name="email" type="email" nbInput shape="round" placeholder="Email"
              required email>
@@ -47,13 +47,13 @@
     <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero status="primary" shape="semi-round"
             (click)="onFormSubmit()" type="submit">Register
     </button>
-  </form>
+  </div>
 </ng-template>
 
 <ng-template #login>
   <h1> Login </h1>
   <p> Don't have an account? <a (click)="switchTemplates()">Register</a></p>
-  <form class="form-fields">
+  <div class="form-fields">
     <nb-form-field>
       <input [(ngModel)]="userContent.email" type="email" name="email" nbInput shape="round" placeholder="Email"
              required email ngModel>
@@ -71,5 +71,5 @@
     <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero status="primary" shape="semi-round"
             (click)="onFormSubmit()" type="submit">Login
     </button>
-  </form>
+  </div>
 </ng-template>

@@ -1,12 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {NB_WINDOW, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
-import {GENERAL_MENU_ITEMS, ICONS} from "src/app/constants";
+import {GENERAL_MENU_ITEMS, ICONS, NOT_LOGGED_IN_CONTEXT_MENU} from "src/app/constants";
 import {filter, map} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {Select, Store} from "@ngxs/store";
 import {ProductsSelector} from "src/app/products/products.selector";
 import {Observable} from "rxjs";
-import {AppSelector, AppState} from "src/app/app.state";
+import {AppSelector} from "src/app/app.state";
+import {UserService} from "src/api/user.service";
 
 @Component({
   selector: 'app-root',
@@ -26,9 +27,9 @@ import {AppSelector, AppState} from "src/app/app.state";
           <a href="">
             <img [src]="getImageBySize()" alt="Image" width="100%" height="auto"/>
           </a>
-          <nb-user name="Anonymous"
-                   title="You are not logged"
-                   [nbContextMenu]="contextMenu$ | async"
+          <nb-user *ngIf="!(isFetching$ | async)" name="Nikita Poltoratsky"
+                   title="full-stack developer"
+                   [nbContextMenu]="getContextMenu()"
                    nbContextMenuTag="my-context-menu">
           </nb-user>
         </div>
@@ -51,8 +52,8 @@ export class AppComponent implements OnInit {
 
   @Select(AppSelector.sidebarMenu)
   sidebarMenu$: Observable<NbMenuItem[]>;
-  @Select(AppSelector.contextMenu)
-  contextMenu$: Observable<NbMenuItem[]>;
+  @Select(AppSelector.isFetching)
+  isFetching$: Observable<boolean>;
 
   sidebarVisible: boolean = true;
   protected readonly ICONS = ICONS;
@@ -60,7 +61,10 @@ export class AppComponent implements OnInit {
   constructor(
     private nbMenuService: NbMenuService,
     private sidebarService: NbSidebarService,
-    private router: Router) {
+    private userService: UserService,
+    private router: Router,
+    private store: Store,
+    @Inject(NB_WINDOW) private window) {
   }
 
   ngOnInit() {
@@ -76,6 +80,10 @@ export class AppComponent implements OnInit {
     this.sidebarService.toggle(this.sidebarVisible);
     this.sidebarVisible = !this.sidebarVisible;
     return false;
+  }
+
+  getContextMenu() {
+    return this.userService.isLoggedIn() ? [] : NOT_LOGGED_IN_CONTEXT_MENU;
   }
 
   getImageBySize() {
