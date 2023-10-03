@@ -4,9 +4,8 @@ import {produce} from "immer";
 import {Login, Logout, Register} from "src/app/authentication/authentication.actions";
 import {UserService} from "src/api/user.service";
 import {User} from "src/model/user";
-import {ContextMenuState, GENERAL_MENU_ITEM_URLS, ICONS} from "src/app/constants";
+import {ICONS} from "src/app/constants";
 import {NbToastrService} from "@nebular/theme";
-import {UpdateContextMenuState} from "src/app/app.state";
 import {Router} from "@angular/router";
 
 export interface AuthenticationStateModel {
@@ -51,16 +50,14 @@ export class AuthenticationState {
 
     try {
       await this.userService.register(user);
-    }
-    catch (error) {
+    } catch (error) {
       if (error.status === 401) {
         this.toastrService.warning(
           'The account exists or credentials are incorrect',
           'Something went wrong',
           {icon: ICONS.ALERT_CIRCLE_OUTLINE}
         );
-      }
-      else {
+      } else {
         // TODO handle other errors global method
       }
       newState = produce(getState(), draft => {
@@ -92,22 +89,19 @@ export class AuthenticationState {
 
     try {
       await this.userService.login(user);
-    }
-
-    catch (error) {
+    } catch (error) {
       if (error.status === 401) {
         this.toastrService.warning(
           'The account does not exist or credentials are incorrect',
           'Something went wrong',
           {icon: ICONS.ALERT_CIRCLE_OUTLINE}
         );
-      }
-      else {
+      } else {
         // TODO handle other errors global method
       }
       newState = produce(getState(), draft => {
-          draft.statusCode = error.status;
-        })
+        draft.statusCode = error.status;
+      })
       setState(newState);
     }
 
