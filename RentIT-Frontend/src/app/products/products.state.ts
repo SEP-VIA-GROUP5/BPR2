@@ -5,7 +5,6 @@ import {NbToastrService} from "@nebular/theme";
 import {ProductsFetch, ProductsReset} from "src/app/products/products.actions";
 import {produce} from "immer";
 import {ICONS} from "src/app/constants";
-import {mockedProducts} from "src/mocks/products.mock";
 import { environment } from "src/environments/environment.dev";
 import { ProductsService } from "src/api/products.service";
 
@@ -53,14 +52,12 @@ export class ProductsState {
 
     try {
       nextProducts = await this.productsService.getProductsPerPage(pageNumber, pageSize);
-      console.log(nextProducts);
     } catch (error) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : error,
         'Something went wrong',
         {icon: ICONS.ALERT_CIRCLE_OUTLINE}
       );
-      console.error('error');
     }
 
     newState = produce(getState(), draft => {

@@ -1,60 +1,81 @@
-nb-layout {
-  nb-layout-header.subheader {
-    height: 75px;
+body {
+  overflow: hidden;
+  margin: 0;
+  height: 100vh;
+}
+
+.nb-layout-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 75px;
+  background-color: inherit;
+
+  @media only screen and (max-width: 768px) {
+    height: 60px;
   }
 
-  nb-layout-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-
-    .left-section {
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .center-section {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
-
-    .right-section {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-    }
-  }
-
-  .colored-column-basic {
-    margin-top: 72px;
-  }
-
-  nb-sidebar {
-    top: 0;
+  @media only screen and (max-width: 472px) {
+    height: 50px;
   }
 }
 
-@media only screen and (max-width: 472px) {
-  nb-layout {
-    nb-layout-header.subheader {
-      height: 50px;
-    }
+nb-layout-column {
 
-    .right-section {
-      position: relative;
-      top: 7px;
-    }
+}
 
-    .colored-column-basic {
-      margin-top: 50px;
-    }
+.left-section,
+.center-section,
+.right-section {
+  flex: 1;
+  display: flex;
+  gap: 10px;
 
-    nb-sidebar {
-      top: 50px;
-    }
+  @media only screen and (min-width: 769px) {
+    gap: 20px;
+  }
+}
+
+.center-section {
+  justify-content: center;
+}
+
+.right-section {
+  justify-content: flex-start;
+
+  @media only screen and (min-width: 473px) {
+    justify-content: flex-end;
+  }
+}
+
+.colored-column-basic {
+  padding-top: 75px;
+  margin-top: 0;
+  height: calc(100vh - 75px);
+
+  @media only screen and (max-width: 768px) {
+    padding-top: 60px;
+    height: calc(100vh - 60px);
+  }
+
+  @media only screen and (max-width: 472px) {
+    padding-top: 50px;
+    height: calc(100vh - 50px);
+  }
+}
+
+nb-sidebar {
+  top: 50px;
+
+  @media only screen and (min-width: 473px) and (max-width: 768px) {
+    top: 60px;
+  }
+
+  @media only screen and (min-width: 769px) {
+    top: 75px;
   }
 }

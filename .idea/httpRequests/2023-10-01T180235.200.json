@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "123123",
+    "description": "123123",
+    "dayPrice": 123213.0,
+    "weekPrice": 12312.0,
+    "monthPrice": 12323.0,
+    "deposit": 123213.0,
+    "city": "123131",
+    "productValue": 1232130.0,
+    "minLeasePeriod": 123131,
+    "category": "123131",
+    "tags": null,
+    "images": []
+  }
+]

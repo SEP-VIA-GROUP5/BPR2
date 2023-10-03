@@ -4,7 +4,7 @@
   width: 38%;
 
   nb-card {
-    border-radius: 20px 20px 20px 20px;
+    border-radius: 20px;
   }
 
   a {
@@ -12,18 +12,29 @@
   }
 
   .form-fields {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding-top: 20px;
 
     nb-form-field {
-      width: 300em;
+      width: 100%;
+      max-width: 300px;
       margin-bottom: 23px;
+
+      .invalid-field {
+        border-color: var(--color-danger-500);
+      }
     }
+
     .submit-button {
-      width: 22.6em;
+      width: 100%;
+      max-width: 300px;
       margin-bottom: 23px;
     }
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 80%;
   }
 }
