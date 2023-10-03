@@ -12,14 +12,22 @@
   <div class="form-fields">
     <nb-form-field>
       <input [(ngModel)]="userContent.email" name="email" type="email" nbInput shape="round" placeholder="Email"
+             (input)="onInputType($event)" [class.invalid-field]="!isEmailValid"
+             nbTooltip="The email is not valid. It needs to contain '@','.'"
+             [nbTooltipDisabled]="isEmailValid"
+             nbTooltipPlacement="bottom"
+             (nbTooltipShowStateChange)="!isEmailValid ? showTooltip() : hideTooltip()"
+             #tooltipEmail="nbTooltip"
              required email>
     </nb-form-field>
     <nb-form-field>
-      <input [(ngModel)]="userContent.firstName" name="firstName" type="text" nbInput shape="round" placeholder="First name"
+      <input [(ngModel)]="userContent.firstName" name="firstName" type="text" nbInput shape="round"
+             placeholder="First name" (input)="onInputType($event)"
              required>
     </nb-form-field>
     <nb-form-field>
-      <input [(ngModel)]="userContent.lastName" name="lastName" type="text" nbInput shape="round" placeholder="Last name"
+      <input [(ngModel)]="userContent.lastName" name="lastName" type="text" nbInput shape="round"
+             placeholder="Last name"
              required>
     </nb-form-field>
     <nb-form-field>
@@ -28,6 +36,12 @@
     </nb-form-field>
     <nb-form-field>
       <input [(ngModel)]="userContent.password" name="password" [type]="getInputType()" nbInput shape="round"
+             (input)="onInputType($event)" [class.invalid-field]="!isPasswordValid"
+             [nbTooltip]="'The password is not valid.\n The passwords do not match.\n It needs to contain at least 8 characters, one uppercase character, numbers and special characters.'"
+             [nbTooltipDisabled]="isPasswordValid"
+             nbTooltipPlacement="top"
+             (nbTooltipShowStateChange)="!isPasswordValid ? showTooltip() : hideTooltip()"
+             #tooltipPassword="nbTooltip"
              placeholder="Password" required>
       <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
         <nb-icon [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE" pack="eva"
@@ -36,7 +50,9 @@
       </button>
     </nb-form-field>
     <nb-form-field>
-      <input [(ngModel)]="userContent.repeatPassword" name="repeatPassword" [type]="getInputType()" nbInput shape="round"
+      <input [(ngModel)]="userContent.repeatPassword" name="repeatPassword" [type]="getInputType()"
+             (input)="onInputType($event)" nbInput
+             shape="round"
              placeholder="Repeat password" required>
       <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
         <nb-icon [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE" pack="eva"
@@ -44,7 +60,8 @@
         </nb-icon>
       </button>
     </nb-form-field>
-    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
+    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero
+            [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
             (click)="onFormSubmit()" type="submit">Register
     </button>
   </div>
@@ -68,7 +85,8 @@
         </nb-icon>
       </button>
     </nb-form-field>
-    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
+    <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero
+            [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
             (click)="onFormSubmit()" type="submit">Login
     </button>
   </div>
