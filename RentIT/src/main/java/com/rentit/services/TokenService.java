@@ -41,6 +41,7 @@ public class TokenService {
     }
 
     public String decodeToken(String tokenValue, String claim){
+        //TODO handle the exception
         return this.decoder.decode(tokenValue).getClaimAsString(claim);
     }
 
