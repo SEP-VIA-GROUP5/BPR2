@@ -1,32 +1,36 @@
 <nb-card [id]="product.productId" [size]="getCardBySize()">
   <nb-card-header>
     <div class="header-image">
-<!--      TODO use ngSrc-->
-      <img class="product-image" *ngIf="product.images.length > 0" [src]="product.images[0].imageUrl" alt="Product's image">
-      <img class="product-image" *ngIf="product.images.length === 0" src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg" alt="No available product image"/>
+      <img class="product-image" *ngIf="product.images.length > 0" [src]="product.images[0].imageUrl"
+           alt="Product's image">
+      <img class="product-image" *ngIf="product.images.length === 0"
+           src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg"
+           alt="No available product image"/>
+
+      <div class="seller-info">
+        <img src="https://via.placeholder.com/50/4479e7/ffffff?Text=IMG" alt="Seller profile picture">
+      </div>
+
+      <div class="product-prices" *ngIf="product.dayPrice">
+        <p>{{product.dayPrice}}€ / day </p>
+      </div>
     </div>
   </nb-card-header>
-  <nb-card-body>
-    <div class="seller-info">
-      <img src="https://via.placeholder.com/50/4479e7/ffffff?Text=IMG" alt="Seller profile picture">
-    </div>
-    <div class="product-prices" *ngIf="product.dayPrice">
-      <p>{{product.dayPrice}}€ / day </p>
-    </div>
 
+  <nb-card-body>
     <div class="product-details">
       <div class="first-row">
-        <p class="product-min-lease">
-          Minimum lease period <b>{{product.minLeasePeriod}} days</b>
-        </p>
-        <p class="product-location">
-          <nb-icon
-            [icon]="ICONS.MAP_OUTLINE"></nb-icon>
-          {{product.city}}
-        </p>
+        <div class="product-min-lease">
+          <span>Minimum Lease</span>
+          <strong>{{product.minLeasePeriod}} days</strong>
+        </div>
+        <div class="product-location">
+          <nb-icon [icon]="ICONS.MAP_OUTLINE"></nb-icon>
+          <span>{{product.city}}</span>
+        </div>
       </div>
       <div class="second-row">
-        <p class="product-name"> {{product.name}}</p>
+        <h2 class="product-name">{{product.name}}</h2>
       </div>
     </div>
   </nb-card-body>
