@@ -3,13 +3,13 @@ nb-card {
 }
 
 .product-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 48px;
-}
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
-.last-in-row {
-  margin-right: 0;
+  product {
+    min-width: 250px;
+  }
 }
 
 @media only screen and (max-width: 472px) {
@@ -23,11 +23,20 @@ nb-card {
 
   .product-grid {
     padding: 0;
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
-@media only screen and (min-width: 473px) {
+@media only screen and (min-width: 473px) and (max-width: 768px) {
   .product-grid {
     padding: 0 30px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .product-grid {
+    padding: 0 30px;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
