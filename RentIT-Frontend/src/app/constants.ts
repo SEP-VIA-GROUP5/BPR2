@@ -70,3 +70,15 @@ export enum ContextMenuState {
   LOGGED_OUT,
   LOGGED_IN
 }
+
+export function isObject<T>(obj: any): obj is T {
+  return (
+    typeof obj === 'object' &&
+    'tokenName' in obj &&
+    'tokenBody' in obj &&
+    'expires' in obj &&
+    typeof obj.tokenName === 'string' &&
+    typeof obj.tokenBody === 'string' &&
+    typeof obj.expires === 'string'
+  );
+}

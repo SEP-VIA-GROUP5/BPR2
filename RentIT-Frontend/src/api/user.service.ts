@@ -3,13 +3,14 @@ import {ApiService} from "src/core/services/api.service";
 import {User} from "src/model/user";
 import {Token} from "src/model/token";
 import {LocalStorageService} from "src/core/services/local-storage.service";
-import {ContextMenuState, GENERAL_MENU_ITEM_URLS, ICONS, LocalStorageEnum} from "src/app/constants";
+import {ContextMenuState, GENERAL_MENU_ITEM_URLS, ICONS, isObject, LocalStorageEnum} from "src/app/constants";
 import {DATE_FORMAT, DATE_LOCALE, DATE_TIMEZONE, isDateBeforeNow} from "src/core/utils/date.utils";
 import {formatDate} from "@angular/common";
 import {Store} from "@ngxs/store";
 import {UpdateContextMenuState} from "src/app/app.state";
 import {Router} from "@angular/router";
 import {NbToastrService} from "@nebular/theme";
+import {userMocked} from "src/mocks/user.mock";
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class UserService {
 
   async login(user: User) {
     let response = await this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/login`, { email: user.email, password: user.password }));
-    if (this.isTokenObject(response) && response) {
+    if (isObject<Token>(response) && response) {
       this.localStorageService.saveData(LocalStorageEnum.TOKEN, JSON.stringify(response));
       this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify({ email: user.email } as User));
     }
@@ -68,15 +69,10 @@ export class UserService {
     return false;
   }
 
-  private isTokenObject(obj: any): obj is Token {
-    return (
-      typeof obj === 'object' &&
-      'tokenName' in obj &&
-      'tokenBody' in obj &&
-      'expires' in obj &&
-      typeof obj.tokenName === 'string' &&
-      typeof obj.tokenBody === 'string' &&
-      typeof obj.expires === 'string'
-    );
+  async getUser(): Promise<User> {
+    let user = await this.apiService.call(userMocked, this.apiService.get(`${this.PATH_CONTROLLER}/getUser`, true));
+    if(isObject<User>(user) && user) {
+      return user;
+    }
   }
 }

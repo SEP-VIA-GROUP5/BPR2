@@ -15,6 +15,6 @@ export class ProductsService {
   PATH_CONTROLLER = 'product';
 
   async getProductsPerPage(pageNumber: number, pageSize: number): Promise<Product[]> {
-    return await this.apiService.call(mockedProducts, this.apiService.get(`${this.PATH_CONTROLLER}/page/${pageNumber}/${pageSize}`));
+    return await this.apiService.call(mockedProducts, this.apiService.get(`${this.PATH_CONTROLLER}/page/${pageNumber}/${pageSize}`, false));
   }
 }
