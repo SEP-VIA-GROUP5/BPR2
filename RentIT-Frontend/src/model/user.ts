@@ -3,6 +3,7 @@ export interface User {
   email: string;
   firstName?: string;
   lastName?: string;
-  password?: string;
   location?: string;
+  hashedPassword?: string;
+  password?: string;
 }

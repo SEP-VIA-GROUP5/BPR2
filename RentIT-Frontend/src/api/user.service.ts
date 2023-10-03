@@ -10,6 +10,7 @@ import {Store} from "@ngxs/store";
 import {UpdateContextMenuState} from "src/app/app.state";
 import {Router} from "@angular/router";
 import {NbToastrService} from "@nebular/theme";
+import {userMocked} from "src/mocks/user.mock";
 
 @Injectable({
   providedIn: 'root'
@@ -35,10 +36,11 @@ export class UserService {
   }
 
   async login(user: User) {
-    let response = await this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/login`, { email: user.email, password: user.password }));
-    if (this.isTokenObject(response) && response) {
-      this.localStorageService.saveData(LocalStorageEnum.TOKEN, JSON.stringify(response));
-      this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify({ email: user.email } as User));
+    let token = await this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/login`, { email: user.email, password: user.password }));
+    if (this.isTokenObject(token) && token) {
+      this.localStorageService.saveData(LocalStorageEnum.TOKEN, JSON.stringify(token));
+      user = await this.apiService.call(userMocked, this.apiService.get(`${this.PATH_CONTROLLER}/getUser`, true)) as User;
+      this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify(user));
     }
     this.store.dispatch(new UpdateContextMenuState(ContextMenuState.LOGGED_IN));
     await this.router.navigate([GENERAL_MENU_ITEM_URLS.PRODUCTS]);
@@ -47,7 +49,7 @@ export class UserService {
       'Authentication',
       {icon: ICONS.ALERT_CIRCLE_OUTLINE}
     );
-    return response;
+    return token;
   }
 
   logout() {
@@ -68,6 +70,11 @@ export class UserService {
     return false;
   }
 
+  async getUser() {
+    let user = await this.apiService.call(userMocked, this.apiService.get(`${this.PATH_CONTROLLER}/getUser`, true));
+    return user;
+  }
+
   private isTokenObject(obj: any): obj is Token {
     return (
       typeof obj === 'object' &&
@@ -77,6 +84,26 @@ export class UserService {
       typeof obj.tokenName === 'string' &&
       typeof obj.tokenBody === 'string' &&
       typeof obj.expires === 'string'
+    );
+  }
+
+  private isUserObject(obj: any): obj is User {
+    return (
+      typeof obj === 'object' &&
+      'email' in obj &&
+      'id' in obj &&
+      'firstName' in obj &&
+      'lastName' in obj &&
+      'location' in obj &&
+      'hashedPassword' in obj &&
+      'password' in obj &&
+      typeof obj.email === 'string' &&
+      typeof obj.id === 'number' &&
+      typeof obj.firstName === 'string' &&
+      typeof obj.lastName === 'string' &&
+      typeof obj.location === 'string' &&
+      typeof obj.hashedPassword === 'string' &&
+      typeof obj.password === 'string'
     );
   }
 }

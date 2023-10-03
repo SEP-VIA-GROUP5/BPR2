@@ -48,6 +48,7 @@ export function LOGGED_IN_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
   return [
     {
       title: CONTEXT_MENU_TITLES.LOG_OUT,
+      link: '',
     }
   ]
 }
@@ -58,15 +59,15 @@ export const isEmail = (email: string): boolean => {
 }
 
 export enum LocalStorageEnum {
-  TOKEN = 'token',
-  USER = 'email',
+  TOKEN = 'TOKEN',
+  USER = 'USER',
 }
 
 export enum SidebarMenuState {
-  GENERAL_ITEMS,
+  GENERAL_ITEMS= 'GENERAL_ITEMS',
 }
 
 export enum ContextMenuState {
-  LOGGED_OUT,
-  LOGGED_IN
+  LOGGED_OUT = 'LOGGED_OUT',
+  LOGGED_IN = 'LOGGED_IN'
 }

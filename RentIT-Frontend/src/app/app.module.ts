@@ -41,7 +41,6 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import {FormsModule} from "@angular/forms";
 import {LocalStorageService} from "src/core/services/local-storage.service";
 import {AppState} from "src/app/app.state";
-import {NgOptimizedImage} from "@angular/common";
 import {UserService} from "src/api/user.service";
 import {AuthenticationState} from "src/app/authentication/authentication.state";
 

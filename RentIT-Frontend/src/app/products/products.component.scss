@@ -1,5 +1,13 @@
 nb-card {
-  height: 85vh;
+  max-height: 85vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+nb-card-header,
+nb-card-footer {
+  flex-shrink: 0;
 }
 
 .product-grid {
@@ -30,13 +38,5 @@ nb-card {
 @media only screen and (min-width: 473px) and (max-width: 768px) {
   .product-grid {
     padding: 0 30px;
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media only screen and (min-width: 769px) {
-  .product-grid {
-    padding: 0 30px;
-    grid-template-columns: repeat(3, 1fr);
   }
 }

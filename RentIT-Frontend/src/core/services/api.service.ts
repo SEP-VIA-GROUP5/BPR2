@@ -2,17 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../environments/environment.dev";
 import { Observable } from "rxjs";
+import {LocalStorageService} from "src/core/services/local-storage.service";
+import {LocalStorageEnum} from "src/app/constants";
+import {Token} from "src/model/token";
 
 @Injectable({
   providedIn: 'root'
 })
 @Injectable()
 export class ApiService<T> {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private localStorageService: LocalStorageService) {
   }
 
-  get(path: string): Observable<T> {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+  get(path: string, tokenRequired: boolean): Observable<T> {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    if(tokenRequired) {
+      let token: Token = JSON.parse(this.localStorageService.getData(LocalStorageEnum.TOKEN));
+        headers = headers.set('Authorization', ('Bearer '.concat(token.tokenBody)));
+    }
     return this.http.get<T>(`${environment.api_url}${path}`, { headers });
   }
 
