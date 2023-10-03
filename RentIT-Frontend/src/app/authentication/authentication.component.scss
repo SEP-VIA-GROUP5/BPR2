@@ -21,6 +21,10 @@
       width: 100%;
       max-width: 300px;
       margin-bottom: 23px;
+
+      .invalid-field {
+        border-color: var(--color-danger-500);
+      }
     }
 
     .submit-button {
