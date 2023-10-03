@@ -52,7 +52,6 @@ export class ProductsState {
 
     try {
       nextProducts = await this.productsService.getProductsPerPage(pageNumber, pageSize);
-      console.log(nextProducts);
     } catch (error) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : error,

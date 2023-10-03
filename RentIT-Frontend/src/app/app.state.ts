@@ -1,7 +1,7 @@
 import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {produce} from "immer";
-import {ContextMenuState, SidebarMenuState} from "src/app/constants";
+import {ContextMenuState, ICONS, SidebarMenuState} from "src/app/constants";
 
 export class UpdateSidebarMenuState {
   static readonly type = '[App] Update sidebar menu items';

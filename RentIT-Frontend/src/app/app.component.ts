@@ -4,7 +4,7 @@ import {
   CONTEXT_MENU_TITLES,
   ContextMenuState,
   GENERAL_MENU_ITEMS,
-  ICONS, LOGGED_IN_CONTEXT_MENU_ITEMS,
+  ICONS, LocalStorageEnum, LOGGED_IN_CONTEXT_MENU_ITEMS,
   LOGGED_OUT_CONTEXT_MENU_ITEMS,
   SidebarMenuState
 } from "src/app/constants";
@@ -15,6 +15,8 @@ import {Observable, Subject} from "rxjs";
 import {AppSelector, UpdateContextMenuState} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
 import {Logout} from "src/app/authentication/authentication.actions";
+import {User} from "src/model/user";
+import {LocalStorageService} from "src/core/services/local-storage.service";
 
 @Component({
   selector: 'app-root',
@@ -34,9 +36,15 @@ import {Logout} from "src/app/authentication/authentication.actions";
           <a href="">
             <img [src]="getImageBySize()" alt="Image" width="100%" height="auto"/>
           </a>
-          <nb-user
-                   [picture]="this.userService.isLoggedIn() ? 'user s picture' : 'https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max'"
-                   [name]="this.userService.isLoggedIn() ? 'here i will have the user info' : 'Not logged in'"
+          <!--                   picture="user's profile" TODO fetch user's image-->
+          <nb-user *ngIf="getUserFromLocalStorage() !== null"
+                   [name]="getUserFromLocalStorage().firstName"
+                   [nbContextMenu]="contextMenuItems"
+                   nbContextMenuTag="my-context-menu">
+          </nb-user>
+          <nb-user *ngIf="getUserFromLocalStorage() === null"
+                   picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max'
+                   name='Not logged in'
                    [nbContextMenu]="contextMenuItems"
                    nbContextMenuTag="my-context-menu">
           </nb-user>
@@ -63,7 +71,6 @@ export class AppComponent implements OnInit, OnDestroy {
   sidebarMenuState$: Observable<SidebarMenuState>;
   @Select(AppSelector.contextMenuState)
   contextMenuState$: Observable<ContextMenuState>;
-
   @Select(AppSelector.isFetching)
   isFetching$: Observable<boolean>;
 
@@ -77,6 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private nbMenuService: NbMenuService,
     private sidebarService: NbSidebarService,
     public userService: UserService,
+    private localStorageService: LocalStorageService,
     private router: Router,
     private store: Store,
     @Inject(NB_WINDOW) private window) {
@@ -133,6 +141,11 @@ export class AppComponent implements OnInit, OnDestroy {
       case ContextMenuState.LOGGED_OUT: return LOGGED_OUT_CONTEXT_MENU_ITEMS();
       case ContextMenuState.LOGGED_IN: return LOGGED_IN_CONTEXT_MENU_ITEMS();
     }
+  }
+
+  getUserFromLocalStorage(): User {
+    let userLocalStorage = this.localStorageService.getData(LocalStorageEnum.USER);
+    return userLocalStorage !== "" ? JSON.parse(userLocalStorage) as User : null;
   }
 
   ngOnDestroy() {
