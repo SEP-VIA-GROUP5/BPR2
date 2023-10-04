@@ -28,7 +28,7 @@ public class ProductService {
     }
 
     public Product addProduct(Product product, String authorizationHeader) {
-        User user = userService.getUserFromToken(authorizationHeader);
+        User user = userService.getUserFromToken(authorizationHeader, true);
 
         if(product == null){
             return null;
