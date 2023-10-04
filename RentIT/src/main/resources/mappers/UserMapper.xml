@@ -21,7 +21,7 @@
         <result property="location" column="location" javaType="java.lang.String"/>
     </resultMap>
     <select id="getUserById" resultMap="UserWithoutPassResultMap">
-        SELECT user_id, f_name, l_name, email, location, phone_number
+        SELECT user_id, f_name, l_name, email, location, phone_no
         FROM user
         WHERE user_id = #{id};
     </select>
