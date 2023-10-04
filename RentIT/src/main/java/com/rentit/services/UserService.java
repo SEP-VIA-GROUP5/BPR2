@@ -63,10 +63,14 @@ public class UserService {
         return ResponseMessage.INTERNAL_ERROR;
     }
 
-    public User getUserFromToken(String authHeader){
+    public User getUserFromToken(String authHeader, boolean withId){
         String token = authHeader.substring(7);
         int userId = Integer.parseInt(tokenService.decodeToken(token,  "sub"));
-        return userMapper.getUserById(userId);
+        User user = userMapper.getUserById(userId);
+        if(!withId){
+            user.setId(-1);
+        }
+        return user;
     }
 
     public Token authenticateUser(User user) {
