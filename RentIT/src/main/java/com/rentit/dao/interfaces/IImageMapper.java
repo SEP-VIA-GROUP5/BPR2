@@ -8,4 +8,5 @@ import java.util.List;
 @Mapper
 public interface IImageMapper {
     List<Image> getImagesByProductId(int productId);
+    void addImages(List<Image> images, int productId);
 }
