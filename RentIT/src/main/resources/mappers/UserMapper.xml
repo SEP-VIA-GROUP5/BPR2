@@ -14,14 +14,14 @@
         </association>
     </resultMap>
     <resultMap id="UserWithoutPassResultMap" type="User">
-        <result property="id" column="id"/>
+        <result property="id" column="user_id"/>
         <result property="email" column="email" javaType="java.lang.String"/>
         <result property="firstName" column="f_name" javaType="java.lang.String"/>
         <result property="lastName" column="l_name" javaType="java.lang.String"/>
         <result property="location" column="location" javaType="java.lang.String"/>
     </resultMap>
     <select id="getUserById" resultMap="UserWithoutPassResultMap">
-        SELECT f_name, l_name, email, location
+        SELECT user_id, f_name, l_name, email, location
         FROM user
         WHERE user_id = #{id};
     </select>

@@ -1,5 +1,6 @@
 package com.rentit.services;
 
+import com.rentit.dao.interfaces.IImageMapper;
 import com.rentit.dao.interfaces.IProductMapper;
 import com.rentit.model.Product;
 import com.rentit.model.User;
@@ -13,6 +14,8 @@ import java.util.List;
 public class ProductService {
     @Autowired
     private IProductMapper productMapper;
+    @Autowired
+    IImageMapper imageMapper;
 
     @Autowired
     private UserService userService;
@@ -49,6 +52,9 @@ public class ProductService {
         product.setUserId(user.getId());
         product.setStatus(ProductStatus.AVAILABLE);
 
-        return productMapper.addProduct(product);
+        productMapper.addProduct(product);
+        imageMapper.addImages(product.getImages(), product.getId());
+
+        return product;
     }
 }
