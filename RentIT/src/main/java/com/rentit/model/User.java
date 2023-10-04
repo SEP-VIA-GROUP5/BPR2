@@ -15,7 +15,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String location;
+    private String phoneNumber;
     private String password;
     private HashPair hashedPassword;
-    //TODO add phone number
 }

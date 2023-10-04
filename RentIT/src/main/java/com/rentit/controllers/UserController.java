@@ -46,7 +46,7 @@ public class UserController {
 
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     public User getUser(@RequestHeader("Authorization") String authorizationHeader) {
-        return userService.getUserFromToken(authorizationHeader);
+        return userService.getUserFromToken(authorizationHeader, false);
     }
 
     public void setResponse(HttpServletResponse response, boolean success) {
