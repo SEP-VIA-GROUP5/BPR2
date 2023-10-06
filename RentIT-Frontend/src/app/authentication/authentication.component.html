@@ -21,6 +21,16 @@
              required email>
     </nb-form-field>
     <nb-form-field>
+      <input [(ngModel)]="userContent.phoneNumber" name="phoneNumber" type="text" nbInput shape="round" placeholder="Phone number"
+             (input)="onInputType($event)" [class.invalid-field]="!isPhoneNumberValid"
+             nbTooltip="The phone number is not valid. It needs to contain '+' and only numbers"
+             [nbTooltipDisabled]="isPhoneNumberValid"
+             nbTooltipPlacement="bottom"
+             (nbTooltipShowStateChange)="!isPhoneNumberValid ? showTooltip() : hideTooltip()"
+             #tooltipPhoneNumber="nbTooltip"
+             required email>
+    </nb-form-field>
+    <nb-form-field>
       <input [(ngModel)]="userContent.firstName" name="firstName" type="text" nbInput shape="round"
              placeholder="First name" (input)="onInputType($event)"
              required>

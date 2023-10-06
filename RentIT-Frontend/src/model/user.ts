@@ -6,4 +6,5 @@ export interface User {
   location?: string;
   hashedPassword?: string;
   password?: string;
+  phoneNumber?:string;
 }
