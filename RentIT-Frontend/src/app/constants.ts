@@ -10,6 +10,9 @@ export enum ICONS {
   ARROW_IOS_DOWNWARD_OUTLINE = 'arrow-ios-downward-outline',
   EYE_OUTLINE = 'eye-outline',
   EYE_OFF_OUTLINE = 'eye-off-2-outline',
+  LOG_IN_OUTLINE = 'log-in-outline',
+  LOG_OUT_OUTLINE = 'log-out-outline',
+  PLUS_OUTLINE = 'plus-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
@@ -28,6 +31,7 @@ export enum BREADCRUMB_KEYS {
 export enum CONTEXT_MENU_TITLES {
   LOG_IN = 'Log in',
   LOG_OUT = 'Log out',
+  ADD_PRODUCT = 'Add product',
 }
 
 export function GENERAL_MENU_ITEMS(): NbMenuItem[] {
@@ -44,8 +48,14 @@ export function LOGGED_OUT_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
   return [
     {
       title: CONTEXT_MENU_TITLES.LOG_IN,
-      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION
+      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
+      icon: ICONS.LOG_IN_OUTLINE,
     },
+    {
+      title: CONTEXT_MENU_TITLES.ADD_PRODUCT,
+      link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS.concat(PRODUCTS_MENU_ITEM_URLS.ADDING_PRODUCTS),
+      icon: ICONS.PLUS_OUTLINE
+    }
   ]
 }
 
@@ -53,7 +63,13 @@ export function LOGGED_IN_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
   return [
     {
       title: CONTEXT_MENU_TITLES.LOG_OUT,
-      link: '',
+      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
+      icon: ICONS.LOG_OUT_OUTLINE,
+    },
+    {
+      title: CONTEXT_MENU_TITLES.ADD_PRODUCT,
+      link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS.concat(PRODUCTS_MENU_ITEM_URLS.ADDING_PRODUCTS),
+      icon: ICONS.PLUS_OUTLINE
     }
   ]
 }
