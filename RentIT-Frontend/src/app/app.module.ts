@@ -43,7 +43,7 @@ import {LocalStorageService} from "src/core/services/local-storage.service";
 import {AppState} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
 import {AuthenticationState} from "src/app/authentication/authentication.state";
-import { AddingProductsComponent } from './adding-products/adding-products.component';
+import { AddingProductsComponent } from './products/adding-products/adding-products.component';
 
 
 export const STATES = [
@@ -103,7 +103,6 @@ export const NEBULAR_MODULES = [
   declarations: [
    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
-    AddingProductsComponent,
   ],
   imports: [
     BrowserModule,
