@@ -7,6 +7,7 @@ import {User} from "src/model/user";
 import {ICONS} from "src/app/constants";
 import {NbToastrService} from "@nebular/theme";
 import {Router} from "@angular/router";
+import {environment} from "src/environments/environment.dev";
 
 export interface AuthenticationStateModel {
   isFetching: boolean;
@@ -57,7 +58,7 @@ export class AuthenticationState {
           'Something went wrong',
           {icon: ICONS.ALERT_CIRCLE_OUTLINE}
         );
-      } else {
+      } else if (error.status >= 500) {
         // TODO handle other errors global method
       }
       newState = produce(getState(), draft => {
@@ -97,7 +98,11 @@ export class AuthenticationState {
           {icon: ICONS.ALERT_CIRCLE_OUTLINE}
         );
       } else {
-        // TODO handle other errors global method
+        this.toastrService.danger(
+          environment.production ? 'Please contact the administration' : error,
+          'Something went wrong',
+          {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+        );
       }
       newState = produce(getState(), draft => {
         draft.statusCode = error.status;

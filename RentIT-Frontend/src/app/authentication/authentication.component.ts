@@ -1,5 +1,11 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {defaultUserContent, isEmail, isPassword, UserContent} from "src/app/authentication/constants/constants";
+import {
+  defaultUserContent,
+  isEmail,
+  isPassword,
+  isPhoneNumber,
+  UserContent
+} from "src/app/authentication/constants/constants";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from '../constants';
 import {Select, Store} from "@ngxs/store";
 import {Login, Register} from "src/app/authentication/authentication.actions";
@@ -26,8 +32,10 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
   // validation
   isEmailValid: boolean = true;
   isPasswordValid: boolean = true;
+  isPhoneNumberValid: boolean = true;
   @ViewChild('tooltipEmail') tooltipEmail: NbTooltipDirective;
   @ViewChild('tooltipPassword') tooltipPassword: NbTooltipDirective;
+  @ViewChild('tooltipPhoneNumber') tooltipPhoneNumber: NbTooltipDirective;
 
   alive = true;
 
@@ -81,6 +89,11 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
       case "repeatPassword":
       case "password": {
         this.isPasswordValid = (this.userContent.password === this.userContent.repeatPassword) && isPassword(this.userContent.password);
+        break;
+      }
+      case "phoneNumber": {
+        this.isPhoneNumberValid = this.userContent.phoneNumber !== '' && isPhoneNumber(this.userContent.phoneNumber);
+        break;
       }
     }
   }
@@ -90,6 +103,8 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
       this.tooltipEmail.show();
     } else if (!this.isPasswordValid) {
       this.tooltipPassword.show();
+    } else if (!this.isPhoneNumberValid) {
+      this.tooltipPhoneNumber.show();
     }
   }
 
@@ -98,6 +113,8 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
       this.tooltipEmail.hide();
     } else if (this.isPasswordValid) {
       this.tooltipPassword.hide();
+    } else if (this.isPhoneNumberValid) {
+      this.tooltipPhoneNumber.hide();
     }
   }
 
