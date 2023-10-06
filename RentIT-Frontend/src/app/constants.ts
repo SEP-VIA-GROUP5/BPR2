@@ -1,4 +1,5 @@
 import {NbMenuItem} from '@nebular/theme';
+import {UrlSegment} from "@angular/router";
 
 export enum ICONS {
   CUBE_OUTLINE = 'cube-outline',
@@ -12,8 +13,12 @@ export enum ICONS {
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
-  PRODUCTS = '/products',
   AUTHENTICATION = '/authentication',
+}
+
+export enum PRODUCTS_MENU_ITEM_URLS {
+  PRODUCTS = '/products',
+  ADDING_PRODUCTS = '/add',
 }
 
 export enum BREADCRUMB_KEYS {
@@ -30,7 +35,7 @@ export function GENERAL_MENU_ITEMS(): NbMenuItem[] {
     {
       title: BREADCRUMB_KEYS.PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
-      link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
+      link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS,
     },
   ];
 }
@@ -65,4 +70,14 @@ export enum SidebarMenuState {
 export enum ContextMenuState {
   LOGGED_OUT = 'LOGGED_OUT',
   LOGGED_IN = 'LOGGED_IN'
+}
+
+// insensitive matcher for routes
+export function caseInsensitiveMatcher(segments: UrlSegment[], segmentGroup: UrlSegment[], route: any) {
+  const path = route.path.toLowerCase();
+  const parts = path.split('/');
+
+  return parts.length === segments.length && parts.every((part, index) => part === segments[index].path.toLowerCase())
+    ? { consumed: segments }
+    : null;
 }
