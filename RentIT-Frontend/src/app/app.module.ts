@@ -44,6 +44,8 @@ import {AppState} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
 import {AuthenticationState} from "src/app/authentication/authentication.state";
 import { AddingProductsComponent } from './products/adding-products/adding-products.component';
+import {UrlSerializer} from "@angular/router";
+import {LowerCaseUrlSerializer} from "src/core/providers/lowercase-deserializer.provider";
 
 
 export const STATES = [
@@ -66,6 +68,10 @@ export const PROVIDERS = [
   LocalStorageService,
   ProductsService,
   UserService,
+  {
+    provide: UrlSerializer,
+    useClass: LowerCaseUrlSerializer,
+  }
 ];
 
 export const NG_MODULES = [
