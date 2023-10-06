@@ -3,7 +3,7 @@ import {ApiService} from "src/core/services/api.service";
 import {User} from "src/model/user";
 import {Token} from "src/model/token";
 import {LocalStorageService} from "src/core/services/local-storage.service";
-import {ContextMenuState, GENERAL_MENU_ITEM_URLS, ICONS, LocalStorageEnum} from "src/app/constants";
+import {ContextMenuState, ICONS, LocalStorageEnum, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {DATE_FORMAT, DATE_LOCALE, DATE_TIMEZONE, isDateBeforeNow} from "src/core/utils/date.utils";
 import {formatDate} from "@angular/common";
 import {Store} from "@ngxs/store";
@@ -43,7 +43,7 @@ export class UserService {
       this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify(user));
     }
     this.store.dispatch(new UpdateContextMenuState(ContextMenuState.LOGGED_IN));
-    await this.router.navigate([GENERAL_MENU_ITEM_URLS.PRODUCTS]);
+    await this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
     this.toastrService.info(
       'You have been logged in successfully!',
       'Authentication',

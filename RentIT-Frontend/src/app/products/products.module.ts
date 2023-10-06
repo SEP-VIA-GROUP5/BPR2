@@ -7,6 +7,7 @@ import {ProductsComponent} from './products.component';
 import {ProductComponent} from './components/product/product.component';
 import {NbButtonModule, NbCardModule, NbIconModule, NbSpinnerModule, NbTooltipModule} from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
+import {AddingProductsComponent} from "src/app/products/adding-products/adding-products.component";
 
 export const PRODUCTS_NG_MODULES = []
 
@@ -26,6 +27,7 @@ export const PRODUCTS_STATES = [
 export const PRODUCTS_COMPONENTS = [
   ProductsComponent,
   ProductComponent,
+  AddingProductsComponent,
 ];
 
 @NgModule({

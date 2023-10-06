@@ -1,4 +1,5 @@
 import {NbMenuItem} from '@nebular/theme';
+import {UrlSegment} from "@angular/router";
 
 export enum ICONS {
   CUBE_OUTLINE = 'cube-outline',
@@ -9,11 +10,18 @@ export enum ICONS {
   ARROW_IOS_DOWNWARD_OUTLINE = 'arrow-ios-downward-outline',
   EYE_OUTLINE = 'eye-outline',
   EYE_OFF_OUTLINE = 'eye-off-2-outline',
+  LOG_IN_OUTLINE = 'log-in-outline',
+  LOG_OUT_OUTLINE = 'log-out-outline',
+  PLUS_OUTLINE = 'plus-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
-  PRODUCTS = '/products',
   AUTHENTICATION = '/authentication',
+}
+
+export enum PRODUCTS_MENU_ITEM_URLS {
+  PRODUCTS = '/products',
+  ADDING_PRODUCTS = '/add',
 }
 
 export enum BREADCRUMB_KEYS {
@@ -23,6 +31,7 @@ export enum BREADCRUMB_KEYS {
 export enum CONTEXT_MENU_TITLES {
   LOG_IN = 'Log in',
   LOG_OUT = 'Log out',
+  ADD_PRODUCT = 'Add product',
 }
 
 export function GENERAL_MENU_ITEMS(): NbMenuItem[] {
@@ -30,7 +39,7 @@ export function GENERAL_MENU_ITEMS(): NbMenuItem[] {
     {
       title: BREADCRUMB_KEYS.PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
-      link: GENERAL_MENU_ITEM_URLS.PRODUCTS,
+      link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS,
     },
   ];
 }
@@ -39,8 +48,14 @@ export function LOGGED_OUT_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
   return [
     {
       title: CONTEXT_MENU_TITLES.LOG_IN,
-      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION
+      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
+      icon: ICONS.LOG_IN_OUTLINE,
     },
+    {
+      title: CONTEXT_MENU_TITLES.ADD_PRODUCT,
+      link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS.concat(PRODUCTS_MENU_ITEM_URLS.ADDING_PRODUCTS),
+      icon: ICONS.PLUS_OUTLINE
+    }
   ]
 }
 
@@ -48,7 +63,13 @@ export function LOGGED_IN_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
   return [
     {
       title: CONTEXT_MENU_TITLES.LOG_OUT,
-      link: '',
+      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
+      icon: ICONS.LOG_OUT_OUTLINE,
+    },
+    {
+      title: CONTEXT_MENU_TITLES.ADD_PRODUCT,
+      link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS.concat(PRODUCTS_MENU_ITEM_URLS.ADDING_PRODUCTS),
+      icon: ICONS.PLUS_OUTLINE
     }
   ]
 }
@@ -65,4 +86,14 @@ export enum SidebarMenuState {
 export enum ContextMenuState {
   LOGGED_OUT = 'LOGGED_OUT',
   LOGGED_IN = 'LOGGED_IN'
+}
+
+// insensitive matcher for routes
+export function caseInsensitiveMatcher(segments: UrlSegment[], segmentGroup: UrlSegment[], route: any) {
+  const path = route.path.toLowerCase();
+  const parts = path.split('/');
+
+  return parts.length === segments.length && parts.every((part, index) => part === segments[index].path.toLowerCase())
+    ? { consumed: segments }
+    : null;
 }

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {defaultUserContent, isEmail, isPassword, UserContent} from "src/app/authentication/constants/constants";
-import {ICONS} from '../constants';
+import {ICONS, PRODUCTS_MENU_ITEM_URLS} from '../constants';
 import {Select, Store} from "@ngxs/store";
 import {Login, Register} from "src/app/authentication/authentication.actions";
 import {Observable} from "rxjs";
@@ -44,7 +44,7 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
         'You are already logged in',
         {icon: ICONS.ALERT_CIRCLE_OUTLINE}
       );
-      this.router.navigate(['/products']);
+      this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
     }
   }
 
