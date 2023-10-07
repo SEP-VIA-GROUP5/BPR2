@@ -65,7 +65,9 @@ export class UserService {
     let tokenParsed: Token = JSON.parse(this.localStorageService.getData(LocalStorageEnum.TOKEN));
     if (tokenParsed && tokenParsed.expires) {
       const expireDate = formatDate(new Date(tokenParsed.expires), DATE_FORMAT.YYYY_MM_DD_HH_MM_SS, DATE_LOCALE.EN_US, DATE_TIMEZONE.UTC);
-      return isDateBeforeNow(new Date(expireDate));
+      const isTokenNotExpired = isDateBeforeNow(new Date(expireDate));
+      if(!isTokenNotExpired) this.logout();
+      return isTokenNotExpired;
     }
     return false;
   }
