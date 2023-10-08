@@ -9,8 +9,7 @@ import {NgxDropzoneChangeEvent} from "ngx-dropzone";
 @Component({
   selector: 'app-adding-products',
   templateUrl: './adding-products.component.html',
-  styleUrls: ['./adding-products.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./adding-products.component.scss']
 })
 export class AddingProductsComponent implements OnInit, OnDestroy {
   protected readonly STEPS = ADDING_PRODUCTS_STEP;
