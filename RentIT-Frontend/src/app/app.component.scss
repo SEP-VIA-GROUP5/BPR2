@@ -22,10 +22,12 @@ body {
   @media only screen and (max-width: 472px) {
     height: 50px;
   }
+
 }
 
-nb-layout-column {
-
+nb-icon {
+  width: 5%;
+  cursor:pointer;
 }
 
 .left-section,

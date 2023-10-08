@@ -21,9 +21,11 @@ import {MapPickerComponent} from "src/core/components/map-picker/map-picker";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AgmCoreModule} from '@agm/core';
 import {environment} from "src/environments/environment.dev";
+import {NgxDropzoneModule} from "ngx-dropzone";
 
 export const PRODUCTS_NG_MODULES = [
   FormsModule,
+  NgxDropzoneModule,
 ]
 
 export const PRODUCTS_AGM_MODULES = [
