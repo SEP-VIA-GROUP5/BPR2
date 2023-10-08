@@ -15,7 +15,7 @@ public class ProductService {
     @Autowired
     private IProductMapper productMapper;
     @Autowired
-    IImageMapper imageMapper;
+    private IImageMapper imageMapper;
 
     @Autowired
     private UserService userService;
