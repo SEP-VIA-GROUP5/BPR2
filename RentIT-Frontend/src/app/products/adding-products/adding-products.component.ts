@@ -53,6 +53,7 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
     // Loop through the selected images and handle the upload for each image.
     for (const image of this.selectedImages) {
 
+      console.log(image);
       // Your image upload logic here for each image
       // Make sure to update the Imgur upload logic as mentioned earlier.
       // You can use a loop and make separate API requests for each image.

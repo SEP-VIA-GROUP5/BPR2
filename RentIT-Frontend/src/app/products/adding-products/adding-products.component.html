@@ -6,7 +6,7 @@
           <h4>{{ TITLES.ADD_PICTURES }}</h4>
           <div class="full-width-content">
             <!-- Your content here -->
-            <ngx-dropzone (change)="onImageSelected($event)" [multiple]="true">
+            <ngx-dropzone (change)="onImageSelected($event)" [multiple]="true" accept=".png, .svg, .jpeg, .jpg">
               <div class="dropzone text-center">
                 <nb-icon [icon]="ICONS.IMAGE_OUTLINE"></nb-icon>
                 <p class="pictures-first-row-text">Add pictures by clicking</p>
