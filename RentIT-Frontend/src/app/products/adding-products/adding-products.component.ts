@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./adding-products.component.scss']
 })
 export class AddingProductsComponent implements OnInit, OnDestroy {
-
+  selectedItem = '2';
   constructor(private userService: UserService,
               private toastrService: NbToastrService,
               private router: Router) {
