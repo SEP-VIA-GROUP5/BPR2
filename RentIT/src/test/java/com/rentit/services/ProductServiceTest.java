@@ -5,6 +5,7 @@ import com.rentit.dao.interfaces.IProductMapper;
 import com.rentit.model.Image;
 import com.rentit.model.Product;
 import com.rentit.model.User;
+import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.enums.ProductStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.when;
 public class ProductServiceTest {
     private List<Image> images;
     private Product product;
+    private ProductDTO productDTO;
 
     @Mock
     private IProductMapper productMapper;
@@ -61,18 +63,36 @@ public class ProductServiceTest {
                 .userId(1)
                 .build();
 
+        productDTO = ProductDTO.builder()
+                .id(1)
+                .name("Test name")
+                .description("Test description")
+                .dayPrice(5)
+                .weekPrice(10)
+                .monthPrice(100)
+                .deposit(10)
+                .city("Test city")
+                .productValue(100)
+                .minLeasePeriod(1)
+                .category("other")
+                .tags(Arrays.asList("test tag", "test tag2"))
+                .images(images)
+                .status(ProductStatus.AVAILABLE)
+                .rentedUntil(LocalDate.parse("2024-05-01"))
+                .build();
+
     }
 
     @Test
     public void getNProductsByPageTest(){
-        when(productMapper.getNProductsByPage(anyInt(),anyInt())).thenReturn(Collections.singletonList(product));
-        List<Product> products = productService.getNProductsByPage(1,1);
-        assertEquals(products,Collections.singletonList(product));
+        when(productMapper.getNProductsByPage(anyInt(),anyInt())).thenReturn(Collections.singletonList(productDTO));
+        List<ProductDTO> products = productService.getNProductsByPage(1,1);
+        assertEquals(products,Collections.singletonList(productDTO));
     }
 
     @Test
     public void getNProductsByPageTestError(){
-        List<Product> products = productService.getNProductsByPage(-1,-1);
+        List<ProductDTO> products = productService.getNProductsByPage(-1,-1);
         assertNull(products);
     }
 
@@ -80,8 +100,8 @@ public class ProductServiceTest {
     public void addProductWithAllParamsTest(){
         when(userService.getUserFromToken(anyString(),eq(true))).thenReturn(User.builder().id(1).location("Test city").build());
         when(productMapper.addProduct(any(Product.class))).thenReturn(0);
-        Product addedProduct = productService.addProduct(product,"authString");
-        assertEquals(addedProduct, product);
+        ProductDTO addedProduct = productService.addProduct(product,"authString");
+        assertEquals(addedProduct, productDTO);
     }
 
     @Test
@@ -91,14 +111,14 @@ public class ProductServiceTest {
         Product alteredProduct = product;
         alteredProduct.setCategory("");
         alteredProduct.setCity("");
-        Product addedProduct = productService.addProduct(alteredProduct,"authString");
-        assertEquals(addedProduct, product);
+        ProductDTO addedProduct = productService.addProduct(alteredProduct,"authString");
+        assertEquals(addedProduct, productDTO);
     }
 
     @Test
     public void addProductTestError(){
         when(userService.getUserFromToken(anyString(),eq(true))).thenReturn(User.builder().id(1).build());
-        Product addedProduct = productService.addProduct(null,"authString");
+        ProductDTO addedProduct = productService.addProduct(null,"authString");
         assertNull(addedProduct);
         product.setDayPrice(0);
         addedProduct = productService.addProduct(product,"authString");

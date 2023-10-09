@@ -2,6 +2,7 @@ package com.rentit.controllers;
 
 import com.rentit.model.Token;
 import com.rentit.model.User;
+import com.rentit.model.dto.UserDTO;
 import com.rentit.services.UserService;
 import com.rentit.services.enums.ResponseMessage;
 import jakarta.servlet.http.HttpServletResponse;
@@ -45,8 +46,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
-    public User getUser(@RequestHeader("Authorization") String authorizationHeader) {
-        return userService.getUserFromToken(authorizationHeader, false);
+    public UserDTO getUser(@RequestHeader("Authorization") String authorizationHeader) {
+        return userService.getUser(authorizationHeader);
     }
 
     public void setResponse(HttpServletResponse response, boolean success) {

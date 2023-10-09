@@ -3,6 +3,7 @@ package com.rentit.services;
 import com.rentit.dao.interfaces.IUserMapper;
 import com.rentit.model.Token;
 import com.rentit.model.User;
+import com.rentit.model.dto.UserDTO;
 import com.rentit.services.enums.ResponseMessage;
 import com.rentit.utils.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,17 @@ public class UserService {
         return user;
     }
 
+    public UserDTO getUser(String authHeader){
+        User user = getUserFromToken(authHeader, false);
+        return UserDTO.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .location(user.getPhoneNumber())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
+    }
+
     public Token authenticateUser(User user) {
         List<GrantedAuthority> grantedAuths = new ArrayList<>();
         grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
@@ -80,5 +92,22 @@ public class UserService {
         Authentication auth = new UsernamePasswordAuthenticationToken(dbUser.getId(), user.getPassword(), grantedAuths);
         Instant expires = Instant.now().plus(TokenService.duration, ChronoUnit.HOURS);
         return Token.builder().tokenName("Authentication").tokenBody(tokenService.generateToken(auth)).expires(expires).build();
+    }
+
+    public User getUserById(int userId) {
+        if(userId < 1){
+            return null;
+        }
+        return userMapper.getUserById(userId);
+    }
+
+    public static UserDTO buildUserDTO(User user){
+        return UserDTO.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .location(user.getLocation())
+                .phoneNumber(user.getPhoneNumber())
+                .email(user.getEmail())
+                .build();
     }
 }
