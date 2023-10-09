@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS image, tag, product, "user";
+DROP TABLE IF EXISTS images, tags, products, users;
 
-CREATE TABLE "user"
+CREATE TABLE users
 (
     user_id  INT AUTO_INCREMENT NOT NULL,
     email    VARCHAR(40) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE "user"
     PRIMARY KEY (user_id)
 );
 
-CREATE TABLE product
+CREATE TABLE products
 (
     product_id       INT AUTO_INCREMENT NOT NULL,
     name             VARCHAR(30) NOT NULL,
@@ -30,23 +30,23 @@ CREATE TABLE product
     rented_until     DATE,
     user_id          INT         NOT NULL,
     PRIMARY KEY (product_id),
-    FOREIGN KEY (user_id) REFERENCES "user" (user_id)
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
-CREATE TABLE tag
+CREATE TABLE tags
 (
     tag_id     INT AUTO_INCREMENT NOT NULL,
     name       VARCHAR(30) NOT NULL,
     product_id INT         NOT NULL,
     PRIMARY KEY (tag_id),
-    FOREIGN KEY (product_id) REFERENCES product (product_id)
+    FOREIGN KEY (product_id) REFERENCES products (product_id)
 );
 
-CREATE TABLE image
+CREATE TABLE images
 (
     image_id   INT          NOT NULL AUTO_INCREMENT,
     image_url  VARCHAR(100) NOT NULL,
     product_id INT          NOT NULL,
     PRIMARY KEY (image_id),
-    FOREIGN KEY (product_id) REFERENCES product (product_id)
+    FOREIGN KEY (product_id) REFERENCES products (product_id)
 );
