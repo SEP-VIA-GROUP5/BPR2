@@ -9,7 +9,6 @@ import {Token} from "src/model/token";
 @Injectable({
   providedIn: 'root'
 })
-@Injectable()
 export class ApiService<T> {
   constructor(private http: HttpClient,
               private localStorageService: LocalStorageService) {

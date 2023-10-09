@@ -1,10 +1,15 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "src/api/user.service";
 import {NbToastrService} from "@nebular/theme";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
 import {ADDING_PRODUCTS_STEP, ADDING_PRODUCTS_TITLE} from "src/app/products/adding-products/constants/constants";
 import {NgxDropzoneChangeEvent} from "ngx-dropzone";
+import {Select, Store} from "@ngxs/store";
+import {UploadImage} from "src/app/products/adding-products/adding-products.actions";
+import {Observable} from "rxjs";
+import {AddingProductsSelectors} from "src/app/products/adding-products/adding-products.selectors";
+import {ImgurImageResponse} from "src/model/imgurImageResponse";
 
 @Component({
   selector: 'app-adding-products',
@@ -12,6 +17,11 @@ import {NgxDropzoneChangeEvent} from "ngx-dropzone";
   styleUrls: ['./adding-products.component.scss']
 })
 export class AddingProductsComponent implements OnInit, OnDestroy {
+  @Select(AddingProductsSelectors.isFetching)
+  isFetching$: Observable<boolean>;
+  @Select(AddingProductsSelectors.uploadedImages)
+  uploadedImages$: Observable<ImgurImageResponse[]>
+
   protected readonly STEPS = ADDING_PRODUCTS_STEP;
   protected readonly TITLES = ADDING_PRODUCTS_TITLE;
   protected readonly ICONS = ICONS;
@@ -20,7 +30,8 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,
               private toastrService: NbToastrService,
-              private router: Router) {
+              private router: Router,
+              private store: Store) {
   }
 
   ngOnInit(): void {
@@ -50,15 +61,10 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Loop through the selected images and handle the upload for each image.
     for (const image of this.selectedImages) {
 
-      console.log(image);
-      // Your image upload logic here for each image
-      // Make sure to update the Imgur upload logic as mentioned earlier.
-      // You can use a loop and make separate API requests for each image.
+      this.store.dispatch(new UploadImage(image));
 
-      // After successful upload of each image, you can show a success message.
       this.toastrService.info(`Image '${image.name}' uploaded successfully!`, 'Success');
     }
   }

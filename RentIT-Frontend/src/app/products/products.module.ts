@@ -22,6 +22,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AgmCoreModule} from '@agm/core';
 import {environment} from "src/environments/environment.dev";
 import {NgxDropzoneModule} from "ngx-dropzone";
+import {AddingProductsState} from "src/app/products/adding-products/adding-products.state";
 
 export const PRODUCTS_NG_MODULES = [
   FormsModule,
@@ -51,6 +52,7 @@ export const PRODUCTS_NEBULAR_COMPONENTS = [
 
 export const PRODUCTS_STATES = [
   ProductsState,
+  AddingProductsState,
 ];
 
 export const PRODUCTS_COMPONENTS = [

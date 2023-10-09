@@ -1,6 +1,8 @@
-<nb-card class="container-adding-products" size="medium">
+<nb-card
+  class="container-adding-products" size="medium"
+  [nbSpinner]="isFetching$ | async">
   <nb-card-body>
-    <div class="d-flex-center"> <!-- Center content -->
+    <div class="d-flex-center">
       <nb-stepper orientation="horizontal">
         <nb-step class="adding-pictures-step" [label]="STEPS.PICTURES">
           <h4>{{ TITLES.ADD_PICTURES }}</h4>

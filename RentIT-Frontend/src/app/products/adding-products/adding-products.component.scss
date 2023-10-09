@@ -1,77 +1,68 @@
 @import 'node_modules/@nebular/theme/components/stepper/_stepper.component.theme.scss';
 @import 'node_modules/@nebular/theme/components/card/card.component.scss';
 
-// TODO this is not applied
 nb-card {
   height: auto;
 }
 
-/* Center the entire content horizontally */
 .d-flex-center {
   display: flex;
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
+  margin: 0;
+  padding: 0;
 }
 
-/* Style the content to span the full width */
 .full-width-content {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 100%; /* Remove the max-width restriction */
-  align-items: flex-start; /* Adjust alignment to start from the top */
+  max-width: 100%;
+  align-items: flex-start;
 }
 
-/* Style the dropzone container */
 .adding-pictures {
-  background-color: #f5f5f5; /* Change the background color as desired */
-  border: 1px dashed #ccc; /* Add a dashed border for the dropzone area */
+  background-color: #f5f5f5;
+  border: 1px dashed #ccc;
   padding: 20px;
   text-align: center;
-  margin: 0 auto; /* Center the container horizontally */
+  margin: 0 auto;
 }
 
-/* Style the dropzone icon */
 ngx-dropzone {
-  flex: 1; /* Expand and take up remaining space */
+  flex: 1;
   overflow: hidden;
   width: inherit;
 }
 
-/* Style the dropzone container */
 .dropzone {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center horizontally */
-  justify-content: center; /* Center vertically */
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 20px;
-  background-color: #f5f5f5; /* Change the background color as desired */
-  border: 1px dashed #ccc; /* Add a dashed border for the dropzone area */
+  background-color: #f5f5f5;
+  border: 1px dashed #ccc;
   width: inherit;
 }
 
-/* Style the dropzone icon */
 nb-icon {
-  font-size: 5rem; /* Adjust the icon size as needed to make it larger */
-  color: #333; /* Change the icon color as desired */
+  font-size: 5rem;
+  color: #333;
 }
 
-/* Style the text inside the dropzone */
 .pictures-first-row-text {
-  font-size: 1.5rem; /* Adjust the font size as needed */
+  font-size: 1.5rem;
   margin-top: 10px;
-  color: #333; /* Change the text color as desired */
+  color: #333;
   font-weight: bold;
 }
 
 .pictures-second-row-text {
-  font-size: 1.5rem; /* Adjust the font size as needed */
-  color: #333; /* Change the text color as desired */
+  font-size: 1.5rem;
+  color: #333;
   font-weight: lighter;
 }
 
-/* Style the selected images list */
 ul {
   list-style: none;
   padding: 0;
@@ -81,26 +72,19 @@ li {
   margin-bottom: 5px;
 }
 
-/* Style the "Save" button */
 button {
   margin-top: 10px;
 }
 
-/* Add spacing between the buttons */
 button[nbStepperNext] {
-  margin-left: 10px; /* Adjust the spacing as needed */
+  margin-left: 10px;
 }
 
 .adding-pictures-step {
 }
 
-/* ... Other custom styles ... */
-
-// Override the width of the step content to span full width
 nb-stepper .step-content {
-  /* Your custom styles here */
-  width: 100%; /* For example, set the width to 100% */
-  /* Add any other custom styles you want */
+  width: 100%;
 }
 
 nb-stepper {

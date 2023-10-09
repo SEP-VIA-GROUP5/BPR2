@@ -48,6 +48,7 @@ import {UserService} from "src/api/user.service";
 import {AuthenticationState} from "src/app/authentication/authentication.state";
 import {UrlSerializer} from "@angular/router";
 import {LowerCaseUrlSerializer} from "src/core/providers/lowercase-deserializer.provider";
+import {ImgurApiService} from "src/core/services/imgur.api.service";
 
 
 export const STATES = [
@@ -73,7 +74,8 @@ export const PROVIDERS = [
   {
     provide: UrlSerializer,
     useClass: LowerCaseUrlSerializer,
-  }
+  },
+  ImgurApiService,
 ];
 
 export const NG_MODULES = [
