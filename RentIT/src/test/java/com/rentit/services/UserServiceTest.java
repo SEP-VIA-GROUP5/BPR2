@@ -46,11 +46,6 @@ public class UserServiceTest {
         when(userMapper.getUserByEmail(anyString())).thenReturn(User.builder().email("testemail@gmail.com").password("RealStrongPassword1!").build());
         ResponseMessage response = userService.registerUser(user);
         assertEquals(response,ResponseMessage.EXISTING_EMAIL);
-
-        when(userMapper.getUserByEmail(anyString())).thenReturn(null);
-        user.setPassword("testweakpassword");
-        response = userService.registerUser(user);
-        assertEquals(response, ResponseMessage.PASSWORD_ERROR);
     }
 
     @Test

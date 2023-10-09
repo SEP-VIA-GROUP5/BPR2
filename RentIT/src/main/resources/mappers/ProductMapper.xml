@@ -14,22 +14,41 @@
         <result property="minLeasePeriod" column="min_lease_period"/>
         <result property="category" column="category"/>
         <result property="status" column="product_status"/>
-        <result property="rentedUntil" column="rented_until"/>
+        <result property="rentedUntil" column="rented_until" javaType="java.time.LocalDate"/>
         <result property="userId" column="user_id"/>
         <collection property="images" column="product_id"
                     select="com.rentit.dao.interfaces.IImageMapper.getImagesByProductId"/>
     </resultMap>
 
-    <select id="getNProductsByPage" resultMap="ProductResultMap">
-        SELECT DISTINCT *
-        FROM product
-        ORDER BY product_id
-            LIMIT ${(pageNum - 1) * n}, #{n}
-    </select>
+    <resultMap id="PublicProductResultMap" type="ProductDTO">
+        <result property="id" column="product_id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="dayPrice" column="day_price"/>
+        <result property="weekPrice" column="week_price"/>
+        <result property="monthPrice" column="month_price"/>
+        <result property="deposit" column="deposit"/>
+        <result property="city" column="city"/>
+        <result property="productValue" column="product_value"/>
+        <result property="minLeasePeriod" column="min_lease_period"/>
+        <result property="category" column="category"/>
+        <result property="status" column="product_status"/>
+        <result property="rentedUntil" column="rented_until" javaType="java.time.LocalDate"/>
+        <collection property="images" column="product_id"
+                    select="com.rentit.dao.interfaces.IImageMapper.getImagesByProductId"/>
+    </resultMap>
+
     <select id="getProductsByName" resultMap="ProductResultMap">
         SELECT *
         FROM product
         WHERE name = #{name}
+    </select>
+
+    <select id="getNProductsByPage" resultMap="PublicProductResultMap">
+        SELECT DISTINCT *
+        FROM product
+        ORDER BY product_id
+            LIMIT ${(pageNum - 1) * n}, #{n};
     </select>
     <insert id="addProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO product (name, description, day_price, week_price, month_price, deposit,city,product_value,
@@ -38,6 +57,11 @@
                 #{monthPrice},
                 #{deposit}, #{city}, #{productValue}, #{minLeasePeriod},
                 #{category},
-                #{status}, #{rentedUntil}, #{userId})
+                #{status}, #{rentedUntil}, #{userId});
     </insert>
+    <select id="getProductById" resultMap="ProductResultMap">
+        SELECT *
+        FROM product
+        WHERE product_id = #{id};
+    </select>
 </mapper>
