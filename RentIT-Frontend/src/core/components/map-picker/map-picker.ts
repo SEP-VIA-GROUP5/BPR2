@@ -52,7 +52,6 @@ export class MapPickerComponent implements OnInit {
       )
       .subscribe((data: any) => {
         if (data.results.length > 0) {
-          // Extract the coordinates from the API response
           const coordinates = data.results[0].geometry.location;
           this.lat = coordinates.lat;
           this.lng = coordinates.lng;
