@@ -4,6 +4,9 @@ import com.rentit.dao.interfaces.IImageMapper;
 import com.rentit.dao.interfaces.IProductMapper;
 import com.rentit.model.Product;
 import com.rentit.model.User;
+import com.rentit.model.dto.ProductDTO;
+import com.rentit.model.dto.ProductPackageDTO;
+import com.rentit.model.dto.UserDTO;
 import com.rentit.model.enums.ProductStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,14 +23,14 @@ public class ProductService {
     @Autowired
     private UserService userService;
 
-    public List<Product> getNProductsByPage(int pageNum, int n) {
+    public List<ProductDTO> getNProductsByPage(int pageNum, int n) {
         if (pageNum > 0 && n > 0) {
             return productMapper.getNProductsByPage(pageNum, n);
         }
         return null;
     }
 
-    public Product addProduct(Product product, String authorizationHeader) {
+    public ProductDTO addProduct(Product product, String authorizationHeader) {
         User user = userService.getUserFromToken(authorizationHeader, true);
 
         if(product == null){
@@ -55,6 +58,45 @@ public class ProductService {
         productMapper.addProduct(product);
         imageMapper.addImages(product.getImages(), product.getId());
 
-        return product;
+        return buildProductDTO(product);
+    }
+
+    public ProductPackageDTO getProductById(int productId) {
+        if(productId <= 0){
+            return null;
+        }
+
+        Product product = productMapper.getProductById(productId);
+
+        if(product.getUserId() <= 0){
+            return null;
+        }
+
+        User user = userService.getUserById(product.getUserId());
+
+        ProductDTO productDTO = buildProductDTO(product);
+        UserDTO userDTO = UserService.buildUserDTO(user);
+
+        return ProductPackageDTO.builder().product(productDTO).user(userDTO).build();
+    }
+
+    public static ProductDTO buildProductDTO(Product product){
+        return ProductDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .dayPrice(product.getDayPrice())
+                .weekPrice(product.getWeekPrice())
+                .monthPrice(product.getMonthPrice())
+                .deposit(product.getDeposit())
+                .city(product.getCity())
+                .productValue(product.getProductValue())
+                .minLeasePeriod(product.getMinLeasePeriod())
+                .category(product.getCategory())
+                .tags(product.getTags())
+                .images(product.getImages())
+                .status(product.getStatus())
+                .rentedUntil(product.getRentedUntil())
+                .build();
     }
 }

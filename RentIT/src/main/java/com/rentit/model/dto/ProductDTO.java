@@ -1,7 +1,11 @@
-package com.rentit.model;
+package com.rentit.model.dto;
 
+import com.rentit.model.Image;
 import com.rentit.model.enums.ProductStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class ProductDTO {
     private int id;
     private String name;
     private String description;
@@ -26,5 +30,4 @@ public class Product {
     private List<Image> images;
     private ProductStatus status;
     private LocalDate rentedUntil;
-    private int userId;
 }
