@@ -11,9 +11,9 @@ INSERT INTO `product` (`name`, `description`, `day_price`, `week_price`, `month_
 INSERT INTO `product` (`name`, `description`, `day_price`, `week_price`, `month_price`, `deposit`, `city`, `product_value`, `min_lease_period`, `category`, `product_status`, `rented_until`, `user_id`) VALUES ('quo', 'Et voluptatibus quisquam qui reiciendis. Nostrum autem necessitatibus nemo a vel maxime aliquam sapiente.', '9642.98', '4.34763', '29821.8', '4', 'Trige', '6', 8, '1', 'AVAILABLE', '1987-01-11', 5);
 
 INSERT INTO `image` (`image_url`, `product_id`) VALUES ('http://kihn.net/', 1);
-INSERT INTO `image` (`image_url`, `product_id`) VALUES ('http://runolfsdottirmacejkovic.com/', 2);
+INSERT INTO `image` (`image_url`, `product_id`) VALUES ('http://runolfsdottirmacejkovic.com/', 1);
 INSERT INTO `image` (`image_url`, `product_id`) VALUES ('http://smithamhoppe.biz/', 3);
-INSERT INTO `image` (`image_url`, `product_id`) VALUES ('http://www.hansen.com/', 4);
+INSERT INTO `image` (`image_url`, `product_id`) VALUES ('http://www.hansen.com/', 3);
 INSERT INTO `image` (`image_url`, `product_id`) VALUES ('http://www.corwin.org/', 5);
 
 INSERT INTO `tag` (`name`, `product_id`) VALUES ('nesciunt', 1);
