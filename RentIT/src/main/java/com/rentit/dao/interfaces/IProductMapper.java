@@ -10,4 +10,5 @@ import java.util.List;
 public interface IProductMapper {
     List<Product> getNProductsByPage(int pageNum, int n);
     int addProduct(Product product);
+    List<Product> getProductsByName(String name);
 }
