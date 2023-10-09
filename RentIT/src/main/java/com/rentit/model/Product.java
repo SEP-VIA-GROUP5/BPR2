@@ -10,6 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+//TODO might need to convert to DTO class
 public class Product {
     private int id;
     private String name;

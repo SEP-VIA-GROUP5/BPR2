@@ -1,51 +1,109 @@
 package com.rentit.controllers;
 
-import com.rentit.security.SecurityConfig;
-import com.rentit.services.TokenService;
+import com.rentit.model.Image;
+import com.rentit.model.Product;
+import com.rentit.model.enums.ProductStatus;
+import com.rentit.services.ProductService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest({TestController.class, AuthController.class})
-@Import({SecurityConfig.class, TokenService.class})
-class TestControllerTest {
+@WebMvcTest(ProductController.class)
+@AutoConfigureMockMvc(addFilters = false)
+public class ProductControllerTest {
+
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
-    @Test
-    void rootWhenUnauthenticatedThen401() throws Exception {
-        this.mvc.perform(get("/test"))
-                .andExpect(status().isUnauthorized());
+    @MockBean
+    private ProductService service;
+
+    private List<Image> images;
+    private Product product;
+    @BeforeEach
+    void beforeEach(){
+        images = new ArrayList<>();
+        images.add(Image.builder().imageUrl("http://test.url").id(1).build());
+        product = Product.builder()
+                .id(1)
+                .name("Test name")
+                .description("Test description")
+                .dayPrice(5)
+                .weekPrice(10)
+                .monthPrice(100)
+                .deposit(10)
+                .city("Test city")
+                .productValue(100)
+                .minLeasePeriod(1)
+                .category("test category")
+                .tags(Arrays.asList("test tag", "test tag2"))
+                .images(images)
+                .status(ProductStatus.AVAILABLE)
+                .rentedUntil(LocalDate.parse("2024-05-01"))
+                .userId(1)
+                .build();
     }
 
     @Test
-    void rootWhenAuthenticatedThenSaysHelloUser() throws Exception {
-        MvcResult result = this.mvc.perform(post("/token")
-                        .with(httpBasic("name", "password")))
+    public void testGetPageOfProducts() throws Exception {
+        when(service.getNProductsByPage(1,1)).thenReturn(Collections.singletonList(product));
+        this.mvc.perform(get("http://localhost:8080/product/page/1/1")).andDo(print())
                 .andExpect(status().isOk())
-                .andReturn();
-
-        String token = result.getResponse().getContentAsString();
-
-        this.mvc.perform(get("/test")
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(content().string("Test name"));
+                .andExpect(content().json("[{\"id\":1,\"name\":\"Test name\",\"description\":\"Test description\",\"dayPrice\":5.0,\"weekPrice\":10.0,\"monthPrice\":100.0,\"deposit\":10.0,\"city\":\"Test city\",\"productValue\":100.0,\"minLeasePeriod\":1,\"category\":\"test category\",\"tags\":[\"test tag\",\"test tag2\"],\"images\":[{\"id\":1,\"imageUrl\":\"http://test.url\"}],\"status\":\"AVAILABLE\",\"rentedUntil\":\"2024-05-01\",\"userId\":1}]"));
     }
 
     @Test
-    @WithMockUser
-    public void rootWithMockUserStatusIsOK() throws Exception {
-        this.mvc.perform(get("/test")).andExpect(status().isOk());
+    public void testGetPageOfProductsErrors() throws Exception {
+        when(service.getNProductsByPage(1,1)).thenReturn(Collections.singletonList(product));
+        this.mvc.perform(get("http://localhost:8080/product/page")).andDo(print())
+                .andExpect(status().isNotFound());
+        this.mvc.perform(get("http://localhost:8080/product/page/a")).andDo(print())
+                .andExpect(status().isNotFound());
+        this.mvc.perform(get("http://localhost:8080/product/page/a/a")).andDo(print())
+                .andExpect(status().isBadRequest());
+
     }
 
+    @Test
+    public void testAddProduct() throws Exception {
+        when(service.addProduct(product,"test")).thenReturn(product);
+        this.mvc.perform(post("http://localhost:8080/product/add")
+                .content("{\"id\":1,\"name\":\"Test name\",\"description\":\"Test description\",\"dayPrice\":5.0,\"weekPrice\":10.0,\"monthPrice\":100.0,\"deposit\":10.0,\"city\":\"Test city\",\"productValue\":100.0,\"minLeasePeriod\":1,\"category\":\"test category\",\"tags\":[\"test tag\",\"test tag2\"],\"images\":[{\"id\":1,\"imageUrl\":\"http://test.url\"}],\"status\":\"AVAILABLE\",\"rentedUntil\":\"2024-05-01\",\"userId\":1}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","test")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"id\":1,\"name\":\"Test name\",\"description\":\"Test description\",\"dayPrice\":5.0,\"weekPrice\":10.0,\"monthPrice\":100.0,\"deposit\":10.0,\"city\":\"Test city\",\"productValue\":100.0,\"minLeasePeriod\":1,\"category\":\"test category\",\"tags\":[\"test tag\",\"test tag2\"],\"images\":[{\"id\":1,\"imageUrl\":\"http://test.url\"}],\"status\":\"AVAILABLE\",\"rentedUntil\":\"2024-05-01\",\"userId\":1}"));
+    }
+
+    @Test
+    public void testAddProductErrors() throws Exception {
+        when(service.addProduct(product,"test")).thenReturn(product);
+        this.mvc.perform(post("http://localhost:8080/product/add")
+                        .content("[]")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization","test")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }
