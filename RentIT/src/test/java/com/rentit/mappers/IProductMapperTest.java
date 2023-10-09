@@ -26,7 +26,7 @@ public class IProductMapperTest {
     }
 
     @Test
-    public void add_product_successfully() {
+    public void addProduct_correctly_insert_product() {
         Product product = Product.builder()
                 .name("test_product")
                 .dayPrice(10)
