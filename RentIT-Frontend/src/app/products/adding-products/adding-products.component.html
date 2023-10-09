@@ -25,6 +25,7 @@
               </ul>
             </div>
 
+            <view-images *ngIf="(uploadedImages$ | async).length > 0"></view-images>
             <button status="primary" (click)="uploadImages()" *ngIf="selectedImages.length > 0" nbButton>Save</button>
           </div>
           <div>

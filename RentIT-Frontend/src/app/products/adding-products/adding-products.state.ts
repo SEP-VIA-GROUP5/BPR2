@@ -46,21 +46,19 @@ export class AddingProductsState {
     setState(newState);
 
     try {
-      let response = await this.imgurApiService.postWithRetry(action.image);
-      if (typeof response === "string") {
-        uploadedImage = JSON.parse(response) as ImgurImageResponse;
-        if (uploadedImage.status === 200) {
-          newState = produce(getState(), draft => {
-            draft.uploadedImages.push(uploadedImage);
-          })
-          setState(newState);
-        } else {
-          return this.toastrService.danger(
-            environment.production ?
-              'Please contact the administration' : 'Could not upload image',
-            {icon: ICONS.ALERT_CIRCLE_OUTLINE}
-          );
-        }
+      uploadedImage = await this.imgurApiService.post(action.image);
+      if (uploadedImage.status === 200) {
+        console.log(uploadedImage);
+        newState = produce(getState(), draft => {
+          draft.uploadedImages.push(uploadedImage);
+        })
+        setState(newState);
+      } else {
+        return this.toastrService.danger(
+          environment.production ?
+            'Please contact the administration' : 'Could not upload image',
+          {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+        );
       }
     } catch (error) {
       newState = produce(getState(), draft => {

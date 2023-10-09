@@ -23,6 +23,7 @@ import {AgmCoreModule} from '@agm/core';
 import {environment} from "src/environments/environment.dev";
 import {NgxDropzoneModule} from "ngx-dropzone";
 import {AddingProductsState} from "src/app/products/adding-products/adding-products.state";
+import {ViewImagesComponent} from "src/core/components/view-images/view-images.component";
 
 export const PRODUCTS_NG_MODULES = [
   FormsModule,
@@ -65,6 +66,7 @@ export const PRODUCTS_COMPONENTS = [
 @NgModule({
   declarations: [
     PRODUCTS_COMPONENTS,
+    ViewImagesComponent,
   ],
   imports: [
     CommonModule,

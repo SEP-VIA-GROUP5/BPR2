@@ -49,6 +49,7 @@ import {AuthenticationState} from "src/app/authentication/authentication.state";
 import {UrlSerializer} from "@angular/router";
 import {LowerCaseUrlSerializer} from "src/core/providers/lowercase-deserializer.provider";
 import {ImgurApiService} from "src/core/services/imgur.api.service";
+import {ViewImagesComponent} from "src/core/components/view-images/view-images.component";
 
 
 export const STATES = [
