@@ -24,8 +24,8 @@ public class UserController {
         ResponseMessage responseMessage = userService.registerUser(user);
         switch (responseMessage) {
             case SUCCESS -> setResponse(response, true);
-            case PASSWORD_ERROR -> response.sendError(401, "Password does not match");
-            case EXISTING_EMAIL -> response.sendError(401, "Account with this email already exists");
+            case PASSWORD_ERROR -> response.sendError(400, "Password does not match requirements");
+            case EXISTING_EMAIL -> response.sendError(400, "Account with this email already exists");
             default -> response.sendError(500, "Internal server error");
         }
     }
@@ -38,7 +38,7 @@ public class UserController {
             case SUCCESS -> {
                 return userService.authenticateUser(user);
             }
-            case CREDENTIALS_ERROR -> response.sendError(401, "Make sure the password matches requirements");
+            case CREDENTIALS_ERROR -> response.sendError(400, "Make sure the password matches requirements");
             default -> response.sendError(500, "Internal server error");
         }
         return Token.builder().build();

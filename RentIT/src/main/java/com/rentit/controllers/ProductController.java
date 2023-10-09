@@ -20,6 +20,7 @@ public class ProductController {
         return productService.getNProductsByPage(pageNum, n);
     }
 
+    //TODO maybe change into response entity
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json")
     public Product addProduct(@RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
         return productService.addProduct(product, authorizationHeader);
