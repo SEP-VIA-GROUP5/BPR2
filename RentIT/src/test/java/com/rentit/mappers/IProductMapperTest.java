@@ -2,6 +2,7 @@ package com.rentit.mappers;
 
 import com.rentit.dao.interfaces.IProductMapper;
 import com.rentit.model.Product;
+import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.enums.ProductStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class IProductMapperTest {
     @Test
     public void return_n_products_per_page() {
         int n = 3;
-        List<Product> products = productMapper.getNProductsByPage(1, n);
+        List<ProductDTO> products = productMapper.getNProductsByPage(1, n);
         assertThat(products.size()).isEqualTo(3);
     }
 

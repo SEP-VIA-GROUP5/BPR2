@@ -8,6 +8,7 @@
         <result property="firstName" column="f_name" javaType="java.lang.String"/>
         <result property="lastName" column="l_name" javaType="java.lang.String"/>
         <result property="location" column="location" javaType="java.lang.String"/>
+        <result property="phoneNumber" column="phone_no" javaType="java.lang.String"/>
         <association property="hashedPassword" javaType="HashPair">
             <result property="hashedString" column="password"/>
             <result property="salt" column="salt"/>
@@ -23,16 +24,16 @@
     </resultMap>
     <select id="getUserById" resultMap="UserWithoutPassResultMap">
         SELECT user_id, f_name, l_name, email, location, phone_no
-        FROM user
+        FROM users
         WHERE user_id = #{id};
     </select>
     <select id="getUserByEmail" resultMap="UserResultMap">
         SELECT *
-        FROM user
+        FROM users
         WHERE email = #{email};
     </select>
     <insert id="registerUser" parameterType="User">
-        INSERT INTO user (email, f_name, l_name, location, phone_no, password, salt)
+        INSERT INTO users (email, f_name, l_name, location, phone_no, password, salt)
         VALUES (#{email}, #{firstName}, #{lastName}, #{location}, #{phoneNumber}, #{hashedPassword.hashedString},
                 #{hashedPassword.salt});
     </insert>

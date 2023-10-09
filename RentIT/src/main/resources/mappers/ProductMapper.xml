@@ -40,18 +40,18 @@
 
     <select id="getProductsByName" resultMap="ProductResultMap">
         SELECT *
-        FROM product
+        FROM products
         WHERE name = #{name}
     </select>
 
     <select id="getNProductsByPage" resultMap="PublicProductResultMap">
         SELECT DISTINCT *
-        FROM product
+        FROM products
         ORDER BY product_id
             LIMIT ${(pageNum - 1) * n}, #{n};
     </select>
     <insert id="addProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO product (name, description, day_price, week_price, month_price, deposit,city,product_value,
+        INSERT INTO products (name, description, day_price, week_price, month_price, deposit,city,product_value,
                              min_lease_period,category,product_status,rented_until,user_id)
         VALUES (#{name}, #{description}, #{dayPrice}, #{weekPrice},
                 #{monthPrice},
@@ -61,7 +61,7 @@
     </insert>
     <select id="getProductById" resultMap="ProductResultMap">
         SELECT *
-        FROM product
+        FROM products
         WHERE product_id = #{id};
     </select>
 </mapper>
