@@ -1,0 +1,6 @@
+export enum ProductStatus {
+  AVAILABLE = 'AVAILABLE',
+  RENTED = 'RENTED',
+  PAUSED = 'PAUSED',
+  UNAVAILABLE = 'UNAVAILABLE'
+}

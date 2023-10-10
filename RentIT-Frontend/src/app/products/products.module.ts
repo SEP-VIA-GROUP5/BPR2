@@ -7,8 +7,8 @@ import {ProductsComponent} from './products.component';
 import {ProductComponent} from './components/product/product.component';
 import {
   NbButtonModule,
-  NbCardModule,
-  NbIconModule,
+  NbCardModule, NbFormFieldModule,
+  NbIconModule, NbInputModule,
   NbOptionModule,
   NbSelectModule,
   NbSpinnerModule,
@@ -80,6 +80,8 @@ export const PRODUCTS_COMPONENTS = [
     ...PRODUCTS_NG_MODULES,
     ...PRODUCTS_AGM_MODULES,
     ReactiveFormsModule,
+    NbFormFieldModule,
+    NbInputModule,
   ],
   providers: [PRODUCTS_PROVIDERS],
 })
