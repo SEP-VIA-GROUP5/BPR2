@@ -25,7 +25,6 @@ import {LocalStorageService} from "src/core/services/local-storage.service";
       <nb-layout-header>
         <div class="left-section">
           <nb-icon [icon]="ICONS.LIST_OUTLINE" (click)="toggleSidebar()"></nb-icon>
-          <i class="nb-menu"></i>
         </div>
 
         <div class="center-section">

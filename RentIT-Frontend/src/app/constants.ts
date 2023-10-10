@@ -13,6 +13,8 @@ export enum ICONS {
   LOG_IN_OUTLINE = 'log-in-outline',
   LOG_OUT_OUTLINE = 'log-out-outline',
   PLUS_OUTLINE = 'plus-outline',
+  CHECKMARK_CIRCLE_OUTLINE = 'checkmark-circle-outline',
+  IMAGE_OUTLINE = 'image-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {

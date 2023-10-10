@@ -31,7 +31,7 @@ export class UserService {
     this.toastrService.info(
       'You have been logged in successfully!',
       'Authentication',
-      {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE}
     );
   }
 
@@ -47,7 +47,7 @@ export class UserService {
     this.toastrService.info(
       'You have been logged in successfully!',
       'Authentication',
-      {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE}
     );
     return token;
   }

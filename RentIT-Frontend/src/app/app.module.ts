@@ -1,51 +1,55 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  NbThemeModule,
-  NbLayoutModule,
-  NbCardModule,
-  NbButtonModule,
-  NbPopoverModule,
-  NbTabsetModule,
-  NbSelectModule,
-  NbTooltipModule,
-  NbFormFieldModule,
-  NbInputModule,
-  NbMenuModule,
-  NbSearchModule,
-  NbListModule,
-  NbSpinnerModule,
-  NbIconModule,
   NbActionsModule,
+  NbBadgeModule,
+  NbButtonModule,
+  NbCardModule,
+  NbContextMenuModule,
   NbDialogModule,
-  NbToastrModule,
+  NbFormFieldModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbMenuModule,
+  NbPopoverModule,
+  NbSearchModule,
+  NbSelectModule,
   NbSidebarModule,
-  NbUserModule, NbBadgeModule, NbTagModule, NbContextMenuModule
+  NbSpinnerModule,
+  NbTabsetModule,
+  NbTagModule,
+  NbThemeModule,
+  NbToastrModule,
+  NbTooltipModule,
+  NbUserModule, NbWindowModule
 } from '@nebular/theme';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
+import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HttpClientModule} from "@angular/common/http";
 import {NgxsModule} from "@ngxs/store";
 import {environment} from "src/environments/environment.dev";
 import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
-import { NotFoundComponent } from './not-found/not-found.component';
+import {NotFoundComponent} from './not-found/not-found.component';
 import {AgGridModule} from "ag-grid-angular";
-import { SearchBarComponent } from 'src/core/components/search-bar/search-bar.component';
-import { ProductsService } from 'src/api/products.service';
-import { ApiService } from 'src/core/services/api.service';
+import {SearchBarComponent} from 'src/core/components/search-bar/search-bar.component';
+import {ProductsService} from 'src/api/products.service';
+import {ApiService} from 'src/core/services/api.service';
 import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
-import { AuthenticationComponent } from './authentication/authentication.component';
+import {AuthenticationComponent} from './authentication/authentication.component';
 import {FormsModule} from "@angular/forms";
 import {LocalStorageService} from "src/core/services/local-storage.service";
 import {AppState} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
 import {AuthenticationState} from "src/app/authentication/authentication.state";
-import { AddingProductsComponent } from './products/adding-products/adding-products.component';
 import {UrlSerializer} from "@angular/router";
 import {LowerCaseUrlSerializer} from "src/core/providers/lowercase-deserializer.provider";
+import {ImgurApiService} from "src/core/services/imgur.api.service";
+import {ViewImagesComponent} from "src/core/components/view-images/view-images.component";
 
 
 export const STATES = [
@@ -71,7 +75,8 @@ export const PROVIDERS = [
   {
     provide: UrlSerializer,
     useClass: LowerCaseUrlSerializer,
-  }
+  },
+  ImgurApiService,
 ];
 
 export const NG_MODULES = [
@@ -103,6 +108,7 @@ export const NEBULAR_MODULES = [
   NbBadgeModule,
   NbTagModule,
   NbContextMenuModule,
+  NbWindowModule.forRoot(),
 ];
 
 @NgModule({

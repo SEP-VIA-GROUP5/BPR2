@@ -1,0 +1,99 @@
+@import 'node_modules/@nebular/theme/components/stepper/_stepper.component.theme.scss';
+@import 'node_modules/@nebular/theme/components/card/card.component.scss';
+
+nb-card {
+  height: auto;
+  max-height: 85vh;
+}
+
+.d-flex-center {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.full-width-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  align-items: flex-start;
+}
+
+.adding-pictures {
+  background-color: #f5f5f5;
+  border: 1px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+ngx-dropzone {
+  flex: 1;
+  overflow: hidden;
+  width: inherit;
+}
+
+view-images {
+  width: inherit;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border: 1px dashed #ccc;
+  width: inherit;
+}
+
+nb-icon {
+  font-size: 5rem;
+  color: #333;
+}
+
+.pictures-first-row-text {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+.pictures-second-row-text {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: lighter;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+button[nbStepperNext] {
+  margin-left: 10px;
+}
+
+.adding-pictures-step {
+}
+
+nb-stepper .step-content {
+  width: 100%;
+  padding: 0;
+}
+
+nb-stepper {
+  width: 100%;
+  overflow: hidden;
+}
