@@ -8,11 +8,11 @@
 
     <select id="getImagesByProductId" resultMap="ImageResultMap">
         SELECT *
-        FROM image
+        FROM images
         WHERE product_id = #{product_id}
     </select>
     <insert id="addImages" parameterType="java.util.List">
-        INSERT INTO image(image_url, product_id)
+        INSERT INTO images(image_url, product_id)
         VALUES
             <foreach collection="images" item="image" separator=" , ">
                 (#{image.imageUrl}, #{productId})

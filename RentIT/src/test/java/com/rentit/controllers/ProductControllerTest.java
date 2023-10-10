@@ -2,6 +2,7 @@ package com.rentit.controllers;
 
 import com.rentit.model.Image;
 import com.rentit.model.Product;
+import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.enums.ProductStatus;
 import com.rentit.services.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,7 @@ public class ProductControllerTest {
 
     private List<Image> images;
     private Product product;
+    private ProductDTO productDTO;
     @BeforeEach
     void beforeEach(){
         images = new ArrayList<>();
@@ -60,19 +62,36 @@ public class ProductControllerTest {
                 .rentedUntil(LocalDate.parse("2024-05-01"))
                 .userId(1)
                 .build();
+        productDTO = ProductDTO.builder()
+                .id(1)
+                .name("Test name")
+                .description("Test description")
+                .dayPrice(5)
+                .weekPrice(10)
+                .monthPrice(100)
+                .deposit(10)
+                .city("Test city")
+                .productValue(100)
+                .minLeasePeriod(1)
+                .category("test category")
+                .tags(Arrays.asList("test tag", "test tag2"))
+                .images(images)
+                .status(ProductStatus.AVAILABLE)
+                .rentedUntil(LocalDate.parse("2024-05-01"))
+                .build();
     }
 
     @Test
     public void testGetPageOfProducts() throws Exception {
-        when(service.getNProductsByPage(1,1)).thenReturn(Collections.singletonList(product));
+        when(service.getNProductsByPage(1,1)).thenReturn(Collections.singletonList(productDTO));
         this.mvc.perform(get("http://localhost:8080/product/page/1/1")).andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":1,\"name\":\"Test name\",\"description\":\"Test description\",\"dayPrice\":5.0,\"weekPrice\":10.0,\"monthPrice\":100.0,\"deposit\":10.0,\"city\":\"Test city\",\"productValue\":100.0,\"minLeasePeriod\":1,\"category\":\"test category\",\"tags\":[\"test tag\",\"test tag2\"],\"images\":[{\"id\":1,\"imageUrl\":\"http://test.url\"}],\"status\":\"AVAILABLE\",\"rentedUntil\":\"2024-05-01\",\"userId\":1}]"));
+                .andExpect(content().json("[{\"id\":1,\"name\":\"Test name\",\"description\":\"Test description\",\"dayPrice\":5.0,\"weekPrice\":10.0,\"monthPrice\":100.0,\"deposit\":10.0,\"city\":\"Test city\",\"productValue\":100.0,\"minLeasePeriod\":1,\"category\":\"test category\",\"tags\":[\"test tag\",\"test tag2\"],\"images\":[{\"id\":1,\"imageUrl\":\"http://test.url\"}],\"status\":\"AVAILABLE\",\"rentedUntil\":\"2024-05-01\"}]"));
     }
 
     @Test
     public void testGetPageOfProductsErrors() throws Exception {
-        when(service.getNProductsByPage(1,1)).thenReturn(Collections.singletonList(product));
+        when(service.getNProductsByPage(1,1)).thenReturn(Collections.singletonList(productDTO));
         this.mvc.perform(get("http://localhost:8080/product/page")).andDo(print())
                 .andExpect(status().isNotFound());
         this.mvc.perform(get("http://localhost:8080/product/page/a")).andDo(print())
@@ -84,7 +103,7 @@ public class ProductControllerTest {
 
     @Test
     public void testAddProduct() throws Exception {
-        when(service.addProduct(product,"test")).thenReturn(product);
+        when(service.addProduct(product,"test")).thenReturn(productDTO);
         this.mvc.perform(post("http://localhost:8080/product/add")
                 .content("{\"id\":1,\"name\":\"Test name\",\"description\":\"Test description\",\"dayPrice\":5.0,\"weekPrice\":10.0,\"monthPrice\":100.0,\"deposit\":10.0,\"city\":\"Test city\",\"productValue\":100.0,\"minLeasePeriod\":1,\"category\":\"test category\",\"tags\":[\"test tag\",\"test tag2\"],\"images\":[{\"id\":1,\"imageUrl\":\"http://test.url\"}],\"status\":\"AVAILABLE\",\"rentedUntil\":\"2024-05-01\",\"userId\":1}")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -92,12 +111,12 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"id\":1,\"name\":\"Test name\",\"description\":\"Test description\",\"dayPrice\":5.0,\"weekPrice\":10.0,\"monthPrice\":100.0,\"deposit\":10.0,\"city\":\"Test city\",\"productValue\":100.0,\"minLeasePeriod\":1,\"category\":\"test category\",\"tags\":[\"test tag\",\"test tag2\"],\"images\":[{\"id\":1,\"imageUrl\":\"http://test.url\"}],\"status\":\"AVAILABLE\",\"rentedUntil\":\"2024-05-01\",\"userId\":1}"));
+                .andExpect(content().json("{\"id\":1,\"name\":\"Test name\",\"description\":\"Test description\",\"dayPrice\":5.0,\"weekPrice\":10.0,\"monthPrice\":100.0,\"deposit\":10.0,\"city\":\"Test city\",\"productValue\":100.0,\"minLeasePeriod\":1,\"category\":\"test category\",\"tags\":[\"test tag\",\"test tag2\"],\"images\":[{\"id\":1,\"imageUrl\":\"http://test.url\"}],\"status\":\"AVAILABLE\",\"rentedUntil\":\"2024-05-01\"}"));
     }
 
     @Test
     public void testAddProductErrors() throws Exception {
-        when(service.addProduct(product,"test")).thenReturn(product);
+        when(service.addProduct(product,"test")).thenReturn(productDTO);
         this.mvc.perform(post("http://localhost:8080/product/add")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
