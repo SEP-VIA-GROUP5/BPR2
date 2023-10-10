@@ -7,4 +7,5 @@ export interface ImgurImageResponse {
 export interface ImgurImageData {
   id: string;
   link: string;
+  title: string;
 }

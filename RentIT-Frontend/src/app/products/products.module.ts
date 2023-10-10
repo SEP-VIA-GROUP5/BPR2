@@ -13,7 +13,8 @@ import {
   NbSelectModule,
   NbSpinnerModule,
   NbStepperModule,
-  NbTooltipModule
+  NbTooltipModule,
+  NbWindowModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {AddingProductsComponent} from "src/app/products/adding-products/adding-products.component";
@@ -23,11 +24,14 @@ import {AgmCoreModule} from '@agm/core';
 import {environment} from "src/environments/environment.dev";
 import {NgxDropzoneModule} from "ngx-dropzone";
 import {AddingProductsState} from "src/app/products/adding-products/adding-products.state";
+import {NgImageSliderModule} from "ng-image-slider";
 import {ViewImagesComponent} from "src/core/components/view-images/view-images.component";
+import {config} from "rxjs";
 
 export const PRODUCTS_NG_MODULES = [
   FormsModule,
   NgxDropzoneModule,
+  NgImageSliderModule,
 ]
 
 export const PRODUCTS_AGM_MODULES = [
@@ -61,12 +65,12 @@ export const PRODUCTS_COMPONENTS = [
   ProductComponent,
   AddingProductsComponent,
   MapPickerComponent,
+  ViewImagesComponent,
 ];
 
 @NgModule({
   declarations: [
     PRODUCTS_COMPONENTS,
-    ViewImagesComponent,
   ],
   imports: [
     CommonModule,

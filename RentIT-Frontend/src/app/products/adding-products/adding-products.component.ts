@@ -49,7 +49,7 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
   }
 
   onImageSelected(event: NgxDropzoneChangeEvent): void {
-    this.selectedImages = event.addedFiles;
+    this.selectedImages.push(...event.addedFiles);
   }
 
   async uploadImages(): Promise<void> {
@@ -67,5 +67,6 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
 
       this.toastrService.info(`Image '${image.name}' uploaded successfully!`, 'Success');
     }
+    this.selectedImages = [];
   }
 }

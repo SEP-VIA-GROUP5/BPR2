@@ -3,6 +3,7 @@
 
 nb-card {
   height: auto;
+  max-height: 85vh;
 }
 
 .d-flex-center {
@@ -30,6 +31,10 @@ nb-card {
 ngx-dropzone {
   flex: 1;
   overflow: hidden;
+  width: inherit;
+}
+
+view-images {
   width: inherit;
 }
 
@@ -85,8 +90,10 @@ button[nbStepperNext] {
 
 nb-stepper .step-content {
   width: 100%;
+  padding: 0;
 }
 
 nb-stepper {
   width: 100%;
+  overflow: hidden;
 }

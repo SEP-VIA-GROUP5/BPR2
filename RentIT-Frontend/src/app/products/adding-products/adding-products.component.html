@@ -7,8 +7,7 @@
         <nb-step class="adding-pictures-step" [label]="STEPS.PICTURES">
           <h4>{{ TITLES.ADD_PICTURES }}</h4>
           <div class="full-width-content">
-            <!-- Your content here -->
-            <ngx-dropzone (change)="onImageSelected($event)" [multiple]="true" accept=".png, .svg, .jpeg, .jpg">
+            <ngx-dropzone (change)="onImageSelected($event)" [multiple]="true" accept=".png, .jpeg, .jpg">
               <div class="dropzone text-center">
                 <nb-icon [icon]="ICONS.IMAGE_OUTLINE"></nb-icon>
                 <p class="pictures-first-row-text">Add pictures by clicking</p>
@@ -16,7 +15,7 @@
               </div>
             </ngx-dropzone>
 
-            <div *ngIf="selectedImages.length > 0">
+            <div *ngIf="(selectedImages.length > 0) && (uploadedImages$ | async)?.length < 1">
               <h3>Selected Images:</h3>
               <ul>
                 <li *ngFor="let image of selectedImages">
@@ -25,7 +24,11 @@
               </ul>
             </div>
 
-            <view-images *ngIf="(uploadedImages$ | async).length > 0"></view-images>
+            <view-images
+              *ngIf="(uploadedImages$ | async).length > 0"
+              [imgurImages]="uploadedImages$ | async"
+              >
+            </view-images>
             <button status="primary" (click)="uploadImages()" *ngIf="selectedImages.length > 0" nbButton>Save</button>
           </div>
           <div>

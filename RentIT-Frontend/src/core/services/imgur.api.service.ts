@@ -14,9 +14,9 @@ export class ImgurApiService {
   post(image: File): Promise<ImgurImageResponse> {
     let headers = new HttpHeaders().set('Authorization', `Client-ID ${environment.imgur_api_client_id}`);
 
-    // Create a new FormData object and append the image
     const formData = new FormData();
-    formData.append('image', image, image.name);
+    formData.append('image', image);
+    formData.append('title', image.name);
 
     return this.http.post<ImgurImageResponse>('https://api.imgur.com/3/image', formData, { headers }).toPromise();
   }
