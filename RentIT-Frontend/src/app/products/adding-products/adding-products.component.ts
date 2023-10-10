@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "src/api/user.service";
-import {NbToastrService} from "@nebular/theme";
+import {NbTagComponent, NbTagInputAddEvent, NbToastrService} from "@nebular/theme";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
 import {
@@ -77,6 +77,17 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
     this.selectedImages = [];
   }
 
+  onTagRemove(tagToRemove: NbTagComponent): void {
+    this.productDetails.tags = this.productDetails.tags.filter(tag => tag !== tagToRemove.text);
+  }
+
+  onTagAdd({ value, input }: NbTagInputAddEvent): void {
+    if (value) {
+      this.productDetails.tags.push(value)
+    }
+    input.nativeElement.value = '';
+  }
+
   isSubmitButtonDisabled(): boolean {
     return this.productDetails.name === '' ||
       this.productDetails.description === '' ||
@@ -84,13 +95,23 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
       this.productDetails.deposit === null ||
       this.productDetails.productValue === null ||
       this.productDetails.minLeasePeriod === null ||
-      this.productDetails.category === '' ||
-      // this.productDetails.tag.length === 0 ||
-      this.productDetails.images.length === 0;
+      this.minLeasePeriodSelectedPeriod === PERIOD.DEFAULT ||
+      this.productDetails.images.length === 0 ||
+      this.productDetails.tags.length === 0 ||
+      this.productDetails.category === '';
   }
 
   onSubmit(): void {
     console.log('Product details: ', this.productDetails);
+    this.productDetails.minLeasePeriod = this.constructMinLeasePeriod();
+  }
+
+  private constructMinLeasePeriod(): number {
+    switch (this.minLeasePeriodSelectedPeriod) {
+      case PERIOD.DAY: return this.productDetails.minLeasePeriod;
+      case PERIOD.WEEK: return this.productDetails.minLeasePeriod * 7;
+      case PERIOD.MONTH: return this.productDetails.minLeasePeriod * 30;
+    }
   }
 
   ngOnDestroy(): void {

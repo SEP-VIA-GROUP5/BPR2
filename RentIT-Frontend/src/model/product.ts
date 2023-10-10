@@ -14,7 +14,7 @@ export interface Product {
   productValue: number;
   minLeasePeriod?: number | null;
   category: string;
-  tag: string[];
+  tags: string[];
   images: Image[];
   productStatus: ProductStatus;
   rentedUntil?: string | null;

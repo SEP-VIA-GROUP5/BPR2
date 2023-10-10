@@ -38,7 +38,7 @@ export const defaultProduct: Product = {
   productValue: null,
   minLeasePeriod: null,
   category: '',
-  tag: [],
+  tags: [],
   images: [],
   productStatus: null,
   rentedUntil: null

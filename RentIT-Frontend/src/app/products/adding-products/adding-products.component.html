@@ -83,10 +83,13 @@
               <nb-form-field>
                 <input [(ngModel)]="productDetails.category" name="category" type="text" fullWidth size="100px" nbInput shape="round" placeholder="Category">
               </nb-form-field>
-<!--              TODO here we would need to have the tags (see nebular)-->
+              <nb-tag-list (tagRemove)="onTagRemove($event)">
+                <nb-tag *ngFor="let tree of productDetails.tags" [text]="tree" removable></nb-tag>
+                <input type="text" nbTagInput (tagAdd)="onTagAdd($event)" fullWidth>
+              </nb-tag-list>
             </div>
           </div>
-          <div class="button-submit" *ngIf="isSubmitButtonDisabled">
+          <div class="button-submit" *ngIf="isSubmitButtonDisabled()">
             <p style="color:red"> You need to insert all fields. The week and month price are optional.</p>
           </div>
           <div class="button-submit">

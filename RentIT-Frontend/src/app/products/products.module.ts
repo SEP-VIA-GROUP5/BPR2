@@ -12,7 +12,7 @@ import {
   NbOptionModule,
   NbSelectModule,
   NbSpinnerModule,
-  NbStepperModule,
+  NbStepperModule, NbTagModule,
   NbTooltipModule,
   NbWindowModule
 } from '@nebular/theme';
@@ -82,6 +82,7 @@ export const PRODUCTS_COMPONENTS = [
     ReactiveFormsModule,
     NbFormFieldModule,
     NbInputModule,
+    NbTagModule,
   ],
   providers: [PRODUCTS_PROVIDERS],
 })
