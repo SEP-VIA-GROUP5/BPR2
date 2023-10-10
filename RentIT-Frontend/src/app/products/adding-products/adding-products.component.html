@@ -34,6 +34,64 @@
             <button status="primary" (click)="uploadImages()" *ngIf="selectedImages.length > 0" nbButton>Save</button>
           </div>
           <div class="buttons-stepper">
+            <button nbButton disabled nbStepperPrevious>prev</button>
+            <button [disabled]="(uploadedImages$ | async)?.length < 1" nbButton nbStepperNext>next</button>
+          </div>
+        </nb-step>
+        <nb-step class="details-step" [label]="STEPS.DETAILS">
+          <h4>{{ TITLES.ADD_DETAILS }}</h4>
+          <div class="product-information-forms">
+              <div class="left-forms">
+                <nb-form-field>
+                  <!--                TODO name should not be null-->
+                  <input [(ngModel)]="productDetails.name" name="name" type="text" fullWidth size="100px" nbInput shape="round" placeholder="Name">
+                </nb-form-field>
+                <nb-form-field>
+                  <!--              TODO dayPrice should not be null-->
+                  <input [(ngModel)]="productDetails.dayPrice" name="dayPrice" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Price (per day)">
+                </nb-form-field>
+                <nb-form-field>
+                  <!--              TODO should that this is optional-->
+                  <input [(ngModel)]="productDetails.weekPrice" name="weekPrice" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Price (per week)">
+                </nb-form-field>
+                <nb-form-field>
+                  <!--              TODO should that this is optional-->
+                  <input [(ngModel)]="productDetails.monthPrice" name="monthPrice" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Price (per month)">
+                </nb-form-field>
+                <nb-form-field>
+                  <input [(ngModel)]="productDetails.deposit" name="deposit" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Deposit">
+                </nb-form-field>
+                <nb-form-field>
+                  <input [(ngModel)]="productDetails.productValue" name="productValue" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Product value">
+                </nb-form-field>
+                <div class="min-lease-period">
+                  <nb-form-field>
+                    <input [(ngModel)]="productDetails.minLeasePeriod" name="minLeasePeriod" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Min lease period">
+                  </nb-form-field>
+                  <!--              TODO here the drop down menu needs to be added-->
+                </div>
+                <div class="min-lease-period">
+                  <nb-form-field>
+                    <input [(ngModel)]="productDetails.minLeasePeriod" name="minLeasePeriod" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Min lease period">
+                  </nb-form-field>
+                  <!--              TODO here the drop down menu needs to be added-->
+                </div>
+              </div>
+            <div class="right-form">
+              <nb-form-field class="description">
+                <textarea [(ngModel)]="productDetails.description" name="description" type="text" fullWidth nbInput shape="round" placeholder="Description"></textarea>
+              </nb-form-field>
+            </div>
+<!--              <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero-->
+<!--                      [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"-->
+<!--                      (click)="onFormSubmit()" type="submit">Register-->
+<!--              </button>-->
+          </div>
+          <div class="button-submit">
+            <button type="submit" [status]="'primary'" nbButton hero>Submit
+            </button>
+          </div>
+          <div class="buttons-stepper">
             <button nbButton nbStepperPrevious>prev</button>
             <button [disabled]="(uploadedImages$ | async)?.length < 1" nbButton nbStepperNext>next</button>
           </div>

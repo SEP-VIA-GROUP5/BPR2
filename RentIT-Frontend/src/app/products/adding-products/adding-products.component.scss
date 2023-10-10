@@ -3,9 +3,12 @@
 
 nb-card {
   height: auto;
-  max-height: 85vh;
+  max-height: 88vh;
 }
 
+h4 {
+  margin: 10px;
+}
 .d-flex-center {
   display: flex;
   margin: 0;
@@ -88,6 +91,11 @@ button[nbStepperNext] {
 .adding-pictures-step {
 }
 
+.button-submit {
+  display: flex;
+  place-content: center;
+}
+
 nb-stepper .step-content {
   width: 100%;
   padding: 0;
@@ -96,4 +104,32 @@ nb-stepper .step-content {
 nb-stepper {
   width: 100%;
   overflow: hidden;
+}
+
+.product-information-forms {
+  display: flex;
+  justify-content: center;
+  gap: 10rem;
+  padding-top: 10px;
+
+  .left-forms {
+
+  }
+
+  .right-form {
+  }
+
+  nb-form-field {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 23px;
+
+    .invalid-field {
+      border-color: var(--color-danger-500);
+    }
+  }
+
+  .min-lease-period {
+
+  }
 }

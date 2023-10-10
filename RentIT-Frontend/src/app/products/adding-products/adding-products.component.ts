@@ -3,13 +3,18 @@ import {UserService} from "src/api/user.service";
 import {NbToastrService} from "@nebular/theme";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
-import {ADDING_PRODUCTS_STEP, ADDING_PRODUCTS_TITLE} from "src/app/products/adding-products/constants/constants";
+import {
+  ADDING_PRODUCTS_STEP,
+  ADDING_PRODUCTS_TITLE,
+  defaultProduct
+} from "src/app/products/adding-products/constants/constants";
 import {NgxDropzoneChangeEvent} from "ngx-dropzone";
 import {Select, Store} from "@ngxs/store";
 import {UploadImage} from "src/app/products/adding-products/adding-products.actions";
 import {Observable} from "rxjs";
 import {AddingProductsSelectors} from "src/app/products/adding-products/adding-products.selectors";
 import {ImgurImageResponse} from "src/model/imgurImageResponse";
+import {Product} from "src/model/product";
 
 @Component({
   selector: 'app-adding-products',
@@ -27,6 +32,7 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
   protected readonly ICONS = ICONS;
 
   selectedImages: File[] = [];
+  productDetails: Product = defaultProduct;
 
   constructor(private userService: UserService,
               private toastrService: NbToastrService,
@@ -45,9 +51,6 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-  }
-
   onImageSelected(event: NgxDropzoneChangeEvent): void {
     this.selectedImages.push(...event.addedFiles);
   }
@@ -62,11 +65,12 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
     }
 
     for (const image of this.selectedImages) {
-
       this.store.dispatch(new UploadImage(image));
-
       this.toastrService.info(`Image '${image.name}' uploaded successfully!`, 'Success');
     }
     this.selectedImages = [];
+  }
+
+  ngOnDestroy(): void {
   }
 }
