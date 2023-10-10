@@ -5,8 +5,8 @@ import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
 import {
   ADDING_PRODUCTS_STEP,
-  ADDING_PRODUCTS_TITLE,
-  defaultProduct
+  ADDING_PRODUCTS_TITLE, constructProductImagesFromImgurImages,
+  defaultProduct, PERIOD
 } from "src/app/products/adding-products/constants/constants";
 import {NgxDropzoneChangeEvent} from "ngx-dropzone";
 import {Select, Store} from "@ngxs/store";
@@ -30,9 +30,11 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
   protected readonly STEPS = ADDING_PRODUCTS_STEP;
   protected readonly TITLES = ADDING_PRODUCTS_TITLE;
   protected readonly ICONS = ICONS;
+  protected readonly PERIOD = PERIOD;
 
   selectedImages: File[] = [];
   productDetails: Product = defaultProduct;
+  minLeasePeriodSelectedPeriod: PERIOD = PERIOD.DEFAULT;
 
   constructor(private userService: UserService,
               private toastrService: NbToastrService,
@@ -41,6 +43,10 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.uploadedImages$.subscribe(images => {
+      this.productDetails.images = constructProductImagesFromImgurImages(images);
+    });
+
     if (!this.userService.isLoggedIn()) {
       this.toastrService.info(
         'You have been redirected to products page',
@@ -69,6 +75,22 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
       this.toastrService.info(`Image '${image.name}' uploaded successfully!`, 'Success');
     }
     this.selectedImages = [];
+  }
+
+  isSubmitButtonDisabled(): boolean {
+    return this.productDetails.name === '' ||
+      this.productDetails.description === '' ||
+      this.productDetails.dayPrice === null ||
+      this.productDetails.deposit === null ||
+      this.productDetails.productValue === null ||
+      this.productDetails.minLeasePeriod === null ||
+      this.productDetails.category === '' ||
+      // this.productDetails.tag.length === 0 ||
+      this.productDetails.images.length === 0;
+  }
+
+  onSubmit(): void {
+    console.log('Product details: ', this.productDetails);
   }
 
   ngOnDestroy(): void {

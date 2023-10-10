@@ -68,32 +68,34 @@
                   <nb-form-field>
                     <input [(ngModel)]="productDetails.minLeasePeriod" name="minLeasePeriod" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Min lease period">
                   </nb-form-field>
-                  <!--              TODO here the drop down menu needs to be added-->
-                </div>
-                <div class="min-lease-period">
-                  <nb-form-field>
-                    <input [(ngModel)]="productDetails.minLeasePeriod" name="minLeasePeriod" type="number" fullWidth size="100px" nbInput shape="round" placeholder="Min lease period">
-                  </nb-form-field>
-                  <!--              TODO here the drop down menu needs to be added-->
+                  <nb-select placeholder="Select Showcase" [(selected)]="minLeasePeriodSelectedPeriod" shape="round">
+                    <nb-option [value]="PERIOD.DEFAULT">Select period</nb-option>
+                    <nb-option [value]="PERIOD.DAY"> {{ PERIOD.DAY }}</nb-option>
+                    <nb-option [value]="PERIOD.WEEK"> {{ PERIOD.WEEK }}</nb-option>
+                    <nb-option [value]="PERIOD.MONTH"> {{ PERIOD.MONTH }}</nb-option>
+                  </nb-select>
                 </div>
               </div>
             <div class="right-form">
               <nb-form-field class="description">
                 <textarea [(ngModel)]="productDetails.description" name="description" type="text" fullWidth nbInput shape="round" placeholder="Description"></textarea>
               </nb-form-field>
+              <nb-form-field>
+                <input [(ngModel)]="productDetails.category" name="category" type="text" fullWidth size="100px" nbInput shape="round" placeholder="Category">
+              </nb-form-field>
+<!--              TODO here we would need to have the tags (see nebular)-->
             </div>
-<!--              <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero-->
-<!--                      [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"-->
-<!--                      (click)="onFormSubmit()" type="submit">Register-->
-<!--              </button>-->
+          </div>
+          <div class="button-submit" *ngIf="isSubmitButtonDisabled">
+            <p style="color:red"> You need to insert all fields. The week and month price are optional.</p>
           </div>
           <div class="button-submit">
-            <button type="submit" [status]="'primary'" nbButton hero>Submit
+            <button type="submit" [status]="'primary'"  [disabled]="isSubmitButtonDisabled()" (click)="onSubmit()" nbButton hero>Submit
             </button>
           </div>
           <div class="buttons-stepper">
             <button nbButton nbStepperPrevious>prev</button>
-            <button [disabled]="(uploadedImages$ | async)?.length < 1" nbButton nbStepperNext>next</button>
+            <button disabled nbButton nbStepperNext>next</button>
           </div>
         </nb-step>
       </nb-stepper>
