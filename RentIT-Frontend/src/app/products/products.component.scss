@@ -5,6 +5,11 @@ nb-card {
   flex-direction: column;
 }
 
+nb-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
 nb-card-header,
 nb-card-footer {
   flex-shrink: 0;
@@ -22,7 +27,7 @@ nb-card-footer {
 
 @media only screen and (max-width: 472px) {
   h1 {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   nb-card-body {
@@ -33,10 +38,18 @@ nb-card-footer {
     padding: 0;
     grid-template-columns: repeat(1, 1fr);
   }
+
+  .adding-product-button {
+    height: 2.5rem;
+  }
 }
 
 @media only screen and (min-width: 473px) and (max-width: 768px) {
   .product-grid {
     padding: 0 30px;
+  }
+
+  .adding-product-button {
+    height: 2.5rem;
   }
 }
