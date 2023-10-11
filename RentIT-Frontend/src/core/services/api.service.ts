@@ -28,8 +28,12 @@ export class ApiService<T> {
     return this.http.put<T>(`${environment.api_url}${path}`, JSON.stringify(body), { headers });
   }
 
-  post<T>(path: string, body: Object = {}): Observable<T> {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+  post<T>(path: string, body: Object = {}, tokenRequired: boolean): Observable<T> {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    if(tokenRequired) {
+      let token: Token = JSON.parse(this.localStorageService.getData(LocalStorageEnum.TOKEN));
+      headers = headers.set('Authorization', ('Bearer '.concat(token.tokenBody)));
+    }
     return this.http.post<T>(`${environment.api_url}${path}`, JSON.stringify(body), { headers });
   }
 

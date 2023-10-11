@@ -71,6 +71,7 @@ export const PROVIDERS = [
   ApiService,
   LocalStorageService,
   ProductsService,
+  ProductsService,
   UserService,
   {
     provide: UrlSerializer,
