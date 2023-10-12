@@ -27,7 +27,7 @@ export class UserService {
   PATH_CONTROLLER = 'user';
 
   async register(user: User) {
-    let response = await this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/register`, user));
+    let response = await this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/register`, user, false));
     this.toastrService.info(
       'You have been logged in successfully!',
       'Authentication',
@@ -36,7 +36,7 @@ export class UserService {
   }
 
   async login(user: User) {
-    let token = await this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/login`, { email: user.email, password: user.password }));
+    let token = await this.apiService.call(null, this.apiService.post(`${this.PATH_CONTROLLER}/login`, { email: user.email, password: user.password }, false));
     if (this.isTokenObject(token) && token) {
       this.localStorageService.saveData(LocalStorageEnum.TOKEN, JSON.stringify(token));
       user = await this.apiService.call(userMocked, this.apiService.get(`${this.PATH_CONTROLLER}/getUser`, true)) as User;

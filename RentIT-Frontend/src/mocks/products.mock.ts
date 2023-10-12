@@ -1,7 +1,23 @@
 import {Product} from "src/model/product";
 import {mockedTags} from "src/mocks/tags.mock";
 import {imagesMock} from "src/mocks/images.mock";
+import {ProductStatus} from "src/model/productStatus";
 
+// productId?: number;
+// name: string;
+// description?: string;
+// dayPrice: number;
+// weekPrice: number;
+// monthPrice: number;
+// deposit: number;
+// city: string;
+// productValue: number;
+// minLeasePeriod?: number | null;
+// category: string;
+// tag: string[];
+// images: Image[];
+// productStatus: ProductStatus;
+// rentedUntil?: string | null;
 export const mockedProducts: Product[] = [
   {
     productId: 1231,
@@ -13,8 +29,12 @@ export const mockedProducts: Product[] = [
     minLeasePeriod: 2,
     city: "Horsens",
     category: "Camera",
-    tag: [mockedTags[0], mockedTags[1]],
+    tags: [mockedTags[0], mockedTags[1]],
     images: [imagesMock[1]],
+    productStatus: ProductStatus.AVAILABLE,
+    productValue: 100,
+    deposit: 10,
+    rentedUntil: null
   },
   {
     productId: 1233,
@@ -26,98 +46,11 @@ export const mockedProducts: Product[] = [
     minLeasePeriod: 2,
     city: "Horsens",
     category: "Car",
-    tag: [mockedTags[0], mockedTags[1]],
+    tags: [mockedTags[0], mockedTags[1]],
     images: [imagesMock[1]],
-  },
-  {
-    productId: 12334,
-    name: "Yamaha",
-    description: "some description",
-    dayPrice: 10.0,
-    weekPrice: 50.0,
-    monthPrice: 200.0,
-    minLeasePeriod: 2,
-    city: "Horsens",
-    category: "Bike",
-    tag: [mockedTags[0], mockedTags[1]],
-    images: [imagesMock[1]],
-  },
-  {
-    productId: 111,
-    name: "Some nice boat",
-    description: "some description",
-    dayPrice: 10.0,
-    weekPrice: 50.0,
-    monthPrice: 200.0,
-    minLeasePeriod: 2,
-    city: "Horsens",
-    category: "Boat",
-    tag: [mockedTags[0], mockedTags[1]],
-    images: [imagesMock[1]],
-  },
-  {
-    productId: 1231,
-    name: "GoPro",
-    description: "some description",
-    dayPrice: 10.0,
-    weekPrice: 50.0,
-    monthPrice: 200.0,
-    minLeasePeriod: 2,
-    city: "Horsens",
-    category: "Camera",
-    tag: [mockedTags[0], mockedTags[1]],
-    images: [imagesMock[1]],
-  },
-  {
-    productId: 1233,
-    name: "VW Jetta",
-    description: "some description",
-    dayPrice: 10.0,
-    weekPrice: 50.0,
-    monthPrice: 200.0,
-    minLeasePeriod: 2,
-    city: "Horsens",
-    category: "Car",
-    tag: [mockedTags[0], mockedTags[1]],
-    images: [imagesMock[1]],
-  },
-  {
-    productId: 12334,
-    name: "Yamaha",
-    description: "some description",
-    dayPrice: 10.0,
-    weekPrice: 50.0,
-    monthPrice: 200.0,
-    minLeasePeriod: 2,
-    city: "Horsens",
-    category: "Bike",
-    tag: [mockedTags[0], mockedTags[1]],
-    images: [imagesMock[1]],
-  },
-  {
-    productId: 111,
-    name: "Some nice boat",
-    description: "some description",
-    dayPrice: 10.0,
-    weekPrice: 50.0,
-    monthPrice: 200.0,
-    minLeasePeriod: 2,
-    city: "Horsens",
-    category: "Boat",
-    tag: [mockedTags[0], mockedTags[1]],
-    images: [imagesMock[1]],
-  },
-  {
-    productId: 1231,
-    name: "GoPro",
-    description: "some description",
-    dayPrice: 10.0,
-    weekPrice: 50.0,
-    monthPrice: 200.0,
-    minLeasePeriod: 2,
-    city: "Horsens",
-    category: "Camera",
-    tag: [mockedTags[0], mockedTags[1]],
-    images: [imagesMock[1]],
+    productStatus: ProductStatus.UNAVAILABLE,
+    productValue: 100,
+    deposit: 10,
+    rentedUntil: null
   }
 ];

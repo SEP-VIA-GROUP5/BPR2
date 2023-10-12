@@ -6,6 +6,10 @@ nb-card {
   max-height: 85vh;
 }
 
+h4 {
+  margin: 5px;
+}
+
 .d-flex-center {
   display: flex;
   margin: 0;
@@ -88,6 +92,11 @@ button[nbStepperNext] {
 .adding-pictures-step {
 }
 
+.button-submit {
+  display: flex;
+  place-content: center;
+}
+
 nb-stepper .step-content {
   width: 100%;
   padding: 0;
@@ -96,4 +105,40 @@ nb-stepper .step-content {
 nb-stepper {
   width: 100%;
   overflow: hidden;
+}
+
+.product-information-forms {
+  display: flex;
+  justify-content: center;
+  gap: 10rem;
+  padding-top: 10px;
+
+  .left-forms {
+
+  }
+
+  .right-form {
+  }
+
+  nb-form-field {
+    width: 100%;
+    max-width: 428px;
+    margin-bottom: 23px;
+
+    .invalid-field {
+      border-color: var(--color-danger-500);
+    }
+  }
+
+  nb-tag-list {
+    width: 100%;
+    max-width: 428px;
+    margin-bottom: 23px;
+  }
+
+  .min-lease-period {
+    display: inline-flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
 }

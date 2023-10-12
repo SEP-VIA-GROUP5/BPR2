@@ -115,7 +115,6 @@ export class AppComponent implements OnInit, OnDestroy {
         else {
           this.router.navigate([link]);
         }
-        console.log(`Clicked menu item: ${title}, Link: ${link}`);
       });
   }
 

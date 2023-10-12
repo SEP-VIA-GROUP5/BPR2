@@ -4,7 +4,9 @@ import {ProductsFetch, ProductsReset} from "src/app/products/products.actions";
 import {ProductsSelector} from "src/app/products/products.selector";
 import {Observable} from "rxjs";
 import {Product} from "src/model/product";
-import {ICONS} from "src/app/constants";
+import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
+import {Router} from "@angular/router";
+import {UserService} from "src/api/user.service";
 
 @Component({
   selector: 'app-products',
@@ -24,6 +26,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store,
+    private router: Router,
+    public userService: UserService,
   ) {
   }
 
@@ -33,6 +37,21 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   loadNextProducts() {
     this.store.dispatch(new ProductsFetch());
+  }
+
+  navigateToAddingProductPage() {
+    this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS.concat(PRODUCTS_MENU_ITEM_URLS.ADDING_PRODUCTS)]);
+  }
+
+  getWindowSize() {
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+  }
+
+  isAddingProductButtonEnabled() {
+    return this.userService.isLoggedIn();
   }
 
   ngOnDestroy(): void {
