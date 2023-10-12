@@ -28,7 +28,8 @@
                 </li>
               </ul>
             </div>
-            <p *ngIf="(uploadedImages$ | async).length > 0" style="color:red; font-style:italic; padding:0;"> You need to select an
+            <p *ngIf="(uploadedImages$ | async).length > 0" style="color:red; font-style:italic; padding:0;"> You need
+              to select an
               image by clicking, in order to remove it.</p>
             <view-images
               *ngIf="(uploadedImages$ | async).length > 0"
@@ -98,7 +99,7 @@
               </nb-form-field>
               <nb-tag-list (tagRemove)="onTagRemove($event)">
                 <nb-tag *ngFor="let tree of productDetails.tags" [text]="tree" removable></nb-tag>
-                <input type="text" nbTagInput (tagAdd)="onTagAdd($event)" fullWidth>
+                <input placeholder="Tags" shape="round" type="text" nbTagInput (tagAdd)="onTagAdd($event)" fullWidth>
               </nb-tag-list>
             </div>
           </div>

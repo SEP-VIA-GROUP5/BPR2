@@ -5,12 +5,14 @@ import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
 import {
   ADDING_PRODUCTS_STEP,
-  ADDING_PRODUCTS_TITLE, constructProductImagesFromImgurImages,
-  defaultProduct, PERIOD
+  ADDING_PRODUCTS_TITLE,
+  constructProductImagesFromImgurImages,
+  defaultProduct,
+  PERIOD
 } from "src/app/products/adding-products/constants/constants";
 import {NgxDropzoneChangeEvent} from "ngx-dropzone";
 import {Select, Store} from "@ngxs/store";
-import {UploadImage} from "src/app/products/adding-products/adding-products.actions";
+import {AddProduct, UploadImage} from "src/app/products/adding-products/adding-products.actions";
 import {Observable} from "rxjs";
 import {AddingProductsSelectors} from "src/app/products/adding-products/adding-products.selectors";
 import {ImgurImageResponse} from "src/model/imgurImageResponse";
@@ -81,7 +83,7 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
     this.productDetails.tags = this.productDetails.tags.filter(tag => tag !== tagToRemove.text);
   }
 
-  onTagAdd({ value, input }: NbTagInputAddEvent): void {
+  onTagAdd({value, input}: NbTagInputAddEvent): void {
     if (value) {
       this.productDetails.tags.push(value)
     }
@@ -96,21 +98,24 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
       this.productDetails.productValue === null ||
       this.productDetails.minLeasePeriod === null ||
       this.minLeasePeriodSelectedPeriod === PERIOD.DEFAULT ||
-      this.productDetails.images.length === 0 ||
-      this.productDetails.tags.length === 0 ||
-      this.productDetails.category === '';
+      // this.productDetails.images.length === 0 ||
+      this.productDetails.tags.length === 0;
   }
 
   onSubmit(): void {
     console.log('Product details: ', this.productDetails);
     this.productDetails.minLeasePeriod = this.constructMinLeasePeriod();
+    this.store.dispatch(new AddProduct(this.productDetails));
   }
 
   private constructMinLeasePeriod(): number {
     switch (this.minLeasePeriodSelectedPeriod) {
-      case PERIOD.DAY: return this.productDetails.minLeasePeriod;
-      case PERIOD.WEEK: return this.productDetails.minLeasePeriod * 7;
-      case PERIOD.MONTH: return this.productDetails.minLeasePeriod * 30;
+      case PERIOD.DAY:
+        return this.productDetails.minLeasePeriod;
+      case PERIOD.WEEK:
+        return this.productDetails.minLeasePeriod * 7;
+      case PERIOD.MONTH:
+        return this.productDetails.minLeasePeriod * 30;
     }
   }
 

@@ -7,14 +7,16 @@ import {ProductsComponent} from './products.component';
 import {ProductComponent} from './components/product/product.component';
 import {
   NbButtonModule,
-  NbCardModule, NbFormFieldModule,
-  NbIconModule, NbInputModule,
+  NbCardModule,
+  NbFormFieldModule,
+  NbIconModule,
+  NbInputModule,
   NbOptionModule,
   NbSelectModule,
   NbSpinnerModule,
-  NbStepperModule, NbTagModule,
-  NbTooltipModule,
-  NbWindowModule
+  NbStepperModule,
+  NbTagModule,
+  NbTooltipModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {AddingProductsComponent} from "src/app/products/adding-products/adding-products.component";
@@ -26,7 +28,7 @@ import {NgxDropzoneModule} from "ngx-dropzone";
 import {AddingProductsState} from "src/app/products/adding-products/adding-products.state";
 import {NgImageSliderModule} from "ng-image-slider";
 import {ViewImagesComponent} from "src/core/components/view-images/view-images.component";
-import {config} from "rxjs";
+import {ProductService} from "src/api/product.service";
 
 export const PRODUCTS_NG_MODULES = [
   FormsModule,
@@ -41,6 +43,7 @@ export const PRODUCTS_AGM_MODULES = [
 ]
 
 export const PRODUCTS_PROVIDERS = [
+  ProductService,
 ]
 
 export const PRODUCTS_NEBULAR_COMPONENTS = [
