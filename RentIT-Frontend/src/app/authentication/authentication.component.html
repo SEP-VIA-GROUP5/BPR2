@@ -21,7 +21,8 @@
              required email>
     </nb-form-field>
     <nb-form-field>
-      <input [(ngModel)]="userContent.phoneNumber" name="phoneNumber" type="text" nbInput shape="round" placeholder="Phone number"
+      <input [(ngModel)]="userContent.phoneNumber" name="phoneNumber" type="text" nbInput shape="round"
+             placeholder="Phone number"
              (input)="onInputType($event)" [class.invalid-field]="!isPhoneNumberValid"
              nbTooltip="The phone number is not valid. It needs to contain '+' and only numbers"
              [nbTooltipDisabled]="isPhoneNumberValid"
@@ -42,6 +43,7 @@
     </nb-form-field>
     <nb-form-field>
       <input [(ngModel)]="userContent.location" name="location" type="text" nbInput shape="round" placeholder="Location"
+             (input)="onInputType($event)"
              required>
     </nb-form-field>
     <nb-form-field>
@@ -99,5 +101,12 @@
             [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
             (click)="onFormSubmit()" type="submit">Login
     </button>
+  </div>
+</ng-template>
+
+<ng-template #locationChooser let-data>
+  <div class="location-chooser">
+    <map-picker [location]="data.location" buttonTitle="Save location"
+                (buttonEvent)="onSaveLocation($event)"></map-picker>
   </div>
 </ng-template>
