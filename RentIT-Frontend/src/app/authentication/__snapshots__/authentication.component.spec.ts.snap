@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`src > app > authentication > authentication.component.spec.ts should match snapshot 1`] = `
+<app-authentication
+  ICONS={[Function Object]}
+  __statusCode$__selector={[Function Observable]}
+  alive={[Function Boolean]}
+  isEmailValid={[Function Boolean]}
+  isLoggedInTemplate={[Function Boolean]}
+  isPasswordValid={[Function Boolean]}
+  isPhoneNumberValid={[Function Boolean]}
+  locationChooser={[Function TemplateRef2]}
+  router={[Function Router]}
+  showPassword="false"
+  store={[Function Store]}
+  toastrService={[Function NbToastrService]}
+  tooltipEmail="undefined"
+  tooltipPassword="undefined"
+  tooltipPhoneNumber="undefined"
+  userContent={[Function Object]}
+  userService={[Function UserService]}
+  windowService={[Function NbWindowService]}
+>
+  <div
+    class="authentication-container"
+  >
+    <nb-card
+      class="size-medium"
+      size="medium"
+    >
+      <nb-card-body>
+        <h1>
+           Login 
+        </h1>
+        <p>
+           Don't have an account? 
+          <a>
+            Register
+          </a>
+        </p>
+        <div
+          class="form-fields"
+        >
+          <nb-form-field
+            class="nb-form-field-limited-width nb-form-field-size-medium"
+          >
+            <div
+              class="nb-form-control-container"
+            >
+              <input
+                class="size-medium status-basic shape-round"
+                email=""
+                name="email"
+                nbinput=""
+                ngmodel=""
+                placeholder="Email"
+                required=""
+                shape="round"
+                type="email"
+              />
+            </div>
+          </nb-form-field>
+          <nb-form-field
+            class="nb-form-field-limited-width nb-form-field-size-medium"
+          >
+            <div
+              class="nb-form-control-container nb-form-field-control-with-suffix"
+            >
+              <input
+                class="size-medium status-basic shape-round"
+                nbinput=""
+                placeholder="Password"
+                required=""
+                shape="round"
+                type="password"
+              />
+            </div>
+            <div
+              class="nb-form-field-addon nb-form-field-suffix-medium nb-form-field-addon-basic"
+            >
+              <button
+                aria-disabled="false"
+                class="appearance-ghost size-medium shape-rectangle icon-start icon-end status-basic"
+                ghost=""
+                nbbutton=""
+                nbsuffix=""
+                tabindex="0"
+              >
+                <nb-icon
+                  aria-label="show password"
+                  pack="eva"
+                >
+                  <svg
+                    class="eva eva-eye-off-2-outline"
+                    fill="currentColor"
+                    height="100%"
+                    viewBox="0 0 24 24"
+                    width="100%"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      data-name="Layer 2"
+                    >
+                      <g
+                        data-name="eye-off-2"
+                      >
+                        <rect
+                          height="24"
+                          opacity="0"
+                          width="24"
+                        />
+                        <path
+                          d="M17.81 13.39A8.93 8.93 0 0 0 21 7.62a1 1 0 1 0-2-.24 7.07 7.07 0 0 1-14 0 1 1 0 1 0-2 .24 8.93 8.93 0 0 0 3.18 5.77l-2.3 2.32a1 1 0 0 0 1.41 1.41l2.61-2.6a9.06 9.06 0 0 0 3.1.92V19a1 1 0 0 0 2 0v-3.56a9.06 9.06 0 0 0 3.1-.92l2.61 2.6a1 1 0 0 0 1.41-1.41z"
+                        />
+                      </g>
+                    </g>
+                  </svg>
+                </nb-icon>
+              </button>
+            </div>
+          </nb-form-field>
+          <button
+            aria-disabled="true"
+            class="submit-button btn-disabled size-medium shape-semi-round appearance-hero status-primary"
+            disabled=""
+            hero=""
+            nbbutton=""
+            shape="semi-round"
+            tabindex="-1"
+            type="submit"
+          >
+            Login 
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</app-authentication>
+`;
