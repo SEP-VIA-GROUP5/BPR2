@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {
   defaultUserContent,
   isEmail,
@@ -13,7 +13,7 @@ import {Observable} from "rxjs";
 import {AuthenticationSelector} from "src/app/authentication/authentication.selector";
 import {Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
-import {NbToastrService, NbTooltipDirective} from "@nebular/theme";
+import {NbToastrService, NbTooltipDirective, NbWindowRef, NbWindowService} from "@nebular/theme";
 
 @Component({
   selector: 'app-authentication',
@@ -37,12 +37,17 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
   @ViewChild('tooltipPassword') tooltipPassword: NbTooltipDirective;
   @ViewChild('tooltipPhoneNumber') tooltipPhoneNumber: NbTooltipDirective;
 
+  //location map picker
+  @ViewChild('locationChooser') locationChooser: TemplateRef<any>;
+  windowRef: NbWindowRef;
+
   alive = true;
 
   constructor(private store: Store,
               private router: Router,
               private userService: UserService,
-              private toastrService: NbToastrService) {
+              private toastrService: NbToastrService,
+              private windowService: NbWindowService) {
   }
 
   ngOnInit(): void {
@@ -95,7 +100,21 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
         this.isPhoneNumberValid = this.userContent.phoneNumber !== '' && isPhoneNumber(this.userContent.phoneNumber);
         break;
       }
+      case "location": {
+        if (this.userContent.location !== '') {
+          this.windowRef = this.windowService.open(
+            this.locationChooser,
+            {windowClass: 'window-location', title: 'Choose your location', context: {location: this.userContent.location}},
+          );
+        }
+      }
     }
+  }
+
+  onSaveLocation(location: string) {
+    this.userContent.location = location;
+    this.windowRef.close();
+    this.toastrService.info('Location saved successfully!', 'Success', {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE});
   }
 
   showTooltip() {

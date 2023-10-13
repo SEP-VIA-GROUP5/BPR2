@@ -27,7 +27,8 @@ import {
   NbThemeModule,
   NbToastrModule,
   NbTooltipModule,
-  NbUserModule, NbWindowModule
+  NbUserModule,
+  NbWindowModule
 } from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HttpClientModule} from "@angular/common/http";
@@ -41,7 +42,7 @@ import {ProductsService} from 'src/api/products.service';
 import {ApiService} from 'src/core/services/api.service';
 import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
 import {AuthenticationComponent} from './authentication/authentication.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {LocalStorageService} from "src/core/services/local-storage.service";
 import {AppState} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
@@ -49,13 +50,21 @@ import {AuthenticationState} from "src/app/authentication/authentication.state";
 import {UrlSerializer} from "@angular/router";
 import {LowerCaseUrlSerializer} from "src/core/providers/lowercase-deserializer.provider";
 import {ImgurApiService} from "src/core/services/imgur.api.service";
-import {ViewImagesComponent} from "src/core/components/view-images/view-images.component";
+import {MapPickerComponent} from "src/core/components/map-picker/map-picker.component";
+import {AgmCoreModule} from "@agm/core";
 
 
 export const STATES = [
   AppState,
   AuthenticationState,
 ];
+
+export const AGM_MODULES = [
+  AgmCoreModule.forRoot({
+    apiKey: environment.google_api_key, // Replace with your API Key
+  }),
+  ReactiveFormsModule,
+]
 
 export const PAGE_COMPONENTS = [
   AppComponent,
@@ -65,6 +74,7 @@ export const PAGE_COMPONENTS = [
 
 export const CORE_COMPONENTS = [
   SearchBarComponent,
+  MapPickerComponent,
 ];
 
 export const PROVIDERS = [
@@ -114,7 +124,7 @@ export const NEBULAR_MODULES = [
 
 @NgModule({
   declarations: [
-   PAGE_COMPONENTS,
+    PAGE_COMPONENTS,
     ...CORE_COMPONENTS,
   ],
   imports: [
@@ -131,8 +141,10 @@ export const NEBULAR_MODULES = [
     NbThemeModule.forRoot({name: 'corporate'}),
     NEBULAR_MODULES,
     NG_MODULES,
+    AGM_MODULES,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
