@@ -9,11 +9,11 @@ import {NbToastrService} from "@nebular/theme";
   template: `
     <div class="map-picker-container">
       <div class="form-content">
-        <input #locationInput [(ngModel)]="location" name="location" type="text" nbInput shape="round"
+        <input #locationInput class="location-input" [(ngModel)]="location" name="location" type="text" nbInput shape="round"
                placeholder="Location"
                (input)="onInputChange($event)"
                required>
-        <button nbButton status="primary" size="medium" shape="round" (click)="onButtonPressed()">{{ buttonTitle }}</button>
+        <button nbButton class="map-picker-button" status="primary" size="medium" shape="round" (click)="onButtonPressed()">{{ buttonTitle }}</button>
       </div>
       <p style="color:red"> You only need to insert the city where the item is located. </p>
       <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
@@ -31,8 +31,6 @@ export class MapPickerComponent implements OnInit, AfterViewInit {
   lat: number = 55.8581302;
   lng: number = 9.8475881;
   zoom: number = 15;
-  locationUpdateInterval: any;
-
 
   constructor(
     private http: HttpClient,
@@ -56,13 +54,7 @@ export class MapPickerComponent implements OnInit, AfterViewInit {
   onInputChange(event: any) {
     switch (event.target.name) {
       case 'location': {
-        if (this.locationUpdateInterval) {
-          clearInterval(this.locationUpdateInterval);
-        }
-
-        this.locationUpdateInterval = setInterval(() => {
-          this.updateLocation();
-        }, 2000);
+        this.updateLocation();
         break;
       }
     }
