@@ -30,7 +30,6 @@ describe('AuthenticationComponent', () => {
       cy.visit('/authentication');
 
       cy.get('nb-form-field').eq(1).find('input').type('test@cypress.com');
-      // context of email input should be empty
       cy.get('nb-form-field').eq(2).find('input').should('have.value', '');
       cy.get('.submit-button').should('have.text', 'Login');
       cy.get('.submit-button').should('be.disabled');
@@ -116,22 +115,6 @@ describe('AuthenticationComponent', () => {
       cy.get('.submit-button').should('have.text', 'Register');
       cy.get('.submit-button').should('be.disabled');
     });
-
-    // it('password should be seen when clicking on showing password button', () => {
-    //   cy.visit('/authentication');
-    //   expect(cy.get('.register-redirect')).to.exist;
-    //   cy.get('.register-redirect').click();
-    //
-    //   cy.get('nb-form-field').eq(6).find('input').type('PasswordFavorite1!');
-    //   cy.get('nb-form-field').eq(7).find('input').type('PassworFavorite1!');
-    //   cy.get('.show-password-button').click({multiple: true}).then(() =>{
-    //     cy.get('.show-password-button').should('have.attr','aria-label', 'show password');
-    //     cy.get('.show-password-button').should('have.attr','ng-reflect-icon', ICONS.EYE_OUTLINE);
-    //   });
-    //   // [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
-    //   // MAKE this one works TODO
-    //   // cy.get('.show-password-button').should('have.attr', 'aria-label', 'hide password');
-    // });
 
     it('should not enable register button if email is invalid', () => {
       cy.visit('/authentication');
@@ -265,6 +248,3 @@ describe('AuthenticationComponent', () => {
     });
   });
 });
-// test for after returning 200, it switches to login content
-// test for after logging in, it redirects to products page
-
