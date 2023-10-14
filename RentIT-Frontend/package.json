@@ -11,7 +11,11 @@
     "test": "jest --runInBand",
     "full-test": "update-snapshot && build && start",
     "component": "ng generate component",
-    "service": "ng generate service"
+    "service": "ng generate service",
+    "e2e": "ng e2e",
+    "cypress open": "cypress open --configuration=mock",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -51,6 +55,7 @@
     "@schematics/angular": "~15.2.4",
     "@types/crypto-js": "^4.1.2",
     "@types/jest": "^29.5.1",
+    "cypress": "^13.3.1",
     "jest": "^29.5.0",
     "jest-preset-angular": "^13.1.0",
     "jest-snapshot": "^29.5.0",

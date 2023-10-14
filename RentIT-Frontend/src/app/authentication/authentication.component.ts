@@ -81,7 +81,7 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
       return !this.userContent.password || !this.userContent.email;
     } else {
       let allFieldsFilled = !Object.values(this.userContent).some(value => !value);
-      return !(allFieldsFilled && this.isEmailValid && this.isPasswordValid);
+      return !(allFieldsFilled && this.isEmailValid && this.isPasswordValid && this.isPhoneNumberValid);
     }
   }
 
