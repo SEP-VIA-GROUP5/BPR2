@@ -12,6 +12,7 @@ import {NbToastrService} from "@nebular/theme";
         <input #locationInput class="location-input" [(ngModel)]="location" name="location" type="text" nbInput shape="round"
                placeholder="Location"
                (input)="onInputChange($event)"
+               (blur)="onInputBlur()"
                required>
         <button nbButton class="map-picker-button" status="primary" size="medium" shape="round" (click)="onButtonPressed()">{{ buttonTitle }}</button>
       </div>
@@ -31,6 +32,9 @@ export class MapPickerComponent implements OnInit, AfterViewInit {
   lat: number = 55.8581302;
   lng: number = 9.8475881;
   zoom: number = 15;
+
+  isTyping = false;
+  timeout: any;
 
   constructor(
     private http: HttpClient,
@@ -54,10 +58,24 @@ export class MapPickerComponent implements OnInit, AfterViewInit {
   onInputChange(event: any) {
     switch (event.target.name) {
       case 'location': {
-        this.updateLocation();
+        this.isTyping = true;
+
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+
+        this.timeout = setTimeout(() => {
+          if (this.isTyping) {
+            this.updateLocation();
+          }
+        }, 5000);
         break;
       }
     }
+  }
+
+  onInputBlur() {
+    this.isTyping = false;
   }
 
   updateLocation() {
