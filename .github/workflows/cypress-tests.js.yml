@@ -20,7 +20,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          cd: cd ./RentIT-Frontend
-          build: cd RentIT-Frontend && yarn run build
-          start: cd RentIT-Frontend && yarn start
+          working-directory: RentIT-Frontend
+          build: yarn run build
+          start: yarn start
           browser: chrome
