@@ -1,4 +1,4 @@
-name: End-To-End Testing Cypress
+name: End2End Cypress WebApp
 
 on: push
 
@@ -6,22 +6,16 @@ jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     container:
-      image: cypress/included:8.5.0
+      image: cypress/browsers:node18.12.0-chrome106-ff106
       options: --user 1001
     steps:
+      - name: Navigate to WebApp directory
+        run: cd RentIT-Frontend
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-      - name: Install dependencies and build
-        run: |
-          cd RentIT-Frontend
-          yarn install
-          yarn build
       - name: Cypress run
-        working-directory: ./RentIT-Frontend
-        run: |
-          yarn start
-          npx cypress run --browser chrome
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
+          browser: chrome
