@@ -49,7 +49,7 @@ export class MapPickerComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.getCurrentLocation();
   }
-
+// test
   onButtonPressed() {
     //sends back the location
     this.buttonEvent.emit(this.location);
