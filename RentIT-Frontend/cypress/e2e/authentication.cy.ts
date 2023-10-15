@@ -1,5 +1,3 @@
-import {ICONS} from "src/app/constants";
-
 describe('AuthenticationComponent', () => {
   describe('test login functionality and content', () => {
     it('should display the login content first when user enters the page', () => {
