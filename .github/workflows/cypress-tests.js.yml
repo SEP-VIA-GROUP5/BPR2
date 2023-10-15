@@ -6,7 +6,7 @@ on:
     paths:
       - 'RentIT-Frontend/**'
 
-## NOTE: Some of the test will fail for the moment as the backend is not available on cloud
+## TODO: Some of the test will fail for the moment as the backend is not available on cloud
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
