@@ -1,30 +1,24 @@
-import {AuthenticationComponent} from "src/app/authentication/authentication.component";
-import {createComponentFactory, Spectator} from "@ngneat/spectator";
-import {RouterTestingModule} from "@angular/router/testing";
-import {BrowserTestingModule} from "@angular/platform-browser/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { BrowserTestingModule } from "@angular/platform-browser/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { NbEvaIconsModule } from "@nebular/eva-icons";
 import {
   NbButtonModule,
-  NbCardModule, NbFocusMonitor,
+  NbCardModule,
   NbFormFieldModule,
   NbIconModule,
   NbInputModule,
-  NbLayoutDirectionService, NbMenuModule,
-  NbOverlay,
+  NbMenuModule,
   NbOverlayModule,
-  NbOverlayService, NbSidebarModule,
-  NbStatusService, NbThemeModule,
+  NbSidebarModule,
+  NbThemeModule,
   NbToastrModule,
-  NbToastrService,
-  NbWindowModule,
-  NbWindowService
+  NbWindowModule
 } from "@nebular/theme";
-import {PluginManager} from "@ngxs/store/src/plugin-manager";
-import {NgxsModule} from "@ngxs/store";
-import {AuthenticationState} from "./authentication.state";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {MockToastrService} from "../../mocks/modules/toastr.service.mock";
-import {MockNbWindowService} from "../../mocks/modules/nbWindow.service.mock";
-import {NbEvaIconsModule} from "@nebular/eva-icons";
+import { createComponentFactory, Spectator } from "@ngneat/spectator";
+import { NgxsModule } from "@ngxs/store";
+import { AuthenticationComponent } from "src/app/authentication/authentication.component";
+import { AuthenticationState } from "./authentication.state";
 
 describe('src > app > authentication > authentication.component.spec.ts', () => {
   let spectator: Spectator<AuthenticationComponent>;
