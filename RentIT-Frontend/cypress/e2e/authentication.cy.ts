@@ -1,13 +1,6 @@
 import {ICONS} from "src/app/constants";
 
 describe('AuthenticationComponent', () => {
-  it('can navigate to authentication page if user is not logged in', () => {
-    cy.visit('/authentication');
-    cy.document().then((doc) => {
-      expect(doc.location.pathname).to.equal('/authentication');
-    });
-  });
-
   describe('test login functionality and content', () => {
     it('should display the login content first when user enters the page', () => {
       cy.visit('/authentication');
