@@ -11,12 +11,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Install project dependencies
-        working-directory: RentIT-Frontend
         run: yarn install
-      - name: Build the project
         working-directory: RentIT-Frontend
+
+      - name: Build the project
         run: yarn run build
+        working-directory: RentIT-Frontend
+
+      - name: Change working directory
+        run: cd ./RentIT-Frontend
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
