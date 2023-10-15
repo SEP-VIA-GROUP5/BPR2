@@ -34,7 +34,9 @@ exports[`src > app > authentication > authentication.component.spec.ts should ma
         </h1>
         <p>
            Don't have an account? 
-          <a>
+          <a
+            class="register-redirect"
+          >
             Register
           </a>
         </p>
@@ -48,7 +50,7 @@ exports[`src > app > authentication > authentication.component.spec.ts should ma
               class="nb-form-control-container"
             >
               <input
-                class="size-medium status-basic shape-round"
+                class="email size-medium status-basic shape-round"
                 email=""
                 name="email"
                 nbinput=""
@@ -67,7 +69,7 @@ exports[`src > app > authentication > authentication.component.spec.ts should ma
               class="nb-form-control-container nb-form-field-control-with-suffix"
             >
               <input
-                class="size-medium status-basic shape-round"
+                class="password size-medium status-basic shape-round"
                 nbinput=""
                 placeholder="Password"
                 required=""
@@ -129,7 +131,7 @@ exports[`src > app > authentication > authentication.component.spec.ts should ma
             tabindex="-1"
             type="submit"
           >
-            Login 
+            Login
           </button>
         </div>
       </nb-card-body>
