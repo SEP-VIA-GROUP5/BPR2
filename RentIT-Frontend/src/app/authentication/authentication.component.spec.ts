@@ -22,7 +22,7 @@ import { AuthenticationState } from "./authentication.state";
 
 describe('src > app > authentication > authentication.component.spec.ts', () => {
   let spectator: Spectator<AuthenticationComponent>;
-
+// test
   const createComponent = createComponentFactory({
     component: AuthenticationComponent,
     imports: [
