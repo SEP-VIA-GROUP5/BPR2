@@ -71,7 +71,7 @@ describe('AuthenticationComponent', () => {
   //     });
   //     cy.url().should('include', '/products');
   //   });
-  // });
+  });
 
   describe('test register functionality and content', () => {
     it('should change the content if user presses on register button', () => {
