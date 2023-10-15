@@ -27,6 +27,7 @@ public class ProductController {
     public ProductDTO addProduct(@RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
         return productService.addProduct(product, authorizationHeader);
     }
+    // test
 
     @RequestMapping(value = "/id/{productId}", method = RequestMethod.GET)
     public ProductPackageDTO getProductById(@PathVariable int productId) {
