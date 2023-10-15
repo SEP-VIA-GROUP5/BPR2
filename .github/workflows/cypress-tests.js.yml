@@ -11,23 +11,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Navigate to WebApp directory
-        run: cd 
       - name: Install project dependencies
         working-directory: RentIT-Frontend
         run: yarn install
       - name: Build the project
         working-directory: RentIT-Frontend
         run: yarn run build
-      # - name: Start the application
-      #   working-directory: RentIT-Frontend
-      #   run: yarn run start 
-      # - name: Wait for the application to start
-      #   working-directory: RentIT-Frontend
-      #   run: sleep 10
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: yarn run build
-          start: yarn start
           browser: chrome
