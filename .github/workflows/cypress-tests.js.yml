@@ -10,7 +10,7 @@ jobs:
       options: --user 1001
     steps:
       - name: Navigate to WebApp directory
-        run: cd RentIT-Frontend
+        run: cd RentIT-Frontend/
       - name: Checkout
         uses: actions/checkout@v4
       - name: Cypress run
