@@ -19,12 +19,12 @@ jobs:
       - name: Build the project
         working-directory: RentIT-Frontend
         run: yarn run build
-      - name: Start the application
-        working-directory: RentIT-Frontend
-        run: yarn run start 
-      - name: Wait for the application to start
-        working-directory: RentIT-Frontend
-        run: sleep 10
+      # - name: Start the application
+      #   working-directory: RentIT-Frontend
+      #   run: yarn run start 
+      # - name: Wait for the application to start
+      #   working-directory: RentIT-Frontend
+      #   run: sleep 10
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
