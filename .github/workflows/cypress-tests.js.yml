@@ -1,12 +1,12 @@
 name: End-To-End Testing Cypress
 
-on: pull_request
+on: push
 
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     container:
-      image: cypress/browsers:node16.13.0-chrome98-ff98
+      image: cypress/included:8.5.0
       options: --user 1001
     steps:
       - name: Checkout
