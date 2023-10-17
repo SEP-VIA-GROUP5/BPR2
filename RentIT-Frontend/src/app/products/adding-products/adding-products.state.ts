@@ -1,7 +1,7 @@
 import {Action, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {NbToastrService} from "@nebular/theme";
-import {GENERAL_MENU_ITEM_URLS, ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
+import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {environment} from "src/environments/environment.dev";
 import {ProductsService} from "src/api/products.service";
 import {ImgurImageResponse} from "src/model/imgurImageResponse";
