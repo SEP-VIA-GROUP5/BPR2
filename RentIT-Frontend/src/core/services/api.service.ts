@@ -1,17 +1,25 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment.dev';
-import { LocalStorageService } from 'src/core/services/local-storage.service';
-import { LocalStorageEnum } from 'src/app/constants';
-import { Token } from 'src/model/token';
+import {Injectable} from '@angular/core';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+  HttpRequest,
+  HttpEvent,
+  HttpResponse
+} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError, filter, map} from 'rxjs/operators';
+import {environment} from '../../environments/environment.dev';
+import {LocalStorageService} from 'src/core/services/local-storage.service';
+import {LocalStorageEnum} from 'src/app/constants';
+import {Token} from 'src/model/token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService<T> {
-  constructor(private http: HttpClient, private localStorageService: LocalStorageService) {}
+  constructor(private http: HttpClient, private localStorageService: LocalStorageService) {
+  }
 
   private getHeaders(tokenRequired: boolean): HttpHeaders {
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -32,33 +40,16 @@ export class ApiService<T> {
     return throwError('Something went wrong. Please try again later.');
   }
 
-  get(path: string, tokenRequired: boolean): Observable<T> {
+  request(method: string, path: string, body: Object = {}, tokenRequired: boolean = false): Observable<T> {
     const headers = this.getHeaders(tokenRequired);
-    return this.http.get<T>(`${environment.api_url}${path}`, { headers }).pipe(
+    const request = new HttpRequest(method, `${environment.api_url}${path}`, body, {headers});
+    return this.http.request<T>(request).pipe(
+      filter((event: HttpEvent<T>): event is HttpResponse<T> => event instanceof HttpResponse),
+      map((response: HttpResponse<T>) => response.body),
       catchError(this.handleError)
     );
   }
 
-  put(path: string, body: Object = {}): Observable<T> {
-    const headers = this.getHeaders(false);
-    return this.http.put<T>(`${environment.api_url}${path}`, JSON.stringify(body), { headers }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  post(path: string, body: Object = {}, tokenRequired: boolean): Observable<T> {
-    const headers = this.getHeaders(tokenRequired);
-    return this.http.post<T>(`${environment.api_url}${path}`, JSON.stringify(body), { headers }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  delete(path: string): Observable<T> {
-    const headers = this.getHeaders(false);
-    return this.http.delete<T>(`${environment.api_url}${path}`, { headers }).pipe(
-      catchError(this.handleError)
-    );
-  }
 
   async call(mockedReturned: T, apiCall: Observable<T>) {
     if (environment.mocked) {
