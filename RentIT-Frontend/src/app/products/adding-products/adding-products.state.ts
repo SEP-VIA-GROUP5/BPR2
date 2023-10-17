@@ -1,7 +1,7 @@
 import {Action, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {NbToastrService} from "@nebular/theme";
-import {ICONS} from "src/app/constants";
+import {GENERAL_MENU_ITEM_URLS, ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {environment} from "src/environments/environment.dev";
 import {ProductsService} from "src/api/products.service";
 import {ImgurImageResponse} from "src/model/imgurImageResponse";
@@ -14,6 +14,7 @@ import {
 } from "src/app/products/adding-products/adding-products.actions";
 import {produce} from "immer";
 import {ProductService} from "src/api/product.service";
+import {Router} from "@angular/router";
 
 export interface AddingProductsStateModel {
   isFetching: boolean;
@@ -37,6 +38,7 @@ export class AddingProductsState {
     private productsService: ProductsService,
     private productService: ProductService,
     private imgurApiService: ImgurApiService,
+    private router: Router,
   ) {
   }
 
@@ -118,6 +120,7 @@ export class AddingProductsState {
           'Success',
           {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE}
         );
+        await this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
       } else {
         this.toastrService.danger(
           environment.production ?
