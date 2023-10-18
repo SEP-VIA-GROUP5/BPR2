@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
     private final RsaKeyProperties rsaKeys;
 
@@ -31,6 +32,8 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/product/page/**", "/product/id/**", "/user/**", "/product/add").permitAll()
+                        // TODO "/product/add" should not be here, this should be refactored later and find a better solution
                         .requestMatchers("/product/page/**", "/product/id/**", "/user/**","/product/add").permitAll()
                         .anyRequest().authenticated()
                 )
