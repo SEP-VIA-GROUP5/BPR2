@@ -32,7 +32,9 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/product/page/**", "/product/id/**", "/user/**").permitAll()
+                        .requestMatchers("/product/page/**", "/product/id/**", "/user/**", "/product/add").permitAll()
+                        // TODO "/product/add" should not be here, this should be refactored later and find a better solution
+                        .requestMatchers("/product/page/**", "/product/id/**", "/user/**","/product/add").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
