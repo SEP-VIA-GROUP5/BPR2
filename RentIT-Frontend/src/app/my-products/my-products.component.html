@@ -1,8 +1,8 @@
 <!--<nb-card [nbSpinner]="isFetching$ | async" nbSpinnerSize="large" nbSpinnerStatus="primary">-->
 <nb-card nbSpinnerSize="large" nbSpinnerStatus="primary">
   <nb-card-header>
-    <h1> Here are some products for you</h1>
-    <div class="products-header-buttons">
+    <h1> Here are your products </h1>
+    <div class="my-products-header-buttons">
       <button class="perform-action-button" *ngIf="actionSelected.isButtonEnabled" size="medium"
               [status]="actionSelected.status" (click)="performAction()" nbButton hero>
         <nb-icon [icon]="actionSelected.icon"/>
