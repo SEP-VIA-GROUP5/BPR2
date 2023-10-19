@@ -5,44 +5,22 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  NbActionsModule,
-  NbBadgeModule,
-  NbButtonModule,
-  NbCardModule,
-  NbContextMenuModule,
   NbDialogModule,
-  NbFormFieldModule,
-  NbIconModule,
-  NbInputModule,
-  NbLayoutModule,
-  NbListModule,
   NbMenuModule,
-  NbPopoverModule,
-  NbSearchModule,
-  NbSelectModule,
   NbSidebarModule,
-  NbSpinnerModule,
-  NbTabsetModule,
-  NbTagModule,
   NbThemeModule,
   NbToastrModule,
-  NbTooltipModule,
-  NbUserModule,
   NbWindowModule
 } from '@nebular/theme';
-import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {HttpClientModule} from "@angular/common/http";
 import {NgxsModule} from "@ngxs/store";
 import {environment} from "src/environments/environment.dev";
 import {NgxsLoggerPluginModule} from "@ngxs/logger-plugin";
 import {NotFoundComponent} from './not-found/not-found.component';
-import {AgGridModule} from "ag-grid-angular";
-import {SearchBarComponent} from 'src/core/components/search-bar/search-bar.component';
 import {ProductsService} from 'src/api/products.service';
 import {ApiService} from 'src/core/services/api.service';
 import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
 import {AuthenticationComponent} from './authentication/authentication.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {LocalStorageService} from "src/core/services/local-storage.service";
 import {AppState} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
@@ -50,31 +28,30 @@ import {AuthenticationState} from "src/app/authentication/authentication.state";
 import {UrlSerializer} from "@angular/router";
 import {LowerCaseUrlSerializer} from "src/core/providers/lowercase-deserializer.provider";
 import {ImgurApiService} from "src/core/services/imgur.api.service";
-import {MapPickerComponent} from "src/core/components/map-picker/map-picker.component";
-import {AgmCoreModule} from "@agm/core";
-
+import {MyProductsComponent} from "src/app/my-products/my-products.component";
+import {SharedModule} from "src/core/share.module";
+import {ProductsModule} from "src/app/products/products.module";
+import {MyProductsState} from "src/app/my-products/my-products.state";
 
 export const STATES = [
   AppState,
   AuthenticationState,
+  MyProductsState,
 ];
-
-export const AGM_MODULES = [
-  AgmCoreModule.forRoot({
-    apiKey: environment.google_api_key, // Replace with your API Key
-  }),
-  ReactiveFormsModule,
-]
 
 export const PAGE_COMPONENTS = [
   AppComponent,
   NotFoundComponent,
   AuthenticationComponent,
+  MyProductsComponent,
 ];
 
-export const CORE_COMPONENTS = [
-  SearchBarComponent,
-  MapPickerComponent,
+export const APP_NEBULAR_MODULES = [
+  NbSidebarModule.forRoot(),
+  NbToastrModule.forRoot(),
+  NbDialogModule.forRoot(),
+  NbMenuModule.forRoot(),
+  NbWindowModule.forRoot(),
 ];
 
 export const PROVIDERS = [
@@ -90,47 +67,16 @@ export const PROVIDERS = [
   ImgurApiService,
 ];
 
-export const NG_MODULES = [
-  FormsModule,
-]
-
-export const NEBULAR_MODULES = [
-  NbSidebarModule.forRoot(),
-  NbToastrModule.forRoot(),
-  NbLayoutModule,
-  NbDialogModule.forRoot(),
-  NbButtonModule,
-  NbEvaIconsModule,
-  NbActionsModule,
-  NbMenuModule.forRoot(),
-  NbCardModule,
-  NbIconModule,
-  NbSpinnerModule,
-  NbListModule,
-  AgGridModule,
-  NbSearchModule,
-  NbInputModule,
-  NbFormFieldModule,
-  NbTooltipModule,
-  NbSelectModule,
-  NbTabsetModule,
-  NbPopoverModule,
-  NbUserModule,
-  NbBadgeModule,
-  NbTagModule,
-  NbContextMenuModule,
-  NbWindowModule.forRoot(),
-];
-
 @NgModule({
   declarations: [
     PAGE_COMPONENTS,
-    ...CORE_COMPONENTS,
   ],
   imports: [
     BrowserModule,
+    ProductsModule,
     HttpClientModule,
     AppRoutingModule,
+    SharedModule,
     BrowserAnimationsModule,
     //NgxsModules setup
     NgxsModule.forRoot(STATES, {
@@ -139,9 +85,7 @@ export const NEBULAR_MODULES = [
     NgxsReduxDevtoolsPluginModule.forRoot({disabled: environment.production}),
     NgxsLoggerPluginModule.forRoot({disabled: environment.production}),
     NbThemeModule.forRoot({name: 'corporate'}),
-    NEBULAR_MODULES,
-    NG_MODULES,
-    AGM_MODULES,
+    ...APP_NEBULAR_MODULES,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

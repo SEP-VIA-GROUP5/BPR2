@@ -9,11 +9,11 @@ nb-card-header {
   display: flex;
   justify-content: space-between;
 
-  .products-header-buttons {
+  .my-products-header-buttons {
     display: flex;
     gap: 10px;
 
-    .perform-action-button, .adding-product-button {
+    .perform-action-button {
       height: min-content;
     }
     .selector-actions {
@@ -26,6 +26,7 @@ nb-card-header {
   max-width: 600px;
   margin: 0 auto;
 }
+
 
 nb-card-header,
 nb-card-footer {
@@ -55,18 +56,20 @@ nb-card-footer {
     padding: 0;
     grid-template-columns: repeat(1, 1fr);
   }
-
-  .adding-product-button {
-    height: 2.5rem;
-  }
 }
 
 @media only screen and (min-width: 473px) and (max-width: 768px) {
   .product-grid {
     padding: 0 30px;
   }
+}
 
-  .adding-product-button {
-    height: 2.5rem;
-  }
+.dialog-action-container {
+  align-items: center;
+}
+
+.dialog-buttons-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }

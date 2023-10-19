@@ -1,7 +1,8 @@
 import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {produce} from "immer";
-import {ContextMenuState, ICONS, SidebarMenuState} from "src/app/constants";
+import {ContextMenuState, ICONS, LocalStorageEnum, SidebarMenuState} from "src/app/constants";
+import {LocalStorageService} from "src/core/services/local-storage.service";
 
 export class UpdateSidebarMenuState {
   static readonly type = '[App] Update sidebar menu items';
@@ -15,6 +16,12 @@ export class UpdateContextMenuState {
   }
 }
 
+export class FetchLocalStorageData {
+  static readonly type = '[App] Fetch local storage data';
+  constructor() {
+  }
+}
+
 export interface AppStateModel {
   isFetching: boolean;
   sidebarVisible: boolean;
@@ -25,7 +32,7 @@ export interface AppStateModel {
 export const defaultsState: AppStateModel = {
   isFetching: false,
   sidebarVisible: true,
-  sidebarMenuState: SidebarMenuState.GENERAL_ITEMS,
+  sidebarMenuState: SidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN,
   contextMenuState: ContextMenuState.LOGGED_OUT,
 }
 
@@ -37,7 +44,21 @@ export const defaultsState: AppStateModel = {
 @Injectable()
 export class AppState {
   constructor(
+    private localStorageService: LocalStorageService,
   ) {
+  }
+
+  @Action(FetchLocalStorageData)
+  async fetchLocalStorageData(
+    {getState, setState}: StateContext<AppStateModel>
+  ) {
+    let sidebarMenuState = this.localStorageService.getData(LocalStorageEnum.SIDEBAR_MENU_ITEMS) as SidebarMenuState;
+    let contextMenuState = this.localStorageService.getData(LocalStorageEnum.CONTEXT_MENU_ITEMS) as ContextMenuState;
+    let newState = produce(getState(), draft => {
+      draft.sidebarMenuState = sidebarMenuState ? sidebarMenuState : SidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN;
+      draft.contextMenuState = contextMenuState ? contextMenuState : ContextMenuState.LOGGED_OUT;
+    })
+    setState(newState);
   }
 
   @Action(UpdateSidebarMenuState)
@@ -47,6 +68,7 @@ export class AppState {
 
     let newState = produce(getState(), draft => {
       draft.sidebarMenuState = action.sidebarMenuState;
+      this.localStorageService.saveData(LocalStorageEnum.SIDEBAR_MENU_ITEMS, action.sidebarMenuState);
     })
     setState(newState);
   }
@@ -58,6 +80,7 @@ export class AppState {
 
     let newState = produce(getState(), draft => {
       draft.contextMenuState = action.contextMenuState;
+      this.localStorageService.saveData(LocalStorageEnum.CONTEXT_MENU_ITEMS, action.contextMenuState);
     })
     setState(newState);
   }

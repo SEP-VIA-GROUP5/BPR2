@@ -21,7 +21,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
   @Select(ProductsSelector.endOfList)
   endOfList$: Observable<boolean>;
 
+  // constants
   protected readonly ICONS = ICONS;
+
   alive: boolean = true;
 
   constructor(
@@ -50,9 +52,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
     };
   }
 
-  isAddingProductButtonEnabled() {
-    return this.userService.isLoggedIn();
+  getProductGridClass(products: Product[]): string {
+    if (products.length >= 1 && products.length <= 3) {
+      return 'limited-products';
+    }
+    return '';
   }
+
 
   ngOnDestroy(): void {
     this.alive = false;

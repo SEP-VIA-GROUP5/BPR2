@@ -1,13 +1,14 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
 import { ImgurImageResponse } from "src/model/imgurImageResponse";
 import { NgImageSliderComponent } from 'ng-image-slider';
-import {
-  constructNgSliderImagesFrom, findImgurImageResponseFromNgSliderImage,
-  NgSliderImage
-} from "src/core/components/view-images/constants/constants";
 import {NbWindowRef, NbWindowService} from "@nebular/theme";
 import {Store} from "@ngxs/store";
 import {UpdateImages} from "src/app/products/adding-products/adding-products.actions";
+import {
+  constructNgSliderImagesFrom,
+  findImgurImageResponseFromNgSliderImage,
+  NgSliderImage
+} from "src/app/shared-components/view-images/constants/constants";
 
 @Component({
   selector: 'view-images',

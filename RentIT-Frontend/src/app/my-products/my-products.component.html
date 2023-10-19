@@ -1,0 +1,47 @@
+<nb-card [nbSpinner]="isFetching$ | async" nbSpinnerSize="large" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <h1> Here are your products </h1>
+    <div class="my-products-header-buttons">
+      <button [disabled]="productsSelected.length < 1" class="perform-action-button"
+              *ngIf="actionSelected.isButtonEnabled" size="medium"
+              [status]="actionSelected.status" (click)="openActionDialog()" nbButton hero>
+        <nb-icon [icon]="actionSelected.icon"/>
+        <span *ngIf="getWindowSize().width > 768">Perform action</span>
+      </button>
+      <nb-select class="selector-actions" size='medium' fullWidth [(selected)]="actionSelected.action"
+                 (selectedChange)="onSelectActionChanged($event)" placeholder="Select action">
+        <nb-option-group title="Actions" [disabled]="!this.userService.isLoggedIn()">
+          <nb-option [disabled]="actionSelected.action === ActionsConstants.REMOVE"
+                     [value]="ActionsConstants.REMOVE"> {{ ActionsConstants.REMOVE }}</nb-option>
+          <nb-option *ngIf="actionSelected.isButtonEnabled"
+                     [disabled]="productsSelected.length > 0"
+                     [value]="ActionsConstants.NOT_SELECTED">{{ ActionsConstants.NOT_SELECTED }}</nb-option>
+        </nb-option-group>
+      </nb-select>
+    </div>
+  </nb-card-header>
+  <nb-card-body *ngIf="products$ | async as products">
+    <div class="product-grid" [class]="getProductGridClass()">
+      <product *ngFor="let product of products" [product]="product"
+               [canPerformSelectProductAction]="actionSelected.isButtonEnabled"
+               (selectProduct)="onSelectProduct($event)"></product>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #dialogAction let-data>
+  <nb-card class="dialog-action-container">
+    <nb-card-header>
+      <h3> {{ data.title }}</h3>
+    </nb-card-header>
+    <nb-card-body>
+      <p> {{ data.bodyText}} </p>
+    </nb-card-body>
+    <nb-card-footer>
+      <div class="dialog-buttons-footer">
+        <button nbButton hero status="danger" (click)="performAction()">Delete</button>
+        <button nbButton hero status="primary" (click)="cancelAction()">Cancel</button>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
