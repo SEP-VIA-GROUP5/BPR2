@@ -5,13 +5,12 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  NbActionsModule, NbBadgeModule,
-  NbButtonModule, NbCardModule, NbContextMenuModule,
-  NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule,
-  NbLayoutModule, NbListModule, NbMenuModule, NbPopoverModule, NbSearchModule, NbSelectModule,
-  NbSidebarModule, NbSpinnerModule, NbTabsetModule, NbTagModule,
+  NbDialogModule,
+  NbMenuModule,
+  NbSidebarModule,
   NbThemeModule,
-  NbToastrModule, NbTooltipModule, NbUserModule, NbWindowModule
+  NbToastrModule,
+  NbWindowModule
 } from '@nebular/theme';
 import {HttpClientModule} from "@angular/common/http";
 import {NgxsModule} from "@ngxs/store";
@@ -32,12 +31,12 @@ import {ImgurApiService} from "src/core/services/imgur.api.service";
 import {MyProductsComponent} from "src/app/my-products/my-products.component";
 import {SharedModule} from "src/core/share.module";
 import {ProductsModule} from "src/app/products/products.module";
-import {NbEvaIconsModule} from "@nebular/eva-icons";
-import {AgGridModule} from "ag-grid-angular";
+import {MyProductsState} from "src/app/my-products/my-products.state";
 
 export const STATES = [
   AppState,
   AuthenticationState,
+  MyProductsState,
 ];
 
 export const PAGE_COMPONENTS = [

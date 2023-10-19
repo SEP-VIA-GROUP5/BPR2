@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Store} from "@ngxs/store";
-import {ProductsReset} from "src/app/products/products.actions";
+import {Select, Store} from "@ngxs/store";
 import {Product} from "src/model/product";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
@@ -9,6 +8,9 @@ import {NbDialogRef, NbDialogService, NbToastrService} from "@nebular/theme";
 import {Action, ActionsConstants} from "src/app/my-products/constants/actions.constants";
 import {mockedProducts} from "src/mocks/products.mock";
 import {ProductSelected} from "src/app/shared-components/product/constants/constants";
+import {MyProductsFetch, MyProductsReset, RemoveProducts} from "src/app/my-products/my-products.actions";
+import {Observable} from "rxjs";
+import {MyProductsSelector} from "src/app/my-products/my-products.selector";
 
 @Component({
   selector: 'app-my-products',
@@ -16,6 +18,11 @@ import {ProductSelected} from "src/app/shared-components/product/constants/const
   styleUrls: ['./my-products.component.scss']
 })
 export class MyProductsComponent implements OnInit, OnDestroy {
+  @Select(MyProductsSelector.isFetching)
+  isFetching$: Observable<boolean>
+  @Select(MyProductsSelector.products)
+  products$: Observable<Product[]>
+
   // actions
   actionSelected: Action = {
     action: ActionsConstants.DEFAULT,
@@ -49,11 +56,13 @@ export class MyProductsComponent implements OnInit, OnDestroy {
       this.toastrService.info(
         'You have been redirected to products page',
         'You need to be authenticated in order to see your products',
-        {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE}
+        {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE, duration: 5000}
       );
       this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
     }
-    // here dispatch my products based on user
+    else {
+      this.store.dispatch(new MyProductsFetch());
+    }
   }
 
   getWindowSize() {
@@ -117,11 +126,17 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   }
 
   performAction(): void {
+    let actionToPerform;
     switch (this.actionSelected.action) {
       case ActionsConstants.REMOVE: {
-        // perform remove action with ngxs state
+        console.log(this.productsSelected);
+        actionToPerform = new RemoveProducts(this.productsSelected);
         break;
       }
+    }
+    if (actionToPerform) {
+      this.store.dispatch(actionToPerform);
+      this.dialogRef.close();
     }
   }
 
@@ -131,6 +146,6 @@ export class MyProductsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.alive = false;
-    this.store.dispatch(new ProductsReset());
+    this.store.dispatch(new MyProductsReset());
   }
 }
