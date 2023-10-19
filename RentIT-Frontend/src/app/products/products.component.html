@@ -1,8 +1,8 @@
 <nb-card [nbSpinner]="isFetching$ | async" nbSpinnerSize="large" nbSpinnerStatus="primary">
   <nb-card-header>
     <h1> Here are some products for you</h1>
-    <button class="adding-product-button" [status]="'primary'" [nbTooltip]="isAddingProductButtonEnabled() ? 'Add product' : 'Please, login to add product'"
-            [disabled]="!isAddingProductButtonEnabled()"
+    <button class="adding-product-button" [status]="'primary'" [nbTooltip]="this.userService.isLoggedIn() ? 'Add product' : 'Please, login to add product'"
+            [disabled]="!this.userService.isLoggedIn()"
             nbButton (click)="navigateToAddingProductPage()">
       <nb-icon [icon]="ICONS.PLUS_OUTLINE"/>
       <span *ngIf="getWindowSize().width > 768">Add product</span>

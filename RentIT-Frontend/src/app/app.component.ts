@@ -2,8 +2,8 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {NB_WINDOW, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
 import {
   CONTEXT_MENU_TITLES,
-  ContextMenuState,
-  GENERAL_MENU_ITEMS,
+  ContextMenuState, GENERAL_MENU_ITEMS_LOGGED_IN,
+  GENERAL_MENU_ITEMS_NOT_LOGGED_IN,
   ICONS, LocalStorageEnum, LOGGED_IN_CONTEXT_MENU_ITEMS,
   LOGGED_OUT_CONTEXT_MENU_ITEMS,
   SidebarMenuState
@@ -12,7 +12,7 @@ import {filter, map, takeUntil} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {Select, Store} from "@ngxs/store";
 import {Observable, Subject} from "rxjs";
-import {AppSelector, UpdateContextMenuState} from "src/app/app.state";
+import {AppSelector, FetchLocalStorageData, UpdateContextMenuState} from "src/app/app.state";
 import {UserService} from "src/api/user.service";
 import {Logout} from "src/app/authentication/authentication.actions";
 import {User} from "src/model/user";
@@ -90,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.store.dispatch(new FetchLocalStorageData());
     this.store.dispatch(new UpdateContextMenuState(
       this.userService.isLoggedIn() ? ContextMenuState.LOGGED_IN : ContextMenuState.LOGGED_OUT
     ));
@@ -130,7 +131,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   getSidebarMenuItems(sidebarMenuState: SidebarMenuState) {
     switch (sidebarMenuState) {
-      case SidebarMenuState.GENERAL_ITEMS: return GENERAL_MENU_ITEMS();
+      case SidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN: return GENERAL_MENU_ITEMS_NOT_LOGGED_IN();
+      case SidebarMenuState.GENERAL_ITEMS_LOGGED_IN: return GENERAL_MENU_ITEMS_LOGGED_IN();
     }
   }
 

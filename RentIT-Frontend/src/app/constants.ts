@@ -15,19 +15,24 @@ export enum ICONS {
   PLUS_OUTLINE = 'plus-outline',
   CHECKMARK_CIRCLE_OUTLINE = 'checkmark-circle-outline',
   IMAGE_OUTLINE = 'image-outline',
+  TRASH_2_OUTLINE = 'trash-2-outline',
+  FUNNEL_OUTLINE = 'funnel-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
   AUTHENTICATION = '/authentication',
+  MY_PRODUCTS = '/my-products',
 }
 
 export enum PRODUCTS_MENU_ITEM_URLS {
   PRODUCTS = '/products',
+  MY_PRODUCTS = '/my-products',
   ADDING_PRODUCTS = '/add',
 }
 
 export enum BREADCRUMB_KEYS {
   PRODUCTS = 'Products',
+  MY_PRODUCTS = 'My products',
 }
 
 export enum CONTEXT_MENU_TITLES {
@@ -35,12 +40,27 @@ export enum CONTEXT_MENU_TITLES {
   LOG_OUT = 'Log out',
 }
 
-export function GENERAL_MENU_ITEMS(): NbMenuItem[] {
+export function GENERAL_MENU_ITEMS_NOT_LOGGED_IN(): NbMenuItem[] {
   return [
     {
       title: BREADCRUMB_KEYS.PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
       link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS,
+    },
+  ];
+}
+
+export function GENERAL_MENU_ITEMS_LOGGED_IN(): NbMenuItem[] {
+  return [
+    {
+      title: BREADCRUMB_KEYS.PRODUCTS,
+      icon: ICONS.CUBE_OUTLINE,
+      link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS,
+    },
+    {
+      title: BREADCRUMB_KEYS.MY_PRODUCTS,
+      icon: ICONS.CUBE_OUTLINE,
+      link: PRODUCTS_MENU_ITEM_URLS.MY_PRODUCTS,
     },
   ];
 }
@@ -68,10 +88,13 @@ export function LOGGED_IN_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
 export enum LocalStorageEnum {
   TOKEN = 'TOKEN',
   USER = 'USER',
+  SIDEBAR_MENU_ITEMS = 'SidebarMenuItems',
+  CONTEXT_MENU_ITEMS = 'ContextMenuItems',
 }
 
 export enum SidebarMenuState {
-  GENERAL_ITEMS= 'GENERAL_ITEMS',
+  GENERAL_ITEMS_NOT_LOGGED_IN = 'GENERAL_ITEMS_NOT_LOGGED_IN',
+  GENERAL_ITEMS_LOGGED_IN = 'GENERAL_ITEMS_LOGGED_IN',
 }
 
 export enum ContextMenuState {

@@ -3,11 +3,11 @@ import {ApiService} from "src/core/services/api.service";
 import {User} from "src/model/user";
 import {Token} from "src/model/token";
 import {LocalStorageService} from "src/core/services/local-storage.service";
-import {ContextMenuState, ICONS, LocalStorageEnum, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
+import {ContextMenuState, ICONS, LocalStorageEnum, PRODUCTS_MENU_ITEM_URLS, SidebarMenuState} from "src/app/constants";
 import {DATE_FORMAT, DATE_LOCALE, DATE_TIMEZONE, isDateBeforeNow} from "src/core/utils/date.utils";
 import {formatDate} from "@angular/common";
 import {Store} from "@ngxs/store";
-import {UpdateContextMenuState} from "src/app/app.state";
+import {UpdateContextMenuState, UpdateSidebarMenuState} from "src/app/app.state";
 import {Router} from "@angular/router";
 import {NbToastrService} from "@nebular/theme";
 import {userMocked} from "src/mocks/user.mock";
@@ -43,6 +43,7 @@ export class UserService {
       this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify(user));
     }
     this.store.dispatch(new UpdateContextMenuState(ContextMenuState.LOGGED_IN));
+    this.store.dispatch(new UpdateSidebarMenuState(SidebarMenuState.GENERAL_ITEMS_LOGGED_IN))
     await this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
     this.toastrService.info(
       'You have been logged in successfully!',
@@ -54,6 +55,7 @@ export class UserService {
 
   logout() {
     this.store.dispatch(new UpdateContextMenuState(ContextMenuState.LOGGED_IN));
+    this.store.dispatch(new UpdateSidebarMenuState(SidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN));
     this.localStorageService.clearData();
     window.location.reload();
   }

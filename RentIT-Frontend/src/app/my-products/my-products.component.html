@@ -1,0 +1,35 @@
+<!--<nb-card [nbSpinner]="isFetching$ | async" nbSpinnerSize="large" nbSpinnerStatus="primary">-->
+<nb-card nbSpinnerSize="large" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <h1> Here are some products for you</h1>
+    <div class="products-header-buttons">
+      <button class="perform-action-button" *ngIf="actionSelected.isButtonEnabled" size="medium"
+              [status]="actionSelected.status" (click)="performAction()" nbButton hero>
+        <nb-icon [icon]="actionSelected.icon"/>
+        <span *ngIf="getWindowSize().width > 768">Perform action</span>
+      </button>
+      <nb-select class="selector-actions" size='medium' fullWidth [(selected)]="actionSelected.action"
+                 (selectedChange)="onSelectActionChanged($event)" placeholder="Select action">
+        <nb-option-group title="Actions" [disabled]="!this.userService.isLoggedIn()">
+          <nb-option [value]="ActionsConstants.REMOVE"> {{ ActionsConstants.REMOVE }}</nb-option>
+          <nb-option *ngIf="actionSelected.isButtonEnabled"
+                     [value]="ActionsConstants.NOT_SELECTED">{{ ActionsConstants.NOT_SELECTED }}</nb-option>
+        </nb-option-group>
+      </nb-select>
+    </div>
+  </nb-card-header>
+<!--  <nb-card-body *ngIf="products$ | async as products">-->
+  <nb-card-body >
+    <div class="product-grid">
+<!--      <product *ngFor="let product of products" [product]="product"></product>-->
+      <product [product]="mockedProducts[0]"></product>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="footer-page">
+<!--    <button [disabled]="endOfList$ | async" nbButton status="primary"-->
+<!--            [nbTooltip]="(endOfList$ | async) ? 'No more products to load' : 'Load more products'"-->
+<!--            (click)="loadNextProducts()">-->
+<!--      <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>-->
+<!--    </button>-->
+  </nb-card-footer>
+</nb-card>

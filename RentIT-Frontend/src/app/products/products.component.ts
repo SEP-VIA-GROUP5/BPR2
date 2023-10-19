@@ -21,7 +21,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
   @Select(ProductsSelector.endOfList)
   endOfList$: Observable<boolean>;
 
+  // constants
   protected readonly ICONS = ICONS;
+
   alive: boolean = true;
 
   constructor(
@@ -48,10 +50,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
       width: window.innerWidth,
       height: window.innerHeight
     };
-  }
-
-  isAddingProductButtonEnabled() {
-    return this.userService.isLoggedIn();
   }
 
   ngOnDestroy(): void {

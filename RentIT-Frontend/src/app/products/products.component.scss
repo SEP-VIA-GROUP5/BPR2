@@ -8,6 +8,17 @@ nb-card {
 nb-card-header {
   display: flex;
   justify-content: space-between;
+
+  .products-header-buttons {
+    display: flex;
+    gap: 10px;
+
+    .perform-action-button, .adding-product-button {
+      height: min-content;
+    }
+    .selector-actions {
+    }
+  }
 }
 
 nb-card-header,
