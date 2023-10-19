@@ -52,6 +52,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
     };
   }
 
+  getProductGridClass(products: Product[]): string {
+    if (products.length >= 1 && products.length <= 3) {
+      return 'limited-products';
+    }
+    return '';
+  }
+
+
   ngOnDestroy(): void {
     this.alive = false;
     this.store.dispatch(new ProductsReset());

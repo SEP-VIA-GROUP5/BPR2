@@ -106,6 +106,13 @@ export class MyProductsComponent implements OnInit, OnDestroy {
     }
   }
 
+  getProductGridClass(): string {
+    if (this.mockedProducts.length >= 1 && this.mockedProducts.length <= 3) {
+      return 'limited-products';
+    }
+    return '';
+  }
+
   ngOnDestroy(): void {
     this.alive = false;
     this.store.dispatch(new ProductsReset());

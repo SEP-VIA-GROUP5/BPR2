@@ -21,6 +21,12 @@ nb-card-header {
   }
 }
 
+.product-grid.limited-products {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 nb-card-header,
 nb-card-footer {
   flex-shrink: 0;
