@@ -1,8 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Select, Store} from "@ngxs/store";
-import {ProductsFetch, ProductsReset} from "src/app/products/products.actions";
-import {ProductsSelector} from "src/app/products/products.selector";
-import {Observable} from "rxjs";
+import {Store} from "@ngxs/store";
+import {ProductsReset} from "src/app/products/products.actions";
 import {Product} from "src/model/product";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
@@ -10,6 +8,7 @@ import {UserService} from "src/api/user.service";
 import {NbToastrService} from "@nebular/theme";
 import {Action, ActionsConstants} from "src/app/my-products/constants/actions.constants";
 import {mockedProducts} from "src/mocks/products.mock";
+import {ProductSelected} from "src/app/shared-components/product/constants/constants";
 
 @Component({
   selector: 'app-my-products',
@@ -23,6 +22,10 @@ export class MyProductsComponent implements OnInit, OnDestroy {
     isButtonEnabled: false,
   };
   protected readonly ActionsConstants = ActionsConstants;
+  productsSelected: Product[] = [];
+
+  // todo to be deleted
+  protected readonly mockedProducts = mockedProducts;
 
   // constants
   protected readonly ICONS = ICONS;
@@ -85,12 +88,26 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         break;
       }
     }
+    if(action !== ActionsConstants.NOT_SELECTED) {
+      this.toastrService.info(
+        `You have selected ${action} action`,
+        `Select products to perform action`,
+        {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE}
+      );
+    }
+  }
+
+  onSelectProduct(productSelected: ProductSelected) {
+    if(productSelected.isProductSelected) {
+      this.productsSelected.push(productSelected.product);
+    }
+    else {
+      this.productsSelected = this.productsSelected.filter(product => product.productId !== productSelected.product.productId);
+    }
   }
 
   ngOnDestroy(): void {
     this.alive = false;
     this.store.dispatch(new ProductsReset());
   }
-
-  protected readonly mockedProducts = mockedProducts;
 }

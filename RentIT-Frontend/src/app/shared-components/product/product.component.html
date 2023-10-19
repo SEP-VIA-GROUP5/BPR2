@@ -1,6 +1,7 @@
-<nb-card [id]="product.productId" [size]="getCardBySize()">
+<nb-card [class.canBeSelected]="canPerformSelectProductAction" [class.selected]="isProductSelected" [id]="product.productId" [size]="getCardBySize()" (click)="selectProductAction()">
   <nb-card-header>
     <div class="header-image">
+      <nb-icon *ngIf="isProductSelected" [icon]="ICONS.CHECKMARK_OUTLINE" class="selected-icon"></nb-icon>
       <img class="product-image" *ngIf="product.images.length > 0" [src]="product.images[0].imageUrl"
            alt="Product's image">
       <img class="product-image" *ngIf="product.images.length === 0"

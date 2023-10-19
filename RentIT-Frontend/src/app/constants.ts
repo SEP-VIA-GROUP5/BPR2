@@ -16,7 +16,7 @@ export enum ICONS {
   CHECKMARK_CIRCLE_OUTLINE = 'checkmark-circle-outline',
   IMAGE_OUTLINE = 'image-outline',
   TRASH_2_OUTLINE = 'trash-2-outline',
-  FUNNEL_OUTLINE = 'funnel-outline',
+  CHECKMARK_OUTLINE = 'checkmark-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
