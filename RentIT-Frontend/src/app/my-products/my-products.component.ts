@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Store} from "@ngxs/store";
 import {ProductsReset} from "src/app/products/products.actions";
 import {Product} from "src/model/product";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
-import {NbToastrService} from "@nebular/theme";
+import {NbDialogRef, NbDialogService, NbToastrService} from "@nebular/theme";
 import {Action, ActionsConstants} from "src/app/my-products/constants/actions.constants";
 import {mockedProducts} from "src/mocks/products.mock";
 import {ProductSelected} from "src/app/shared-components/product/constants/constants";
@@ -24,6 +24,9 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   protected readonly ActionsConstants = ActionsConstants;
   productsSelected: Product[] = [];
 
+  // dialog actions
+  @ViewChild('dialogAction') dialogAction: TemplateRef<any>;
+  private dialogRef: NbDialogRef<any>;
   // todo to be deleted
   protected readonly mockedProducts = mockedProducts;
 
@@ -36,6 +39,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
     private store: Store,
     private router: Router,
     private toastrService: NbToastrService,
+    private dialogService: NbDialogService,
     public userService: UserService,
   ) {
   }
@@ -60,17 +64,17 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   }
 
   // actions
-  performAction(): void {
-    switch (this.actionSelected.action) {
-      case ActionsConstants.REMOVE: {
-        // perform remove action with ngxs state
-        break;
+  openActionDialog(): void {
+    this.dialogRef = this.dialogService.open(this.dialogAction, {
+      context: {
+        title: `${this.actionSelected.action} confirmation`,
+        bodyText: `You are about to delete ${this.productsSelected.length} products. Are you sure?`,
       }
-    }
+    })
   }
 
   onSelectActionChanged(action: ActionsConstants) {
-    switch(action) {
+    switch (action) {
       case ActionsConstants.NOT_SELECTED: {
         this.actionSelected = {
           action: ActionsConstants.DEFAULT,
@@ -88,7 +92,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    if(action !== ActionsConstants.NOT_SELECTED) {
+    if (action !== ActionsConstants.NOT_SELECTED) {
       this.toastrService.info(
         `You have selected ${action} action`,
         `Select products to perform action`,
@@ -98,10 +102,9 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   }
 
   onSelectProduct(productSelected: ProductSelected) {
-    if(productSelected.isProductSelected) {
+    if (productSelected.isProductSelected) {
       this.productsSelected.push(productSelected.product);
-    }
-    else {
+    } else {
       this.productsSelected = this.productsSelected.filter(product => product.productId !== productSelected.product.productId);
     }
   }
@@ -111,6 +114,19 @@ export class MyProductsComponent implements OnInit, OnDestroy {
       return 'limited-products';
     }
     return '';
+  }
+
+  performAction(): void {
+    switch (this.actionSelected.action) {
+      case ActionsConstants.REMOVE: {
+        // perform remove action with ngxs state
+        break;
+      }
+    }
+  }
+
+  cancelAction(): void {
+    this.dialogRef.close();
   }
 
   ngOnDestroy(): void {
