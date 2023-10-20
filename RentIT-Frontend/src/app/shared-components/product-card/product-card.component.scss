@@ -4,13 +4,10 @@ nb-card {
   border-radius: 15px;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
   > * {
     flex: 1;
   }
-}
-
-nb-card.canBeSelected {
-  cursor: pointer;
 }
 
 nb-card.selected::before {
