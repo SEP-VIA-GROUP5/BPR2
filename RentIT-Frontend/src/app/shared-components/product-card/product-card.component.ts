@@ -21,8 +21,6 @@ export class ProductCardComponent {
   constructor(private router: Router) {
   }
 
-  // TODO product should be selected and the icon should be displayed with the fill out color
-  // TODO should only select if an action is selected from the my-products page for example
   onClickProduct(): void {
     if (this.canPerformSelectProductAction) {
       this.isProductSelected = !this.isProductSelected;

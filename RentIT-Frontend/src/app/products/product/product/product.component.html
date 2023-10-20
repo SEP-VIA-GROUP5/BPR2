@@ -44,14 +44,14 @@
           </nb-card-header>
           <nb-card-body>
             <div class="prices-lease" *ngIf="productOverview.product as product">
-              <p *ngIf="product.dayPrice"><span>Price per day: </span> {{ productOverview.product.dayPrice }}</p>
-              <p *ngIf="product.weekPrice"><span>Price per week: </span> {{ productOverview.product.weekPrice }}</p>
-              <p *ngIf="product.monthPrice"><span>Price per month: </span> {{ productOverview.product.monthPrice }}</p>
+              <p *ngIf="product.dayPrice"><span>Price per day: </span> {{ productOverview.product.dayPrice }}€</p>
+              <p *ngIf="product.weekPrice"><span>Price per week: </span> {{ productOverview.product.weekPrice }}€</p>
+              <p *ngIf="product.monthPrice"><span>Price per month: </span> {{ productOverview.product.monthPrice }}€</p>
             </div>
             <div class="prices-product" *ngIf="productOverview.product as product">
-              <p *ngIf="product.productValue"><span>Product value: </span> {{ productOverview.product.productValue }}
+              <p *ngIf="product.productValue"><span>Product value: </span> {{ productOverview.product.productValue }}€
               </p>
-              <p *ngIf="product.deposit"><span>Price per deposit: </span> {{ productOverview.product.deposit }}</p>
+              <p *ngIf="product.deposit"><span>Price per deposit: </span> {{ productOverview.product.deposit }}€</p>
               <p *ngIf="product.minLeasePeriod">
                 <span>Minimum lease period: </span> {{ humanizeDurationMinLeasePeriod(productOverview.product.minLeasePeriod) }}
               </p>
