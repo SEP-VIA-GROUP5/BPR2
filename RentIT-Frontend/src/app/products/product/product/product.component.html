@@ -22,7 +22,31 @@
         </div>
       </div>
       <div class="right-section">
-        <nb-card>
+        <nb-card class="user-and-lease-information">
+          <nb-card-header>
+            <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant" onlyPicture>
+            </nb-user>
+            <div class="user-information">
+              <p><span>Name</span> {{ productOverview.user.firstName }} {{ productOverview.user.lastName }}</p>
+              <p><span>Email:</span> {{ productOverview.user.email }}</p>
+              <p><span>City:</span> {{ productOverview.user.location }}</p>
+              <p><span>Phone number: </span> {{ productOverview.user.phoneNumber }}</p>
+            </div>
+          </nb-card-header>
+          <nb-card-body>
+            <div class="prices-lease" *ngIf="productOverview.product as product">
+              <p *ngIf="product.dayPrice"><span>Price per day: </span> {{ productOverview.product.dayPrice }}</p>
+              <p *ngIf="product.weekPrice"><span>Price per week: </span> {{ productOverview.product.weekPrice }}</p>
+              <p *ngIf="product.monthPrice"><span>Price per month: </span> {{ productOverview.product.monthPrice }}</p>
+            </div>
+            <div class="prices-product" *ngIf="productOverview.product as product">
+              <p *ngIf="product.productValue"><span>Product value: </span> {{ productOverview.product.productValue }}</p>
+              <p *ngIf="product.deposit"><span>Price per deposit: </span> {{ productOverview.product.deposit }}</p>
+              <p *ngIf="product.minLeasePeriod"><span>Minimum lease period: </span> {{ humanizeDurationMinLeasePeriod(productOverview.product.minLeasePeriod) }}</p>
+            </div>
+          </nb-card-body>
+        </nb-card>
+        <nb-card class="map-location-product">
           <nb-card-header>
             hello handsome
           </nb-card-header>

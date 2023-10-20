@@ -28,8 +28,10 @@
     justify-content: space-between;
     display: flex;
     gap: 10px;
+
     .left-section {
       width: 60%;
+
       .product-overview-image-slider-container {
 
       }
@@ -37,6 +39,34 @@
 
     .right-section {
       width: 40%;
+      display: table-column;
+
+      .user-and-lease-information {
+        nb-card-header {
+          display: inline-flex;
+          justify-content: space-between;
+          p {
+            font-size: 1.1rem;
+            span {
+              font-weight: bold;
+            }
+          }
+        }
+        nb-card-body {
+          display: inline-flex;
+          justify-content: space-between;
+          p {
+            font-size: 1.1rem;
+            span {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+
+      .map-location-product {
+
+      }
     }
   }
 }

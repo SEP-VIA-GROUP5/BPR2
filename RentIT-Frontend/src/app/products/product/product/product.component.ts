@@ -7,6 +7,7 @@ import {ProductSelector} from "src/app/products/product/product/product.selector
 import {ProductFetch} from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 
 @Component({
   selector: 'app-product-overview',
@@ -60,6 +61,11 @@ export class ProductComponent implements OnInit, OnDestroy {
       case ProductStatus.PAUSED:
         return 'warning';
     }
+  }
+
+  humanizeDurationMinLeasePeriod(minLeasePeriod: number) {
+    const humanizer = new HumanizeDuration(new HumanizeDurationLanguage());
+    return humanizer.humanize(minLeasePeriod * 24 * 60 * 60 * 1000);
   }
 
   ngOnDestroy(): void {
