@@ -1,7 +1,21 @@
 .image-swiper {
   position: relative;
   max-width: 600px;
-  height: 600px;
+  width: 600px;
   height: 474px;
   margin: 0 auto;
+
+  .show-image-container {
+    .show-image-body {
+      .image-showed {
+        max-width: fit-content;
+        max-height: fit-content;
+        object-fit: contain;
+      }
+    }
+  }
+}
+
+.image-swiper:hover {
+  cursor: pointer;
 }
