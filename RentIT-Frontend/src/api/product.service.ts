@@ -17,4 +17,8 @@ export class ProductService {
   async addProduct(product: Product): Promise<Product> {
     return await this.apiService.call(mockedProducts[0], this.apiService.request('post',`${this.PATH_CONTROLLER}/add`, product, true));
   }
+
+  async getProductById(productId: number): Promise<Product> {
+    return await this.apiService.call(mockedProducts[0], this.apiService.request('get',`${this.PATH_CONTROLLER}/id/${productId}`, null, true));
+  }
 }
