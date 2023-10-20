@@ -8,15 +8,17 @@ import {NbToastrService} from "@nebular/theme";
   selector: 'map-picker',
   template: `
     <div class="map-picker-container">
-      <div class="form-content">
-        <input #locationInput class="location-input" [(ngModel)]="location" name="location" type="text" nbInput shape="round"
-               placeholder="Location"
-               (input)="onInputChange($event)"
-               (blur)="onInputBlur()"
-               required>
-        <button nbButton class="map-picker-button" status="primary" size="medium" shape="round" (click)="onButtonPressed()">{{ buttonTitle }}</button>
+      <div class="map-picker-input-container" *ngIf="showLocationPicker">
+        <div class="form-content">
+          <input #locationInput class="location-input" [(ngModel)]="location" name="location" type="text" nbInput shape="round"
+                 placeholder="Location"
+                 (input)="onInputChange($event)"
+                 (blur)="onInputBlur()"
+                 required>
+          <button nbButton class="map-picker-button" status="primary" size="medium" shape="round" (click)="onButtonPressed()">{{ buttonTitle }}</button>
+        </div>
+        <p style="color:red"> You only need to insert the city where the item is located. </p>
       </div>
-      <p style="color:red"> You only need to insert the city where the item is located. </p>
       <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
         <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
       </agm-map>
@@ -26,6 +28,8 @@ import {NbToastrService} from "@nebular/theme";
 })
 export class MapPickerComponent implements OnInit, AfterViewInit {
   @Input() location: string;
+  @Input() showLocationPicker: boolean = true;
+  @Input() enableCurrentLocation: boolean = true;
   @Input() buttonTitle: string;
   @Output() buttonEvent: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('locationInput', {static: false}) locationInput: ElementRef;
@@ -47,7 +51,12 @@ export class MapPickerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.getCurrentLocation();
+    if(this.enableCurrentLocation) {
+      this.getCurrentLocation();
+    }
+    else {
+      this.updateLocation();
+    }
   }
 
   onButtonPressed() {

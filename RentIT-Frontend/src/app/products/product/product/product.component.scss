@@ -1,4 +1,7 @@
 .product-overview-container {
+  height: 85vh;
+  overflow: scroll;
+
   .product-overview-header {
     display: flex;
     justify-content: space-between;
@@ -30,10 +33,23 @@
     gap: 10px;
 
     .left-section {
+      display: table-column;
+      text-align: -webkit-center;
       width: 60%;
 
       .product-overview-image-slider-container {
+      }
 
+      .product-description {
+        margin-top: 10px;
+        width: 96%;
+
+        nb-card-body {
+          p {
+            font-size: 1.1rem;
+            text-align: justify;
+          }
+        }
       }
     }
 
@@ -45,18 +61,23 @@
         nb-card-header {
           display: inline-flex;
           justify-content: space-between;
+
           p {
             font-size: 1.1rem;
+
             span {
               font-weight: bold;
             }
           }
         }
+
         nb-card-body {
           display: inline-flex;
           justify-content: space-between;
+
           p {
             font-size: 1.1rem;
+
             span {
               font-weight: bold;
             }
@@ -65,8 +86,12 @@
       }
 
       .map-location-product {
-
+        nb-card-body {
+          padding: 0;
+        }
       }
     }
+
+    padding: 10px;
   }
 }
