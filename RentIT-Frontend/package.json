@@ -43,6 +43,7 @@
     "jest-extended": "^3.2.4",
     "ng-image-slider": "^7.0.1",
     "ngx-dropzone": "^3.1.0",
+    "ngx-image-swiper": "^1.2.3",
     "rxjs": "6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

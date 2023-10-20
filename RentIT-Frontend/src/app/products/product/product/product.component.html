@@ -3,7 +3,8 @@
 </nb-card>
 <ng-template #isNotFetching>
   <nb-card class="product-overview-container" *ngIf="(product$ | async) as productOverview; else productNotFound">
-    <nb-card-header class="product-overview-header" style="position: relative" *ngIf="productOverview.product as product">
+    <nb-card-header class="product-overview-header" style="position: relative"
+                    *ngIf="productOverview.product as product">
       <div class="product-overview-product-name">
         <h2>{{ product.name }}</h2>
       </div>
@@ -15,8 +16,17 @@
                 [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
     </nb-card-header>
     <nb-card-body class="product-overview-body">
-      <div class="product-overview-image-slider-container">
-        <view-images [images]="productOverview.product.images" [withSelectedImage]="false"></view-images>
+      <div class="left-section">
+        <div class="product-overview-image-slider-container">
+          <view-images-swiper [images]="productOverview.product.images"></view-images-swiper>
+        </div>
+      </div>
+      <div class="right-section">
+        <nb-card>
+          <nb-card-header>
+            hello handsome
+          </nb-card-header>
+        </nb-card>
       </div>
     </nb-card-body>
   </nb-card>

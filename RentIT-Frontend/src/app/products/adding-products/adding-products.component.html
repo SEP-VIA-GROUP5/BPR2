@@ -31,11 +31,11 @@
             <p *ngIf="(uploadedImages$ | async).length > 0" style="color:red; font-style:italic; padding:0;"> You need
               to select an
               image by clicking, in order to remove it.</p>
-            <view-images
+            <view-images-slider
               *ngIf="(uploadedImages$ | async).length > 0"
               [imgurImages]="uploadedImages$ | async"
             >
-            </view-images>
+            </view-images-slider>
             <button status="primary" (click)="uploadImages()" *ngIf="selectedImages.length > 0" nbButton>Save</button>
           </div>
           <div class="buttons-stepper">

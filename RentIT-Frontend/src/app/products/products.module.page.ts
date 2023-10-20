@@ -4,8 +4,6 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
   template: `<router-outlet></router-outlet>`,
 })
 export class ProductsModulePage implements OnInit, OnDestroy {
-  organizationId: number;
-
   alive = true;
 
   constructor() {

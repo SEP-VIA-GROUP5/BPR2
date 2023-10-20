@@ -12,7 +12,7 @@ import {
 } from "src/app/shared-components/view-images/view-images-slider/constants/constants";
 
 @Component({
-  selector: 'view-images',
+  selector: 'view-images-slider',
   template: `
     <div class="slider-and-selected-container">
       <div class="view-image-container">
@@ -37,7 +37,7 @@ import {
       </div>
     </ng-template>
   `,
-  styleUrls: ['./view-images.component.scss']
+  styleUrls: ['./view-images-slider.component.scss']
 })
 export class ViewImagesSliderComponent implements OnInit, OnChanges {
   @Input() imgurImages: ImgurImageResponse[];

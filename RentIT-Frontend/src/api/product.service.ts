@@ -3,7 +3,6 @@ import {Injectable} from "@angular/core";
 import {Product} from "src/model/product";
 import {mockedProducts} from "src/mocks/products.mock";
 import {ProductOverview} from "src/model/product-overview";
-import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

@@ -4,22 +4,39 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+
     .product-overview-product-name {
       font-weight: bold;
       font-size: 1.5rem;
     }
+
     .product-overview-rented-until-date {
       font-weight: bold;
       font-size: 1.5rem;
+
       span {
         font-weight: lighter;
       }
     }
+
     .product-overview-status-badge {
       font-size: 1rem;
     }
   }
-  .product-overview-body {
 
+  .product-overview-body {
+    justify-content: space-between;
+    display: flex;
+    gap: 10px;
+    .left-section {
+      width: 60%;
+      .product-overview-image-slider-container {
+
+      }
+    }
+
+    .right-section {
+      width: 40%;
+    }
   }
 }

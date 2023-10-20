@@ -9,7 +9,6 @@ import {SharedModule} from "src/core/share.module";
 import {ProductsModulePage} from "src/app/products/products.module.page";
 import {ProductsState} from "src/app/products/products/products.state";
 import {ProductsComponent} from "src/app/products/products/products.component";
-import {ProductComponent} from "src/app/products/product/product/product.component";
 
 export const PRODUCTS_PROVIDERS = [
   ProductService,

@@ -6263,6 +6263,13 @@ ngx-dropzone@^3.1.0:
   dependencies:
     tslib "^2.0.0"
 
+ngx-image-swiper@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/ngx-image-swiper/-/ngx-image-swiper-1.2.3.tgz#6f76f3ba07f9f412bf4cadffab0714f047bc5573"
+  integrity sha512-AlYIm34gJigt4kFZu2EDGK2gzw/0d4KNGp3Fw+7exEdRgngxo9qkUq/X4hdjTA5q39aooHBCT3+DAaGJjrMwkg==
+  dependencies:
+    tslib "^2.0.0"
+
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/nice-napi/-/nice-napi-1.0.2.tgz"
