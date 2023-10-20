@@ -47,7 +47,15 @@ nb-icon {
 }
 
 .right-section {
+  display: flex;
+  align-items: center;
   justify-content: flex-start;
+
+  .logo-image {
+    max-width: 15%;
+    height: auto;
+    cursor:pointer;
+  }
 
   @media only screen and (min-width: 473px) {
     justify-content: flex-end;
