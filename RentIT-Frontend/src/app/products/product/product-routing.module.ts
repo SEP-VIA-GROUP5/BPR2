@@ -5,25 +5,17 @@ import {AddingProductsComponent} from "src/app/products/adding-products/adding-p
 import {ProductsModulePage} from "src/app/products/products.module.page";
 import {ProductsComponent} from "src/app/products/products/products.component";
 import {ProductComponent} from "src/app/products/product/product/product.component";
+import {ProductModulePage} from "src/app/products/product/product.module.page";
 
 const routes: Routes = [
     {
       path: '',
-      component: ProductsModulePage,
+      component: ProductModulePage,
       children: [
         {
-          path: '',
-          component: ProductsComponent,
+          path: ':productId',
+          component: ProductComponent,
         },
-        {
-          path: PRODUCTS_MENU_ITEM_URLS.ADDING_PRODUCTS.substring(1),
-          component: AddingProductsComponent
-        },
-        {
-          path: PRODUCTS_MENU_ITEM_URLS.PRODUCT.substring(1),
-          loadChildren: () =>
-            import('./product/product.module').then((m) => m.ProductModule),
-        }
       ]
     },
   ]
@@ -33,5 +25,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ProductsRoutingModule {
+export class ProductRoutingModule {
 }

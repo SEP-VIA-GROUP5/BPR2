@@ -2,11 +2,11 @@ import {Product} from "src/model/product";
 import {Action, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {NbToastrService} from "@nebular/theme";
-import {ProductsFetch, ProductsReset} from "src/app/products/products.actions";
 import {produce} from "immer";
 import {ICONS} from "src/app/constants";
 import { environment } from "src/environments/environment.dev";
 import { ProductsService } from "src/api/products.service";
+import {ProductsFetch, ProductsReset} from "src/app/products/products/products.actions";
 
 export interface ProductsStateModel {
   isFetching: boolean;

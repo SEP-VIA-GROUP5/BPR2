@@ -7,7 +7,7 @@ import {UserService} from "src/api/user.service";
 import {NbDialogRef, NbDialogService, NbToastrService} from "@nebular/theme";
 import {Action, ActionsConstants} from "src/app/my-products/constants/actions.constants";
 import {mockedProducts} from "src/mocks/products.mock";
-import {ProductSelected} from "src/app/shared-components/product/constants/constants";
+import {ProductSelected} from "src/app/shared-components/product-card/constants/constants";
 import {MyProductsFetch, MyProductsReset, RemoveProducts} from "src/app/my-products/my-products.actions";
 import {Observable} from "rxjs";
 import {MyProductsSelector} from "src/app/my-products/my-products.selector";

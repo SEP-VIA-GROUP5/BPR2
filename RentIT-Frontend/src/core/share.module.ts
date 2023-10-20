@@ -1,6 +1,6 @@
 import {CommonModule} from "@angular/common";
 import {NgModule} from "@angular/core";
-import {ProductComponent} from "src/app/shared-components/product/product.component";
+import {ProductCardComponent} from "src/app/shared-components/product-card/product-card.component";
 import {SearchBarComponent} from "src/app/shared-components/search-bar/search-bar.component";
 import {MapPickerComponent} from "src/app/shared-components/map-picker/map-picker.component";
 import {AgmCoreModule} from "@agm/core";
@@ -47,7 +47,7 @@ export const NEBULAR_MODULES = [
 ];
 
 export const SHARED_COMPONENTS = [
-  ProductComponent,
+  ProductCardComponent,
   SearchBarComponent,
   MapPickerComponent,
   ViewImagesComponent,
