@@ -40,6 +40,6 @@ export const defaultProduct: Product = {
   category: '',
   tags: [],
   images: [],
-  productStatus: null,
+  status: null,
   rentedUntil: null
 }

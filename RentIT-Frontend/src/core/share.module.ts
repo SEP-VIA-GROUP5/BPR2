@@ -16,7 +16,7 @@ import {
 } from "@nebular/theme";
 import {NbEvaIconsModule} from "@nebular/eva-icons";
 import {AgGridModule} from "ag-grid-angular";
-import {ViewImagesComponent} from "src/app/shared-components/view-images/view-images.component";
+import {ViewImagesSliderComponent} from "src/app/shared-components/view-images/view-images-slider.component";
 import {NgxDropzoneModule} from "ngx-dropzone";
 import {NgImageSliderModule} from "ng-image-slider";
 import {RouterModule} from "@angular/router";
@@ -50,7 +50,7 @@ export const SHARED_COMPONENTS = [
   ProductCardComponent,
   SearchBarComponent,
   MapPickerComponent,
-  ViewImagesComponent,
+  ViewImagesSliderComponent,
 ];
 
 export const NG_MODULES = [

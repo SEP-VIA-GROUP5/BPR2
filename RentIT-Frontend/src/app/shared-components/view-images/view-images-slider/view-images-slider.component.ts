@@ -1,14 +1,15 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
-import { ImgurImageResponse } from "src/model/imgurImageResponse";
-import { NgImageSliderComponent } from 'ng-image-slider';
+import {ImgurImageResponse} from "src/model/imgurImageResponse";
+import {NgImageSliderComponent} from 'ng-image-slider';
 import {NbWindowRef, NbWindowService} from "@nebular/theme";
 import {Store} from "@ngxs/store";
 import {UpdateImages} from "src/app/products/adding-products/adding-products.actions";
+import {Image} from "src/model/image";
 import {
-  constructNgSliderImagesFrom,
+  constructNgSliderImagesFromImages, constructNgSliderImagesFromImgurImages,
   findImgurImageResponseFromNgSliderImage,
   NgSliderImage
-} from "src/app/shared-components/view-images/constants/constants";
+} from "src/app/shared-components/view-images/view-images-slider/constants/constants";
 
 @Component({
   selector: 'view-images',
@@ -21,7 +22,7 @@ import {
                          #nav>
         </ng-image-slider>
       </div>
-      <nb-card *ngIf="selectedImage" class="selected-image-container" size="tiny" [nbTooltip]="getTooltip()"
+      <nb-card *ngIf="selectedImage && withSelectedImage" class="selected-image-container" size="tiny" [nbTooltip]="getTooltip()"
                (click)="openImage()">
         <nb-card-header>
           <img [src]="selectedImage.image" [alt]="selectedImage.title" class="selected-image"/>
@@ -38,8 +39,10 @@ import {
   `,
   styleUrls: ['./view-images.component.scss']
 })
-export class ViewImagesComponent implements OnInit, OnChanges {
+export class ViewImagesSliderComponent implements OnInit, OnChanges {
   @Input() imgurImages: ImgurImageResponse[];
+  @Input() images: Image[];
+  @Input() withSelectedImage: boolean = true;
   ngSliderImages: NgSliderImage[] = [];
   selectedImage: NgSliderImage;
 
@@ -52,17 +55,26 @@ export class ViewImagesComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.ngSliderImages = constructNgSliderImagesFrom(this.imgurImages);
+    this.constructImagesInNgSliderImageS();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.imgurImages) {
-      this.ngSliderImages = constructNgSliderImagesFrom(changes.imgurImages.currentValue);
+      this.constructImagesInNgSliderImageS();
     }
   }
 
   onImageClick($event) {
     this.selectedImage = this.ngSliderImages[$event];
+  }
+
+  constructImagesInNgSliderImageS() {
+    if (this.imgurImages) {
+      this.ngSliderImages = constructNgSliderImagesFromImgurImages(this.imgurImages);
+    }
+    else if(this.images) {
+      this.ngSliderImages = constructNgSliderImagesFromImages(this.images);
+    }
   }
 
   openImage() {

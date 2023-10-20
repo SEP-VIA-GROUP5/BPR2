@@ -1,0 +1,25 @@
+.product-overview-container {
+  .product-overview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    .product-overview-product-name {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .product-overview-rented-until-date {
+      font-weight: bold;
+      font-size: 1.5rem;
+      span {
+        font-weight: lighter;
+      }
+    }
+    .product-overview-status-badge {
+      font-size: 1rem;
+    }
+  }
+  .product-overview-body {
+
+  }
+}

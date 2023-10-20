@@ -6,13 +6,14 @@ import {SharedModule} from "src/core/share.module";
 import {ProductRoutingModule} from "src/app/products/product/product-routing.module";
 import {ProductModulePage} from "src/app/products/product/product.module.page";
 import {ProductComponent} from "src/app/products/product/product/product.component";
+import {ProductState} from "src/app/products/product/product/product.state";
 
 export const PRODUCTS_PROVIDERS = [
   ProductService,
 ]
 
 export const PRODUCTS_STATES = [
-
+  ProductState,
 ];
 
 export const PRODUCTS_COMPONENTS = [

@@ -1,1 +1,33 @@
-product-overview works
+<nb-card *ngIf="isFetching$ | async; else isNotFetching">
+  <nb-spinner size="large" status="primary"></nb-spinner>
+</nb-card>
+<ng-template #isNotFetching>
+  <nb-card class="product-overview-container" *ngIf="(product$ | async) as productOverview; else productNotFound">
+    <nb-card-header class="product-overview-header" style="position: relative" *ngIf="productOverview.product as product">
+      <div class="product-overview-product-name">
+        <h2>{{ product.name }}</h2>
+      </div>
+      <h3 class="product-overview-rented-until-date" *ngIf="product.rentedUntil">
+        Rented until:
+        <span>{{ product.rentedUntil }}</span>
+      </h3>
+      <nb-badge class="product-overview-status-badge" [text]="getProductInfoStatusBadge(product.status)"
+                [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
+    </nb-card-header>
+    <nb-card-body class="product-overview-body">
+      <div class="product-overview-image-slider-container">
+        <view-images [images]="productOverview.product.images" [withSelectedImage]="false"></view-images>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #productNotFound>
+  <nb-card>
+    <nb-card-header>
+      <div class="product-overview-product-name">
+        <h2>Product not found</h2>
+      </div>
+    </nb-card-header>
+  </nb-card>
+</ng-template>

@@ -114,7 +114,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
     if (productSelected.isProductSelected) {
       this.productsSelected.push(productSelected.product);
     } else {
-      this.productsSelected = this.productsSelected.filter(product => product.productId !== productSelected.product.productId);
+      this.productsSelected = this.productsSelected.filter(product => product.id !== productSelected.product.id);
     }
   }
 
