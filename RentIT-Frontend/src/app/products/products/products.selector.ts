@@ -1,5 +1,5 @@
 import {Selector} from "@ngxs/store";
-import {ProductsState, ProductsStateModel} from "src/app/products/products.state";
+import {ProductsState, ProductsStateModel} from "src/app/products/products/products.state";
 
 export class ProductsSelector {
   @Selector([ProductsState])

@@ -1,0 +1,80 @@
+<nb-card *ngIf="isFetching$ | async; else isNotFetching">
+  <nb-spinner size="large" status="primary"></nb-spinner>
+</nb-card>
+<ng-template #isNotFetching>
+  <nb-card class="product-overview-container" *ngIf="(product$ | async) as productOverview; else productNotFound">
+    <nb-card-header class="product-overview-header" style="position: relative"
+                    *ngIf="productOverview.product as product">
+      <div class="product-overview-product-name">
+        <h2>{{ product.name }}</h2>
+      </div>
+      <h3 class="product-overview-rented-until-date" *ngIf="product.rentedUntil">
+        Rented until:
+        <span>{{ product.rentedUntil }}</span>
+      </h3>
+      <nb-badge class="product-overview-status-badge" [text]="getProductInfoStatusBadge(product.status)"
+                [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
+    </nb-card-header>
+    <nb-card-body class="product-overview-body">
+      <div class="left-section">
+        <div class="product-overview-image-slider-container">
+          <view-images-swiper [images]="productOverview.product.images"></view-images-swiper>
+        </div>
+        <nb-card class="product-description">
+          <nb-card-header>
+            <h3>Description</h3>
+          </nb-card-header>
+          <nb-card-body>
+            <p>{{ productOverview.product.description }}</p>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="right-section">
+        <nb-card class="user-and-lease-information">
+          <nb-card-header>
+            <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
+                     onlyPicture>
+            </nb-user>
+            <div class="user-information">
+              <p><span>Name</span> {{ productOverview.user.firstName }} {{ productOverview.user.lastName }}</p>
+              <p><span>Email:</span> {{ productOverview.user.email }}</p>
+              <p><span>City:</span> {{ productOverview.user.location }}</p>
+              <p><span>Phone number: </span> {{ productOverview.user.phoneNumber }}</p>
+            </div>
+          </nb-card-header>
+          <nb-card-body>
+            <div class="prices-lease" *ngIf="productOverview.product as product">
+              <p *ngIf="product.dayPrice"><span>Price per day: </span> {{ productOverview.product.dayPrice }}€</p>
+              <p *ngIf="product.weekPrice"><span>Price per week: </span> {{ productOverview.product.weekPrice }}€</p>
+              <p *ngIf="product.monthPrice"><span>Price per month: </span> {{ productOverview.product.monthPrice }}€</p>
+            </div>
+            <div class="prices-product" *ngIf="productOverview.product as product">
+              <p *ngIf="product.productValue"><span>Product value: </span> {{ productOverview.product.productValue }}€
+              </p>
+              <p *ngIf="product.deposit"><span>Price per deposit: </span> {{ productOverview.product.deposit }}€</p>
+              <p *ngIf="product.minLeasePeriod">
+                <span>Minimum lease period: </span> {{ humanizeDurationMinLeasePeriod(productOverview.product.minLeasePeriod) }}
+              </p>
+            </div>
+          </nb-card-body>
+        </nb-card>
+        <nb-card class="map-location-product">
+          <nb-card-body>
+            <map-picker [location]="productOverview.product.city" [showLocationPicker]="false"
+                        [enableCurrentLocation]="false"></map-picker>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #productNotFound>
+  <nb-card>
+    <nb-card-header>
+      <div class="product-overview-product-name">
+        <h2>Product not found</h2>
+      </div>
+    </nb-card-header>
+  </nb-card>
+</ng-template>

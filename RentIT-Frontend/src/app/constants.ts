@@ -26,6 +26,7 @@ export enum GENERAL_MENU_ITEM_URLS {
 
 export enum PRODUCTS_MENU_ITEM_URLS {
   PRODUCTS = '/products',
+  PRODUCT = '/product',
   MY_PRODUCTS = '/my-products',
   ADDING_PRODUCTS = '/add',
 }

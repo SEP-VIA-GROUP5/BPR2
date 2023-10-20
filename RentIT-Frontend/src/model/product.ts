@@ -1,9 +1,8 @@
-import {Tag} from "src/model/tag";
 import {Image} from "src/model/image";
 import {ProductStatus} from "src/model/productStatus";
 
 export interface Product {
-  productId?: number;
+  id?: number;
   name: string;
   description?: string;
   dayPrice: number;
@@ -16,6 +15,6 @@ export interface Product {
   category: string;
   tags: string[];
   images: Image[];
-  productStatus: ProductStatus;
+  status: ProductStatus;
   rentedUntil?: string | null;
 }

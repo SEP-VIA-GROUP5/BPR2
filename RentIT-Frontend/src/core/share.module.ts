@@ -1,25 +1,45 @@
 import {CommonModule} from "@angular/common";
 import {NgModule} from "@angular/core";
-import {ProductComponent} from "src/app/shared-components/product/product.component";
+import {ProductCardComponent} from "src/app/shared-components/product-card/product-card.component";
 import {SearchBarComponent} from "src/app/shared-components/search-bar/search-bar.component";
 import {MapPickerComponent} from "src/app/shared-components/map-picker/map-picker.component";
 import {AgmCoreModule} from "@agm/core";
 import {environment} from "src/environments/environment.dev";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
-  NbActionsModule, NbBadgeModule,
-  NbButtonModule, NbCardModule, NbContextMenuModule,
-  NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule,
-  NbLayoutModule, NbListModule, NbMenuModule, NbOptionModule, NbPopoverModule, NbSearchModule, NbSelectModule,
-  NbSidebarModule, NbSpinnerModule, NbStepperModule, NbTabsetModule, NbTagModule,
-  NbToastrModule, NbTooltipModule, NbUserModule, NbWindowModule
+  NbActionsModule,
+  NbBadgeModule,
+  NbButtonModule,
+  NbCardModule,
+  NbContextMenuModule,
+  NbFormFieldModule,
+  NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbOptionModule,
+  NbPopoverModule,
+  NbSearchModule,
+  NbSelectModule,
+  NbSpinnerModule,
+  NbStepperModule,
+  NbTabsetModule,
+  NbTagModule,
+  NbTooltipModule,
+  NbUserModule
 } from "@nebular/theme";
 import {NbEvaIconsModule} from "@nebular/eva-icons";
 import {AgGridModule} from "ag-grid-angular";
-import {ViewImagesComponent} from "src/app/shared-components/view-images/view-images.component";
 import {NgxDropzoneModule} from "ngx-dropzone";
 import {NgImageSliderModule} from "ng-image-slider";
 import {RouterModule} from "@angular/router";
+import {NgxImageSwiperModule} from "ngx-image-swiper";
+import {
+  ViewImagesSliderComponent
+} from "src/app/shared-components/view-images/view-images-slider/view-images-slider.component";
+import {
+  ViewImagesSwiperComponent
+} from "src/app/shared-components/view-images/view-images-swiper/view-images-swiper.component";
 
 export const NEBULAR_MODULES = [
   NbLayoutModule,
@@ -43,20 +63,22 @@ export const NEBULAR_MODULES = [
   NbTagModule,
   NbContextMenuModule,
   NbStepperModule,
-  NbOptionModule,
+  NbOptionModule
 ];
 
 export const SHARED_COMPONENTS = [
-  ProductComponent,
+  ProductCardComponent,
   SearchBarComponent,
   MapPickerComponent,
-  ViewImagesComponent,
+  ViewImagesSliderComponent,
+  ViewImagesSwiperComponent
 ];
 
 export const NG_MODULES = [
   FormsModule,
   NgxDropzoneModule,
   NgImageSliderModule,
+  NgxImageSwiperModule
 ]
 
 @NgModule({

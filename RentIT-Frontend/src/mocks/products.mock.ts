@@ -20,7 +20,7 @@ import {ProductStatus} from "src/model/productStatus";
 // rentedUntil?: string | null;
 export const mockedProducts: Product[] = [
   {
-    productId: 1231,
+    id: 1231,
     name: "GoPro",
     description: "some description",
     dayPrice: 10.0,
@@ -31,13 +31,13 @@ export const mockedProducts: Product[] = [
     category: "Camera",
     tags: [mockedTags[0], mockedTags[1]],
     images: [imagesMock[1]],
-    productStatus: ProductStatus.AVAILABLE,
+    status: ProductStatus.AVAILABLE,
     productValue: 100,
     deposit: 10,
     rentedUntil: null
   },
   {
-    productId: 1233,
+    id: 1233,
     name: "VW Jetta",
     description: "some description",
     dayPrice: 10.0,
@@ -48,7 +48,7 @@ export const mockedProducts: Product[] = [
     category: "Car",
     tags: [mockedTags[0], mockedTags[1]],
     images: [imagesMock[1]],
-    productStatus: ProductStatus.UNAVAILABLE,
+    status: ProductStatus.UNAVAILABLE,
     productValue: 100,
     deposit: 10,
     rentedUntil: null

@@ -1,0 +1,97 @@
+.product-overview-container {
+  height: 85vh;
+  overflow: scroll;
+
+  .product-overview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .product-overview-product-name {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .product-overview-rented-until-date {
+      font-weight: bold;
+      font-size: 1.5rem;
+
+      span {
+        font-weight: lighter;
+      }
+    }
+
+    .product-overview-status-badge {
+      font-size: 1rem;
+    }
+  }
+
+  .product-overview-body {
+    justify-content: space-between;
+    display: flex;
+    gap: 10px;
+
+    .left-section {
+      display: table-column;
+      text-align: -webkit-center;
+      width: 60%;
+
+      .product-overview-image-slider-container {
+      }
+
+      .product-description {
+        margin-top: 10px;
+        width: 96%;
+
+        nb-card-body {
+          p {
+            font-size: 1.1rem;
+            text-align: justify;
+          }
+        }
+      }
+    }
+
+    .right-section {
+      width: 40%;
+      display: table-column;
+
+      .user-and-lease-information {
+        nb-card-header {
+          display: inline-flex;
+          justify-content: space-between;
+
+          p {
+            font-size: 1.1rem;
+
+            span {
+              font-weight: bold;
+            }
+          }
+        }
+
+        nb-card-body {
+          display: inline-flex;
+          justify-content: space-between;
+
+          p {
+            font-size: 1.1rem;
+
+            span {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+
+      .map-location-product {
+        nb-card-body {
+          padding: 0;
+        }
+      }
+    }
+
+    padding: 10px;
+  }
+}

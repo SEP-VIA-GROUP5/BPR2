@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from "@ngxs/store";
-import {ProductsFetch, ProductsReset} from "src/app/products/products.actions";
-import {ProductsSelector} from "src/app/products/products.selector";
 import {Observable} from "rxjs";
 import {Product} from "src/model/product";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
+import {ProductsFetch, ProductsReset} from "src/app/products/products/products.actions";
+import {ProductsSelector} from "src/app/products/products/products.selector";
 
 @Component({
   selector: 'app-products',

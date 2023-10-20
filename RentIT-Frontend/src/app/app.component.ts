@@ -2,10 +2,10 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {NB_WINDOW, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
 import {
   CONTEXT_MENU_TITLES,
-  ContextMenuState, GENERAL_MENU_ITEMS_LOGGED_IN,
+  ContextMenuState, GENERAL_MENU_ITEM_URLS, GENERAL_MENU_ITEMS_LOGGED_IN,
   GENERAL_MENU_ITEMS_NOT_LOGGED_IN,
   ICONS, LocalStorageEnum, LOGGED_IN_CONTEXT_MENU_ITEMS,
-  LOGGED_OUT_CONTEXT_MENU_ITEMS,
+  LOGGED_OUT_CONTEXT_MENU_ITEMS, PRODUCTS_MENU_ITEM_URLS,
   SidebarMenuState
 } from "src/app/constants";
 import {filter, map, takeUntil} from "rxjs/operators";
@@ -32,9 +32,7 @@ import {LocalStorageService} from "src/core/services/local-storage.service";
         </div>
 
         <div class="right-section">
-          <a href="">
-            <img [src]="getImageBySize()" alt="Image" width="100%" height="auto"/>
-          </a>
+          <img class="logo-image" src="../assets/logo.svg" alt="Logo" (click)="navigateToMainPage()"/>
           <!--                   picture="user's profile" TODO fetch user's image-->
           <nb-user *ngIf="getUserFromLocalStorage() !== null"
                    [name]="getUserFromLocalStorage().firstName"
@@ -125,10 +123,6 @@ export class AppComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  getImageBySize() {
-    return window.screen.width <= 472 ? 'assets/favicon.svg' : 'assets/logo.svg' ;
-  }
-
   getSidebarMenuItems(sidebarMenuState: SidebarMenuState) {
     switch (sidebarMenuState) {
       case SidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN: return GENERAL_MENU_ITEMS_NOT_LOGGED_IN();
@@ -146,6 +140,10 @@ export class AppComponent implements OnInit, OnDestroy {
   getUserFromLocalStorage(): User {
     let userLocalStorage = this.localStorageService.getData(LocalStorageEnum.USER);
     return userLocalStorage !== "" ? JSON.parse(userLocalStorage) as User : null;
+  }
+
+  navigateToMainPage() {
+    this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
   }
 
   ngOnDestroy() {
