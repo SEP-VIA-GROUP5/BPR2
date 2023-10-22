@@ -4,6 +4,7 @@ import {produce} from "immer";
 import {ContextMenuState, ICONS, LocalStorageEnum, SidebarMenuState} from "src/app/constants";
 import {LocalStorageService} from "src/core/services/local-storage.service";
 
+// actions
 export class UpdateSidebarMenuState {
   static readonly type = '[App] Update sidebar menu items';
   constructor(public sidebarMenuState: SidebarMenuState) {
@@ -22,6 +23,7 @@ export class FetchLocalStorageData {
   }
 }
 
+// state model
 export interface AppStateModel {
   isFetching: boolean;
   sidebarVisible: boolean;
@@ -86,6 +88,7 @@ export class AppState {
   }
 }
 
+// selectors
 export class AppSelector {
   @Selector([AppState])
   static sidebarMenuState(state: AppStateModel) {

@@ -1,11 +1,31 @@
 @media only screen and (max-width: 472px) {
-  .input-search {
-    width: 166px;
+  .search-bar-container {
+    .input-search {
+      width: 166px;
+    }
+
+    .select-filtering-options {
+
+    }
   }
 }
 
 @media only screen and (min-width: 473px) {
-  .input-search {
-    width: 318px;
+  .search-bar-container {
+
+    .input-search {
+      width: 318px;
+    }
+
+    .select-filtering-options {
+
+    }
   }
+}
+
+.search-bar-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 10px;
 }

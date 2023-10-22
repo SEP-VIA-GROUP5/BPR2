@@ -6,7 +6,7 @@ import {produce} from "immer";
 import {ICONS} from "src/app/constants";
 import { environment } from "src/environments/environment.dev";
 import { ProductsService } from "src/api/products.service";
-import {ProductsFetch, ProductsReset} from "src/app/products/products/products.actions";
+import {ProductsByFilter, ProductsFetch, ProductsReset} from "src/app/products/products/products.actions";
 
 export interface ProductsStateModel {
   isFetching: boolean;
@@ -68,6 +68,43 @@ export class ProductsState {
       draft.isFetching = false;
     })
     setState(newState);
+  }
+
+  @Action(ProductsByFilter)
+  async productsByFilter(
+    {getState, setState}: StateContext<ProductsStateModel>,
+    action: ProductsByFilter) {
+
+    if(!action.searchInput) {
+      setState(defaultsState);
+      return await this.productsFetch({getState, setState} as StateContext<ProductsStateModel>);
+    }
+
+    let newState = produce(getState(), draft => {
+      draft.isFetching = true;
+    });
+    setState(newState);
+
+    try {
+      let products = [];
+      // TODO fetch products by filter here API call
+      newState = produce(getState(), draft => {
+        draft.products = products;
+        draft.endOfList = true;
+        draft.isFetching = false;
+      });
+      return setState(newState);
+    }
+    catch (e) {
+      newState = produce(getState(), draft => {
+        draft.isFetching = false;
+        this.toastrService.danger(
+          environment.production ? 'Please contact the administration' : e,
+          'Something went wrong',
+          {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+        );
+      });
+    }
   }
 
   @Action(ProductsReset)
