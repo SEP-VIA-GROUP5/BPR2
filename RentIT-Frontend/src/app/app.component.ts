@@ -180,7 +180,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   isOnMainPage(): boolean {
-    console.log(this.router);
     return this.router.routerState.snapshot.url === PRODUCTS_MENU_ITEM_URLS.PRODUCTS;
   }
 

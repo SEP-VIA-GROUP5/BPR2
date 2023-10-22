@@ -7,7 +7,8 @@ import {ICONS} from "src/app/constants";
   template: `
       <div class="search-bar-container">
           <nb-form-field class="form-input-search">
-              <input [disabled]="selectedFilteredOption === FilteredOptionsEnum.DEFAULT" class="input-search" nbInput shape="round" [placeholder]="getPlaceholderByFilteredOption()"
+              <input [disabled]="selectedFilteredOption === FilteredOptionsEnum.DEFAULT" class="input-search" nbInput
+                     shape="round" [placeholder]="getPlaceholderByFilteredOption()"
                      (input)="onInputChange($event)">
               <nb-icon nbPrefix pack="eva" [icon]="icon"></nb-icon>
           </nb-form-field>
@@ -18,11 +19,11 @@ import {ICONS} from "src/app/constants";
                   {{ FilteredOptionsEnum.DEFAULT }}
               </nb-option>
               <nb-option-group title="Filtered by">
-                <nb-option [value]="FilteredOptionsEnum.NAME">
-                  {{ FilteredOptionsEnum.NAME }}
-                </nb-option>
-                <nb-option [value]="FilteredOptionsEnum.LOCATION">
-                  {{ FilteredOptionsEnum.LOCATION }} </nb-option>
+                  <nb-option [value]="FilteredOptionsEnum.NAME">
+                      {{ FilteredOptionsEnum.NAME }}
+                  </nb-option>
+                  <nb-option [value]="FilteredOptionsEnum.LOCATION">
+                      {{ FilteredOptionsEnum.LOCATION }} </nb-option>
               </nb-option-group>
           </nb-select>
       </div>
