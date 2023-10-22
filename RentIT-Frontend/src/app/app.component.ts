@@ -22,6 +22,7 @@ import {Logout} from "src/app/authentication/authentication.actions";
 import {User} from "src/model/user";
 import {LocalStorageService} from "src/core/services/local-storage.service";
 import {FilteredOptionsEnum} from "src/app/shared-components/search-bar/constants/constants";
+import {ProductsByFilter} from "src/app/products/products/products.actions";
 
 @Component({
   selector: 'app-root',
@@ -173,7 +174,8 @@ export class AppComponent implements OnInit, OnDestroy {
     // TODO dispatch ngxs action here with filteredOptionChose and searchInput
     console.log(searchInput);
     console.log(this.filteredOptionChose);
-  }
+    this.store.dispatch(new ProductsByFilter(searchInput, this.filteredOptionChose));
+}
 
   navigateToMainPage() {
     this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
