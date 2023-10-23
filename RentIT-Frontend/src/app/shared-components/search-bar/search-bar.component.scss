@@ -18,7 +18,6 @@
     }
 
     .select-filtering-options {
-
     }
   }
 }
@@ -28,4 +27,16 @@
   align-items: center;
   justify-content: space-around;
   gap: 10px;
+}
+
+.more-filtering-options-container {
+  border-radius: 5px;
+  .more-filtering-options-body {
+    display: inline-flex;
+    gap: 10px;
+
+    nb-form-field {
+      margin-bottom: 10px;
+    }
+  }
 }

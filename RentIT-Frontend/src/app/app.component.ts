@@ -21,53 +21,54 @@ import {UserService} from "src/api/user.service";
 import {Logout} from "src/app/authentication/authentication.actions";
 import {User} from "src/model/user";
 import {LocalStorageService} from "src/core/services/local-storage.service";
-import {FilteredOptionsEnum} from "src/app/shared-components/search-bar/constants/constants";
-import {ProductsByFilter} from "src/app/products/products/products.actions";
+import {ProductsByFilter, ProductsResetFilter} from "src/app/products/products/products.actions";
+import {FilteringProductOptions} from "src/model/filteringProductOptions";
 
 @Component({
   selector: 'app-root',
   template: `
-    <nb-layout>
-      <nb-layout-header>
-        <div class="left-section">
-          <nb-icon [icon]="ICONS.LIST_OUTLINE" (click)="toggleSidebar()"></nb-icon>
-        </div>
+      <nb-layout>
+          <nb-layout-header>
+              <div class="left-section">
+                  <nb-icon [icon]="ICONS.LIST_OUTLINE" (click)="toggleSidebar()"></nb-icon>
+              </div>
 
-        <div class="center-section">
-          <search-bar *ngIf="isOnMainPage()" [icon]="ICONS.SEARCH"
-                      (onFilteringChoose)="onFilteringChoose($event)"
-                      (onSearchInput)="onSearchInput($event)"></search-bar>
-        </div>
+              <div class="center-section">
+                  <search-bar *ngIf="isOnMainPage()" [icon]="ICONS.SEARCH"
+                              (onSearchInput)="onSearchInput($event)"
+                              (onFilteringOptionsChoose)="onFilteringOptionsChoose($event)"
+                              (onResetFilteringOptions)="onResetFilteringOptions()"></search-bar>
+              </div>
 
-        <div class="right-section">
-          <img class="logo-image" src="../assets/logo.svg" alt="Logo" (click)="navigateToMainPage()"/>
-          <!--                   picture="user's profile" TODO fetch user's image inside <nb-user></nb-user>-->
-          <nb-user *ngIf="getUserFromLocalStorage() !== null"
-                   [name]="getUserFromLocalStorage().firstName"
-                   [nbContextMenu]="contextMenuItems"
-                   nbContextMenuTag="my-context-menu">
-          </nb-user>
-          <nb-user *ngIf="getUserFromLocalStorage() === null"
-                   picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max'
-                   name='Not logged in'
-                   [nbContextMenu]="contextMenuItems"
-                   nbContextMenuTag="my-context-menu">
-          </nb-user>
-        </div>
-      </nb-layout-header>
+              <div class="right-section">
+                  <img class="logo-image" src="../assets/logo.svg" alt="Logo" (click)="navigateToMainPage()"/>
+                  <!--                   picture="user's profile" TODO fetch user's image inside <nb-user></nb-user>-->
+                  <nb-user *ngIf="getUserFromLocalStorage() !== null"
+                           [name]="getUserFromLocalStorage().firstName"
+                           [nbContextMenu]="contextMenuItems"
+                           nbContextMenuTag="my-context-menu">
+                  </nb-user>
+                  <nb-user *ngIf="getUserFromLocalStorage() === null"
+                           picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max'
+                           name='Not logged in'
+                           [nbContextMenu]="contextMenuItems"
+                           nbContextMenuTag="my-context-menu">
+                  </nb-user>
+              </div>
+          </nb-layout-header>
 
 
-      <nb-sidebar [responsive]="true">
-        <div>
-          <nb-menu tag="menu" [items]="sidebarMenuItems">
-          </nb-menu>
-        </div>
-      </nb-sidebar>
+          <nb-sidebar [responsive]="true">
+              <div>
+                  <nb-menu tag="menu" [items]="sidebarMenuItems">
+                  </nb-menu>
+              </div>
+          </nb-sidebar>
 
-      <nb-layout-column class="colored-column-basic">
-        <router-outlet></router-outlet>
-      </nb-layout-column>
-    </nb-layout>`,
+          <nb-layout-column class="colored-column-basic">
+              <router-outlet></router-outlet>
+          </nb-layout-column>
+      </nb-layout>`,
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -85,8 +86,8 @@ export class AppComponent implements OnInit, OnDestroy {
   protected readonly ICONS = ICONS;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  //filtering
-  filteredOptionChose = FilteredOptionsEnum.DEFAULT;
+  // //filtering
+  // filteredOptionChose = FilteredOptionsEnum.DEFAULT;
 
   constructor(
     private nbMenuService: NbMenuService,
@@ -166,15 +167,21 @@ export class AppComponent implements OnInit, OnDestroy {
     return userLocalStorage !== "" ? JSON.parse(userLocalStorage) as User : null;
   }
 
-  onFilteringChoose(filteredOptionChose: FilteredOptionsEnum) {
-    this.filteredOptionChose = filteredOptionChose;
+  onFilteringOptionsChoose(filteringOptions: FilteringProductOptions) {
+    this.store.dispatch(new ProductsByFilter(filteringOptions));
+  }
+
+  onResetFilteringOptions() {
+    this.store.dispatch(new ProductsResetFilter());
   }
 
   onSearchInput(searchInput: string) {
-    // TODO dispatch ngxs action here with filteredOptionChose and searchInput
-    console.log(searchInput);
-    console.log(this.filteredOptionChose);
-    this.store.dispatch(new ProductsByFilter(searchInput, this.filteredOptionChose));
+    if(searchInput === "") {
+      this.store.dispatch(new ProductsResetFilter());
+    }
+    this.store.dispatch(new ProductsByFilter({
+      productName: searchInput,
+    } satisfies FilteringProductOptions));
 }
 
   navigateToMainPage() {

@@ -1,4 +1,4 @@
-import {FilteredOptionsEnum} from "src/app/shared-components/search-bar/constants/constants";
+import {FilteringProductOptions} from "src/model/filteringProductOptions";
 
 export class ProductsFetch {
   static readonly type = '[Products] Fetch';
@@ -8,8 +8,13 @@ export class ProductsFetch {
 
 export class ProductsByFilter {
   static readonly type = '[Products] Fetch products by filter';
-  constructor(public searchInput: string,
-              public filteredOptionChose: FilteredOptionsEnum) {
+  constructor(public filteringProductOptions: FilteringProductOptions) {
+  }
+}
+
+export class ProductsResetFilter {
+  static readonly type = '[Products] Reset filter';
+  constructor() {
   }
 }
 
