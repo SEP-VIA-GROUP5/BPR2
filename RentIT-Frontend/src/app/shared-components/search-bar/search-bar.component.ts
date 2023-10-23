@@ -86,6 +86,7 @@ export class SearchBarComponent {
 
   onSaveFilteringOptions() {
     this.onFilteringOptionsChoose.emit(this.filteringProductOptions);
+    this.dialogRef.close();
   }
 
   resetFilteringButtonShown() {
