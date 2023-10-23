@@ -129,7 +129,6 @@ export class MyProductsComponent implements OnInit, OnDestroy {
     let actionToPerform;
     switch (this.actionSelected.action) {
       case ActionsConstants.REMOVE: {
-        console.log(this.productsSelected);
         actionToPerform = new RemoveProducts(this.productsSelected);
         break;
       }

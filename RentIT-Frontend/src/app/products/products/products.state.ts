@@ -6,7 +6,12 @@ import {produce} from "immer";
 import {ICONS} from "src/app/constants";
 import { environment } from "src/environments/environment.dev";
 import { ProductsService } from "src/api/products.service";
-import {ProductsByFilter, ProductsFetch, ProductsReset} from "src/app/products/products/products.actions";
+import {
+  ProductsByFilter,
+  ProductsFetch,
+  ProductsReset,
+  ProductsResetFilter
+} from "src/app/products/products/products.actions";
 
 export interface ProductsStateModel {
   isFetching: boolean;
@@ -75,11 +80,6 @@ export class ProductsState {
     {getState, setState}: StateContext<ProductsStateModel>,
     action: ProductsByFilter) {
 
-    if(!action.searchInput) {
-      setState(defaultsState);
-      return await this.productsFetch({getState, setState} as StateContext<ProductsStateModel>);
-    }
-
     let newState = produce(getState(), draft => {
       draft.isFetching = true;
     });
@@ -105,6 +105,14 @@ export class ProductsState {
         );
       });
     }
+  }
+
+  @Action(ProductsResetFilter)
+  async productsResetFilter(
+    {getState, setState }: StateContext<ProductsStateModel>
+  ) {
+    setState(defaultsState);
+    return await this.productsFetch({getState, setState} as StateContext<ProductsStateModel>);
   }
 
   @Action(ProductsReset)
