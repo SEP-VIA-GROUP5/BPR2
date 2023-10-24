@@ -12,7 +12,7 @@ import {
 } from "src/app/products/adding-products/constants/constants";
 import {NgxDropzoneChangeEvent} from "ngx-dropzone";
 import {Select, Store} from "@ngxs/store";
-import {AddProduct, UploadImage} from "src/app/products/adding-products/adding-products.actions";
+import {AddProduct, ResetAddingProducts, UploadImage} from "src/app/products/adding-products/adding-products.actions";
 import {Observable} from "rxjs";
 import {AddingProductsSelectors} from "src/app/products/adding-products/adding-products.selectors";
 import {ImgurImageResponse} from "src/model/imgurImageResponse";
@@ -120,5 +120,6 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.store.dispatch(new ResetAddingProducts());
   }
 }

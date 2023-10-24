@@ -3,7 +3,8 @@
   align-items: flex-start;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding-top: 0;
+  gap: 20px;
+  padding-top: 2.2rem;
 }
 
 .view-image-container {
@@ -13,7 +14,8 @@
 
 ng-image-slider {
   display: block;
-  max-width: 100%;
+  min-width: 200px;
+  max-width: 800px;
 }
 
 .selected-image-container {
