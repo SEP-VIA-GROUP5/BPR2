@@ -18,6 +18,13 @@ export function isDateBeforeNow(date: Date) {
   return isBefore(nowUTCDate, date);
 }
 
-export function toUTCDate(date: Date) {
-  return new Date(formatDate(date, DATE_FORMAT.YYYY_MM_DD_HH_MM_SS, DATE_LOCALE.EN_US,  DATE_TIMEZONE.UTC));
+export function getMinutesBetweenDates(date: Date, dateToCompare: Date) {
+  let dateUTC = toUTCDate(date);
+  let dateToCompareUTC = toUTCDate(dateToCompare);
+
+  return (dateToCompare.getTime() - date.getTime()) / 60000;
+}
+
+function toUTCDate(date: Date): Date {
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
 }

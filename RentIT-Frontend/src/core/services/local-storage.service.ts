@@ -34,6 +34,12 @@ export class LocalStorageService {
     localStorage.clear();
   }
 
+  public clearDataByKeys(keys: string[]) {
+    keys.forEach(key => {
+      localStorage.removeItem(key);
+    });
+  }
+
   private encrypt(txt: string): string {
     return CryptoJS.AES.encrypt(txt, this.key).toString();
   }
