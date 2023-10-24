@@ -94,7 +94,6 @@ export const NG_MODULES = [
     ReactiveFormsModule,
     NEBULAR_MODULES,
     NG_MODULES,
-    FormsModule,
   ],
   exports: [
     CommonModule,
