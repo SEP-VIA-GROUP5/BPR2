@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: 17
       - name: Step 3 - Move to backend dir
-        run: cd RentIT
+        run: cd BPR2/RentIT
       - name: Step 4 - Have GitHub Actions Build Maven Project
         run: mvn -B package --file pom.xml
       - name: Step 5 - Run project tests with maven
