@@ -6,5 +6,6 @@ public enum ResponseMessage {
     EXISTING_EMAIL,
     INTERNAL_ERROR,
     CREDENTIALS_ERROR,
+    DELETION_ERROR,
     SUCCESS
 }

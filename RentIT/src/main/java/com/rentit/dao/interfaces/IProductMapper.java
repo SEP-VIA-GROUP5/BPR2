@@ -11,7 +11,6 @@ import java.util.List;
 public interface IProductMapper {
     List<ProductDTO> getNProductsByPage(int pageNum, int n);
     int addProduct(Product product);
-
     Product getProductById(int id);
     List<Product> getProductsByName(String name);
     void deleteProductById(int id);
