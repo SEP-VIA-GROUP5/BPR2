@@ -39,7 +39,7 @@ CREATE TABLE tags
     name       VARCHAR(30) NOT NULL,
     product_id INT         NOT NULL,
     PRIMARY KEY (tag_id),
-    FOREIGN KEY (product_id) REFERENCES products (product_id)
+    FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
 );
 
 CREATE TABLE images
@@ -48,5 +48,5 @@ CREATE TABLE images
     image_url  VARCHAR(100) NOT NULL,
     product_id INT          NOT NULL,
     PRIMARY KEY (image_id),
-    FOREIGN KEY (product_id) REFERENCES products (product_id)
+    FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
 );

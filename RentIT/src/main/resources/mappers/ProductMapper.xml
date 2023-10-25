@@ -64,4 +64,9 @@
         FROM products
         WHERE product_id = #{id};
     </select>
+    <delete id="deleteProductById">
+        DELETE
+        FROM products
+        WHERE product_id = #{id};
+    </delete>
 </mapper>
