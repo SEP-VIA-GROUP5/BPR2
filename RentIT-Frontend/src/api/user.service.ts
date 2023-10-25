@@ -101,6 +101,7 @@ export class UserService {
 
         let newToken = await this.currentRefreshPromise;
         if (this.isTokenObject(newToken) && newToken) {
+          this.localStorageService.removeDataByKeys([LocalStorageEnum.TOKEN]);
           this.localStorageService.saveData(LocalStorageEnum.TOKEN, JSON.stringify(newToken));
         }
       } finally {
