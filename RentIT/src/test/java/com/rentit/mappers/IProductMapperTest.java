@@ -1,5 +1,6 @@
 package com.rentit.mappers;
 
+import com.rentit.dao.interfaces.IImageMapper;
 import com.rentit.dao.interfaces.IProductMapper;
 import com.rentit.model.Product;
 import com.rentit.model.dto.ProductDTO;
@@ -18,6 +19,8 @@ public class IProductMapperTest {
 
     @Autowired
     private IProductMapper productMapper;
+    @Autowired
+    private IImageMapper imageMapper;
 
     @Test
     public void return_n_products_per_page() {
@@ -42,5 +45,13 @@ public class IProductMapperTest {
         productMapper.addProduct(product);
         List<Product> products = productMapper.getProductsByName("test_product");
         assertThat(products.get(0)).isEqualTo(product);
+    }
+
+    @Test
+    public void delete_product_by_id_cascades() {
+        int productId = 5;
+        productMapper.deleteProductById(productId);
+        assertThat(productMapper.getProductById(5)).isNull();
+        assertThat(imageMapper.getImagesByProductId(5)).isEmpty();
     }
 }
