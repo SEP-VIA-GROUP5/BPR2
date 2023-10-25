@@ -2,7 +2,11 @@ name: GitHub Actions Maven Build
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'RentIT/**'
   pull_request:
+    paths:
+      - 'RentIT/**'
     branches: [ "main" ]
     
 jobs:
@@ -17,6 +21,6 @@ jobs:
         with:
           java-version: 17
       - name: Step 3 - Have GitHub Actions Build Maven Project
-        run: mvn -B package --file RentIT/pom.xml
+        run: mvn -B package
       - name: Step 4 - Run project tests with maven
-        run: mvn clean test -f RentIT/pom.xml
+        run: mvn clean test
