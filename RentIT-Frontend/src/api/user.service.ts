@@ -74,14 +74,13 @@ export class UserService {
     let tokenFromLocalStorage = this.localStorageService.getData(LocalStorageEnum.TOKEN);
     // fail fast
     if (!tokenFromLocalStorage) return false;
-    this.handleRefreshToken();
+    this.handleRefreshToken(JSON.parse(tokenFromLocalStorage));
     return true;
   }
 
-  async handleRefreshToken(): Promise<void> {
-    let tokenParsed: Token = JSON.parse(this.localStorageService.getData(LocalStorageEnum.TOKEN));
-    if (tokenParsed && tokenParsed.expires) {
-      const expireDate = formatDate(new Date(tokenParsed.expires), DATE_FORMAT.YYYY_MM_DD_HH_MM_SS, DATE_LOCALE.EN_US, DATE_TIMEZONE.UTC);
+  async handleRefreshToken(currentToken: Token): Promise<void> {
+    if (currentToken && currentToken.expires) {
+      const expireDate = formatDate(new Date(currentToken.expires), DATE_FORMAT.YYYY_MM_DD_HH_MM_SS, DATE_LOCALE.EN_US, DATE_TIMEZONE.UTC);
       const minutesBetweenNowAndExpireDate = getMinutesBetweenDates(new Date(expireDate), new Date()) - 60;
       // we chose 50 because the token expires in an hour, so in the last 10 minutes, a new token has to be generated
       const tokenGeneratedMoreThan50MinutesAgo = minutesBetweenNowAndExpireDate >= 50;
@@ -98,7 +97,6 @@ export class UserService {
       try {
         this.isRefreshingToken = true;
 
-        this.localStorageService.clearDataByKeys([LocalStorageEnum.TOKEN]);
         this.currentRefreshPromise = this.apiService.call(null, this.apiService.request('get', `${this.PATH_CONTROLLER}/refresh`, null, true));
 
         let newToken = await this.currentRefreshPromise;

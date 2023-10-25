@@ -26,18 +26,14 @@ export class LocalStorageService {
     return this.decrypt(data);
   }
 
-  public removeData(key: string) {
-    localStorage.removeItem(key);
+  public removeDataByKeys(keys: string[]) {
+    keys.forEach(key => {
+      localStorage.removeItem(key);
+    });
   }
 
   public clearData() {
     localStorage.clear();
-  }
-
-  public clearDataByKeys(keys: string[]) {
-    keys.forEach(key => {
-      localStorage.removeItem(key);
-    });
   }
 
   private encrypt(txt: string): string {
