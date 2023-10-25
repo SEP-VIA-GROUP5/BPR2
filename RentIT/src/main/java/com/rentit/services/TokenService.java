@@ -19,7 +19,8 @@ public class TokenService {
 
     private final JwtEncoder encoder;
     private final JwtDecoder decoder;
-    public static final int duration = 1; //in hours
+    //FIXME Handle token expiration.
+    public static final int duration = 8700; //in hours
 
     public TokenService(JwtEncoder encoder, JwtDecoder decoder) {
         this.encoder = encoder;
