@@ -5,9 +5,9 @@ on:
     paths:
       - 'RentIT/**'
   pull_request:
+    branches: [ "main" ]
     paths:
       - 'RentIT/**'
-    branches: [ "main" ]
     
 jobs:
   build:
