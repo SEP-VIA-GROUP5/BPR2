@@ -13,12 +13,14 @@ import {environment} from '../../environments/environment.dev';
 import {LocalStorageService} from 'src/core/services/local-storage.service';
 import {LocalStorageEnum} from 'src/app/constants';
 import {Token} from 'src/model/token';
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService<T> {
-  constructor(private http: HttpClient, private localStorageService: LocalStorageService) {
+  constructor(private http: HttpClient,
+              private localStorageService: LocalStorageService) {
   }
 
   private getHeaders(tokenRequired: boolean): HttpHeaders {

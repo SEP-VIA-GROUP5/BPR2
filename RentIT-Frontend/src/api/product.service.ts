@@ -24,4 +24,8 @@ export class ProductService {
     let product = await this.apiService.call(mockedProducts[0], this.apiService.request('get',`${this.PATH_CONTROLLER}/id/${productId}`, null, false)) as ProductOverview;
     return Promise.resolve(product);
   }
+
+  async removeProductById(productId: number): Promise<void> {
+    await this.apiService.call(null, this.apiService.request('delete', `${this.PATH_CONTROLLER}/product/id/${productId}`, null, true));
+  }
 }
