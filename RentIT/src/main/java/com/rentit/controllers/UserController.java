@@ -49,6 +49,11 @@ public class UserController {
         return userService.getUser(authorizationHeader);
     }
 
+    @RequestMapping(value = "/refresh", method = RequestMethod.GET)
+    public Token refreshToken(@RequestHeader("Authorization") String authorizationHeader){
+       return userService.refreshToken(authorizationHeader);
+    }
+
     public void setResponse(HttpServletResponse response, boolean success) {
         if (success) {
             response.setStatus(HttpStatus.OK.value());

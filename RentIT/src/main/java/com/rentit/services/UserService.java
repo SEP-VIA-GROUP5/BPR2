@@ -101,6 +101,14 @@ public class UserService {
         return userMapper.getUserById(userId);
     }
 
+    public Token refreshToken(String authorizationHeader) {
+        User user = getUserFromToken(authorizationHeader, true);
+        if(user != null && user.getId() > -1){
+            return authenticateUser(user);
+        }
+        return Token.builder().build();
+    }
+
     public static UserDTO buildUserDTO(User user){
         return UserDTO.builder()
                 .firstName(user.getFirstName())
