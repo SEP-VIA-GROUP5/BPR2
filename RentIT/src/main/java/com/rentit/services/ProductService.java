@@ -8,6 +8,7 @@ import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.dto.ProductPackageDTO;
 import com.rentit.model.dto.UserDTO;
 import com.rentit.model.enums.ProductStatus;
+import com.rentit.services.enums.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +81,23 @@ public class ProductService {
         return ProductPackageDTO.builder().product(productDTO).user(userDTO).build();
     }
 
+    public ResponseMessage deleteProductById(int productId, String authorizationHeader) {
+        User user = userService.getUserFromToken(authorizationHeader, true);
+
+        if(user == null || productId < 0) {
+            return ResponseMessage.DELETION_ERROR;
+        }
+
+        Product productToBeDeleted = productMapper.getProductById(productId);
+
+        if(productToBeDeleted.getUserId() == user.getId()) {
+            productMapper.deleteProductById(productId);
+            return ResponseMessage.SUCCESS;
+        }
+
+        return ResponseMessage.INTERNAL_ERROR;
+    }
+
     public static ProductDTO buildProductDTO(Product product){
         return ProductDTO.builder()
                 .id(product.getId())
@@ -99,4 +117,6 @@ public class ProductService {
                 .rentedUntil(product.getRentedUntil())
                 .build();
     }
+
+
 }
