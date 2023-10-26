@@ -5,6 +5,7 @@ import com.rentit.model.Product;
 import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.enums.ProductStatus;
 import com.rentit.services.ProductService;
+import com.rentit.services.enums.ResponseMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -124,5 +124,32 @@ public class ProductControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeleteProduct() throws Exception {
+        when(service.deleteProductById(1,"test")).thenReturn(ResponseMessage.SUCCESS);
+        this.mvc.perform(delete("http://localhost:8080/product/id/1")
+                        .header("Authorization","test"))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void testDeleteProductErrors() throws Exception {
+        this.mvc.perform(delete("http://localhost:8080/product/id/a")
+                        .header("Authorization","test"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+        when(service.deleteProductById(-1,"test")).thenReturn(ResponseMessage.DELETION_ERROR);
+        this.mvc.perform(delete("http://localhost:8080/product/id/-1")
+                        .header("Authorization","test"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+        when(service.deleteProductById(1,"test")).thenReturn(ResponseMessage.INTERNAL_ERROR);
+        this.mvc.perform(delete("http://localhost:8080/product/id/1")
+                        .header("Authorization","test"))
+                .andDo(print())
+                .andExpect(status().isInternalServerError());
     }
 }
