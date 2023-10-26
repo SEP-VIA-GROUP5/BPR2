@@ -32,7 +32,7 @@ public class ProductService {
     }
 
     public List<ProductDTO> getNProductsByPageWithFilter(int pageNum, int n, String filter, String property) {
-        if(pageNum > 0 && n > 0 && "".equals(filter)){
+        if(pageNum > 0 && n > 0 && !filter.isEmpty()){
             switch (filter){
                 case "location" -> {
                     return getNProductsByPageWithLocationFilter(pageNum, n, property);
