@@ -45,4 +45,10 @@ public class ProductController {
             case INTERNAL_ERROR -> response.setStatus(500);
         }
     }
+
+    @RequestMapping(value = "/page/{pageNum}/{n}/filter={filter}&prop={property}", method = RequestMethod.GET)
+    public List<ProductDTO> getPageOfProducts(@PathVariable int pageNum, @PathVariable int n, @PathVariable String filter,
+                                              @PathVariable String property) {
+        return productService.getNProductsByPageWithFilter(pageNum, n, filter, property);
+    }
 }
