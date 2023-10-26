@@ -30,6 +30,14 @@ public class IProductMapperTest {
     }
 
     @Test
+    public void return_n_products_per_page_with_location_filter() {
+        int n = 2;
+        String location = "Trige";
+        List<ProductDTO> products = productMapper.getNProductsByPageByLocation(1, n, location);
+        assertThat(products.size()).isEqualTo(2);
+    }
+
+    @Test
     public void add_product_successfully() {
         Product product = Product.builder()
                 .name("test_product")
