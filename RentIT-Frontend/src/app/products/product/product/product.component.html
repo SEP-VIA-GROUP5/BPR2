@@ -1,4 +1,4 @@
-<nb-card *ngIf="isFetching$ | async; else isNotFetching">
+<nb-card *ngIf="isFetchingProduct$ | async; else isNotFetching">
   <nb-spinner size="large" status="primary"></nb-spinner>
 </nb-card>
 <ng-template #isNotFetching>
@@ -28,11 +28,27 @@
             <p>{{ productOverview.product.description }}</p>
           </nb-card-body>
         </nb-card>
+        <nb-card class="product-reviews" [nbSpinner]="isFetchingReviewsOverview$ | async"
+                 nbSpinnerSize="large" nbSpinnerStatus="primary">
+          <nb-card-header *ngIf="(reviewsOverview$ | async) as reviewsOverview" class="product-reviews-header">
+            <h3>Reviews</h3>
+            <button nbButton status="warning" hero>
+              Add review
+            </button>
+          </nb-card-header>
+          <nb-card-body>
+            <nb-card class="review-container">
+              <nb-
+            </nb-card>
+          </nb-card-body>
+        </nb-card>
       </div>
       <div class="right-section">
-        <nb-card class="product-rating">
-          <nb-card-body>
-            <stars-rating></stars-rating>
+        <nb-card class="product-rating"
+                 [nbSpinner]="isFetchingReviewsOverview$ | async"
+                 nbSpinnerSize="large" nbSpinnerStatus="primary">
+          <nb-card-body *ngIf="(reviewsOverview$ | async) as reviewsOverview">
+            <stars-rating [rating]="reviewsOverview.averageRating" [numberReviews]="reviewsOverview.reviews.length" (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
           </nb-card-body>
         </nb-card>
         <nb-card class="user-and-lease-information">

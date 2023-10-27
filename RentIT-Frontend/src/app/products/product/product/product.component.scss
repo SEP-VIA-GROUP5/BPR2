@@ -51,6 +51,13 @@
           }
         }
       }
+
+      .product-reviews {
+        nb-card-header {
+          display: inline-flex;
+          justify-content: space-between;
+        }
+      }
     }
 
     .right-section {

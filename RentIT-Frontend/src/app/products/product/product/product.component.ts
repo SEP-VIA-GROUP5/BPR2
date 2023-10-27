@@ -8,6 +8,7 @@ import {ProductFetch} from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import {ReviewsOverview} from "src/model/reviewsOverview";
 
 @Component({
   selector: 'app-product-overview',
@@ -15,10 +16,14 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit, OnDestroy {
-  @Select(ProductSelector.isFetching)
-  isFetching$: Observable<boolean>;
+  @Select(ProductSelector.isFetchingProduct)
+  isFetchingProduct$: Observable<boolean>;
+  @Select(ProductSelector.isFetchingReviewsOverview)
+  isFetchingReviewsOverview$: Observable<boolean>
   @Select(ProductSelector.product)
   product$: Observable<ProductOverview>
+  @Select(ProductSelector.reviewsOverview)
+  reviewsOverview$: Observable<ReviewsOverview>
 
   productId: number;
   // constants
@@ -61,6 +66,10 @@ export class ProductComponent implements OnInit, OnDestroy {
       case ProductStatus.PAUSED:
         return 'warning';
     }
+  }
+
+  clickOnStarEvent() {
+    // todo go to reviews index;
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {
