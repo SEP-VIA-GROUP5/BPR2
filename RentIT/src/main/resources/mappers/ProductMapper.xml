@@ -50,6 +50,12 @@
         ORDER BY product_id
             LIMIT ${(pageNum - 1) * n}, #{n};
     </select>
+    <select id="getNProductsByPageByLocation" resultMap="PublicProductResultMap">
+        SELECT *
+        FROM products
+        WHERE city = #{location} OR city LIKE CONCAT('%', #{location}, '%')
+            LIMIT ${(pageNum - 1) * n}, #{n};
+    </select>
     <insert id="addProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO products (name, description, day_price, week_price, month_price, deposit,city,product_value,
                              min_lease_period,category,product_status,rented_until,user_id)

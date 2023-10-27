@@ -7,6 +7,7 @@ import com.rentit.model.Product;
 import com.rentit.model.User;
 import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.enums.ProductStatus;
+import com.rentit.services.enums.ResponseMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -129,5 +130,26 @@ public class ProductServiceTest {
         product.setName("");
         addedProduct = productService.addProduct(product,"authString");
         assertNull(addedProduct);
+    }
+
+    @Test
+    public void deleteProductTest(){
+        when(userService.getUserFromToken(anyString(),eq(true))).thenReturn(User.builder().id(1).build());
+        when(productMapper.getProductById(anyInt())).thenReturn(product);
+        ResponseMessage responseMessage = productService.deleteProductById(1, "test");
+        assertEquals(responseMessage, ResponseMessage.SUCCESS);
+    }
+
+    @Test
+    public void deleteProductTestError(){
+        when(userService.getUserFromToken(anyString(),eq(true))).thenReturn(null);
+        ResponseMessage responseMessage = productService.deleteProductById(1, "test");
+        assertEquals(responseMessage, ResponseMessage.DELETION_ERROR);
+
+        when(userService.getUserFromToken(anyString(),eq(true))).thenReturn(User.builder().id(1).build());
+        product.setUserId(2);
+        when(productMapper.getProductById(anyInt())).thenReturn(product);
+        responseMessage = productService.deleteProductById(1, "test");
+        assertEquals(responseMessage, ResponseMessage.INTERNAL_ERROR);
     }
 }
