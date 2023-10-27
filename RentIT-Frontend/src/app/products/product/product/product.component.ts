@@ -7,7 +7,7 @@ import {ProductSelector} from "src/app/products/product/product/product.selector
 import {ProductFetch, ProductReviewsOverviewFetch} from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
-import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import {HumanizeDuration, HumanizeDurationLanguage} from 'humanize-duration-ts';
 import {ReviewsOverview} from "src/model/reviewsOverview";
 
 @Component({
@@ -72,7 +72,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   clickOnStarEvent() {
-    // todo go to reviews index;
+    // goes to add review button page
+    let addReviewButtonElement = document.getElementById('addReviewButton');
+    addReviewButtonElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {

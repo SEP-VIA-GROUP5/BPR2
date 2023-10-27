@@ -22,7 +22,7 @@
         </div>
         <nb-card class="product-description">
           <nb-card-header>
-            <h3>Description</h3>
+            <h4>Description</h4>
           </nb-card-header>
           <nb-card-body>
             <p>{{ productOverview.product.description }}</p>
@@ -31,8 +31,8 @@
         <nb-card class="product-reviews" [nbSpinner]="isFetchingReviewsOverview$ | async"
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
           <nb-card-header class="product-reviews-header">
-            <h3>Reviews</h3>
-            <button nbButton status="warning" hero>
+            <h4>Reviews</h4>
+            <button id="addReviewButton" nbButton status="warning" hero>
               Add review
             </button>
           </nb-card-header>
