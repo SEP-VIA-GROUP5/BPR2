@@ -32,7 +32,7 @@
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
           <nb-card-header class="product-reviews-header">
             <h4>Reviews</h4>
-            <button id="addReviewButton" nbButton status="warning" hero>
+            <button id="addReviewButton" nbButton status="warning" hero (click)="openAddReviewDialog()">
               Add review
             </button>
           </nb-card-header>
@@ -108,5 +108,16 @@
         <h2>Product not found</h2>
       </div>
     </nb-card-header>
+  </nb-card>
+</ng-template>
+
+<ng-template #addRatingDialog>
+  <nb-card class="add-rating-dialog-container">
+    <nb-card-header class="add-rating-dialog-header">
+      Add rating
+    </nb-card-header>
+    <nb-card-body class="add-rating-dialog-body">
+
+    </nb-card-body>
   </nb-card>
 </ng-template>

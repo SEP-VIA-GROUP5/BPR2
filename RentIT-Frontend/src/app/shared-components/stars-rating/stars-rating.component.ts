@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
-import {NbDialogRef, NbDialogService} from "@nebular/theme";
 
 @Component({
   selector: 'stars-rating',
@@ -32,16 +31,6 @@ import {NbDialogRef, NbDialogService} from "@nebular/theme";
               <p *ngIf="numberReviews"> Click on a star to add your rating </p>
           </div>
       </ng-template>
-      <ng-template #addRatingDialog>
-          <nb-card class="add-rating-dialog-container">
-              <nb-card-header class="add-rating-dialog-header">
-                  Add rating
-              </nb-card-header>
-              <nb-card-body class="add-rating-dialog-body">
-
-              </nb-card-body>
-          </nb-card>
-      </ng-template>
   `,
   styleUrls: ['./stars-rating.component.scss']
 })
@@ -55,16 +44,11 @@ export class StarsRatingComponent implements OnInit {
   constructedRatings: string[] = [];
   filledOutRating: string = '★';
 
-  // dialog adding review
-  @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
-  private dialogRef: NbDialogRef<any>;
-
   ngOnInit() {
     this.constructRatingBasedOnRatingInput();
   }
 
-  constructor(private router: Router,
-              private nbDialogService: NbDialogService) {
+  constructor(private router: Router) {
   }
 
   constructRatingBasedOnRatingInput() {

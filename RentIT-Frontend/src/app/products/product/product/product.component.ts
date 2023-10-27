@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Select, Store} from "@ngxs/store";
 import {ICONS} from "src/app/constants";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -9,6 +9,7 @@ import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
 import {HumanizeDuration, HumanizeDurationLanguage} from 'humanize-duration-ts';
 import {ReviewsOverview} from "src/model/reviewsOverview";
+import {NbDialogRef, NbDialogService} from "@nebular/theme";
 
 @Component({
   selector: 'app-product-overview',
@@ -25,6 +26,10 @@ export class ProductComponent implements OnInit, OnDestroy {
   @Select(ProductSelector.reviewsOverview)
   reviewsOverview$: Observable<ReviewsOverview>
 
+  // dialog adding review
+  @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
+  private dialogRef: NbDialogRef<any>;
+
   productId: number;
   // constants
   protected readonly ICONS = ICONS;
@@ -34,6 +39,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
+    private nbDialogService: NbDialogService,
     private router: Router,
   ) {
   }
@@ -75,6 +81,10 @@ export class ProductComponent implements OnInit, OnDestroy {
     // goes to add review button page
     let addReviewButtonElement = document.getElementById('addReviewButton');
     addReviewButtonElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }
+
+  openAddReviewDialog() {
+    // TODO add dialog
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {
