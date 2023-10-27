@@ -11,12 +11,19 @@ import {NbDialogRef, NbDialogService} from "@nebular/theme";
           <!--      todo add click and cursor pointer and open dialog for adding a new review when clicking on a star-->
           <!--      todo probably check if the user had this item in renting before-->
           <!--      todo when hovering, it should exact of rating and reviews-->
-          <span *ngFor="let rating of constructedRatings; let i = index" class="rating-star"
-                (mouseenter)="onHover(i)"
-                (mouseleave)="onLeaveHover()"
-          (click)="clickOnStar()">
+          <div *ngIf="enableClickEvent">
+            <span *ngFor="let rating of constructedRatings; let i = index" class="rating-star"
+                  (mouseenter)="onHover(i)"
+                  (mouseleave)="onLeaveHover()"
+                  (click)="clickOnStar()">
         {{ rating }}
       </span>
+          </div>
+        <div *ngIf="!enableClickEvent">
+          <span *ngFor="let rating of constructedRatings; let i = index" class="rating-star">
+        {{ rating }}
+      </span>
+        </div>
       </div>
       <ng-template #tooltip>
           <div class="tooltip-container">
@@ -41,6 +48,7 @@ export class StarsRatingComponent implements OnInit {
 
   @Input() rating: number;
   @Input() numberReviews: number;
+  @Input() enableClickEvent: boolean = true;
   @Output() clickOnStarEvent: EventEmitter<number> = new EventEmitter<number>();
   defaultRating: string[] = ['☆', '☆', '☆', '☆', '☆'];
   constructedRatings: string[] = [];
