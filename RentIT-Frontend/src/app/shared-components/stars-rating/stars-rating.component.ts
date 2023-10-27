@@ -19,16 +19,17 @@ import {NbDialogRef, NbDialogService} from "@nebular/theme";
         {{ rating }}
       </span>
           </div>
-        <div *ngIf="!enableClickEvent">
+          <div *ngIf="!enableClickEvent">
           <span *ngFor="let rating of constructedRatings; let i = index" class="rating-star">
         {{ rating }}
       </span>
-        </div>
+          </div>
       </div>
       <ng-template #tooltip>
           <div class="tooltip-container">
-              <p><span> Exact rating:</span> {{this.rating}} <span>Reviews:</span> {{this.numberReviews}}</p>
-              <p> Click on a star to add your rating </p>
+              <p><span class="bold-font"> Exact rating:</span> {{this.rating}} <span *ngIf="numberReviews"><span
+                      class="bold-font">Reviews:</span> {{this.numberReviews}}</span></p>
+              <p *ngIf="numberReviews"> Click on a star to add your rating </p>
           </div>
       </ng-template>
       <ng-template #addRatingDialog>
@@ -47,7 +48,7 @@ import {NbDialogRef, NbDialogService} from "@nebular/theme";
 export class StarsRatingComponent implements OnInit {
 
   @Input() rating: number;
-  @Input() numberReviews: number;
+  @Input() numberReviews?: number;
   @Input() enableClickEvent: boolean = true;
   @Output() clickOnStarEvent: EventEmitter<number> = new EventEmitter<number>();
   defaultRating: string[] = ['☆', '☆', '☆', '☆', '☆'];

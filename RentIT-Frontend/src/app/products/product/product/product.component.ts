@@ -4,7 +4,7 @@ import {ICONS} from "src/app/constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ProductSelector} from "src/app/products/product/product/product.selector";
-import {ProductFetch} from "src/app/products/product/product/product.actions";
+import {ProductFetch, ProductReviewsOverviewFetch} from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
@@ -39,8 +39,11 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    let actionsInParallel = [];
     this.productId = this.activatedRoute.snapshot.params['productId'];
-    this.store.dispatch(new ProductFetch(this.productId));
+
+    actionsInParallel.push(new ProductFetch(this.productId), new ProductReviewsOverviewFetch(this.productId));
+    this.store.dispatch([...actionsInParallel]);
   }
 
   getProductInfoStatusBadge(productStatus: ProductStatus) {

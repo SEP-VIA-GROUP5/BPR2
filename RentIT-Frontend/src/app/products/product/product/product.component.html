@@ -30,17 +30,28 @@
         </nb-card>
         <nb-card class="product-reviews" [nbSpinner]="isFetchingReviewsOverview$ | async"
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
-          <nb-card-header *ngIf="(reviewsOverview$ | async) as reviewsOverview" class="product-reviews-header">
+          <nb-card-header class="product-reviews-header">
             <h3>Reviews</h3>
             <button nbButton status="warning" hero>
               Add review
             </button>
           </nb-card-header>
-          <nb-card-body>
-            <nb-card class="review-container">
-              <nb-
-            </nb-card>
-          </nb-card-body>
+            <nb-list *ngIf="(reviewsOverview$ | async) as reviewsOverview" class="review-container">
+              <nb-list-item *ngFor="let review of reviewsOverview.reviews">
+                <div class="reviewer-information">
+                  <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"
+                           onlyPicture>
+                  </nb-user>
+                  <p> {{review.reviewer.firstName}} {{review.reviewer.lastName}}</p>
+                </div>
+                <div class="review-rating-information">
+                  <stars-rating [rating]="review.rating" [enableClickEvent]="false"></stars-rating>
+                </div>
+                <div class="review-description">
+                  <p> <span> Description:</span> {{ review.review }}</p>
+                </div>
+              </nb-list-item>
+            </nb-list>
         </nb-card>
       </div>
       <div class="right-section">
