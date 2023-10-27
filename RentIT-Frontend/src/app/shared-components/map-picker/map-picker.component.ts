@@ -47,7 +47,9 @@ export class MapPickerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.locationInput.nativeElement.focus();
+    if(this.locationInput) {
+      this.locationInput.nativeElement.focus();
+    }
   }
 
   ngOnInit() {
