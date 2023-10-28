@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -46,9 +47,8 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(value = "/page/{pageNum}/{n}/filter={filter}&prop={property}", method = RequestMethod.GET)
-    public List<ProductDTO> getPageOfProducts(@PathVariable int pageNum, @PathVariable int n, @PathVariable String filter,
-                                              @PathVariable String property) {
-        return productService.getNProductsByPageWithFilter(pageNum, n, filter, property);
+    @RequestMapping(value = "/page/{pageNum}/{n}/filter", method = RequestMethod.GET)
+    public List<ProductDTO> getPageOfFilteredProducts(@PathVariable int pageNum, @PathVariable int n, @RequestParam Map<String, String> filters) {
+        return productService.getNProductsByPageWithFilters(pageNum, n, filters);
     }
 }

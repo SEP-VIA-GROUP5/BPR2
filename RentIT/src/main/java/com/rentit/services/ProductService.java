@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
@@ -31,22 +32,11 @@ public class ProductService {
         return null;
     }
 
-    public List<ProductDTO> getNProductsByPageWithFilter(int pageNum, int n, String filter, String property) {
-        if(pageNum > 0 && n > 0 && !filter.isEmpty()){
-            switch (filter){
-                case "location" -> {
-                    return getNProductsByPageWithLocationFilter(pageNum, n, property);
-                }
-                default -> {
-                    return null;
-                }
-            }
+    public List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<String, String> filters) {
+        if(pageNum > 0 && n > 0){
+            productMapper.getNProductsByPageWithFilters(pageNum, n, filters);
         }
         return null;
-    }
-
-    private List<ProductDTO> getNProductsByPageWithLocationFilter(int pageNum, int n, String location){
-        return productMapper.getNProductsByPageByLocation(pageNum, n, location);
     }
 
     public ProductDTO addProduct(Product product, String authorizationHeader) {

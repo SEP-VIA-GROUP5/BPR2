@@ -6,6 +6,7 @@ import com.rentit.model.dto.ProductDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface IProductMapper {
@@ -15,5 +16,5 @@ public interface IProductMapper {
     List<Product> getProductsByName(String name);
     void deleteProductById(int id);
 
-    List<ProductDTO> getNProductsByPageByLocation(int pageNum, int n, String location);
+    List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<String, String> filters);
 }
