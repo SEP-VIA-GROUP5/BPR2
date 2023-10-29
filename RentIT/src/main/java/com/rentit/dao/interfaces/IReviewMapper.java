@@ -8,5 +8,5 @@ import java.util.List;
 @Mapper
 public interface IReviewMapper {
     void addProductReview(Review review);
-    List<Review> getProductReviews(int productId);
+    List<Review> getNProductReviewsByPage(int pageNum, int n, int productId);
 }

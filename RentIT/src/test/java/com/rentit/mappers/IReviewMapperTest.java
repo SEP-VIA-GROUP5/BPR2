@@ -24,14 +24,14 @@ public class IReviewMapperTest {
                 .message("Very bad")
                 .build();
         reviewMapper.addProductReview(review);
-        List<Review> resultReviews = reviewMapper.getProductReviews(productId);
+        List<Review> resultReviews = reviewMapper.getNProductReviewsByPage(1, 1, productId);
         assertThat(resultReviews.size()).isEqualTo(1);
         assertThat(resultReviews.get(0)).isEqualTo(review);
     }
     @Test
     public void get_product_reviews_returns_correct_reviews() {
         int productId = 4;
-        List<Review> resultReviews = reviewMapper.getProductReviews(productId);
+        List<Review> resultReviews = reviewMapper.getNProductReviewsByPage(1, 2, productId);
         assertThat(resultReviews.size()).isEqualTo(2);
     }
 

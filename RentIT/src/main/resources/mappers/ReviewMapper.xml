@@ -7,10 +7,11 @@
         <result property="message" column="message"/>
     </resultMap>
 
-    <select id="getProductReviews" resultMap="ProductReviewResultMap">
+    <select id="getNProductReviewsByPage" resultMap="ProductReviewResultMap">
         SELECT *
         FROM products_review
-        WHERE product_id = #{productId};
+        WHERE product_id = #{productId}
+        LIMIT ${(pageNum - 1) * n}, #{n};
     </select>
 
     <insert id="addProductReview" parameterType="Review">
