@@ -20,4 +20,12 @@ public class ReviewService {
         }
         return null;
     }
+
+    public Review addProductReview(Review review) {
+        if(review != null && review.getRating() > 0 && review.getTargetId() > 0) {
+            reviewMapper.addProductReview(review);
+            return review;
+        }
+        return null;
+    }
 }
