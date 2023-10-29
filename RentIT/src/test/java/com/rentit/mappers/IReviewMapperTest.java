@@ -34,5 +34,24 @@ public class IReviewMapperTest {
         List<Review> resultReviews = reviewMapper.getNProductReviewsByPage(1, 2, productId);
         assertThat(resultReviews.size()).isEqualTo(2);
     }
+    @Test
+    public void add_user_review_successfully() {
+        int userId = 5;
+        Review review = Review.builder()
+                .targetId(userId)
+                .rating(1)
+                .message("Very bad")
+                .build();
+        reviewMapper.addUserReview(review);
+        List<Review> resultReviews = reviewMapper.getNUserReviewsByPage(1, 1, userId);
+        assertThat(resultReviews.size()).isEqualTo(1);
+        assertThat(resultReviews.get(0)).isEqualTo(review);
+    }
+    @Test
+    public void get_user_reviews_returns_correct_reviews() {
+        int userId = 4;
+        List<Review> resultReviews = reviewMapper.getNUserReviewsByPage(1, 2, userId);
+        assertThat(resultReviews.size()).isEqualTo(2);
+    }
 
 }
