@@ -14,17 +14,41 @@ public class ReviewService {
     private IReviewMapper reviewMapper;
 
 
-    public List<Review> getItemReviewsByPage(int itemId, int pageNum, int n) {
-        if(itemId > 0 && pageNum > 0 && n > 0) {
-            return reviewMapper.getNProductReviewsByPage(pageNum, n, itemId);
+    public List<Review> getReviewsByPage(String target, int targetId, int pageNum, int n) {
+        switch (target){
+            case "product" -> {
+                if(targetId > 0 && pageNum > 0 && n > 0) {
+                    return reviewMapper.getNProductReviewsByPage(pageNum, n, targetId);
+                }
+                return null;
+            }
+            case "user" -> {
+                if(targetId > 0 && pageNum > 0 && n > 0) {
+                    return reviewMapper.getNUserReviewsByPage(pageNum, n, targetId);
+                }
+                return null;
+            }
         }
         return null;
     }
 
-    public Review addProductReview(Review review) {
-        if(review != null && review.getRating() > 0 && review.getTargetId() > 0) {
-            reviewMapper.addProductReview(review);
-            return review;
+    public Review addReview(String target, Review review) {
+
+        switch (target){
+            case "product" -> {
+                if(review != null && review.getRating() > 0 && review.getTargetId() > 0) {
+                    reviewMapper.addProductReview(review);
+                    return review;
+                }
+                return null;
+            }
+            case "user" -> {
+                if(review != null && review.getRating() > 0 && review.getTargetId() > 0) {
+                    reviewMapper.addUserReview(review);
+                    return review;
+                }
+                return null;
+            }
         }
         return null;
     }
