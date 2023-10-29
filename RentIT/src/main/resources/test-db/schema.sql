@@ -60,3 +60,13 @@ CREATE TABLE products_review
     PRIMARY KEY (product_review_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 );
+
+CREATE TABLE users_review
+(
+    user_review_id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
+    rating INT,
+    message VARCHAR(500),
+    PRIMARY KEY (user_review_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+);
