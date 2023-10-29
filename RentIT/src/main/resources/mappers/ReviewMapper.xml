@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentit.dao.interfaces.IReviewMapper">
+    <resultMap id="ProductReviewResultMap" type="Review">
+        <result property="targetId" column="product_id"/>
+        <result property="rating" column="rating"/>
+        <result property="message" column="message"/>
+    </resultMap>
+
+    <select id="getProductReviews" resultMap="ProductReviewResultMap">
+        SELECT *
+        FROM products_review
+        WHERE product_id = #{productId};
+    </select>
+
+    <insert id="addProductReview" parameterType="Review">
+        INSERT INTO products_review(product_id, rating, message)
+        VALUES (#{targetId}, #{rating}, #{message});
+    </insert>
+
+</mapper>

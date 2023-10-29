@@ -22,3 +22,9 @@ INSERT INTO `tags` (`name`, `product_id`) VALUES ('perferendis', 2);
 INSERT INTO `tags` (`name`, `product_id`) VALUES ('est', 3);
 INSERT INTO `tags` (`name`, `product_id`) VALUES ('ut', 4);
 INSERT INTO `tags` (`name`, `product_id`) VALUES ('ea', 5);
+
+INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (1, 5, 'Perfect');
+INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (2, 4, 'Good');
+INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (3, 3, 'Alright');
+INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (4, 2, 'Bad');
+INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (4, 3, 'Alright');

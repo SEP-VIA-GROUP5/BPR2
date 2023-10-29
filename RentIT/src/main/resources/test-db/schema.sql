@@ -50,3 +50,13 @@ CREATE TABLE images
     PRIMARY KEY (image_id),
     FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE
 );
+
+CREATE TABLE products_review
+(
+    product_review_id INT AUTO_INCREMENT NOT NULL,
+    product_id INT NOT NULL,
+    rating INT,
+    message VARCHAR(500),
+    PRIMARY KEY (product_review_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
+);
