@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
-import {
-  constructDefaultFilteringProductOptions,
-} from "src/app/shared-components/search-bar/constants/constants";
+import {constructDefaultFilteringProductOptions,} from "src/app/shared-components/search-bar/constants/constants";
 import {ICONS} from "src/app/constants";
 import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {FilteringProductOptions} from "src/model/filteringProductOptions";
@@ -83,7 +81,8 @@ export class SearchBarComponent {
   }
 
   onInputChange(event: any) {
-    this.onSearchInput.emit((event.target as HTMLInputElement).value);
+    let value = (event.target as HTMLInputElement).value;
+    this.onSearchInput.emit(value);
   }
 
   isSaveFilteringOptionsButtonEnabled() {
