@@ -3,7 +3,6 @@ package com.rentit.services;
 import com.rentit.dao.interfaces.IReviewMapper;
 import com.rentit.model.Review;
 import com.rentit.model.ReviewSummary;
-import com.rentit.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +14,17 @@ public class ReviewService {
     @Autowired
     private IReviewMapper reviewMapper;
 
-    @Autowired
-    private UserService userService;
 
-
-    public List<Review> getReviewsByPage(String target, String targetId, int pageNum, int n) {
+    public List<Review> getReviewsByPage(String target, int targetId, int pageNum, int n) {
         switch (target){
             case "product" -> {
-                int productId = Integer.parseInt(targetId);
-                if(productId > 0 && pageNum > 0 && n > 0) {
-                    return reviewMapper.getNProductReviewsByPage(pageNum, n, productId);
+                if(targetId > 0 && pageNum > 0 && n > 0) {
+                    return reviewMapper.getNProductReviewsByPage(pageNum, n, targetId);
                 }
                 return null;
             }
             case "user" -> {
-                if(!"".equals(targetId) && pageNum > 0 && n > 0) {
+                if(targetId > 0 && pageNum > 0 && n > 0) {
                     return reviewMapper.getNUserReviewsByPage(pageNum, n, targetId);
                 }
                 return null;
@@ -38,11 +33,8 @@ public class ReviewService {
         return null;
     }
 
-    public Review addReview(String target, Review review, String authorizationHeader) {
-        User user = userService.getUserFromToken(authorizationHeader, false);
-        if(user == null){
-            return null;
-        }
+    public Review addReview(String target, Review review) {
+
         switch (target){
             case "product" -> {
                 if(review != null && review.getRating() > 0 && review.getTargetId() > 0) {

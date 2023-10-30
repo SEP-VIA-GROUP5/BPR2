@@ -16,13 +16,13 @@ public class ReviewController {
     ReviewService reviewService;
 
     @RequestMapping(value = "/{target}/page/{targetId}/{pageNum}/{n}", method = RequestMethod.GET)
-    List<Review> getReviewsByPage(@PathVariable String target, @PathVariable String targetId, @PathVariable int pageNum, @PathVariable int n){
+    List<Review> getReviewsByPage(@PathVariable String target, @PathVariable int targetId, @PathVariable int pageNum, @PathVariable int n){
         return reviewService.getReviewsByPage(target, targetId, pageNum, n);
     }
 
     @RequestMapping(value = "/{target}", method = RequestMethod.POST)
-    Review addReview(@PathVariable String target, @RequestBody Review review, @RequestHeader("Authorization") String authorizationHeader){
-        return reviewService.addReview(target, review, authorizationHeader);
+    Review addReview(@PathVariable String target, @RequestBody Review review){
+        return reviewService.addReview(target, review);
     }
 
     @RequestMapping(value = "/summary/{target}/{targetId}", method = RequestMethod.POST)
