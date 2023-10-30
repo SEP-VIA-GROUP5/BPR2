@@ -4,6 +4,7 @@ import {environment} from "src/environments/environment.dev";
 import {ICONS} from "src/app/constants";
 import {NbToastrService} from "@nebular/theme";
 
+// TODO only search by city maybe later
 @Component({
   selector: 'map-picker',
   template: `
