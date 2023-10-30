@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {
   HttpClient,
-  HttpHeaders,
   HttpErrorResponse,
-  HttpRequest,
   HttpEvent,
-  HttpResponse, HttpParams
+  HttpHeaders,
+  HttpParams,
+  HttpRequest,
+  HttpResponse
 } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, filter, map} from 'rxjs/operators';
@@ -13,7 +14,6 @@ import {environment} from '../../environments/environment.dev';
 import {LocalStorageService} from 'src/core/services/local-storage.service';
 import {LocalStorageEnum} from 'src/app/constants';
 import {Token} from 'src/model/token';
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Injectable({
   providedIn: 'root'

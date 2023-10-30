@@ -4,8 +4,8 @@ import {Injectable} from "@angular/core";
 import {NbToastrService} from "@nebular/theme";
 import {produce} from "immer";
 import {ICONS} from "src/app/constants";
-import { environment } from "src/environments/environment.dev";
-import { ProductsService } from "src/api/products.service";
+import {environment} from "src/environments/environment.dev";
+import {ProductsService} from "src/api/products.service";
 import {
   ProductsByFilter,
   ProductsFetch,

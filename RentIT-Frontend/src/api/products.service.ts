@@ -1,7 +1,7 @@
-import { ApiService } from "src/core/services/api.service";
-import { Injectable } from "@angular/core";
-import { Product } from "src/model/product";
-import { mockedProducts } from "src/mocks/products.mock";
+import {ApiService} from "src/core/services/api.service";
+import {Injectable} from "@angular/core";
+import {Product} from "src/model/product";
+import {mockedProducts} from "src/mocks/products.mock";
 import {HttpParams} from "@angular/common/http";
 
 @Injectable({
@@ -22,7 +22,6 @@ export class ProductsService {
   async getPageOfFilteredProducts(pageNumber: number, pageSize: number, filters: Map<string, string>): Promise<Product[]> {
     let params = new HttpParams();
     filters.forEach((value: string, key: string) => {
-      console.log(value, key);
       params = params.append(key, value);
     });
 
