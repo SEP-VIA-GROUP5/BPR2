@@ -2,9 +2,9 @@ import {FilteringProductOptions} from "src/model/filteringProductOptions";
 
 export function constructDefaultFilteringProductOptions(): FilteringProductOptions {
   return {
-    productName: '',
+    name: '',
     productCategory: '',
-    productCity: '',
+    city: '',
     productStatus: null,
     productPriceFrom: null,
     productPriceTo: null,

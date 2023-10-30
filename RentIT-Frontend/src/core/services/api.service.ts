@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {
   HttpClient,
-  HttpHeaders,
   HttpErrorResponse,
-  HttpRequest,
   HttpEvent,
+  HttpHeaders,
+  HttpParams,
+  HttpRequest,
   HttpResponse
 } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
@@ -13,7 +14,6 @@ import {environment} from '../../environments/environment.dev';
 import {LocalStorageService} from 'src/core/services/local-storage.service';
 import {LocalStorageEnum} from 'src/app/constants';
 import {Token} from 'src/model/token';
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +42,9 @@ export class ApiService<T> {
     return throwError('Something went wrong. Please try again later.');
   }
 
-  request(method: string, path: string, body: Object = {}, tokenRequired: boolean = false): Observable<T> {
+  request(method: string, path: string, body: Object = {}, tokenRequired: boolean = false, params?: HttpParams): Observable<T> {
     const headers = this.getHeaders(tokenRequired);
-    const request = new HttpRequest(method, `${environment.api_url}${path}`, body, {headers});
+    const request = new HttpRequest(method, `${environment.api_url}${path}`, body, {headers, params});
     return this.http.request<T>(request).pipe(
       filter((event: HttpEvent<T>): event is HttpResponse<T> => event instanceof HttpResponse),
       map((response: HttpResponse<T>) => response.body),

@@ -34,7 +34,7 @@ public class ProductService {
 
     public List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<String, String> filters) {
         if(pageNum > 0 && n > 0){
-            productMapper.getNProductsByPageWithFilters(pageNum, n, filters);
+            return productMapper.getNProductsByPageWithFilters(pageNum, n, filters);
         }
         return null;
     }
