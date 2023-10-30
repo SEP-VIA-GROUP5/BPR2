@@ -1,7 +1,6 @@
 package com.rentit.controllers;
 
 import com.rentit.model.Review;
-import com.rentit.model.ReviewSummary;
 import com.rentit.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +24,8 @@ public class ReviewController {
         return reviewService.addReview(target, review, authorizationHeader);
     }
 
-    @RequestMapping(value = "/summary/{target}/{targetId}", method = RequestMethod.POST)
-    ReviewSummary getItemReviewSummary(@PathVariable String target, @PathVariable String targetId){
+    @RequestMapping(value = "/summary/{target}/{targetId}", method = RequestMethod.GET)
+    double getItemReviewSummary(@PathVariable String target, @PathVariable String targetId){
         return reviewService.getItemReviewSummary(target, targetId);
     }
 }

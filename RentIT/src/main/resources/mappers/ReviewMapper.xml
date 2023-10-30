@@ -24,7 +24,16 @@
         WHERE user_id = #{userId}
             LIMIT ${(pageNum - 1) * n}, #{n};
     </select>
-
+    <select id="getProductReviewSummary">
+        SELECT AVG(rating)
+        FROM products_review
+        WHERE product_id = #{productId};
+    </select>
+    <select id="getUserReviewSummary">
+        SELECT AVG(rating)
+        FROM users_review
+        WHERE user_id = #{userId};
+    </select>
     <insert id="addProductReview" parameterType="Review">
         INSERT INTO products_review(product_id, rating, message)
         VALUES (#{targetId}, #{rating}, #{message});
