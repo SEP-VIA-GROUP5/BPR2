@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review {
-    private int targetId;
+    private String targetId;
     private int rating;
     private String message;
 }

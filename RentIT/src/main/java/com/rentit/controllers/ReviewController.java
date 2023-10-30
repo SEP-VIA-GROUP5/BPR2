@@ -21,8 +21,8 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "/{target}", method = RequestMethod.POST)
-    Review addReview(@PathVariable String target, @RequestBody Review review){
-        return reviewService.addReview(target, review);
+    Review addReview(@PathVariable String target, @RequestBody Review review, @RequestHeader("Authorization") String authorizationHeader){
+        return reviewService.addReview(target, review, authorizationHeader);
     }
 
     @RequestMapping(value = "/summary/{target}/{targetId}", method = RequestMethod.POST)

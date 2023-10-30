@@ -109,6 +109,13 @@ public class UserService {
         return Token.builder().build();
     }
 
+    public User getUserFromEmail(String email){
+        if(email == null || "".equals(email)){
+            return null;
+        }
+        return userMapper.getUserByEmail(email);
+    }
+
     public static UserDTO buildUserDTO(User user){
         return UserDTO.builder()
                 .firstName(user.getFirstName())
