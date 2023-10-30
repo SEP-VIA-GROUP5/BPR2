@@ -2,7 +2,6 @@ package com.rentit.services;
 
 import com.rentit.dao.interfaces.IReviewMapper;
 import com.rentit.model.Review;
-import com.rentit.model.ReviewSummary;
 import com.rentit.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +52,7 @@ public class ReviewService {
             }
             case "user" -> {
                 User retreivedUser = userService.getUserFromEmail(review.getTargetId());
+                review.setTargetId(String.valueOf(retreivedUser.getId()));
                 if(review.getRating() > 0 && retreivedUser.getId() > 0) {
                     reviewMapper.addUserReview(review);
                     return review;
@@ -63,22 +63,23 @@ public class ReviewService {
         return null;
     }
 
-    public ReviewSummary getItemReviewSummary(String target, String targetId) {
+    public double getItemReviewSummary(String target, String targetId) {
         switch (target){
             case "product" -> {
                 if(!"".equals(targetId) && targetId != null){
                     int productId = Integer.parseInt(targetId);
                     return reviewMapper.getProductReviewSummary(productId);
                 }
-                return null;
+                return -1;
             }
             case "user" -> {
                 if(!"".equals(targetId) && targetId != null){
-                    return reviewMapper.getUserReviewSummary(targetId);
+                    User retreivedUser = userService.getUserFromEmail(targetId);
+                    return reviewMapper.getUserReviewSummary(retreivedUser.getId());
                 }
-                return null;
+                return -1;
             }
         }
-        return null;
+        return -1;
     }
 }

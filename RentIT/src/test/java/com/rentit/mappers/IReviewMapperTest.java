@@ -19,7 +19,7 @@ public class IReviewMapperTest {
     public void add_product_review_successfully() {
         int productId = 5;
         Review review = Review.builder()
-                .targetId(productId)
+                .targetId(String.valueOf(productId))
                 .rating(1)
                 .message("Very bad")
                 .build();
@@ -38,7 +38,7 @@ public class IReviewMapperTest {
     public void add_user_review_successfully() {
         int userId = 5;
         Review review = Review.builder()
-                .targetId(userId)
+                .targetId(String.valueOf(userId))
                 .rating(1)
                 .message("Very bad")
                 .build();
@@ -53,5 +53,16 @@ public class IReviewMapperTest {
         List<Review> resultReviews = reviewMapper.getNUserReviewsByPage(1, 2, userId);
         assertThat(resultReviews.size()).isEqualTo(2);
     }
-
+    @Test
+    public void get_product_review_summary_returns_avg_rating() {
+        int productId = 4;
+        double avgRating = reviewMapper.getProductReviewSummary(productId);
+        assertThat(avgRating).isEqualTo(2.5);
+    }
+    @Test
+    public void get_user_review_summary_returns_avg_rating() {
+        int userId = 4;
+        double avgRating = reviewMapper.getProductReviewSummary(userId);
+        assertThat(avgRating).isEqualTo(2.5);
+    }
 }
