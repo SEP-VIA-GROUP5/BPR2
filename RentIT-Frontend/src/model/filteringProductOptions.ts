@@ -1,9 +1,9 @@
 import {ProductStatus} from "src/model/productStatus";
 
 export interface FilteringProductOptions {
-  productName?: string;
+  name?: string;
   productCategory?: string;
-  productCity?: string;
+  city?: string;
   productStatus?: ProductStatus;
   productPriceFrom?: number;
   productPriceTo?: number;

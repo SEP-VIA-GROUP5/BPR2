@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
   HttpRequest,
   HttpEvent,
-  HttpResponse
+  HttpResponse, HttpParams
 } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, filter, map} from 'rxjs/operators';
@@ -42,9 +42,9 @@ export class ApiService<T> {
     return throwError('Something went wrong. Please try again later.');
   }
 
-  request(method: string, path: string, body: Object = {}, tokenRequired: boolean = false): Observable<T> {
+  request(method: string, path: string, body: Object = {}, tokenRequired: boolean = false, params?: HttpParams): Observable<T> {
     const headers = this.getHeaders(tokenRequired);
-    const request = new HttpRequest(method, `${environment.api_url}${path}`, body, {headers});
+    const request = new HttpRequest(method, `${environment.api_url}${path}`, body, {headers, params});
     return this.http.request<T>(request).pipe(
       filter((event: HttpEvent<T>): event is HttpResponse<T> => event instanceof HttpResponse),
       map((response: HttpResponse<T>) => response.body),

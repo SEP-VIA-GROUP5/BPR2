@@ -9,11 +9,21 @@ export class ProductsSelector {
 
   @Selector([ProductsState])
   static products(state: ProductsStateModel) {
-    return state.products;
+    return state.isListOnFiltering ? state.productsOnFiltering : state.products;
   }
 
   @Selector([ProductsState])
   static endOfList(state: ProductsStateModel) {
-    return state.endOfList;
+    return state.isListOnFiltering ? state.endOfListOnFiltering : state.endOfList;
+  }
+
+  @Selector([ProductsState])
+  static isListOnFiltering(state: ProductsStateModel) {
+    return state.isListOnFiltering;
+  }
+
+  @Selector([ProductsState])
+  static currentFilteringOptions(state: ProductsStateModel) {
+    return state.currentFilteringOptions;
   }
 }

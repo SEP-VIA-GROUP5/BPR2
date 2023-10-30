@@ -180,7 +180,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store.dispatch(new ProductsResetFilter());
     }
     this.store.dispatch(new ProductsByFilter({
-      productName: searchInput,
+      name: searchInput,
     } satisfies FilteringProductOptions));
 }
 

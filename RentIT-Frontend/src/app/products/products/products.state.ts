@@ -12,21 +12,36 @@ import {
   ProductsReset,
   ProductsResetFilter
 } from "src/app/products/products/products.actions";
+import {mapToMapperFromFilteringOptions} from "src/app/products/products/constants/constants";
+import {mapsAreEqual} from "src/core/utils/maps.utils";
+import {FilteringProductOptions} from "src/model/filteringProductOptions";
 
 export interface ProductsStateModel {
   isFetching: boolean;
   products: Product[];
+  productsOnFiltering: Product[];
   pageNumber: number;
+  pageNumberOnFiltering: number;
   pageSize: number;
+  pageSizeOnFiltering: number;
   endOfList: boolean;
+  endOfListOnFiltering: boolean;
+  currentFilteringOptions: FilteringProductOptions;
+  isListOnFiltering: boolean;
 }
 
 export const defaultsState: ProductsStateModel = {
   isFetching: false,
   products: [],
+  productsOnFiltering: [],
   pageNumber: 1,
-  pageSize: 12,
+  pageSize: 3,
   endOfList: false,
+  pageNumberOnFiltering: 1,
+  pageSizeOnFiltering: 1,
+  endOfListOnFiltering: false,
+  currentFilteringOptions: null,
+  isListOnFiltering: false,
 }
 
 @State<ProductsStateModel>({
@@ -53,7 +68,7 @@ export class ProductsState {
     })
     setState(newState);
 
-    let nextProducts = [];
+    let nextProducts: Product[] = [];
 
     try {
       nextProducts = await this.productsService.getProductsPerPage(pageNumber, pageSize);
@@ -69,8 +84,16 @@ export class ProductsState {
       let currentProducts = draft.products;
       draft.products = [...currentProducts,...nextProducts];
       draft.pageNumber = pageNumber + 1;
-      draft.endOfList = nextProducts.length !== draft.pageSize;
+      draft.endOfList = nextProducts.length !== draft.pageSize ;
       draft.isFetching = false;
+
+      if(draft.isListOnFiltering) {
+        // reset filtering functionality
+        draft.isListOnFiltering = false;
+        draft.productsOnFiltering = [];
+        draft.pageNumberOnFiltering = 1;
+        draft.endOfListOnFiltering = false;
+      }
     })
     setState(newState);
   }
@@ -80,17 +103,38 @@ export class ProductsState {
     {getState, setState}: StateContext<ProductsStateModel>,
     action: ProductsByFilter) {
 
+    let filteringOptionsFromAction = mapToMapperFromFilteringOptions(action.filteringProductOptions);
+    if (filteringOptionsFromAction.size === 0) return getState();
+
+    let pageNumberOnFiltering = getState().pageNumberOnFiltering;
+    let pageSizeOnFiltering = getState().pageSizeOnFiltering;
+    let currentFilteringOptions = mapToMapperFromFilteringOptions(getState().currentFilteringOptions);
     let newState = produce(getState(), draft => {
       draft.isFetching = true;
     });
     setState(newState);
 
+
     try {
-      let products = [];
-      // TODO fetch products by filter here API call
+      let nextProducts: Product[] = [];
+
+      if (!mapsAreEqual(currentFilteringOptions, filteringOptionsFromAction)) {
+        pageNumberOnFiltering = 1;
+        nextProducts = await this.productsService.getPageOfFilteredProducts(pageNumberOnFiltering, pageSizeOnFiltering, filteringOptionsFromAction);
+      }
+      else {
+        nextProducts = await this.productsService.getPageOfFilteredProducts(pageNumberOnFiltering, pageSizeOnFiltering, currentFilteringOptions);
+      }
+
+      if (!nextProducts) nextProducts = [];
+
       newState = produce(getState(), draft => {
-        draft.products = products;
-        draft.endOfList = true;
+        let currentProductsOnFiltering = draft.productsOnFiltering;
+        draft.currentFilteringOptions = action.filteringProductOptions;
+        draft.productsOnFiltering = [...currentProductsOnFiltering, ...nextProducts];
+        draft.pageNumberOnFiltering = pageNumberOnFiltering + 1;
+        draft.endOfListOnFiltering = nextProducts.length !== pageSizeOnFiltering;
+        draft.isListOnFiltering = true;
         draft.isFetching = false;
       });
       return setState(newState);
@@ -104,6 +148,7 @@ export class ProductsState {
           {icon: ICONS.ALERT_CIRCLE_OUTLINE}
         );
       });
+      return setState(newState);
     }
   }
 
