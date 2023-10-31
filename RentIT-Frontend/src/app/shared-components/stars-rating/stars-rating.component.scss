@@ -1,0 +1,21 @@
+.stars-rating-container {
+  font-size: 2rem;
+  color: var(--color-warning-default);
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+
+  .rating-star.enableClicking {
+    cursor: pointer;
+  }
+}
+
+.tooltip-container {
+  display: block;
+  padding: 0.5rem;
+  align-items: center;
+
+  .bold-font {
+    font-weight: bold;
+  }
+}

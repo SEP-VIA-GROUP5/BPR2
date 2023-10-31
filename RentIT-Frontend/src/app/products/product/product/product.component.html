@@ -1,4 +1,4 @@
-<nb-card *ngIf="isFetching$ | async; else isNotFetching">
+<nb-card *ngIf="isFetchingProduct$ | async; else isNotFetching">
   <nb-spinner size="large" status="primary"></nb-spinner>
 </nb-card>
 <ng-template #isNotFetching>
@@ -22,14 +22,61 @@
         </div>
         <nb-card class="product-description">
           <nb-card-header>
-            <h3>Description</h3>
+            <h4>Description</h4>
           </nb-card-header>
           <nb-card-body>
             <p>{{ productOverview.product.description }}</p>
           </nb-card-body>
         </nb-card>
+        <nb-card class="product-reviews" [nbSpinner]="isFetchingReviewsOverview$ | async"
+                 nbSpinnerSize="large" nbSpinnerStatus="primary">
+          <nb-card-header class="product-reviews-header">
+            <h4>Reviews</h4>
+            <button [disabled]="!this.userService.isLoggedIn()" id="addReviewButton" nbButton status="warning" hero
+                    nbTooltip="You need to be logged in to add a review"
+                    [nbTooltipDisabled]="this.userService.isLoggedIn()"
+                    (click)="openAddReviewDialog()"
+            >
+              Add review
+            </button>
+          </nb-card-header>
+          <nb-list *ngIf="(reviews$ | async) as reviews" class="review-container">
+            <nb-list-item *ngFor="let review of reviews">
+              <!--                TODO not implemented yet -->
+              <!--                <div class="reviewer-information">-->
+              <!--                  <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"-->
+              <!--                           onlyPicture>-->
+              <!--                  </nb-user>-->
+              <!--                  <p> {{review.reviewer.firstName}} {{review.reviewer.lastName}}</p>-->
+              <!--                </div>-->
+              <div class="review-rating-information">
+                <stars-rating [rating]="review.rating" [showTooltip]="false" [enableClickEvent]="false"></stars-rating>
+              </div>
+              <div class="review-description">
+                <p><span> Description:</span> {{ review.message }}</p>
+              </div>
+            </nb-list-item>
+          </nb-list>
+          <nb-card-footer>
+            <button [disabled]="endOfListReviews$ | async" nbButton status="primary"
+                    [nbTooltip]="(endOfListReviews$ | async) ? 'No more reviews to load' : 'Load more reviews'"
+                    (click)="loadNextReviews()">
+              <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>
+            </button>
+          </nb-card-footer>
+        </nb-card>
       </div>
       <div class="right-section">
+        <nb-card class="product-rating"
+                 [nbSpinner]="isFetchingReviewsOverview$ | async"
+                 nbSpinnerSize="large" nbSpinnerStatus="primary">
+          <nb-card-body *ngIf="(averageRating$ | async) as averageRating">
+            <stars-rating [rating]="averageRating" (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
+          </nb-card-body>
+          <nb-card-body *ngIf="!(averageRating$ | async)">
+            <p>No reviews yet</p>
+          </nb-card-body>
+        </nb-card>
         <nb-card class="user-and-lease-information">
           <nb-card-header>
             <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
@@ -76,5 +123,36 @@
         <h2>Product not found</h2>
       </div>
     </nb-card-header>
+  </nb-card>
+</ng-template>
+
+<ng-template #addRatingDialog>
+  <nb-card class="add-rating-dialog-container">
+    <nb-card-header class="add-rating-dialog-header">
+      Add rating
+    </nb-card-header>
+    <nb-card-body class="add-rating-dialog-body">
+      <div>
+        <p> How would you like to rate this product? </p>
+      </div>
+      <div>
+        <stars-rating [showTooltip]="false" [rating]="reviewToAdd.rating"
+                      (clickOnStarEvent)="onAddingReviewClickOnStar($event)"></stars-rating>
+      </div>
+      <div *ngIf="reviewToAdd.rating > 0">
+        <p> You have chosen rating <span>{{ reviewToAdd.rating }} </span></p>
+      </div>
+      <div>
+        <nb-form-field class="description">
+                <textarea [(ngModel)]="reviewToAdd.message" name="message" type="text" fullWidth nbInput
+                          shape="round" placeholder="Message"></textarea>
+        </nb-form-field>
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="add-rating-dialog-footer">
+      <button [disabled]="isOnSubmitButtonDisabled()" nbButton status="warning" hero (click)="onSubmitAddingReview()">
+        Submit
+      </button>
+    </nb-card-footer>
   </nb-card>
 </ng-template>

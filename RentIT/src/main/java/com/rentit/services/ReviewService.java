@@ -4,6 +4,7 @@ import com.rentit.dao.interfaces.IReviewMapper;
 import com.rentit.model.Review;
 import com.rentit.model.ReviewSummary;
 import com.rentit.model.User;
+import com.rentit.model.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class ReviewService {
     UserService userService;
 
 
-    public List<Review> getReviewsByPage(String target, int targetId, int pageNum, int n) {
+    public List<ReviewDTO> getReviewsByPage(String target, int targetId, int pageNum, int n) {
         switch (target){
             case "product" -> {
                 if(targetId > 0 && pageNum > 0 && n > 0) {
