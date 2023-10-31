@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .product-overview-container {
   height: 85vh;
   overflow: scroll;
@@ -51,6 +55,40 @@
           }
         }
       }
+
+      .product-reviews {
+        margin-top: 10px;
+        width: 96%;
+
+        nb-card-header {
+          display: inline-flex;
+          justify-content: space-between;
+        }
+
+        .review-container {
+          nb-list-item {
+            display: table-column;
+
+            .reviewer-information {
+              display: flex;
+            }
+
+            .review-rating-information {
+              display: flex;
+            }
+
+            .review-description {
+              display: flex;
+
+              p {
+                span {
+                  font-weight: bold;
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
     .right-section {
@@ -94,4 +132,5 @@
 
     padding: 10px;
   }
+
 }

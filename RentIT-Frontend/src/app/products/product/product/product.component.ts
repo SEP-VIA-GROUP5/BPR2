@@ -1,13 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Select, Store} from "@ngxs/store";
 import {ICONS} from "src/app/constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ProductSelector} from "src/app/products/product/product/product.selector";
-import {ProductFetch} from "src/app/products/product/product/product.actions";
+import {ProductFetch, ProductReviewsOverviewFetch} from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
-import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import {HumanizeDuration, HumanizeDurationLanguage} from 'humanize-duration-ts';
+import {ReviewsOverview} from "src/model/reviewsOverview";
+import {NbDialogRef, NbDialogService} from "@nebular/theme";
 
 @Component({
   selector: 'app-product-overview',
@@ -15,10 +17,18 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit, OnDestroy {
-  @Select(ProductSelector.isFetching)
-  isFetching$: Observable<boolean>;
+  @Select(ProductSelector.isFetchingProduct)
+  isFetchingProduct$: Observable<boolean>;
+  @Select(ProductSelector.isFetchingReviewsOverview)
+  isFetchingReviewsOverview$: Observable<boolean>
   @Select(ProductSelector.product)
   product$: Observable<ProductOverview>
+  @Select(ProductSelector.reviewsOverview)
+  reviewsOverview$: Observable<ReviewsOverview>
+
+  // dialog adding review
+  @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
+  private dialogRef: NbDialogRef<any>;
 
   productId: number;
   // constants
@@ -29,13 +39,17 @@ export class ProductComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     private activatedRoute: ActivatedRoute,
+    private nbDialogService: NbDialogService,
     private router: Router,
   ) {
   }
 
   async ngOnInit() {
+    let actionsInParallel = [];
     this.productId = this.activatedRoute.snapshot.params['productId'];
-    this.store.dispatch(new ProductFetch(this.productId));
+
+    actionsInParallel.push(new ProductFetch(this.productId), new ProductReviewsOverviewFetch(this.productId));
+    this.store.dispatch([...actionsInParallel]);
   }
 
   getProductInfoStatusBadge(productStatus: ProductStatus) {
@@ -61,6 +75,16 @@ export class ProductComponent implements OnInit, OnDestroy {
       case ProductStatus.PAUSED:
         return 'warning';
     }
+  }
+
+  clickOnStarEvent() {
+    // goes to add review button page
+    let addReviewButtonElement = document.getElementById('addReviewButton');
+    addReviewButtonElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  }
+
+  openAddReviewDialog() {
+    // TODO add dialog
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {
