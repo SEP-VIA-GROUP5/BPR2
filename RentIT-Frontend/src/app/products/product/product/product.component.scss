@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .product-overview-container {
   height: 85vh;
   overflow: scroll;
@@ -51,6 +55,41 @@
           }
         }
       }
+
+      .product-reviews {
+        margin-top: 10px;
+        width: 96%;
+
+        nb-card-header {
+          display: inline-flex;
+          justify-content: space-between;
+        }
+
+        .review-container {
+          height: 25rem;
+          nb-list-item {
+            display: table-column;
+
+            .reviewer-information {
+              display: flex;
+            }
+
+            .review-rating-information {
+              display: flex;
+            }
+
+            .review-description {
+              display: flex;
+
+              p {
+                span {
+                  font-weight: bold;
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
     .right-section {
@@ -93,5 +132,26 @@
     }
 
     padding: 10px;
+  }
+}
+
+.add-rating-dialog-container {
+  .add-rating-dialog-header {
+
+  }
+  .add-rating-dialog-body {
+    display:  table-column;
+    text-align: center;
+    div {
+      margin-bottom: 1rem;
+      p span {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .add-rating-dialog-footer {
+    display: flex;
+    align-self: center;
   }
 }
