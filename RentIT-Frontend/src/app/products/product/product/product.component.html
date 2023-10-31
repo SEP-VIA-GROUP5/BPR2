@@ -70,10 +70,10 @@
         <nb-card class="product-rating"
                  [nbSpinner]="isFetchingReviewsOverview$ | async"
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
-          <nb-card-body *ngIf="(averageRating$ | async) as averageRating">
-            <stars-rating [rating]="averageRating" (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
+          <nb-card-body *ngIf="(reviewSummary$ | async) as reviewSummary">
+            <stars-rating [rating]="reviewSummary.avgRating" [reviewCount]="reviewSummary.reviewCount" (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
           </nb-card-body>
-          <nb-card-body *ngIf="!(averageRating$ | async)">
+          <nb-card-body *ngIf="!(reviewSummary$ | async)">
             <p>No reviews yet</p>
           </nb-card-body>
         </nb-card>

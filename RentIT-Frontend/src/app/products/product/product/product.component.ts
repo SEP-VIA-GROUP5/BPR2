@@ -17,6 +17,7 @@ import {HumanizeDuration, HumanizeDurationLanguage} from 'humanize-duration-ts';
 import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {Review} from "src/model/review";
 import {UserService} from "src/api/user.service";
+import {ReviewSummary} from "src/model/reviewSummary";
 
 @Component({
   selector: 'app-product-overview',
@@ -32,8 +33,8 @@ export class ProductComponent implements OnInit, OnDestroy {
   product$: Observable<ProductOverview>;
   @Select(ProductSelector.reviews)
   reviews$: Observable<Review[]>;
-  @Select(ProductSelector.averageRating)
-  averageRating$: Observable<number>;
+  @Select(ProductSelector.reviewSummary)
+  reviewSummary$: Observable<ReviewSummary>;
   @Select(ProductSelector.endOfListReviews)
   endOfListReviews$: Observable<boolean>;
 

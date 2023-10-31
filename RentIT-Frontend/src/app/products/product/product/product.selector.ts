@@ -25,8 +25,8 @@ export class ProductSelector {
   }
 
   @Selector([ProductState])
-  static averageRating(state: ProductStateModel) {
-    return state.averageRating;
+  static reviewSummary(state: ProductStateModel) {
+    return state.reviewSummary;
   }
 
   @Selector([ProductState])

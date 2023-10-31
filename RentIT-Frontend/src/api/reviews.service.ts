@@ -2,13 +2,15 @@ import {ApiService} from "src/core/services/api.service";
 import {Injectable} from "@angular/core";
 import {Review, TARGET} from "src/model/review";
 import {mockedReviews} from "src/mocks/reviews.mock";
+import {ReviewSummary} from "src/model/reviewSummary";
+import {mockedReviewSummaries} from "src/mocks/reviewSummary.mock";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewsService {
   constructor(
-    private apiService: ApiService<Review[] | Review | number>,
+    private apiService: ApiService<Review[] | Review | ReviewSummary>,
   ) {
   }
 
@@ -19,8 +21,8 @@ export class ReviewsService {
     return await this.apiService.call(mockedReviews, this.apiService.request('get', `${this.PATH_CONTROLLER}/${target}/page/${targetId}/${pageNum}/${pageSize}`, null, false)) as Review[];
   }
 
-  async getAverageRating(target: TARGET, targetId: number): Promise<number> {
-    return this.apiService.call(4.5, this.apiService.request('get', `${this.PATH_CONTROLLER}/summary/${target}/${targetId}`, null, false)) as Promise<number>;
+  async getReviewSummary(target: TARGET, targetId: number): Promise<ReviewSummary> {
+    return this.apiService.call(mockedReviewSummaries[0], this.apiService.request('get', `${this.PATH_CONTROLLER}/summary/${target}/${targetId}`, null, false)) as Promise<ReviewSummary>;
   }
 
   async addReview(target: TARGET, review: Review) {
