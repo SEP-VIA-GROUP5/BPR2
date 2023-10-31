@@ -2,6 +2,7 @@ package com.rentit.mappers;
 
 import com.rentit.dao.interfaces.IReviewMapper;
 import com.rentit.model.Review;
+import com.rentit.model.ReviewSummary;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,13 +57,15 @@ public class IReviewMapperTest {
     @Test
     public void get_product_review_summary_returns_avg_rating() {
         int productId = 4;
-        double avgRating = reviewMapper.getProductReviewSummary(productId);
-        assertThat(avgRating).isEqualTo(2.5);
+        ReviewSummary summary = reviewMapper.getProductReviewSummary(productId);
+        assertThat(summary.getAvgRating()).isEqualTo(2.5);
+        assertThat(summary.getReviewCount()).isEqualTo(2);
     }
     @Test
     public void get_user_review_summary_returns_avg_rating() {
         int userId = 4;
-        double avgRating = reviewMapper.getProductReviewSummary(userId);
-        assertThat(avgRating).isEqualTo(2.5);
+        ReviewSummary summary = reviewMapper.getProductReviewSummary(userId);
+        assertThat(summary.getAvgRating()).isEqualTo(2.5);
+        assertThat(summary.getReviewCount()).isEqualTo(2);
     }
 }
