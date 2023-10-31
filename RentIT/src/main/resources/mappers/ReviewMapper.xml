@@ -11,6 +11,10 @@
         <result property="rating" column="rating"/>
         <result property="message" column="message"/>
     </resultMap>
+    <resultMap id="ReviewSummaryResultMap" type="ReviewSummary">
+        <result property="reviewCount" column="review_count"/>
+        <result property="avgRating" column="avg_rating"/>
+    </resultMap>
 
     <select id="getNProductReviewsByPage" resultMap="ProductReviewResultMap">
         SELECT *
@@ -24,13 +28,13 @@
         WHERE user_id = #{userId}
             LIMIT ${(pageNum - 1) * n}, #{n};
     </select>
-    <select id="getProductReviewSummary">
-        SELECT AVG(rating)
+    <select id="getProductReviewSummary" resultMap="ReviewSummaryResultMap">
+        SELECT AVG(rating) as avg_rating, COUNT(product_id) as review_count
         FROM products_review
         WHERE product_id = #{productId};
     </select>
-    <select id="getUserReviewSummary">
-        SELECT AVG(rating)
+    <select id="getUserReviewSummary" resultMap="ReviewSummaryResultMap">
+        SELECT AVG(rating) as avg_rating, COUNT(user_id) as review_count
         FROM users_review
         WHERE user_id = #{userId};
     </select>
