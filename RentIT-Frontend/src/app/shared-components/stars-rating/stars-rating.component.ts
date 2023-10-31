@@ -27,7 +27,7 @@ import {Router} from "@angular/router";
       </div>
       <ng-template #tooltip>
           <div class="tooltip-container">
-              <p><span class="bold-font"> Exact rating:</span> {{ toFixedRating() }}
+            <p> <span *ngIf="this.rating"><span class="bold-font"> Exact rating:</span> {{ toFixedRating() }}.</span> <span *ngIf="this.reviewCount"><span class="bold-font"> Number of reviews: </span> {{ this.reviewCount }}</span> </p>
               <p> Click on a star to add your rating </p>
           </div>
       </ng-template>
@@ -37,6 +37,7 @@ import {Router} from "@angular/router";
 export class StarsRatingComponent implements OnInit {
 
   @Input() rating: number;
+  @Input() reviewCount: number;
   @Input() enableClickEvent: boolean = true;
   @Input() showTooltip: boolean = true;
   @Output() clickOnStarEvent: EventEmitter<number> = new EventEmitter<number>();

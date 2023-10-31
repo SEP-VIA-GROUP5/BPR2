@@ -15,6 +15,7 @@ import {
 import {ProductOverview} from "src/model/product-overview";
 import {ReviewsService} from "src/api/reviews.service";
 import {Review, TARGET} from "src/model/review";
+import {ReviewSummary} from "src/model/reviewSummary";
 
 export interface ProductStateModel {
   // product
@@ -23,7 +24,7 @@ export interface ProductStateModel {
   // reviews
   isFetchingReviewsOverview: boolean;
   reviews: Review[];
-  averageRating: number;
+  reviewSummary: ReviewSummary;
   pageSizeReviews: number;
   pageNumberReviews: number;
   endOfListReviews: boolean;
@@ -34,7 +35,7 @@ export const defaultsState: ProductStateModel = {
   product: null,
   isFetchingReviewsOverview: false,
   reviews: [],
-  averageRating: null,
+  reviewSummary: null,
   pageSizeReviews: 5,
   pageNumberReviews: 1,
   endOfListReviews: false,
@@ -126,11 +127,11 @@ export class ProductState {
     });
     setState(newState);
 
-    let averageRating = null;
+    let reviewSummary = null;
     try {
-      averageRating = await this.reviewsService.getAverageRating(TARGET.PRODUCT, action.productId);
+      reviewSummary = await this.reviewsService.getReviewSummary(TARGET.PRODUCT, action.productId);
       newState = produce(getState(), draft => {
-        draft.averageRating = averageRating;
+        draft.reviewSummary = reviewSummary;
         draft.isFetchingReviewsOverview = false;
       });
       return setState(newState);
