@@ -7,12 +7,13 @@ import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.enums.ProductStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(properties = "spring.config.name=application-test")
 public class IProductMapperTest {
@@ -30,10 +31,13 @@ public class IProductMapperTest {
     }
 
     @Test
-    public void return_n_products_per_page_with_location_filter() {
+    public void return_n_products_per_page_with_filters() {
         int n = 2;
-        String location = "Trige";
-        List<ProductDTO> products = productMapper.getNProductsByPageByLocation(1, n, location);
+        Map<String, String> filters = new HashMap<>();
+        filters.put("name", "quo");
+        filters.put("city", "Trige");
+        filters.put("category", "1");
+        List<ProductDTO> products = productMapper.getNProductsByPageWithFilters(1, n, filters);
         assertThat(products.size()).isEqualTo(2);
     }
 

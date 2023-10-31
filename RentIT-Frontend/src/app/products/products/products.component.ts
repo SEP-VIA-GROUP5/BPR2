@@ -5,8 +5,10 @@ import {Product} from "src/model/product";
 import {ICONS, PRODUCTS_MENU_ITEM_URLS} from "src/app/constants";
 import {Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
-import {ProductsFetch, ProductsReset} from "src/app/products/products/products.actions";
+import {ProductsByFilter, ProductsFetch, ProductsReset} from "src/app/products/products/products.actions";
 import {ProductsSelector} from "src/app/products/products/products.selector";
+import {FilteringProductOptions} from "src/model/filteringProductOptions";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-products',
@@ -20,6 +22,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
   products$: Observable<Product[]>
   @Select(ProductsSelector.endOfList)
   endOfList$: Observable<boolean>;
+  @Select(ProductsSelector.isListOnFiltering)
+  isListOnFiltering$: Observable<boolean>;
+  @Select(ProductsSelector.currentFilteringOptions)
+  currentFilteringOptions$: Observable<FilteringProductOptions>;
 
   // constants
   protected readonly ICONS = ICONS;
@@ -38,7 +44,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   loadNextProducts() {
-    this.store.dispatch(new ProductsFetch());
+    let isListOnFiltering = false;
+    let currentFilteringOptions = null;
+
+    this.isListOnFiltering$.pipe(first()).subscribe(isListOnFilteringValue => {
+      isListOnFiltering = isListOnFilteringValue;
+    });
+    this.currentFilteringOptions$.pipe(first()).subscribe(currentFilteringOptionsValue => {
+      currentFilteringOptions = currentFilteringOptionsValue;
+    });
+    if (isListOnFiltering) {
+      this.store.dispatch(new ProductsByFilter(currentFilteringOptions));
+    } else {
+      this.store.dispatch(new ProductsFetch());
+    }
   }
 
   navigateToAddingProductPage() {
