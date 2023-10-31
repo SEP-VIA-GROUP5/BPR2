@@ -7,7 +7,8 @@ import {ProductSelector} from "src/app/products/product/product/product.selector
 import {
   ProductAddReview,
   ProductAverageRatingReviewFetch,
-  ProductFetch, ProductReset,
+  ProductFetch,
+  ProductReset,
   ProductReviewsFetch
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
@@ -15,8 +16,6 @@ import {ProductStatus} from "src/model/productStatus";
 import {HumanizeDuration, HumanizeDurationLanguage} from 'humanize-duration-ts';
 import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {Review} from "src/model/review";
-import {defaultProduct} from "src/app/products/adding-products/constants/constants";
-import {first} from "rxjs/operators";
 import {UserService} from "src/api/user.service";
 
 @Component({
@@ -64,7 +63,6 @@ export class ProductComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let actionsInParallel = [];
     this.productId = this.activatedRoute.snapshot.params['productId'];
-
     actionsInParallel.push(
       new ProductFetch(this.productId),
       new ProductReviewsFetch(this.productId),

@@ -12,14 +12,17 @@ const routes: Routes = [
       component: ProductsModulePage,
       children: [
         {
+          title: 'Products',
           path: '',
           component: ProductsComponent,
         },
         {
+          title: 'Add product',
           path: PRODUCTS_MENU_ITEM_URLS.ADDING_PRODUCTS.substring(1),
           component: AddingProductsComponent
         },
         {
+          title: 'Product overview',
           path: PRODUCTS_MENU_ITEM_URLS.PRODUCT.substring(1),
           loadChildren: () =>
             import('./product/product.module').then((m) => m.ProductModule),
