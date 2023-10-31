@@ -1,6 +1,7 @@
 package com.rentit.controllers;
 
 import com.rentit.model.Review;
+import com.rentit.model.dto.ReviewDTO;
 import com.rentit.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class ReviewController {
     ReviewService reviewService;
 
     @RequestMapping(value = "/{target}/page/{targetId}/{pageNum}/{n}", method = RequestMethod.GET)
-    List<Review> getReviewsByPage(@PathVariable String target, @PathVariable int targetId, @PathVariable int pageNum, @PathVariable int n){
+    List<ReviewDTO> getReviewsByPage(@PathVariable String target, @PathVariable int targetId, @PathVariable int pageNum, @PathVariable int n){
         return reviewService.getReviewsByPage(target, targetId, pageNum, n);
     }
 
