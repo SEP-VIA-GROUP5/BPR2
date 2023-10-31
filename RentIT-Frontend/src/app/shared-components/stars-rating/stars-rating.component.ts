@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
           <!--      todo probably check if the user had this item in renting before-->
           <!--      todo when hovering, it should exact of rating and reviews-->
           <div *ngIf="enableClickEvent">
-            <span *ngFor="let rating of constructedRatings; let i = index" class="rating-star"
+            <span [class.enableClicking]="enableClickEvent" *ngFor="let rating of constructedRatings; let i = index" class="rating-star"
                   (mouseenter)="onHover(i)"
                   (mouseleave)="onLeaveHover()"
                   (click)="clickOnStar(i+1)">
@@ -20,16 +20,15 @@ import {Router} from "@angular/router";
       </span>
           </div>
           <div *ngIf="!enableClickEvent">
-          <span *ngFor="let rating of constructedRatings; let i = index" class="rating-star">
+          <span [class.enableClicking]="enableClickEvent" *ngFor="let rating of constructedRatings; let i = index" class="rating-star">
         {{ rating }}
       </span>
           </div>
       </div>
       <ng-template #tooltip>
           <div class="tooltip-container">
-              <p><span class="bold-font"> Exact rating:</span> {{this.rating}} <span *ngIf="numberReviews"><span
-                      class="bold-font">Reviews:</span> {{this.numberReviews}}</span></p>
-              <p *ngIf="numberReviews"> Click on a star to add your rating </p>
+              <p><span class="bold-font"> Exact rating:</span> {{ toFixedRating() }}
+              <p> Click on a star to add your rating </p>
           </div>
       </ng-template>
   `,
@@ -38,7 +37,6 @@ import {Router} from "@angular/router";
 export class StarsRatingComponent implements OnInit {
 
   @Input() rating: number;
-  @Input() numberReviews?: number;
   @Input() enableClickEvent: boolean = true;
   @Input() showTooltip: boolean = true;
   @Output() clickOnStarEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -82,6 +80,10 @@ export class StarsRatingComponent implements OnInit {
 
   onLeaveHover() {
     this.constructRatingBasedOnRatingInput();
+  }
+
+  toFixedRating() {
+    return this.rating.toFixed(2);
   }
 
   clickOnStar(starsIndex: number) {

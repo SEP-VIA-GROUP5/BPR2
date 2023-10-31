@@ -50,7 +50,7 @@
               <!--                  <p> {{review.reviewer.firstName}} {{review.reviewer.lastName}}</p>-->
               <!--                </div>-->
               <div class="review-rating-information">
-                <stars-rating [rating]="review.rating" [enableClickEvent]="false"></stars-rating>
+                <stars-rating [rating]="review.rating" [showTooltip]="false" [enableClickEvent]="false"></stars-rating>
               </div>
               <div class="review-description">
                 <p><span> Description:</span> {{ review.message }}</p>

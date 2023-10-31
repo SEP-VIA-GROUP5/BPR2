@@ -128,11 +128,12 @@ export class ProductState {
 
     let averageRating = null;
     try {
-      averageRating = await this.reviewsService.getAverageRating(TARGET.PRODUCT, action.productId)
+      averageRating = await this.reviewsService.getAverageRating(TARGET.PRODUCT, action.productId);
       newState = produce(getState(), draft => {
         draft.averageRating = averageRating;
         draft.isFetchingReviewsOverview = false;
       });
+      return setState(newState);
     } catch (e) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : e,
