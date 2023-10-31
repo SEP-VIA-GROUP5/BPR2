@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
   template: `
       <div class="stars-rating-container"
            nbPopoverTrigger="hover"
+           [nbTooltipDisabled]="!showTooltip"
            [nbPopover]="tooltip">
           <!--      todo add click and cursor pointer and open dialog for adding a new review when clicking on a star-->
           <!--      todo probably check if the user had this item in renting before-->
@@ -14,7 +15,7 @@ import {Router} from "@angular/router";
             <span *ngFor="let rating of constructedRatings; let i = index" class="rating-star"
                   (mouseenter)="onHover(i)"
                   (mouseleave)="onLeaveHover()"
-                  (click)="clickOnStar()">
+                  (click)="clickOnStar(i+1)">
         {{ rating }}
       </span>
           </div>
@@ -39,6 +40,7 @@ export class StarsRatingComponent implements OnInit {
   @Input() rating: number;
   @Input() numberReviews?: number;
   @Input() enableClickEvent: boolean = true;
+  @Input() showTooltip: boolean = true;
   @Output() clickOnStarEvent: EventEmitter<number> = new EventEmitter<number>();
   defaultRating: string[] = ['☆', '☆', '☆', '☆', '☆'];
   constructedRatings: string[] = [];
@@ -82,7 +84,7 @@ export class StarsRatingComponent implements OnInit {
     this.constructRatingBasedOnRatingInput();
   }
 
-  clickOnStar() {
-    this.clickOnStarEvent.emit();
+  clickOnStar(starsIndex: number) {
+    this.clickOnStarEvent.emit(starsIndex);
   }
 }

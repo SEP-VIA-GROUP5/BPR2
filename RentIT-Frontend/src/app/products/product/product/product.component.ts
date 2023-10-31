@@ -4,12 +4,17 @@ import {ICONS} from "src/app/constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ProductSelector} from "src/app/products/product/product/product.selector";
-import {ProductFetch, ProductReviewsFetch} from "src/app/products/product/product/product.actions";
+import {
+  ProductAverageRatingReviewFetch,
+  ProductFetch, ProductReset,
+  ProductReviewsFetch
+} from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
 import {HumanizeDuration, HumanizeDurationLanguage} from 'humanize-duration-ts';
 import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {Review} from "src/model/review";
+import {defaultProduct} from "src/app/products/adding-products/constants/constants";
 
 @Component({
   selector: 'app-product-overview',
@@ -27,10 +32,16 @@ export class ProductComponent implements OnInit, OnDestroy {
   reviews$: Observable<Review[]>;
   @Select(ProductSelector.averageRating)
   averageRating$: Observable<number>;
+  @Select(ProductSelector.endOfListReviews)
+  endOfListReviews$: Observable<boolean>;
 
   // dialog adding review
   @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
   private dialogRef: NbDialogRef<any>;
+  reviewToAdd: Review = {
+    rating: 0,
+    message: '',
+  } as Review;
 
   productId: number;
   // constants
@@ -50,7 +61,10 @@ export class ProductComponent implements OnInit, OnDestroy {
     let actionsInParallel = [];
     this.productId = this.activatedRoute.snapshot.params['productId'];
 
-    actionsInParallel.push(new ProductFetch(this.productId), new ProductReviewsFetch(this.productId));
+    actionsInParallel.push(
+      new ProductFetch(this.productId),
+      new ProductReviewsFetch(this.productId),
+      new ProductAverageRatingReviewFetch(this.productId));
     this.store.dispatch([...actionsInParallel]);
   }
 
@@ -85,8 +99,20 @@ export class ProductComponent implements OnInit, OnDestroy {
     addReviewButtonElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
   }
 
+  onAddingReviewClickOnStar(starsNumber: number) {
+    this.reviewToAdd.rating = starsNumber;
+  }
+
   openAddReviewDialog() {
     this.dialogRef = this.nbDialogService.open(this.addRatingDialog, {});
+  }
+
+  onSubmitAddingReview() {
+    this.dialogRef.close();
+  }
+
+  isOnSubmitButtonDisabled(): boolean {
+    return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {
@@ -94,7 +120,12 @@ export class ProductComponent implements OnInit, OnDestroy {
     return humanizer.humanize(minLeasePeriod * 24 * 60 * 60 * 1000);
   }
 
+  loadNextReviews() {
+    this.store.dispatch(new ProductReviewsFetch(this.productId));
+  }
+
   ngOnDestroy(): void {
     this.alive = false;
+    this.store.dispatch(new ProductReset());
   }
 }

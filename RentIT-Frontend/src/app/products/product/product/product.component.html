@@ -53,6 +53,13 @@
                 </div>
               </nb-list-item>
             </nb-list>
+          <nb-card-footer>
+            <button [disabled]="endOfListReviews$ | async" nbButton status="primary"
+                    [nbTooltip]="(endOfListReviews$ | async) ? 'No more reviews to load' : 'Load more reviews'"
+                    (click)="loadNextReviews()">
+              <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>
+            </button>
+          </nb-card-footer>
         </nb-card>
       </div>
       <div class="right-section">
@@ -61,6 +68,9 @@
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
           <nb-card-body *ngIf="(averageRating$ | async) as averageRating">
             <stars-rating [rating]="averageRating" (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
+          </nb-card-body>
+          <nb-card-body *ngIf="!(averageRating$ | async)">
+            <p>No reviews yet</p>
           </nb-card-body>
         </nb-card>
         <nb-card class="user-and-lease-information">
@@ -118,7 +128,24 @@
       Add rating
     </nb-card-header>
     <nb-card-body class="add-rating-dialog-body">
-
+      <div>
+        <p> How would you like to rate this product? </p>
+      </div>
+      <div>
+        <stars-rating [showTooltip]="false" [rating]="reviewToAdd.rating" (clickOnStarEvent)="onAddingReviewClickOnStar($event)"></stars-rating>
+      </div>
+      <div *ngIf="reviewToAdd.rating > 0">
+        <p> You have chosen rating <span>{{ reviewToAdd.rating }} </span> </p>
+      </div>
+      <div>
+        <nb-form-field class="description">
+                <textarea [(ngModel)]="reviewToAdd.message" name="message" type="text" fullWidth nbInput
+                          shape="round" placeholder="Message"></textarea>
+        </nb-form-field>
+      </div>
     </nb-card-body>
+    <nb-card-footer class="add-rating-dialog-footer">
+      <button [disabled]="isOnSubmitButtonDisabled()" nbButton status="warning" hero (click)="onSubmitAddingReview()">Submit</button>
+    </nb-card-footer>
   </nb-card>
 </ng-template>

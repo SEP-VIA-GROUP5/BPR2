@@ -28,4 +28,9 @@ export class ProductSelector {
   static averageRating(state: ProductStateModel) {
     return state.averageRating;
   }
+
+  @Selector([ProductState])
+  static endOfListReviews(state: ProductStateModel) {
+    return state.endOfListReviews;
+  }
 }

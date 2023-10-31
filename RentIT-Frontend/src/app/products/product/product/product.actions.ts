@@ -9,6 +9,13 @@ export class ProductReviewsFetch {
   constructor(public productId: number){
   }
 }
+
+export class ProductAverageRatingReviewFetch {
+  static readonly type = '[Product] Average Rating Fetch';
+  constructor(public productId: number){
+  }
+}
+
 export class ProductReset {
   static readonly type = '[Product] Reset';
   constructor() {

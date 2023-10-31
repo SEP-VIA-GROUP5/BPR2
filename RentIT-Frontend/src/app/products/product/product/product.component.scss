@@ -132,5 +132,25 @@ html {
 
     padding: 10px;
   }
+}
 
+.add-rating-dialog-container {
+  .add-rating-dialog-header {
+
+  }
+  .add-rating-dialog-body {
+    display:  table-column;
+    text-align: center;
+    div {
+      margin-bottom: 1rem;
+      p span {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .add-rating-dialog-footer {
+    display: flex;
+    align-self: center;
+  }
 }
