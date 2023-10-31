@@ -32,27 +32,31 @@
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
           <nb-card-header class="product-reviews-header">
             <h4>Reviews</h4>
-            <button id="addReviewButton" nbButton status="warning" hero (click)="openAddReviewDialog()">
+            <button [disabled]="!this.userService.isLoggedIn()" id="addReviewButton" nbButton status="warning" hero
+                    nbTooltip="You need to be logged in to add a review"
+                    [nbTooltipDisabled]="this.userService.isLoggedIn()"
+                    (click)="openAddReviewDialog()"
+            >
               Add review
             </button>
           </nb-card-header>
-            <nb-list *ngIf="(reviews$ | async) as reviews" class="review-container">
-              <nb-list-item *ngFor="let review of reviews">
-<!--                TODO not implemented yet -->
-<!--                <div class="reviewer-information">-->
-<!--                  <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"-->
-<!--                           onlyPicture>-->
-<!--                  </nb-user>-->
-<!--                  <p> {{review.reviewer.firstName}} {{review.reviewer.lastName}}</p>-->
-<!--                </div>-->
-                <div class="review-rating-information">
-                  <stars-rating [rating]="review.rating" [enableClickEvent]="false"></stars-rating>
-                </div>
-                <div class="review-description">
-                  <p> <span> Description:</span> {{ review.message }}</p>
-                </div>
-              </nb-list-item>
-            </nb-list>
+          <nb-list *ngIf="(reviews$ | async) as reviews" class="review-container">
+            <nb-list-item *ngFor="let review of reviews">
+              <!--                TODO not implemented yet -->
+              <!--                <div class="reviewer-information">-->
+              <!--                  <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"-->
+              <!--                           onlyPicture>-->
+              <!--                  </nb-user>-->
+              <!--                  <p> {{review.reviewer.firstName}} {{review.reviewer.lastName}}</p>-->
+              <!--                </div>-->
+              <div class="review-rating-information">
+                <stars-rating [rating]="review.rating" [enableClickEvent]="false"></stars-rating>
+              </div>
+              <div class="review-description">
+                <p><span> Description:</span> {{ review.message }}</p>
+              </div>
+            </nb-list-item>
+          </nb-list>
           <nb-card-footer>
             <button [disabled]="endOfListReviews$ | async" nbButton status="primary"
                     [nbTooltip]="(endOfListReviews$ | async) ? 'No more reviews to load' : 'Load more reviews'"
@@ -132,10 +136,11 @@
         <p> How would you like to rate this product? </p>
       </div>
       <div>
-        <stars-rating [showTooltip]="false" [rating]="reviewToAdd.rating" (clickOnStarEvent)="onAddingReviewClickOnStar($event)"></stars-rating>
+        <stars-rating [showTooltip]="false" [rating]="reviewToAdd.rating"
+                      (clickOnStarEvent)="onAddingReviewClickOnStar($event)"></stars-rating>
       </div>
       <div *ngIf="reviewToAdd.rating > 0">
-        <p> You have chosen rating <span>{{ reviewToAdd.rating }} </span> </p>
+        <p> You have chosen rating <span>{{ reviewToAdd.rating }} </span></p>
       </div>
       <div>
         <nb-form-field class="description">
@@ -145,7 +150,9 @@
       </div>
     </nb-card-body>
     <nb-card-footer class="add-rating-dialog-footer">
-      <button [disabled]="isOnSubmitButtonDisabled()" nbButton status="warning" hero (click)="onSubmitAddingReview()">Submit</button>
+      <button [disabled]="isOnSubmitButtonDisabled()" nbButton status="warning" hero (click)="onSubmitAddingReview()">
+        Submit
+      </button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

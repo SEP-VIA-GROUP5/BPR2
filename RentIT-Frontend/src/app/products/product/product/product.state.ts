@@ -6,6 +6,7 @@ import {ICONS} from "src/app/constants";
 import {environment} from "src/environments/environment.dev";
 import {ProductService} from "src/api/product.service";
 import {
+  ProductAddReview,
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
@@ -145,9 +146,36 @@ export class ProductState {
     }
   }
 
+  @Action(ProductAddReview)
+  async productAddReview(
+    {getState, setState}: StateContext<ProductStateModel>,
+    action: ProductAddReview) {
+
+    try {
+      let reviewToAdd = {
+        targetId: action.productId.toString(),
+        ...action.review,
+      } satisfies Review;
+      await this.reviewsService.addReview(TARGET.PRODUCT, reviewToAdd);
+      this.toastrService.success(
+        'Your review has been added',
+        'Success',
+        {icon: ICONS.CHECKMARK_OUTLINE}
+      );
+      window.location.reload();
+    } catch (e) {
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : e,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+    }
+    return getState();
+  }
+
   @Action(ProductReset)
   async productReset(
     {setState}: StateContext<ProductStateModel>) {
-    setState(defaultsState);
+    return setState(defaultsState);
   };
 }

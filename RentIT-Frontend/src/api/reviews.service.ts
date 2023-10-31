@@ -22,4 +22,8 @@ export class ReviewsService {
   async getAverageRating(target: TARGET, targetId: number): Promise<number> {
     return this.apiService.call(4.5, this.apiService.request('get', `${this.PATH_CONTROLLER}/summary/${target}/${targetId}`, null, false)) as Promise<number>;
   }
+
+  async addReview(target: TARGET, review: Review) {
+    return this.apiService.call(null, this.apiService.request('post', `${this.PATH_CONTROLLER}/${target}`, review, true)) as Promise<Review>;
+  }
 }

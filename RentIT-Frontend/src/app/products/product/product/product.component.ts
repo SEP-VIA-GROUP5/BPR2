@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ProductSelector} from "src/app/products/product/product/product.selector";
 import {
+  ProductAddReview,
   ProductAverageRatingReviewFetch,
   ProductFetch, ProductReset,
   ProductReviewsFetch
@@ -15,6 +16,8 @@ import {HumanizeDuration, HumanizeDurationLanguage} from 'humanize-duration-ts';
 import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {Review} from "src/model/review";
 import {defaultProduct} from "src/app/products/adding-products/constants/constants";
+import {first} from "rxjs/operators";
+import {UserService} from "src/api/user.service";
 
 @Component({
   selector: 'app-product-overview',
@@ -54,6 +57,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private nbDialogService: NbDialogService,
     private router: Router,
+    public userService: UserService,
   ) {
   }
 
@@ -108,6 +112,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   onSubmitAddingReview() {
+    this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
     this.dialogRef.close();
   }
 
