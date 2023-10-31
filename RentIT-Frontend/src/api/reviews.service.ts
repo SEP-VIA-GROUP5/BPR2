@@ -1,6 +1,6 @@
 import {ApiService} from "src/core/services/api.service";
 import {Injectable} from "@angular/core";
-import {Review} from "src/model/review";
+import {Review, TARGET} from "src/model/review";
 import {mockedReviews} from "src/mocks/reviews.mock";
 
 @Injectable({
@@ -14,10 +14,12 @@ export class ReviewsService {
 
   PATH_CONTROLLER = 'review';
 
-  async getReviewsOverview(productId: number): Promise<Review[]> {
-    // TODO comment this for now as there's no endpoint for this
-    // let reviewsOverview = await this.apiService.call(mockedReviewOverviews, this.apiService.request('get',`${this.PATH_CONTROLLER}/reviews/id/${productId}`, null, false)) as ReviewsOverview;
-    // return Promise.resolve(reviewsOverview);
-    return Promise.resolve(mockedReviews);
+  // target can be user or product
+  async getReviewsByTarget(target: TARGET, targetId: number, pageNum: number, pageSize: number): Promise<Review[]> {
+    return await this.apiService.call(mockedReviews, this.apiService.request('get', `${this.PATH_CONTROLLER}/${target}/page/${targetId}/${pageNum}/${pageSize}`, null, false)) as Review[];
+  }
+
+  async getAverageRating(target: TARGET, targetId: number): Promise<number> {
+    return this.apiService.call(4.5, this.apiService.request('get', `${this.PATH_CONTROLLER}/summary/${target}/${targetId}`, null, false)) as Promise<number>;
   }
 }
