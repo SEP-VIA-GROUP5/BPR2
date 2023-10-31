@@ -4,12 +4,12 @@ import {ICONS} from "src/app/constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ProductSelector} from "src/app/products/product/product/product.selector";
-import {ProductFetch, ProductReviewsOverviewFetch} from "src/app/products/product/product/product.actions";
+import {ProductFetch, ProductReviewsFetch} from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
 import {HumanizeDuration, HumanizeDurationLanguage} from 'humanize-duration-ts';
-import {ReviewsOverview} from "src/model/reviewsOverview";
 import {NbDialogRef, NbDialogService} from "@nebular/theme";
+import {Review} from "src/model/review";
 
 @Component({
   selector: 'app-product-overview',
@@ -20,11 +20,13 @@ export class ProductComponent implements OnInit, OnDestroy {
   @Select(ProductSelector.isFetchingProduct)
   isFetchingProduct$: Observable<boolean>;
   @Select(ProductSelector.isFetchingReviewsOverview)
-  isFetchingReviewsOverview$: Observable<boolean>
+  isFetchingReviewsOverview$: Observable<boolean>;
   @Select(ProductSelector.product)
-  product$: Observable<ProductOverview>
-  @Select(ProductSelector.reviewsOverview)
-  reviewsOverview$: Observable<ReviewsOverview>
+  product$: Observable<ProductOverview>;
+  @Select(ProductSelector.reviews)
+  reviews$: Observable<Review[]>;
+  @Select(ProductSelector.averageRating)
+  averageRating$: Observable<number>;
 
   // dialog adding review
   @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
@@ -44,11 +46,11 @@ export class ProductComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  async ngOnInit() {
+  ngOnInit(): void {
     let actionsInParallel = [];
     this.productId = this.activatedRoute.snapshot.params['productId'];
 
-    actionsInParallel.push(new ProductFetch(this.productId), new ProductReviewsOverviewFetch(this.productId));
+    actionsInParallel.push(new ProductFetch(this.productId), new ProductReviewsFetch(this.productId));
     this.store.dispatch([...actionsInParallel]);
   }
 
@@ -84,7 +86,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   openAddReviewDialog() {
-    // TODO add dialog
+    this.dialogRef = this.nbDialogService.open(this.addRatingDialog, {});
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {

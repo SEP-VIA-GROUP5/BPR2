@@ -1,4 +1,3 @@
-import {Product} from "src/model/product";
 import {Action, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {NbToastrService} from "@nebular/theme";
@@ -6,27 +5,25 @@ import {produce} from "immer";
 import {ICONS} from "src/app/constants";
 import {environment} from "src/environments/environment.dev";
 import {ProductService} from "src/api/product.service";
-import {
-  ProductFetch,
-  ProductReset,
-  ProductReviewsOverviewFetch
-} from "src/app/products/product/product/product.actions";
+import {ProductFetch, ProductReset, ProductReviewsFetch} from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
-import {ReviewsOverview} from "src/model/reviewsOverview";
 import {ReviewsService} from "src/api/reviews.service";
+import {Review} from "src/model/review";
 
 export interface ProductStateModel {
   isFetchingProduct: boolean;
   isFetchingReviewsOverview: boolean;
   product: ProductOverview;
-  reviewsOverview: ReviewsOverview;
+  reviews: Review[];
+  averageRating: number;
 }
 
 export const defaultsState: ProductStateModel = {
   isFetchingProduct: false,
   isFetchingReviewsOverview: false,
   product: null,
-  reviewsOverview: null,
+  reviews: [],
+  averageRating: null
 }
 
 @State<ProductStateModel>({
@@ -73,21 +70,21 @@ export class ProductState {
     }
   }
 
-  @Action(ProductReviewsOverviewFetch)
+  @Action(ProductReviewsFetch)
   async productReviewsOverviewFetch(
     {getState, setState}: StateContext<ProductStateModel>,
-    action: ProductReviewsOverviewFetch) {
+    action: ProductReviewsFetch) {
     let newState = produce(getState(), draft => {
       draft.isFetchingReviewsOverview = true;
     });
     setState(newState);
 
-    let reviewsOverview = null;
+    let reviews = [];
     try {
       // TODO here comes the api, but for now mock it;
-      reviewsOverview = await this.reviewsService.getReviewsOverview(action.productId);
+      reviews = await this.reviewsService.getReviewsOverview(action.productId);
       newState = produce(getState(), draft => {
-        draft.reviewsOverview = reviewsOverview;
+        draft.reviews = reviews;
         draft.isFetchingReviewsOverview = false;
       });
       return setState(newState);

@@ -36,19 +36,20 @@
               Add review
             </button>
           </nb-card-header>
-            <nb-list *ngIf="(reviewsOverview$ | async) as reviewsOverview" class="review-container">
-              <nb-list-item *ngFor="let review of reviewsOverview.reviews">
-                <div class="reviewer-information">
-                  <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"
-                           onlyPicture>
-                  </nb-user>
-                  <p> {{review.reviewer.firstName}} {{review.reviewer.lastName}}</p>
-                </div>
+            <nb-list *ngIf="(reviews$ | async) as reviews" class="review-container">
+              <nb-list-item *ngFor="let review of reviews">
+<!--                TODO not implemented yet -->
+<!--                <div class="reviewer-information">-->
+<!--                  <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"-->
+<!--                           onlyPicture>-->
+<!--                  </nb-user>-->
+<!--                  <p> {{review.reviewer.firstName}} {{review.reviewer.lastName}}</p>-->
+<!--                </div>-->
                 <div class="review-rating-information">
                   <stars-rating [rating]="review.rating" [enableClickEvent]="false"></stars-rating>
                 </div>
                 <div class="review-description">
-                  <p> <span> Description:</span> {{ review.review }}</p>
+                  <p> <span> Description:</span> {{ review.message }}</p>
                 </div>
               </nb-list-item>
             </nb-list>
@@ -58,8 +59,8 @@
         <nb-card class="product-rating"
                  [nbSpinner]="isFetchingReviewsOverview$ | async"
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
-          <nb-card-body *ngIf="(reviewsOverview$ | async) as reviewsOverview">
-            <stars-rating [rating]="reviewsOverview.averageRating" [numberReviews]="reviewsOverview.reviews.length" (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
+          <nb-card-body *ngIf="(averageRating$ | async) as averageRating">
+            <stars-rating [rating]="averageRating" (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
           </nb-card-body>
         </nb-card>
         <nb-card class="user-and-lease-information">

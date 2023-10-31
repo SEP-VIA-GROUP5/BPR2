@@ -85,8 +85,4 @@ export class StarsRatingComponent implements OnInit {
   clickOnStar() {
     this.clickOnStarEvent.emit();
   }
-
-  showTooltip() {
-    return `Exact rating: ${this.rating}. Reviews: ${this.numberReviews} \n Click on a star to add rating`
-  }
 }

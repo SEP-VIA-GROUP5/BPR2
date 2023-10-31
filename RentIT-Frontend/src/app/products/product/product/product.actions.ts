@@ -4,7 +4,7 @@ export class ProductFetch {
   }
 }
 
-export class ProductReviewsOverviewFetch {
+export class ProductReviewsFetch {
   static readonly type = '[Product] Reviews Fetch';
   constructor(public productId: number){
   }

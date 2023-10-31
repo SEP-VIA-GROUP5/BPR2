@@ -1,15 +1,11 @@
-import {ReviewsOverview} from "src/model/reviewsOverview";
 import {User} from "src/model/user";
 import {Review} from "src/model/review";
 
-export const mockedReviewOverviews: ReviewsOverview = {
-averageRating: 4.5,
-reviews: [
+export const mockedReviews: Review[] = [
   {
-    id: 1,
-    productId: 1,
+    targetId: "product",
     rating: 5,
-    review: "Great product!",
+    message: "Great product!",
     reviewer: {
       id: 1,
       firstName: "John",
@@ -19,5 +15,4 @@ reviews: [
       location: 'Horsens',
     } satisfies User,
   },
-  ] satisfies Review[]
-}
+  ] satisfies Review[];
