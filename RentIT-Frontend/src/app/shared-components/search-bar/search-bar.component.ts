@@ -41,7 +41,7 @@ import {Observable} from "rxjs";
             </nb-form-field>
             <nb-form-field class="product-deposit-filtering">
               <input [(ngModel)]="filteringProductOptions.deposit" nbInput shape="round" type="number"
-                     placeholder="Deposit price">
+                     placeholder="Deposit price in €">
             </nb-form-field>
           </div>
           <div class="right-container">
