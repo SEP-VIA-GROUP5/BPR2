@@ -39,6 +39,10 @@ import {Observable} from "rxjs";
               <input [(ngModel)]="filteringProductOptions.name" nbInput shape="round"
                      placeholder="Name">
             </nb-form-field>
+            <nb-form-field class="product-deposit-filtering">
+              <input [(ngModel)]="filteringProductOptions.deposit" nbInput shape="round" type="number"
+                     placeholder="Deposit price in €">
+            </nb-form-field>
           </div>
           <div class="right-container">
             <nb-form-field class="product-category-filtering">
@@ -87,7 +91,8 @@ export class SearchBarComponent {
 
   isSaveFilteringOptionsButtonEnabled() {
     return this.filteringProductOptions.name === '' &&
-      this.filteringProductOptions.city === '';
+      this.filteringProductOptions.city === '' &&
+      this.filteringProductOptions.deposit === null;
   }
 
   onSaveFilteringOptions() {
