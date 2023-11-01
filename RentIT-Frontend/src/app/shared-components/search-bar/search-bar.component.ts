@@ -6,6 +6,7 @@ import {FilteringProductOptions} from "src/model/filteringProductOptions";
 import {Select} from "@ngxs/store";
 import {ProductsSelector} from "src/app/products/products/products.selector";
 import {Observable} from "rxjs";
+import {defaultProduct} from "src/app/products/adding-products/constants/constants";
 
 @Component({
   selector: 'search-bar',
@@ -41,7 +42,17 @@ import {Observable} from "rxjs";
             </nb-form-field>
             <nb-form-field class="product-deposit-filtering">
               <input [(ngModel)]="filteringProductOptions.deposit" nbInput shape="round" type="number"
-                     placeholder="Deposit price in €">
+                     placeholder="Price € deposit">
+            </nb-form-field>
+            <nb-form-field>
+              <!--              TODO dayPrice should not be null-->
+              <input [(ngModel)]="filteringProductOptions.dayPrice" name="dayPrice" type="number" fullWidth size="100px"
+                     nbInput shape="round" placeholder="Price € (per day)">
+            </nb-form-field>
+            <nb-form-field>
+              <!--              TODO should that this is optional-->
+              <input [(ngModel)]="filteringProductOptions.weekPrice" name="weekPrice" type="number" fullWidth size="100px"
+                     nbInput shape="round" placeholder="Price € (per week)">
             </nb-form-field>
           </div>
           <div class="right-container">
@@ -52,6 +63,14 @@ import {Observable} from "rxjs";
             <nb-form-field class="product-category-filtering">
               <input [(ngModel)]="filteringProductOptions.category" nbInput shape="round" type="text"
                      placeholder="Category">
+            </nb-form-field>
+            <nb-form-field>
+              <input [(ngModel)]="filteringProductOptions.monthPrice" name="monthPrice" type="number" fullWidth size="100px"
+                     nbInput shape="round" placeholder="Price € (per month)">
+            </nb-form-field>
+            <nb-form-field>
+              <input [(ngModel)]="filteringProductOptions.productValue" name="productValue" type="number" fullWidth
+                     size="100px" nbInput shape="round" placeholder="Product value in €">
             </nb-form-field>
           </div>
         </nb-card-body>
@@ -97,7 +116,11 @@ export class SearchBarComponent {
     return this.filteringProductOptions.name === '' &&
       this.filteringProductOptions.city === '' &&
       this.filteringProductOptions.deposit === null &&
-      this.filteringProductOptions.category === '';
+      this.filteringProductOptions.category === '' &&
+      this.filteringProductOptions.dayPrice === null &&
+      this.filteringProductOptions.weekPrice === null &&
+      this.filteringProductOptions.monthPrice === null &&
+      this.filteringProductOptions.productValue === null;
   }
 
   onSaveFilteringOptions() {
@@ -114,4 +137,5 @@ export class SearchBarComponent {
     this.dialogRef = this.dialogService.open(this.moreFilteringOptionsDialog);
   }
 
+  protected readonly defaultProduct = defaultProduct;
 }
