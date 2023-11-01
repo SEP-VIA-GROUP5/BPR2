@@ -9,11 +9,14 @@ export function mapToMapperFromFilteringOptions(filteringProductOptions: Filteri
   if (filteringProductOptions.name) {
     mapper.set('name', filteringProductOptions.name);
   }
-  if (filteringProductOptions.productCategory) {
-    mapper.set('productCategory', filteringProductOptions.productCategory);
-  }
   if (filteringProductOptions.city) {
     mapper.set('city', filteringProductOptions.city);
+  }
+  if (filteringProductOptions.deposit) {
+    mapper.set('deposit', filteringProductOptions.deposit.toString());
+  }
+  if (filteringProductOptions.productCategory) {
+    mapper.set('productCategory', filteringProductOptions.productCategory);
   }
   if (filteringProductOptions.productStatus) {
     mapper.set('productStatus', filteringProductOptions.productStatus);

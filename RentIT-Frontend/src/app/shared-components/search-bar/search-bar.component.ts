@@ -91,7 +91,8 @@ export class SearchBarComponent {
 
   isSaveFilteringOptionsButtonEnabled() {
     return this.filteringProductOptions.name === '' &&
-      this.filteringProductOptions.city === '';
+      this.filteringProductOptions.city === '' &&
+      this.filteringProductOptions.deposit === null;
   }
 
   onSaveFilteringOptions() {
