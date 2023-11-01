@@ -5,6 +5,7 @@ export function constructDefaultFilteringProductOptions(): FilteringProductOptio
     name: '',
     productCategory: '',
     city: '',
+    deposit: null,
     productStatus: null,
     productPriceFrom: null,
     productPriceTo: null,
