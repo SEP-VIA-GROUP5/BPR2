@@ -36,7 +36,7 @@ import {Observable} from "rxjs";
         <nb-card-body class="more-filtering-options-body">
           <div class="left-container">
             <nb-form-field class="product-name-filtering">
-              <input [(ngModel)]="filteringProductOptions.name" nbInput shape="round"
+              <input [(ngModel)]="filteringProductOptions.name" nbInput shape="round" type="text"
                      placeholder="Name">
             </nb-form-field>
             <nb-form-field class="product-deposit-filtering">
@@ -45,9 +45,13 @@ import {Observable} from "rxjs";
             </nb-form-field>
           </div>
           <div class="right-container">
-            <nb-form-field class="product-category-filtering">
-              <input [(ngModel)]="filteringProductOptions.city" nbInput shape="round"
+            <nb-form-field class="product-location-filtering">
+              <input [(ngModel)]="filteringProductOptions.city" nbInput shape="round" type="text"
                      placeholder="Location">
+            </nb-form-field>
+            <nb-form-field class="product-category-filtering">
+              <input [(ngModel)]="filteringProductOptions.category" nbInput shape="round" type="text"
+                     placeholder="Category">
             </nb-form-field>
           </div>
         </nb-card-body>
@@ -92,7 +96,8 @@ export class SearchBarComponent {
   isSaveFilteringOptionsButtonEnabled() {
     return this.filteringProductOptions.name === '' &&
       this.filteringProductOptions.city === '' &&
-      this.filteringProductOptions.deposit === null;
+      this.filteringProductOptions.deposit === null &&
+      this.filteringProductOptions.category === '';
   }
 
   onSaveFilteringOptions() {
