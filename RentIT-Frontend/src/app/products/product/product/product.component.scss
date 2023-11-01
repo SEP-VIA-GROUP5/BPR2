@@ -50,6 +50,9 @@ html {
 
         nb-card-body {
           p {
+            span {
+              font-weight: bold;
+            }
             font-size: 1.1rem;
             text-align: justify;
           }

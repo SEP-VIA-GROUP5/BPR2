@@ -15,17 +15,8 @@ export function mapToMapperFromFilteringOptions(filteringProductOptions: Filteri
   if (filteringProductOptions.deposit) {
     mapper.set('deposit', filteringProductOptions.deposit.toString());
   }
-  if (filteringProductOptions.productCategory) {
-    mapper.set('productCategory', filteringProductOptions.productCategory);
-  }
-  if (filteringProductOptions.productStatus) {
-    mapper.set('productStatus', filteringProductOptions.productStatus);
-  }
-  if (filteringProductOptions.productPriceFrom) {
-    mapper.set('productPriceFrom', filteringProductOptions.productPriceFrom.toString());
-  }
-  if (filteringProductOptions.productPriceTo) {
-    mapper.set('productPriceTo', filteringProductOptions.productPriceTo.toString());
+  if (filteringProductOptions.category) {
+    mapper.set('category', filteringProductOptions.category);
   }
   return mapper;
 }
