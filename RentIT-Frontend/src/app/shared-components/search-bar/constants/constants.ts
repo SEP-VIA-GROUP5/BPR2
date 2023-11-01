@@ -6,5 +6,9 @@ export function constructDefaultFilteringProductOptions(): FilteringProductOptio
     category: '',
     city: '',
     deposit: null,
+    dayPrice: null,
+    weekPrice: null,
+    monthPrice: null,
+    productValue: null
   } satisfies FilteringProductOptions;
 }

@@ -18,5 +18,17 @@ export function mapToMapperFromFilteringOptions(filteringProductOptions: Filteri
   if (filteringProductOptions.category) {
     mapper.set('category', filteringProductOptions.category);
   }
+  if (filteringProductOptions.dayPrice) {
+    mapper.set('day_price', filteringProductOptions.dayPrice.toString());
+  }
+  if (filteringProductOptions.weekPrice) {
+    mapper.set('week_price', filteringProductOptions.weekPrice.toString());
+  }
+  if (filteringProductOptions.monthPrice) {
+    mapper.set('month_price', filteringProductOptions.monthPrice.toString());
+  }
+  if (filteringProductOptions.productValue) {
+    mapper.set('product_value', filteringProductOptions.productValue.toString());
+  }
   return mapper;
 }
