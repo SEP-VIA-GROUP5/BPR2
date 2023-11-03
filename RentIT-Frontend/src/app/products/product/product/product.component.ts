@@ -9,7 +9,8 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch, SubmitReport
+  ProductReviewsFetch, ResetSubmitReport,
+  SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
@@ -21,8 +22,8 @@ import {ReviewSummary} from "src/model/reviewSummary";
 import {
   constructorReportToAdd,
   ReportToAdd,
-  SubmitButtonType,
-  ReportType
+  ReportType,
+  SubmitButtonType
 } from "src/app/products/product/product/constants/constants";
 
 @Component({
@@ -161,6 +162,37 @@ export class ProductComponent implements OnInit, OnDestroy {
         return this.reportToAdd.userReport.message === '';
       }
     }
+  }
+
+  isReportAdded(reportType: ReportType) {
+    if(reportType === ReportType.PRODUCT) {
+      let isProductReportAdded = false;
+      this.isProductReportAdded$.subscribe(isProductReportAddedValue => {
+        isProductReportAdded = isProductReportAddedValue;
+      });
+      return isProductReportAdded;
+    }
+    else if(reportType === ReportType.USER) {
+      let isUserReportAdded = false;
+      this.isUserReportAdded$.subscribe(isUserReportAddedValue => {
+        isUserReportAdded = isUserReportAddedValue;
+      });
+      return isUserReportAdded;
+    }
+  }
+
+  resetReport(reportType: ReportType) {
+    if(reportType === ReportType.PRODUCT) {
+      this.reportToAdd.productReport = constructorReportToAdd().productReport;
+    }
+    else if(reportType === ReportType.USER) {
+      this.reportToAdd.userReport = constructorReportToAdd().userReport;
+    }
+    this.store.dispatch(new ResetSubmitReport(reportType));
+  }
+
+  closeReportDialog() {
+    this.reportDialogRef.close();
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {
