@@ -8,10 +8,12 @@ import {ProductModulePage} from "src/app/products/product/product.module.page";
 import {ProductComponent} from "src/app/products/product/product/product.component";
 import {ProductState} from "src/app/products/product/product/product.state";
 import {ReviewsService} from "src/api/reviews.service";
+import {ReportsService} from "src/api/reports.service";
 
 export const PRODUCTS_PROVIDERS = [
   ProductService,
   ReviewsService,
+  ReportsService,
 ]
 
 export const PRODUCTS_STATES = [
