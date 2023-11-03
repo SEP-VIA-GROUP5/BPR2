@@ -34,7 +34,7 @@ export class SubmitReport {
 
 export class ResetSubmitReport {
   static readonly type = '[Product] Reset Submit Report';
-  constructor() {
+  constructor(public reportType: ReportType) {
   }
 }
 

@@ -45,8 +45,10 @@ export class ProductComponent implements OnInit, OnDestroy {
   endOfListReviews$: Observable<boolean>;
   @Select(ProductSelector.isFetchingReport)
   isFetchingReport$: Observable<boolean>;
-  @Select(ProductSelector.isReportAdded)
-  isReportAdded$: Observable<boolean>;
+  @Select(ProductSelector.isUserReportAdded)
+  isUserReportAdded$: Observable<boolean>;
+  @Select(ProductSelector.isProductReportAdded)
+  isProductReportAdded$: Observable<boolean>;
 
   // dialog adding review
   @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;

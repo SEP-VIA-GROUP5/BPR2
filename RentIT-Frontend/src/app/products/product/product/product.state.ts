@@ -33,7 +33,8 @@ export interface ProductStateModel {
   pageNumberReviews: number;
   endOfListReviews: boolean;
   // report
-  isReportAdded: boolean;
+  isUserReportAdded: boolean;
+  isProductReportAdded: boolean,
   isFetchingReport: boolean;
 }
 
@@ -46,7 +47,8 @@ export const defaultsState: ProductStateModel = {
   pageSizeReviews: 5,
   pageNumberReviews: 1,
   endOfListReviews: false,
-  isReportAdded: false,
+  isUserReportAdded: false,
+  isProductReportAdded: false,
   isFetchingReport: false,
 }
 
@@ -214,22 +216,31 @@ export class ProductState {
       switch (responseMessage) {
         case ResponseMessage.SUCCESS: {
           newState = produce(getState(), draft => {
-            draft.isReportAdded = true;
+            if (action.reportType === ReportType.PRODUCT) {
+              draft.isProductReportAdded = true;
+            }
+            else if (action.reportType === ReportType.USER) {
+              draft.isUserReportAdded = true;
+            }
             draft.isFetchingReport = false;
           });
           return setState(newState);
         }
         case ResponseMessage.INVALID_USER:
-        case ResponseMessage.INVALID_PARAMETERS:
-        case ResponseMessage.INVALID_USER: {
+        case ResponseMessage.INVALID_PARAMETERS: {
           this.toastrService.danger(
             `Reason: ${responseMessage}`,
             'Something went wrong',
             {icon: ICONS.ALERT_CIRCLE_OUTLINE}
           )
           newState = produce(getState(), draft => {
+            if (action.reportType === ReportType.PRODUCT) {
+              draft.isProductReportAdded = false;
+            }
+            else if (action.reportType === ReportType.USER) {
+              draft.isUserReportAdded = false;
+            }
             draft.isFetchingReport = false;
-            draft.isReportAdded = false;
           });
           return setState(newState);
         }
@@ -242,8 +253,13 @@ export class ProductState {
         {icon: ICONS.ALERT_CIRCLE_OUTLINE}
       );
       newState = produce(getState(), draft => {
+        if (action.reportType === ReportType.PRODUCT) {
+          draft.isProductReportAdded = false;
+        }
+        else if (action.reportType === ReportType.USER) {
+          draft.isUserReportAdded = false;
+        }
         draft.isFetchingReport = false;
-        draft.isReportAdded = false;
       });
       return setState(newState);
     }
@@ -251,9 +267,15 @@ export class ProductState {
 
   @Action(ResetSubmitReport)
   async resetSubmitReport(
-    {getState, setState}: StateContext<ProductStateModel>) {
+    {getState, setState}: StateContext<ProductStateModel>,
+    action: ResetSubmitReport) {
     let newState = produce(getState(), draft => {
-      draft.isReportAdded = false;
+      if(action.reportType === ReportType.PRODUCT) {
+        draft.isProductReportAdded = false;
+      }
+      else if(action.reportType === ReportType.USER) {
+        draft.isUserReportAdded = false;
+      }
     });
     return setState(newState);
   }
