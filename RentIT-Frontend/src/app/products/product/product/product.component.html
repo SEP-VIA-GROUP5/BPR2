@@ -14,6 +14,11 @@
       </h3>
       <nb-badge class="product-overview-status-badge" [text]="getProductInfoStatusBadge(product.status)"
                 [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
+      <nb-badge class="report-badge" text="Report"
+                [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.PRODUCT)"
+                [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
+                status="danger" position="top left"
+                (click)="openReportDialog(TYPE_REPORT.PRODUCT)"></nb-badge>
     </nb-card-header>
     <nb-card-body class="product-overview-body">
       <div class="left-section">
@@ -25,7 +30,7 @@
             <h4>Description</h4>
           </nb-card-header>
           <nb-card-body>
-            <p> <span> Category: </span> {{ productOverview.product.category }}</p>
+            <p><span> Category: </span> {{ productOverview.product.category }}</p>
             <p>{{ productOverview.product.description }}</p>
           </nb-card-body>
         </nb-card>
@@ -71,26 +76,22 @@
         <nb-card class="product-rating"
                  [nbSpinner]="isFetchingReviewsOverview$ | async"
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
-          <nb-card-body *ngIf="(reviewSummary$ | async) as reviewSummary">
-            <stars-rating [rating]="reviewSummary.avgRating" [reviewCount]="reviewSummary.reviewCount" (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
+          <nb-card-header>
+            <h4>Product rating</h4>
+          </nb-card-header>
+          <nb-card-body>
+            <div *ngIf="(reviewSummary$ | async) as reviewSummary">
+              <stars-rating [rating]="reviewSummary.avgRating" [reviewCount]="reviewSummary.reviewCount"
+                            (clickOnStarEvent)="clickOnStarEvent()"></stars-rating>
+            </div>
+            <div *ngIf="!(reviewSummary$ | async)">
+              <p>No reviews yet</p>
+            </div>
           </nb-card-body>
-          <nb-card-body *ngIf="!(reviewSummary$ | async)">
-            <p>No reviews yet</p>
-          </nb-card-body>
+
         </nb-card>
         <nb-card class="user-and-lease-information">
           <nb-card-header>
-            <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
-                     onlyPicture>
-            </nb-user>
-            <div class="user-information">
-              <p><span>Name</span> {{ productOverview.user.firstName }} {{ productOverview.user.lastName }}</p>
-              <p><span>Email:</span> {{ productOverview.user.email }}</p>
-              <p><span>City:</span> {{ productOverview.user.location }}</p>
-              <p><span>Phone number: </span> {{ productOverview.user.phoneNumber }}</p>
-            </div>
-          </nb-card-header>
-          <nb-card-body>
             <div class="prices-lease" *ngIf="productOverview.product as product">
               <p *ngIf="product.dayPrice"><span>Price per day: </span> {{ productOverview.product.dayPrice }}€</p>
               <p *ngIf="product.weekPrice"><span>Price per week: </span> {{ productOverview.product.weekPrice }}€</p>
@@ -103,6 +104,27 @@
               <p *ngIf="product.minLeasePeriod">
                 <span>Minimum lease period: </span> {{ humanizeDurationMinLeasePeriod(productOverview.product.minLeasePeriod) }}
               </p>
+            </div>
+          </nb-card-header>
+          <nb-card-body>
+            <nb-badge class="report-badge" text="Report"
+                      [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.USER)"
+                      [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
+                      status="danger" position="top left"
+                      (click)="openReportDialog(TYPE_REPORT.USER)"></nb-badge>
+            <nb-badge class="report-badge" text="Review"
+                      [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.USER)"
+                      [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
+                      status="danger" position="top left"
+                      (click)="openReportDialog(TYPE_REPORT.USER)"></nb-badge>
+            <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
+                     onlyPicture>
+            </nb-user>
+            <div class="user-information">
+              <p><span>Name</span> {{ productOverview.user.firstName }} {{ productOverview.user.lastName }}</p>
+              <p><span>Email:</span> {{ productOverview.user.email }}</p>
+              <p><span>City:</span> {{ productOverview.user.location }}</p>
+              <p><span>Phone number: </span> {{ productOverview.user.phoneNumber }}</p>
             </div>
           </nb-card-body>
         </nb-card>

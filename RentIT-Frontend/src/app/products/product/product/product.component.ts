@@ -18,6 +18,7 @@ import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {Review} from "src/model/review";
 import {UserService} from "src/api/user.service";
 import {ReviewSummary} from "src/model/reviewSummary";
+import {TYPE_REPORT} from "src/app/products/product/product/constants/constants";
 
 @Component({
   selector: 'app-product-overview',
@@ -49,6 +50,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   productId: number;
   // constants
   protected readonly ICONS = ICONS;
+  protected readonly TYPE_REPORT = TYPE_REPORT;
 
   alive: boolean = true;
 
@@ -104,6 +106,14 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   onAddingReviewClickOnStar(starsNumber: number) {
     this.reviewToAdd.rating = starsNumber;
+  }
+
+  openReportDialog(typeReport: TYPE_REPORT) {
+    alert(typeReport);
+  }
+
+  getReportBadgeTooltip(typeReport: TYPE_REPORT) {
+    return `Report this ${typeReport}? Click here!`;
   }
 
   openAddReviewDialog() {

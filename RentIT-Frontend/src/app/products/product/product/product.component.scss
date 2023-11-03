@@ -99,6 +99,12 @@ html {
       width: 40%;
       display: table-column;
 
+      .product-rating {
+        nb-card-header {
+          align-self:center;
+        }
+      }
+
       .user-and-lease-information {
         nb-card-header {
           display: inline-flex;
@@ -157,4 +163,9 @@ html {
     display: flex;
     align-self: center;
   }
+}
+
+.report-badge {
+  font-size: 1rem;
+  cursor: pointer;
 }
