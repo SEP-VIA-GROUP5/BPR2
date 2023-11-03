@@ -10,12 +10,16 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch
+  ProductReviewsFetch, ResetSubmitReport,
+  SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ReviewsService} from "src/api/reviews.service";
 import {Review, TARGET} from "src/model/review";
 import {ReviewSummary} from "src/model/reviewSummary";
+import {ReportsService} from "src/api/reports.service";
+import {ReportType} from "src/app/products/product/product/constants/constants";
+import {ResponseMessage} from "src/model/responseMessage";
 
 export interface ProductStateModel {
   // product
@@ -28,6 +32,9 @@ export interface ProductStateModel {
   pageSizeReviews: number;
   pageNumberReviews: number;
   endOfListReviews: boolean;
+  // report
+  isReportAdded: boolean;
+  isFetchingReport: boolean;
 }
 
 export const defaultsState: ProductStateModel = {
@@ -39,6 +46,8 @@ export const defaultsState: ProductStateModel = {
   pageSizeReviews: 5,
   pageNumberReviews: 1,
   endOfListReviews: false,
+  isReportAdded: false,
+  isFetchingReport: false,
 }
 
 @State<ProductStateModel>({
@@ -52,6 +61,7 @@ export class ProductState {
     private toastrService: NbToastrService,
     private productService: ProductService,
     private reviewsService: ReviewsService,
+    private reportsService: ReportsService,
   ) {
   }
 
@@ -173,6 +183,79 @@ export class ProductState {
       );
     }
     return getState();
+  }
+
+  @Action(SubmitReport)
+  async submitReport(
+    {getState, setState}: StateContext<ProductStateModel>,
+    action: SubmitReport) {
+    let newState = produce(getState(), draft => {
+      draft.isFetchingReport = true;
+    });
+
+    let targetId = null;
+    if (action.reportType === ReportType.PRODUCT) {
+      targetId = getState().product.product.id;
+    } else if (action.reportType === ReportType.USER) {
+      targetId = getState().product.user.email;
+    }
+
+    // prepare report
+    let reportToAdd = {
+      ...action.report,
+      target: action.reportType,
+      targetId: targetId,
+    }
+
+    try {
+      let responseMessage = await this.reportsService.submitReport(reportToAdd);
+
+      // handle responseMessage
+      switch (responseMessage) {
+        case ResponseMessage.SUCCESS: {
+          newState = produce(getState(), draft => {
+            draft.isReportAdded = true;
+            draft.isFetchingReport = false;
+          });
+          return setState(newState);
+        }
+        case ResponseMessage.INVALID_USER:
+        case ResponseMessage.INVALID_PARAMETERS:
+        case ResponseMessage.INVALID_USER: {
+          this.toastrService.danger(
+            `Reason: ${responseMessage}`,
+            'Something went wrong',
+            {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+          )
+          newState = produce(getState(), draft => {
+            draft.isFetchingReport = false;
+            draft.isReportAdded = false;
+          });
+          return setState(newState);
+        }
+      }
+      console.log(responseMessage);
+    } catch (e) {
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : e,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+      newState = produce(getState(), draft => {
+        draft.isFetchingReport = false;
+        draft.isReportAdded = false;
+      });
+      return setState(newState);
+    }
+  }
+
+  @Action(ResetSubmitReport)
+  async resetSubmitReport(
+    {getState, setState}: StateContext<ProductStateModel>) {
+    let newState = produce(getState(), draft => {
+      draft.isReportAdded = false;
+    });
+    return setState(newState);
   }
 
   @Action(ProductReset)

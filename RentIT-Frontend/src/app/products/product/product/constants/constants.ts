@@ -1,6 +1,6 @@
 import {Report} from "src/model/report";
 
-export enum TypeReport {
+export enum ReportType {
   USER = 'user',
   PRODUCT = 'product'
 }

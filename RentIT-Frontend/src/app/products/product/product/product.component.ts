@@ -9,7 +9,7 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch
+  ProductReviewsFetch, SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
@@ -22,7 +22,7 @@ import {
   constructorReportToAdd,
   ReportToAdd,
   SubmitButtonType,
-  TypeReport
+  ReportType
 } from "src/app/products/product/product/constants/constants";
 
 @Component({
@@ -60,7 +60,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   productId: number;
   // constants
   protected readonly ICONS = ICONS;
-  protected readonly TYPE_REPORT = TypeReport;
+  protected readonly TYPE_REPORT = ReportType;
   protected readonly SUBMIT_BUTTON_TYPE = SubmitButtonType;
 
   alive: boolean = true;
@@ -119,15 +119,15 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.reviewToAdd.rating = starsNumber;
   }
 
-  openReportDialog(typeReport: TypeReport) {
+  openReportDialog(reportType: ReportType) {
     this.reportDialogRef = this.nbDialogService.open(this.reportDialog, {
       context: {
-        typeReport: typeReport,
+        reportType: reportType,
       }
     });
   }
 
-  getReportBadgeTooltip(typeReport: TypeReport) {
+  getReportBadgeTooltip(typeReport: ReportType) {
     return `Report this ${typeReport}? Click here!`;
   }
 
@@ -135,23 +135,23 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.addRatingDialogRef = this.nbDialogService.open(this.addRatingDialog, {});
   }
 
-  onSubmitButtonClicked(submitButtonType: SubmitButtonType) {
+  onSubmitButtonClicked(submitButtonType: SubmitButtonType, reportType?: ReportType) {
     if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
       this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
       this.addRatingDialogRef.close();
     } else if (submitButtonType === SubmitButtonType.REPORT) {
       let report = this.reportToAdd.productReport.message !== '' ? this.reportToAdd.productReport : this.reportToAdd.userReport;
-      this.reportDialogRef.close();
+      this.store.dispatch(new SubmitReport(report, reportType));
     }
   }
 
-  isOnSubmitButtonDisabled(submitButtonType: SubmitButtonType, typeReport?: TypeReport): boolean {
+  isOnSubmitButtonDisabled(submitButtonType: SubmitButtonType, reportType?: ReportType): boolean {
     if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
       return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
     } else if (submitButtonType === SubmitButtonType.REPORT) {
-      if (typeReport === TypeReport.PRODUCT) {
+      if (reportType === ReportType.PRODUCT) {
         return this.reportToAdd.productReport.message === '';
-      } else if (typeReport === TypeReport.USER) {
+      } else if (reportType === ReportType.USER) {
         return this.reportToAdd.userReport.message === '';
       }
     }
