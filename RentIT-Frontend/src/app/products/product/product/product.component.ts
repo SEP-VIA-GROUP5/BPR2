@@ -18,7 +18,12 @@ import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {Review} from "src/model/review";
 import {UserService} from "src/api/user.service";
 import {ReviewSummary} from "src/model/reviewSummary";
-import {TYPE_REPORT} from "src/app/products/product/product/constants/constants";
+import {
+  constructorReportToAdd,
+  ReportToAdd,
+  SubmitButtonType,
+  TypeReport
+} from "src/app/products/product/product/constants/constants";
 
 @Component({
   selector: 'app-product-overview',
@@ -41,16 +46,22 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   // dialog adding review
   @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
-  private dialogRef: NbDialogRef<any>;
+  private addRatingDialogRef: NbDialogRef<any>;
   reviewToAdd: Review = {
     rating: 0,
     message: '',
   } as Review;
 
+  // dialog report user/rating
+  @ViewChild('reportDialog') reportDialog: TemplateRef<any>;
+  private reportDialogRef: NbDialogRef<any>;
+  reportToAdd: ReportToAdd = constructorReportToAdd();
+
   productId: number;
   // constants
   protected readonly ICONS = ICONS;
-  protected readonly TYPE_REPORT = TYPE_REPORT;
+  protected readonly TYPE_REPORT = TypeReport;
+  protected readonly SUBMIT_BUTTON_TYPE = SubmitButtonType;
 
   alive: boolean = true;
 
@@ -108,25 +119,42 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.reviewToAdd.rating = starsNumber;
   }
 
-  openReportDialog(typeReport: TYPE_REPORT) {
-    alert(typeReport);
+  openReportDialog(typeReport: TypeReport) {
+    this.reportDialogRef = this.nbDialogService.open(this.reportDialog, {
+      context: {
+        typeReport: typeReport,
+      }
+    });
   }
 
-  getReportBadgeTooltip(typeReport: TYPE_REPORT) {
+  getReportBadgeTooltip(typeReport: TypeReport) {
     return `Report this ${typeReport}? Click here!`;
   }
 
   openAddReviewDialog() {
-    this.dialogRef = this.nbDialogService.open(this.addRatingDialog, {});
+    this.addRatingDialogRef = this.nbDialogService.open(this.addRatingDialog, {});
   }
 
-  onSubmitAddingReview() {
-    this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
-    this.dialogRef.close();
+  onSubmitButtonClicked(submitButtonType: SubmitButtonType) {
+    if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
+      this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
+      this.addRatingDialogRef.close();
+    } else if (submitButtonType === SubmitButtonType.REPORT) {
+      let report = this.reportToAdd.productReport.message !== '' ? this.reportToAdd.productReport : this.reportToAdd.userReport;
+      this.reportDialogRef.close();
+    }
   }
 
-  isOnSubmitButtonDisabled(): boolean {
-    return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
+  isOnSubmitButtonDisabled(submitButtonType: SubmitButtonType, typeReport?: TypeReport): boolean {
+    if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
+      return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
+    } else if (submitButtonType === SubmitButtonType.REPORT) {
+      if (typeReport === TypeReport.PRODUCT) {
+        return this.reportToAdd.productReport.message === '';
+      } else if (typeReport === TypeReport.USER) {
+        return this.reportToAdd.userReport.message === '';
+      }
+    }
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {
