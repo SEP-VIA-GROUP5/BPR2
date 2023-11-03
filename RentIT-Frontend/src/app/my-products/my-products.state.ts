@@ -44,7 +44,7 @@ export class MyProductsState {
     setState(newState);
 
     /* todo here will come service for fetching user's products, for now we have the getProductsPerPage, but this will be changed */
-    let products = await this.productsService.getProductsPerPage(2,12);
+    let products = await this.productsService.getProductsPerPage(1,15);
 
     newState = produce(getState(), draft => {
       draft.products = products;

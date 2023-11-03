@@ -53,6 +53,7 @@ html {
             span {
               font-weight: bold;
             }
+
             font-size: 1.1rem;
             text-align: justify;
           }
@@ -70,6 +71,7 @@ html {
 
         .review-container {
           height: 25rem;
+
           nb-list-item {
             display: table-column;
 
@@ -98,6 +100,12 @@ html {
     .right-section {
       width: 40%;
       display: table-column;
+
+      .product-rating {
+        nb-card-header {
+          align-self: center;
+        }
+      }
 
       .user-and-lease-information {
         nb-card-header {
@@ -142,11 +150,14 @@ html {
   .add-rating-dialog-header {
 
   }
+
   .add-rating-dialog-body {
-    display:  table-column;
+    display: table-column;
     text-align: center;
+
     div {
       margin-bottom: 1rem;
+
       p span {
         font-weight: bold;
       }
@@ -157,4 +168,30 @@ html {
     display: flex;
     align-self: center;
   }
+}
+
+.report-dialog-container {
+  nb-card-header {
+    align-self: center;
+  }
+
+  nb-card-body {
+    display: table-column;
+    text-align: center;
+  }
+
+  nb-card-footer {
+    display: flex;
+    gap: 1rem;
+    align-self: center;
+  }
+}
+
+.report-badge {
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
 }

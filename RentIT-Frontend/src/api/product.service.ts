@@ -26,6 +26,6 @@ export class ProductService {
   }
 
   async removeProductById(productId: number): Promise<void> {
-    await this.apiService.call(null, this.apiService.request('delete', `${this.PATH_CONTROLLER}/product/id/${productId}`, null, true));
+    await this.apiService.call(null, this.apiService.request('delete', `${this.PATH_CONTROLLER}/id/${productId}`, null, true));
   }
 }

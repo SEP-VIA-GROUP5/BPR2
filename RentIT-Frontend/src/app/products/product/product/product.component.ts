@@ -9,7 +9,8 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch
+  ProductReviewsFetch, ResetSubmitReport,
+  SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
 import {ProductStatus} from "src/model/productStatus";
@@ -18,6 +19,12 @@ import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {Review} from "src/model/review";
 import {UserService} from "src/api/user.service";
 import {ReviewSummary} from "src/model/reviewSummary";
+import {
+  constructorReportToAdd,
+  ReportToAdd,
+  ReportType,
+  SubmitButtonType
+} from "src/app/products/product/product/constants/constants";
 
 @Component({
   selector: 'app-product-overview',
@@ -37,18 +44,31 @@ export class ProductComponent implements OnInit, OnDestroy {
   reviewSummary$: Observable<ReviewSummary>;
   @Select(ProductSelector.endOfListReviews)
   endOfListReviews$: Observable<boolean>;
+  @Select(ProductSelector.isFetchingReport)
+  isFetchingReport$: Observable<boolean>;
+  @Select(ProductSelector.isUserReportAdded)
+  isUserReportAdded$: Observable<boolean>;
+  @Select(ProductSelector.isProductReportAdded)
+  isProductReportAdded$: Observable<boolean>;
 
   // dialog adding review
   @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
-  private dialogRef: NbDialogRef<any>;
+  private addRatingDialogRef: NbDialogRef<any>;
   reviewToAdd: Review = {
     rating: 0,
     message: '',
   } as Review;
 
+  // dialog report user/rating
+  @ViewChild('reportDialog') reportDialog: TemplateRef<any>;
+  private reportDialogRef: NbDialogRef<any>;
+  reportToAdd: ReportToAdd = constructorReportToAdd();
+
   productId: number;
   // constants
   protected readonly ICONS = ICONS;
+  protected readonly TYPE_REPORT = ReportType;
+  protected readonly SUBMIT_BUTTON_TYPE = SubmitButtonType;
 
   alive: boolean = true;
 
@@ -106,17 +126,73 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.reviewToAdd.rating = starsNumber;
   }
 
+  openReportDialog(reportType: ReportType) {
+    this.reportDialogRef = this.nbDialogService.open(this.reportDialog, {
+      context: {
+        reportType: reportType,
+      }
+    });
+  }
+
+  getReportBadgeTooltip(typeReport: ReportType) {
+    return `Report this ${typeReport}? Click here!`;
+  }
+
   openAddReviewDialog() {
-    this.dialogRef = this.nbDialogService.open(this.addRatingDialog, {});
+    this.addRatingDialogRef = this.nbDialogService.open(this.addRatingDialog, {});
   }
 
-  onSubmitAddingReview() {
-    this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
-    this.dialogRef.close();
+  onSubmitButtonClicked(submitButtonType: SubmitButtonType, reportType?: ReportType) {
+    if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
+      this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
+      this.addRatingDialogRef.close();
+    } else if (submitButtonType === SubmitButtonType.REPORT) {
+      let report = this.reportToAdd.productReport.message !== '' ? this.reportToAdd.productReport : this.reportToAdd.userReport;
+      this.store.dispatch(new SubmitReport(report, reportType));
+    }
   }
 
-  isOnSubmitButtonDisabled(): boolean {
-    return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
+  isOnSubmitButtonDisabled(submitButtonType: SubmitButtonType, reportType?: ReportType): boolean {
+    if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
+      return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
+    } else if (submitButtonType === SubmitButtonType.REPORT) {
+      if (reportType === ReportType.PRODUCT) {
+        return this.reportToAdd.productReport.message === '';
+      } else if (reportType === ReportType.USER) {
+        return this.reportToAdd.userReport.message === '';
+      }
+    }
+  }
+
+  isReportAdded(reportType: ReportType) {
+    if(reportType === ReportType.PRODUCT) {
+      let isProductReportAdded = false;
+      this.isProductReportAdded$.subscribe(isProductReportAddedValue => {
+        isProductReportAdded = isProductReportAddedValue;
+      });
+      return isProductReportAdded;
+    }
+    else if(reportType === ReportType.USER) {
+      let isUserReportAdded = false;
+      this.isUserReportAdded$.subscribe(isUserReportAddedValue => {
+        isUserReportAdded = isUserReportAddedValue;
+      });
+      return isUserReportAdded;
+    }
+  }
+
+  resetReport(reportType: ReportType) {
+    if(reportType === ReportType.PRODUCT) {
+      this.reportToAdd.productReport = constructorReportToAdd().productReport;
+    }
+    else if(reportType === ReportType.USER) {
+      this.reportToAdd.userReport = constructorReportToAdd().userReport;
+    }
+    this.store.dispatch(new ResetSubmitReport(reportType));
+  }
+
+  closeReportDialog() {
+    this.reportDialogRef.close();
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {
