@@ -33,4 +33,14 @@ export class ProductSelector {
   static endOfListReviews(state: ProductStateModel) {
     return state.endOfListReviews;
   }
+
+  @Selector([ProductState])
+  static isFetchingReport(state: ProductStateModel) {
+    return state.isFetchingReport;
+  }
+
+  @Selector([ProductState])
+  static isReportAdded(state: ProductStateModel) {
+    return state.isReportAdded;
+  }
 }
