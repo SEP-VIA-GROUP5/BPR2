@@ -61,9 +61,9 @@ public class IProductMapperTest {
 
     @Test
     public void delete_product_by_id_cascades() {
-        int productId = 5;
+        int productId = 6;
         productMapper.deleteProductById(productId);
-        assertThat(productMapper.getProductById(5)).isNull();
-        assertThat(imageMapper.getImagesByProductId(5)).isEmpty();
+        assertThat(productMapper.getProductById(6)).isNull();
+        assertThat(imageMapper.getImagesByProductId(6)).isEmpty();
     }
 }

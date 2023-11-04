@@ -9,8 +9,8 @@ import java.util.List;
 
 @Mapper
 public interface IReviewMapper {
-    void addProductReview(Review review);
-    void addUserReview(Review review);
+    void addProductReview(Review review, int reviewerId);
+    void addUserReview(Review review, int reviewerId);
     List<ReviewDTO> getNProductReviewsByPage(int pageNum, int n, int productId);
     List<ReviewDTO> getNUserReviewsByPage(int pageNum, int n, int userId);
 

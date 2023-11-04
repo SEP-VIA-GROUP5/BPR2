@@ -23,14 +23,14 @@ INSERT INTO `tags` (`name`, `product_id`) VALUES ('est', 3);
 INSERT INTO `tags` (`name`, `product_id`) VALUES ('ut', 4);
 INSERT INTO `tags` (`name`, `product_id`) VALUES ('ea', 5);
 
-INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (1, 5, 'Perfect');
-INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (2, 4, 'Good');
-INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (3, 3, 'Alright');
-INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (4, 2, 'Bad');
-INSERT INTO `products_review` (`product_id`, `rating`, `message`) VALUES (4, 3, 'Alright');
+INSERT INTO `products_review` (`product_id`, `rating`, `message`, `reviewer_id`) VALUES (1, 5, 'Perfect', 1);
+INSERT INTO `products_review` (`product_id`, `rating`, `message`, `reviewer_id`) VALUES (2, 4, 'Good', 2);
+INSERT INTO `products_review` (`product_id`, `rating`, `message`, `reviewer_id`) VALUES (3, 3, 'Alright', 3);
+INSERT INTO `products_review` (`product_id`, `rating`, `message`, `reviewer_id`) VALUES (4, 2, 'Bad', 4);
+INSERT INTO `products_review` (`product_id`, `rating`, `message`, `reviewer_id`) VALUES (4, 3, 'Alright', 4);
 
-INSERT INTO `users_review` (`user_id`, `rating`, `message`) VALUES (1, 5, 'Perfect');
-INSERT INTO `users_review` (`user_id`, `rating`, `message`) VALUES (2, 4, 'Good');
-INSERT INTO `users_review` (`user_id`, `rating`, `message`) VALUES (3, 3, 'Alright');
-INSERT INTO `users_review` (`user_id`, `rating`, `message`) VALUES (4, 2, 'Bad');
-INSERT INTO `users_review` (`user_id`, `rating`, `message`) VALUES (4, 3, 'Alright');
+INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUES (1, 5, 'Perfect', 4);
+INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUES (2, 4, 'Good', 4);
+INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUES (3, 3, 'Alright', 3);
+INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUES (4, 2, 'Bad', 2);
+INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUES (4, 3, 'Alright', 1);
