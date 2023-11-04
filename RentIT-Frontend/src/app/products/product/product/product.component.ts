@@ -9,7 +9,8 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch, ResetSubmitReport,
+  ProductReviewsFetch,
+  ResetSubmitReport,
   SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
@@ -25,6 +26,7 @@ import {
   ReportType,
   SubmitButtonType
 } from "src/app/products/product/product/constants/constants";
+import {ReviewDTO} from "src/model/reviewDTO";
 
 @Component({
   selector: 'app-product-overview',
@@ -39,7 +41,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   @Select(ProductSelector.product)
   product$: Observable<ProductOverview>;
   @Select(ProductSelector.reviews)
-  reviews$: Observable<Review[]>;
+  reviews$: Observable<ReviewDTO[]>;
   @Select(ProductSelector.reviewSummary)
   reviewSummary$: Observable<ReviewSummary>;
   @Select(ProductSelector.endOfListReviews)

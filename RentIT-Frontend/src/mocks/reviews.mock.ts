@@ -1,18 +1,21 @@
 import {User} from "src/model/user";
 import {Review} from "src/model/review";
+import {ReviewDTO} from "src/model/reviewDTO";
 
-export const mockedReviews: Review[] = [
+export const mockedReviews: ReviewDTO[] = [
   {
-    targetId: "product",
-    rating: 5,
-    message: "Great product!",
-    reviewer: {
+    review: {
+      targetId: "product",
+      rating: 5,
+      message: "Great product!",
+    },
+    userDTO: {
       id: 1,
       firstName: "John",
       lastName: "Doe",
       email: "sdada@gmail.com",
       phoneNumber: "123123123",
       location: 'Horsens',
-    } satisfies User,
+    }
   },
-  ] satisfies Review[];
+  ] satisfies ReviewDTO[];

@@ -6,8 +6,6 @@ export interface Review {
   targetId?: string;
   rating: number;
   message: string;
-  // TODO not implemented yet.
-  reviewer?: User;
 }
 
 export enum TARGET {
