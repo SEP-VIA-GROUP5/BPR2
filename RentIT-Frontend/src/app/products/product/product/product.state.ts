@@ -10,7 +10,8 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch, ResetSubmitReport,
+  ProductReviewsFetch,
+  ResetSubmitReport,
   SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
@@ -20,6 +21,7 @@ import {ReviewSummary} from "src/model/reviewSummary";
 import {ReportsService} from "src/api/reports.service";
 import {ReportType} from "src/app/products/product/product/constants/constants";
 import {ResponseMessage} from "src/model/responseMessage";
+import {ReviewDTO} from "src/model/reviewDTO";
 
 export interface ProductStateModel {
   // product
@@ -27,7 +29,7 @@ export interface ProductStateModel {
   product: ProductOverview;
   // reviews
   isFetchingReviewsOverview: boolean;
-  reviews: Review[];
+  reviews: ReviewDTO[];
   reviewSummary: ReviewSummary;
   pageSizeReviews: number;
   pageNumberReviews: number;
@@ -245,7 +247,6 @@ export class ProductState {
           return setState(newState);
         }
       }
-      console.log(responseMessage);
     } catch (e) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : e,

@@ -48,18 +48,17 @@
           </nb-card-header>
           <nb-list *ngIf="(reviews$ | async) as reviews" class="review-container">
             <nb-list-item *ngFor="let review of reviews">
-              <!--                TODO not implemented yet -->
-              <!--                <div class="reviewer-information">-->
-              <!--                  <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"-->
-              <!--                           onlyPicture>-->
-              <!--                  </nb-user>-->
-              <!--                  <p> {{review.reviewer.firstName}} {{review.reviewer.lastName}}</p>-->
-              <!--                </div>-->
+                              <div class="reviewer-information">
+                                <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"
+                                         onlyPicture>
+                                </nb-user>
+                                <p> {{review.userDTO.firstName}} {{review.userDTO.lastName}}</p>
+                              </div>
               <div class="review-rating-information">
-                <stars-rating [rating]="review.rating" [showTooltip]="false" [enableClickEvent]="false"></stars-rating>
+                <stars-rating [rating]="review.review.rating" [showTooltip]="false" [enableClickEvent]="false"></stars-rating>
               </div>
               <div class="review-description">
-                <p><span> Description:</span> {{ review.message }}</p>
+                <p><span> Description:</span> {{ review.review.message }}</p>
               </div>
             </nb-list-item>
           </nb-list>
