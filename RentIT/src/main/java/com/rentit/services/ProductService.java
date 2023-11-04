@@ -2,6 +2,7 @@ package com.rentit.services;
 
 import com.rentit.dao.interfaces.IImageMapper;
 import com.rentit.dao.interfaces.IProductMapper;
+import com.rentit.model.PriceFilteringColumn;
 import com.rentit.model.Product;
 import com.rentit.model.User;
 import com.rentit.model.dto.ProductDTO;
@@ -12,6 +13,7 @@ import com.rentit.services.enums.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +36,30 @@ public class ProductService {
 
     public List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<String, String> filters) {
         if(pageNum > 0 && n > 0){
-            return productMapper.getNProductsByPageWithFilters(pageNum, n, filters);
+            Map<PriceFilteringColumn, String> processedMap = processFiltering(filters);
+            return productMapper.getNProductsByPageWithFilters(pageNum, n, processedMap);
         }
         return null;
+    }
+
+    private Map<PriceFilteringColumn, String> processFiltering(Map<String, String> filters) {
+        Map<PriceFilteringColumn, String> processedMap = new HashMap<>();
+        for(Map.Entry<String, String> entry : filters.entrySet()) {
+            StringBuilder sb = new StringBuilder();
+            PriceFilteringColumn pfc = new PriceFilteringColumn();
+            sb.append(entry.getKey());
+            int split = sb.indexOf("_");
+            if(split < 0) {
+                pfc.setColumnName(sb.toString());
+                pfc.setBoundary("equals");
+            }
+            else{
+                pfc.setColumnName(sb.substring(0,split));
+                pfc.setBoundary(sb.substring(split+1));
+            }
+            processedMap.put(pfc, entry.getValue());
+        }
+        return processedMap;
     }
 
     public ProductDTO addProduct(Product product, String authorizationHeader) {

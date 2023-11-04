@@ -1,6 +1,7 @@
 package com.rentit.dao.interfaces;
 
 
+import com.rentit.model.PriceFilteringColumn;
 import com.rentit.model.Product;
 import com.rentit.model.dto.ProductDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,5 +16,5 @@ public interface IProductMapper {
     Product getProductById(int id);
     List<Product> getProductsByName(String name);
     void deleteProductById(int id);
-    List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<String, String> filters);
+    List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<PriceFilteringColumn, String> filters);
 }
