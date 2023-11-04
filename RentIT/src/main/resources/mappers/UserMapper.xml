@@ -22,8 +22,20 @@
         <result property="location" column="location" javaType="java.lang.String"/>
         <result property="phoneNumber" column="phone_no" javaType="java.lang.String"/>
     </resultMap>
+    <resultMap id="UserDTOResultMap" type="UserDTO">
+        <result property="email" column="email"/>
+        <result property="firstName" column="f_name"/>
+        <result property="lastName" column="l_name"/>
+        <result property="location" column="city"/>
+        <result property="phoneNumber" column="phone_no"/>
+    </resultMap>
     <select id="getUserById" resultMap="UserWithoutPassResultMap">
         SELECT user_id, f_name, l_name, email, location, phone_no
+        FROM users
+        WHERE user_id = #{id};
+    </select>
+    <select id="getUserDTOById" resultMap="UserDTOResultMap">
+        SELECT f_name, l_name, email, location, phone_no
         FROM users
         WHERE user_id = #{id};
     </select>

@@ -47,7 +47,7 @@ public class ReviewService {
             case "product" -> {
                 int productId = Integer.parseInt(review.getTargetId());
                 if(review.getRating() > 0 && productId > 0) {
-                    reviewMapper.addProductReview(review);
+                    reviewMapper.addProductReview(review, user.getId());
                     return review;
                 }
                 return null;
@@ -56,7 +56,7 @@ public class ReviewService {
                 User retreivedUser = userService.getUserFromEmail(review.getTargetId());
                 review.setTargetId(String.valueOf(retreivedUser.getId()));
                 if(review.getRating() > 0 && retreivedUser.getId() > 0) {
-                    reviewMapper.addUserReview(review);
+                    reviewMapper.addUserReview(review, user.getId());
                     return review;
                 }
                 return null;
