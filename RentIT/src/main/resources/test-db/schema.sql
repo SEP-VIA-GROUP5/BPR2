@@ -74,3 +74,25 @@ CREATE TABLE users_review
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
     FOREIGN KEY (reviewer_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE reported_users
+(
+    user_report_id INT AUTO_INCREMENT NOT NULL,
+    reported_user_id INT NOT NULL,
+    reporter_id INT NOT NULL,
+    message VARCHAR(500),
+    PRIMARY KEY (user_report_id),
+    FOREIGN KEY (reported_user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (reporter_id) REFERENCES users (user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE reported_products
+(
+    product_report_id INT AUTO_INCREMENT NOT NULL,
+    reported_product_id INT NOT NULL,
+    reporter_id INT NOT NULL,
+    message VARCHAR(500),
+    PRIMARY KEY (product_report_id),
+    FOREIGN KEY (reported_product_id) REFERENCES products (product_id) ON DELETE CASCADE,
+    FOREIGN KEY (reporter_id) REFERENCES users (user_id) ON DELETE CASCADE
+);

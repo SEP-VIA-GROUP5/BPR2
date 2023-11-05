@@ -34,3 +34,15 @@ INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUE
 INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUES (3, 3, 'Alright', 3);
 INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUES (4, 2, 'Bad', 2);
 INSERT INTO `users_review` (`user_id`, `rating`, `message`, `reviewer_id`) VALUES (4, 3, 'Alright', 1);
+
+INSERT INTO `reported_users` (`reported_user_id`, `reporter_id`, `message`) VALUES (1, 4, 'Scammer');
+INSERT INTO `reported_users` (`reported_user_id`, `reporter_id`, `message`) VALUES (2, 4, 'Disrespectful');
+INSERT INTO `reported_users` (`reported_user_id`, `reporter_id`, `message`) VALUES (3, 3, 'Did not pay');
+INSERT INTO `reported_users` (`reported_user_id`, `reporter_id`, `message`) VALUES (4, 2, 'Did not return item');
+INSERT INTO `reported_users` (`reported_user_id`, `reporter_id`, `message`) VALUES (4, 1, 'Returned broken item');
+
+INSERT INTO `reported_products` (`reported_product_id`, `reporter_id`, `message`) VALUES (1, 4, 'Did not look like pictures');
+INSERT INTO `reported_products` (`reported_product_id`, `reporter_id`, `message`) VALUES (2, 4, 'Broken');
+INSERT INTO `reported_products` (`reported_product_id`, `reporter_id`, `message`) VALUES (3, 3, 'Did not look like pictures');
+INSERT INTO `reported_products` (`reported_product_id`, `reporter_id`, `message`) VALUES (4, 2, 'Did not look like pictures');
+INSERT INTO `reported_products` (`reported_product_id`, `reporter_id`, `message`) VALUES (4, 1, 'Broken');
