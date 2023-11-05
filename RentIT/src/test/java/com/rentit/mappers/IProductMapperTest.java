@@ -2,9 +2,11 @@ package com.rentit.mappers;
 
 import com.rentit.dao.interfaces.IImageMapper;
 import com.rentit.dao.interfaces.IProductMapper;
+import com.rentit.dao.interfaces.IUserMapper;
 import com.rentit.model.PriceFilteringColumn;
 import com.rentit.model.Product;
 import com.rentit.model.dto.ProductDTO;
+import com.rentit.model.dto.UserDTO;
 import com.rentit.model.enums.ProductStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class IProductMapperTest {
     private IProductMapper productMapper;
     @Autowired
     private IImageMapper imageMapper;
+    @Autowired
+    private IUserMapper userMapper;
 
     @Test
     public void return_n_products_per_page() {
@@ -73,5 +77,14 @@ public class IProductMapperTest {
         productMapper.deleteProductById(productId);
         assertThat(productMapper.getProductById(6)).isNull();
         assertThat(imageMapper.getImagesByProductId(6)).isEmpty();
+    }
+
+    @Test
+    public void get_products_by_user_id_returns_list_of_user_products () {
+        int userId = 1;
+        UserDTO user = userMapper.getUserDTOById(userId);
+        List<ProductDTO> userProducts = productMapper.getProductsByUserId(userId);
+        assertThat(userProducts.size()).isEqualTo(1);
+
     }
 }
