@@ -55,12 +55,19 @@
         FROM products
         WHERE (
         <foreach collection="filters" index="key" item="value" separator=" AND ">
-            ${key} = #{value}
+                <if test="key.boundary == 'up'">
+                    ${key.columnName} &lt; #{value}
+                </if>
+                <if test="key.boundary == 'down'">
+                    ${key.columnName} &gt; #{value}
+                </if>
+                <if test="key.boundary == 'equals'">
+                    ${key.columnName} = #{value}
+                </if>
         </foreach>
         )
         LIMIT ${(pageNum - 1) * n}, #{n};
     </select>
-
     <insert id="addProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO products (name, description, day_price, week_price, month_price, deposit,city,product_value,
                              min_lease_period,category,product_status,rented_until,user_id)

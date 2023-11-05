@@ -2,6 +2,7 @@ package com.rentit.mappers;
 
 import com.rentit.dao.interfaces.IImageMapper;
 import com.rentit.dao.interfaces.IProductMapper;
+import com.rentit.model.PriceFilteringColumn;
 import com.rentit.model.Product;
 import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.enums.ProductStatus;
@@ -33,10 +34,17 @@ public class IProductMapperTest {
     @Test
     public void return_n_products_per_page_with_filters() {
         int n = 2;
-        Map<String, String> filters = new HashMap<>();
-        filters.put("name", "quo");
-        filters.put("city", "Trige");
-        filters.put("category", "1");
+        Map<PriceFilteringColumn, String> filters = new HashMap<>();
+        PriceFilteringColumn depositFilter = PriceFilteringColumn.builder()
+                .columnName("deposit")
+                .boundary("up")
+                .build();
+        PriceFilteringColumn dayPriceFilter = PriceFilteringColumn.builder()
+                .columnName("day_price")
+                .boundary("down")
+                .build();
+        filters.put(depositFilter, "103");
+        filters.put(dayPriceFilter, "1");
         List<ProductDTO> products = productMapper.getNProductsByPageWithFilters(1, n, filters);
         assertThat(products.size()).isEqualTo(2);
     }
