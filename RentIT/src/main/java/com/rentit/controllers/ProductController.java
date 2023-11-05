@@ -51,4 +51,9 @@ public class ProductController {
     public List<ProductDTO> getPageOfFilteredProducts(@PathVariable int pageNum, @PathVariable int n, @RequestParam Map<String, String> filters) {
         return productService.getNProductsByPageWithFilters(pageNum, n, filters);
     }
+
+    @RequestMapping(value = "/myList", method = RequestMethod.GET)
+    public List<ProductDTO> getMyList(@RequestHeader("Authorization") String authorizationHeader) {
+        return productService.getMyList(authorizationHeader);
+    }
 }

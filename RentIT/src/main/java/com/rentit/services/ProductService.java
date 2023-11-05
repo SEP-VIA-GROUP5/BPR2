@@ -129,6 +129,15 @@ public class ProductService {
         return ResponseMessage.INTERNAL_ERROR;
     }
 
+    public List<ProductDTO> getMyList(String authorizationHeader) {
+        User user = userService.getUserFromToken(authorizationHeader, true);
+        if(user == null || user.getId() < 0) {
+            return null;
+        }
+
+        return productMapper.getProductsByUserId(user.getId());
+    }
+
     public static ProductDTO buildProductDTO(Product product){
         return ProductDTO.builder()
                 .id(product.getId())
