@@ -20,7 +20,6 @@ import {Review, TARGET} from "src/model/review";
 import {ReviewSummary} from "src/model/reviewSummary";
 import {ReportsService} from "src/api/reports.service";
 import {ReportType} from "src/app/products/product/product/constants/constants";
-import {ResponseMessage} from "src/model/responseMessage";
 import {ReviewDTO} from "src/model/reviewDTO";
 
 export interface ProductStateModel {
@@ -196,6 +195,7 @@ export class ProductState {
     let newState = produce(getState(), draft => {
       draft.isFetchingReport = true;
     });
+    setState(newState);
 
     let targetId = null;
     if (action.reportType === ReportType.PRODUCT) {
@@ -212,41 +212,17 @@ export class ProductState {
     }
 
     try {
-      let responseMessage = await this.reportsService.submitReport(reportToAdd);
+      await this.reportsService.submitReport(reportToAdd);
 
-      // handle responseMessage
-      switch (responseMessage) {
-        case ResponseMessage.SUCCESS: {
-          newState = produce(getState(), draft => {
-            if (action.reportType === ReportType.PRODUCT) {
-              draft.isProductReportAdded = true;
-            }
-            else if (action.reportType === ReportType.USER) {
-              draft.isUserReportAdded = true;
-            }
-            draft.isFetchingReport = false;
-          });
-          return setState(newState);
+      newState = produce(getState(), draft => {
+        if (action.reportType === ReportType.PRODUCT) {
+          draft.isProductReportAdded = true;
+        } else if (action.reportType === ReportType.USER) {
+          draft.isUserReportAdded = true;
         }
-        case ResponseMessage.INVALID_USER:
-        case ResponseMessage.INVALID_PARAMETERS: {
-          this.toastrService.danger(
-            `Reason: ${responseMessage}`,
-            'Something went wrong',
-            {icon: ICONS.ALERT_CIRCLE_OUTLINE}
-          )
-          newState = produce(getState(), draft => {
-            if (action.reportType === ReportType.PRODUCT) {
-              draft.isProductReportAdded = false;
-            }
-            else if (action.reportType === ReportType.USER) {
-              draft.isUserReportAdded = false;
-            }
-            draft.isFetchingReport = false;
-          });
-          return setState(newState);
-        }
-      }
+        draft.isFetchingReport = false;
+      });
+      return setState(newState);
     } catch (e) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : e,
@@ -256,8 +232,7 @@ export class ProductState {
       newState = produce(getState(), draft => {
         if (action.reportType === ReportType.PRODUCT) {
           draft.isProductReportAdded = false;
-        }
-        else if (action.reportType === ReportType.USER) {
+        } else if (action.reportType === ReportType.USER) {
           draft.isUserReportAdded = false;
         }
         draft.isFetchingReport = false;
@@ -271,10 +246,9 @@ export class ProductState {
     {getState, setState}: StateContext<ProductStateModel>,
     action: ResetSubmitReport) {
     let newState = produce(getState(), draft => {
-      if(action.reportType === ReportType.PRODUCT) {
+      if (action.reportType === ReportType.PRODUCT) {
         draft.isProductReportAdded = false;
-      }
-      else if(action.reportType === ReportType.USER) {
+      } else if (action.reportType === ReportType.USER) {
         draft.isUserReportAdded = false;
       }
     });
