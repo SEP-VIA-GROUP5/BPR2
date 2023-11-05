@@ -56,4 +56,9 @@ public class ProductController {
     public List<ProductDTO> getMyList(@RequestHeader("Authorization") String authorizationHeader) {
         return productService.getMyList(authorizationHeader);
     }
+
+    @RequestMapping(value = "/productList/{email}", method = RequestMethod.GET)
+    public List<ProductDTO> getUserList(@PathVariable String email) {
+        return productService.getUserList(email);
+    }
 }

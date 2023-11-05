@@ -131,10 +131,18 @@ public class ProductService {
 
     public List<ProductDTO> getMyList(String authorizationHeader) {
         User user = userService.getUserFromToken(authorizationHeader, true);
+        return getProductListByUser(user);
+    }
+
+    public List<ProductDTO> getUserList(String email) {
+        User user = userService.getUserFromEmail(email);
+        return getProductListByUser(user);
+    }
+
+    private List<ProductDTO> getProductListByUser(User user){
         if(user == null || user.getId() < 0) {
             return null;
         }
-
         return productMapper.getProductsByUserId(user.getId());
     }
 
