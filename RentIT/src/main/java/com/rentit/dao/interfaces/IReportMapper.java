@@ -6,5 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface IReportMapper {
     void submitProductReport(int reporterId, int productId, String message);
 
-    void submitUserReport(int reporterId, String userEmail, String message);
+    void submitUserReport(int reporterId, int userId, String message);
+
+    int getProductReportCount();
+    int getUserReportCount();
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentit.dao.interfaces.IReportMapper">
+    <insert id="submitProductReport">
+        INSERT INTO reported_products(reported_product_id, reporter_id, message)
+        VALUES (#{productId}, #{reporterId}, #{message});
+    </insert>
+    <insert id="submitUserReport">
+        INSERT INTO reported_users(reported_user_id, reporter_id, message)
+        VALUES (#{userId}, #{reporterId}, #{message});
+    </insert>
+    <select id="getProductReportCount">
+        SELECT COUNT(*) FROM reported_products;
+    </select>
+    <select id="getUserReportCount">
+        SELECT COUNT(*) FROM reported_users;
+    </select>
+</mapper>
