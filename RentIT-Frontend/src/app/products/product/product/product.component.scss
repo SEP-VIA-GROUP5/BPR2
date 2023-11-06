@@ -178,6 +178,15 @@ html {
   nb-card-body {
     display: table-column;
     text-align: center;
+
+    nb-form-field {
+      position:relative;
+    }
+    .remaining-characters {
+      position:absolute;
+      bottom: 10px;
+      right:10px;
+    }
   }
 
   nb-card-footer {

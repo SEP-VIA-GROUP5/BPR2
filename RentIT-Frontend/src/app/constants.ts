@@ -18,6 +18,7 @@ export enum ICONS {
   TRASH_2_OUTLINE = 'trash-2-outline',
   CHECKMARK_OUTLINE = 'checkmark-outline',
   FUNNEL_OUTLINE = 'funnel-outline',
+  BOOK_OPEN_OUTLINE = 'book-open-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
