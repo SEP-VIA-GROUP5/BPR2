@@ -27,6 +27,11 @@
                (selectProduct)="onSelectProduct($event)"></product>
     </div>
   </nb-card-body>
+  <nb-card-body *ngIf="(products$ | async).length <= 0">
+    <div class="products-not-found">
+      No products found
+    </div>
+  </nb-card-body>
 </nb-card>
 
 <ng-template #dialogAction let-data>

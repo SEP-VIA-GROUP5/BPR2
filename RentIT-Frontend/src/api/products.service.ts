@@ -28,4 +28,8 @@ export class ProductsService {
     const endpoint = `${this.PATH_CONTROLLER}/page/${pageNumber}/${pageSize}/filter`;
     return await this.apiService.call(mockedProducts, this.apiService.request('get', endpoint, null,false, params));
   }
+
+  async getUsersProducts(): Promise<Product[]> {
+    return await this.apiService.call(mockedProducts, this.apiService.request('get', `${this.PATH_CONTROLLER}/myList`, null, true));
+  }
 }

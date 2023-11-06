@@ -5,7 +5,6 @@ import {NbToastrService} from "@nebular/theme";
 import {Product} from "src/model/product";
 import {MyProductsFetch, MyProductsReset, RemoveProducts} from "src/app/my-products/my-products.actions";
 import {ProductsService} from "src/api/products.service";
-import {mockedProducts} from "src/mocks/products.mock";
 import {ProductService} from "src/api/product.service";
 import {environment} from "src/environments/environment.dev";
 import {ICONS} from "src/app/constants";
@@ -36,26 +35,36 @@ export class MyProductsState {
 
   @Action(MyProductsFetch)
   async myProductsFetch(
-    { getState, setState }: StateContext<MyProductsStateModel>,
-    action: MyProductsFetch) {
+    {getState, setState}: StateContext<MyProductsStateModel>) {
     let newState = produce(getState(), draft => {
       draft.isFetching = true;
     })
     setState(newState);
 
-    /* todo here will come service for fetching user's products, for now we have the getProductsPerPage, but this will be changed */
-    let products = await this.productsService.getProductsPerPage(1,15);
+    try {
+      let products = await this.productsService.getUsersProducts();
+      newState = produce(getState(), draft => {
+        draft.products = products;
+        draft.isFetching = false;
+      });
+      return setState(newState);
+    } catch (e) {
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : e,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+      newState = produce(getState(), draft => {
+        draft.isFetching = false;
+      });
+      return setState(newState);
 
-    newState = produce(getState(), draft => {
-      draft.products = products;
-      draft.isFetching = false;
-    });
-    setState(newState);
+    }
   }
 
   @Action(RemoveProducts)
   async removeProducts(
-    { getState, setState }: StateContext<MyProductsStateModel>,
+    {getState, setState}: StateContext<MyProductsStateModel>,
     action: RemoveProducts) {
     let newState = produce(getState(), draft => {
       draft.isFetching = true;
@@ -72,8 +81,7 @@ export class MyProductsState {
       });
       setState(newState);
       window.location.reload();
-    }
-    catch (error) {
+    } catch (error) {
       newState = produce(getState(), draft => {
         draft.isFetching = false;
       })
@@ -88,7 +96,7 @@ export class MyProductsState {
 
   @Action(MyProductsReset)
   async myProductsReset(
-    { setState } : StateContext<MyProductsStateModel>) {
+    {setState}: StateContext<MyProductsStateModel>) {
     setState(defaultsState);
   }
 

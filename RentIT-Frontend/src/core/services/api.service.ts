@@ -39,7 +39,10 @@ export class ApiService<T> {
     } else {
       console.error(`Backend returned code ${error.status}, body was: `, error.error);
     }
-    return throwError('Something went wrong. Please try again later.');
+    return throwError({
+      error: error,
+      message: 'Something went wrong. Please try again later.'
+    });
   }
 
   request(method: string, path: string, body: Object = {}, tokenRequired: boolean = false, params?: HttpParams): Observable<T> {
