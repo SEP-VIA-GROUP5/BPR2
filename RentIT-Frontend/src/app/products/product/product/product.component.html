@@ -184,10 +184,12 @@
       <nb-form-field *ngIf="data.reportType === TYPE_REPORT.USER" class="description">
                 <textarea [(ngModel)]="reportToAdd.userReport.message" name="message" type="text" fullWidth nbInput
                           shape="round" placeholder="Reporting user message"></textarea>
+        <span class="remaining-characters">{{getCharactersReportMessage(data.reportType)}}</span>
       </nb-form-field>
       <nb-form-field *ngIf="data.reportType === TYPE_REPORT.PRODUCT" class="description">
                 <textarea [(ngModel)]="reportToAdd.productReport.message" name="message" type="text" fullWidth nbInput
                           shape="round" placeholder="Reporting product message"></textarea>
+        <span class="remaining-characters">{{getCharactersReportMessage(data.reportType)}}</span>
       </nb-form-field>
     </nb-card-body>
     <nb-card-footer>

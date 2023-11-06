@@ -164,9 +164,9 @@ export class ProductComponent implements OnInit, OnDestroy {
       return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
     } else if (submitButtonType === SubmitButtonType.REPORT) {
       if (reportType === ReportType.PRODUCT) {
-        return this.reportToAdd.productReport.message === '';
+        return this.reportToAdd.productReport.message === '' || this.reportToAdd.productReport.message.length > 500;
       } else if (reportType === ReportType.USER) {
-        return this.reportToAdd.userReport.message === '';
+        return this.reportToAdd.userReport.message === '' || this.reportToAdd.userReport.message.length > 500;
       }
     }
   }
@@ -184,6 +184,15 @@ export class ProductComponent implements OnInit, OnDestroy {
         isUserReportAdded = isUserReportAddedValue;
       });
       return isUserReportAdded;
+    }
+  }
+
+  getCharactersReportMessage(reportType: ReportType) {
+    if (reportType === ReportType.USER) {
+      return `${this.reportToAdd.userReport.message.length} / 500`;
+    }
+    else if (reportType === ReportType.PRODUCT) {
+      return `${this.reportToAdd.productReport.message.length} / 500`;
     }
   }
 
