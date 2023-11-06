@@ -149,7 +149,12 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
       this.addRatingDialogRef.close();
     } else if (submitButtonType === SubmitButtonType.REPORT) {
-      let report = this.reportToAdd.productReport.message !== '' ? this.reportToAdd.productReport : this.reportToAdd.userReport;
+      let report = null;
+      if (reportType === ReportType.PRODUCT) {
+        report = this.reportToAdd.productReport;
+      } else if (reportType === ReportType.USER) {
+        report = this.reportToAdd.userReport;
+      }
       this.store.dispatch(new SubmitReport(report, reportType));
     }
   }
@@ -167,14 +172,13 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   isReportAdded(reportType: ReportType) {
-    if(reportType === ReportType.PRODUCT) {
+    if (reportType === ReportType.PRODUCT) {
       let isProductReportAdded = false;
       this.isProductReportAdded$.subscribe(isProductReportAddedValue => {
         isProductReportAdded = isProductReportAddedValue;
       });
       return isProductReportAdded;
-    }
-    else if(reportType === ReportType.USER) {
+    } else if (reportType === ReportType.USER) {
       let isUserReportAdded = false;
       this.isUserReportAdded$.subscribe(isUserReportAddedValue => {
         isUserReportAdded = isUserReportAddedValue;
@@ -184,10 +188,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   resetReport(reportType: ReportType) {
-    if(reportType === ReportType.PRODUCT) {
+    if (reportType === ReportType.PRODUCT) {
       this.reportToAdd.productReport = constructorReportToAdd().productReport;
-    }
-    else if(reportType === ReportType.USER) {
+    } else if (reportType === ReportType.USER) {
       this.reportToAdd.userReport = constructorReportToAdd().userReport;
     }
     this.store.dispatch(new ResetSubmitReport(reportType));
