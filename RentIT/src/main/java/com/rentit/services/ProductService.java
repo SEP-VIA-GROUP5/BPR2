@@ -10,10 +10,10 @@ import com.rentit.model.dto.ProductPackageDTO;
 import com.rentit.model.dto.UserDTO;
 import com.rentit.model.enums.ProductStatus;
 import com.rentit.services.enums.ResponseMessage;
+import com.rentit.services.utils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +27,8 @@ public class ProductService {
     @Autowired
     private UserService userService;
 
+    private final ServiceUtils serviceUtils = ServiceUtils.getInstance();
+
     public List<ProductDTO> getNProductsByPage(int pageNum, int n) {
         if (pageNum > 0 && n > 0) {
             return productMapper.getNProductsByPage(pageNum, n);
@@ -36,30 +38,10 @@ public class ProductService {
 
     public List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<String, String> filters) {
         if(pageNum > 0 && n > 0){
-            Map<PriceFilteringColumn, String> processedMap = processFiltering(filters);
+            Map<PriceFilteringColumn, String> processedMap = serviceUtils.processFiltering(filters);
             return productMapper.getNProductsByPageWithFilters(pageNum, n, processedMap);
         }
         return null;
-    }
-
-    private Map<PriceFilteringColumn, String> processFiltering(Map<String, String> filters) {
-        Map<PriceFilteringColumn, String> processedMap = new HashMap<>();
-        for(Map.Entry<String, String> entry : filters.entrySet()) {
-            StringBuilder sb = new StringBuilder();
-            PriceFilteringColumn pfc = new PriceFilteringColumn();
-            sb.append(entry.getKey());
-            int split = sb.indexOf("_");
-            if(split < 0) {
-                pfc.setColumnName(sb.toString());
-                pfc.setBoundary("equals");
-            }
-            else{
-                pfc.setColumnName(sb.substring(0,split));
-                pfc.setBoundary(sb.substring(split+1));
-            }
-            processedMap.put(pfc, entry.getValue());
-        }
-        return processedMap;
     }
 
     public ProductDTO addProduct(Product product, String authorizationHeader) {
