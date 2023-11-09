@@ -146,6 +146,13 @@ public class ProductService {
         return productMapper.getProductsByUserId(user.getId());
     }
 
+    public int getProductOwnerId(int productId){
+        if (productId<0){
+            return -1;
+        }
+        return productMapper.getProductOwnerId(productId);
+    }
+
     public static ProductDTO buildProductDTO(Product product){
         return ProductDTO.builder()
                 .id(product.getId())
