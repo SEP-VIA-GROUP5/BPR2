@@ -2,27 +2,32 @@ package com.rentit.services;
 
 import com.rentit.dao.interfaces.IInquiryMapper;
 import com.rentit.model.Inquiry;
+import com.rentit.model.PriceFilteringColumn;
 import com.rentit.model.User;
 import com.rentit.model.dto.InquiryDTO;
 import com.rentit.model.dto.UserDTO;
 import com.rentit.services.enums.ResponseMessage;
+import com.rentit.services.utils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InquiryService {
 
     @Autowired
-    IInquiryMapper inquiryMapper;
+    private IInquiryMapper inquiryMapper;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
+
+    private final ServiceUtils serviceUtils = ServiceUtils.getInstance();
 
     public static InquiryDTO buildInquiryDTO(Inquiry inquiry, UserDTO userDTO){
         return InquiryDTO.builder()
@@ -66,7 +71,7 @@ public class InquiryService {
         return buildInquiryDTO(inquiry,null);
     }
 
-    public List<InquiryDTO> getAllReceivedInquiries(int pageNum, int n,String authorizationHeader) {
+    public List<InquiryDTO> getAllReceivedInquiries(int pageNum, int n, Map<String, String> filters, String authorizationHeader) {
         if(pageNum < 0 || n < 0){
             return null;
         }
@@ -74,7 +79,12 @@ public class InquiryService {
         if (user == null){
             return null;
         }
-        return inquiryMapper.getAllReceivedInquiries(user.getId());
+        if(filters.isEmpty()){
+            return inquiryMapper.getAllReceivedInquiries(user.getId());
+        }
+
+        Map<PriceFilteringColumn, String> processedMap = serviceUtils.processFiltering(filters);
+        return inquiryMapper.getAllReceivedInquiriesFiltered(pageNum, n, processedMap);
     }
 
     public ResponseMessage markViewed(int inquiryId, String authorizationHeader) {
@@ -96,6 +106,31 @@ public class InquiryService {
         }
 
         inquiryMapper.setViewed(inquiryId, LocalDate.now());
+        return ResponseMessage.SUCCESS;
+    }
+
+    public List<InquiryDTO> getAllMyInquiries(int pageNum, int n, String authorizationHeader) {
+        if(pageNum < 0 || n < 0){
+            return null;
+        }
+        User user = userService.getUserFromToken(authorizationHeader, true);
+        if(user == null){
+            return null;
+        }
+        return inquiryMapper.getAllMyInquiries(user.getId());
+    }
+
+    public ResponseMessage deleteInquiry(int inquiryId, String authorizationHeader) {
+        if(inquiryId < 0){
+            return ResponseMessage.INVALID_PARAMETERS;
+        }
+
+        User user = userService.getUserFromToken(authorizationHeader, true);
+        if(user == null){
+            return null;
+        }
+
+        inquiryMapper.deleteInquiry(user.getId(), inquiryId);
         return ResponseMessage.SUCCESS;
     }
 

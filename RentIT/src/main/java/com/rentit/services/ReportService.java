@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 public class ReportService {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    IReportMapper reportMapper;
+    private IReportMapper reportMapper;
 
     @Autowired
-    IUserMapper userMapper;
+    private IUserMapper userMapper;
 
     public ResponseMessage submitReport(String target, String targetId, String message, String authorizationHeader) {
         User user = userService.getUserFromToken(authorizationHeader, true);

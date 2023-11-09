@@ -17,7 +17,7 @@ public class ReviewService {
     private IReviewMapper reviewMapper;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
 
     public List<ReviewDTO> getReviewsByPage(String target, int targetId, int pageNum, int n) {
