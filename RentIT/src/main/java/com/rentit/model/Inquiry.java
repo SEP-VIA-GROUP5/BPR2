@@ -17,9 +17,9 @@ public class Inquiry {
     String message;
     LocalDate timeStamp;
     int senderId;
-    String userEmail;
-    String userPhoneNumber;
-    int directedToId;
+    String senderEmail;
+    String senderPhoneNumber;
+    int receiverId;
     boolean viewed;
     LocalDate viewedAt;
     LocalDate rentStart;

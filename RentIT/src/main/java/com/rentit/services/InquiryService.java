@@ -45,16 +45,18 @@ public class InquiryService {
         inquiry.setViewed(false);
 //        inquiry.setAccepted(false);
         inquiry.setTimeStamp(LocalDate.now());
-        inquiry.setUserEmail(user.getEmail());
-        if(inquiry.getUserPhoneNumber().isEmpty()){
-            inquiry.setUserPhoneNumber(user.getPhoneNumber());
+        if(inquiry.getSenderPhoneNumber().isEmpty()){
+            inquiry.setSenderPhoneNumber(user.getPhoneNumber());
+        }
+        if(inquiry.getSenderEmail().isEmpty()){
+            inquiry.setSenderEmail(user.getEmail());
         }
 
         int directedToId = productService.getProductOwnerId(inquiry.getProductId());
         if(directedToId < 0){
             return null;
         }
-        inquiry.setDirectedToId(directedToId);
+        inquiry.setReceiverId(directedToId);
         inquiryMapper.addInquiry(inquiry);
 
         return buildInquiryDTO(inquiry,null);
@@ -85,12 +87,12 @@ public class InquiryService {
             return ResponseMessage.INVALID_PARAMETERS;
         }
 
-        Inquiry inquiry = inquiryMapper.getInquiry(inquiryId);
+        Inquiry inquiry = inquiryMapper.getInquiryById(inquiryId);
 
         if(inquiry.isViewed()){
             return ResponseMessage.SUCCESS;
         }
-        if(inquiry.getDirectedToId() != user.getId()){
+        if(inquiry.getReceiverId() != user.getId()){
             return ResponseMessage.CREDENTIALS_ERROR;
         }
 

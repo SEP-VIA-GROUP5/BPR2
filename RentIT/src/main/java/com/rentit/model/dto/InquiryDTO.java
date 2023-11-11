@@ -17,8 +17,8 @@ public class InquiryDTO {
     int productId;
     String message;
     LocalDate timeStamp;
-    String userEmail;
-    String userPhoneNumber;
+    String senderEmail;
+    String senderPhoneNumber;
     boolean viewed;
     LocalDate viewedAt;
     LocalDate rentStart;
@@ -31,8 +31,8 @@ public class InquiryDTO {
 //                .accepted(inquiry.isAccepted())
                 .message(inquiry.getMessage())
                 .timeStamp(inquiry.getTimeStamp())
-                .userEmail(inquiry.getUserEmail())
-                .userPhoneNumber(inquiry.getUserPhoneNumber())
+                .senderEmail(inquiry.getSenderEmail())
+                .senderPhoneNumber(inquiry.getSenderPhoneNumber())
                 .viewedAt(inquiry.getViewedAt())
 //                .acceptedAt(inquiry.getAcceptedAt())
                 .userDTO(userDTO)
