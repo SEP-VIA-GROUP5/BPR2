@@ -21,12 +21,13 @@ import {Review} from "src/model/review";
 import {UserService} from "src/api/user.service";
 import {ReviewSummary} from "src/model/reviewSummary";
 import {
-  constructorReportToAdd,
+  constructorReportToAdd, constructorSendingInquiry,
   ReportToAdd,
   ReportType,
   SubmitButtonType
 } from "src/app/products/product/product/constants/constants";
 import {ReviewDTO} from "src/model/reviewDTO";
+import {Inquiry} from "src/model/inquiry";
 
 @Component({
   selector: 'app-product-overview',
@@ -52,6 +53,13 @@ export class ProductComponent implements OnInit, OnDestroy {
   isUserReportAdded$: Observable<boolean>;
   @Select(ProductSelector.isProductReportAdded)
   isProductReportAdded$: Observable<boolean>;
+
+  // dialog sending inquiry
+  @ViewChild('sendInquiryDialog') sendInquiryDialog: TemplateRef<any>;
+  private sendInquiryDialogRef: NbDialogRef<any>;
+  inquiryToSend: Inquiry = {
+    ...constructorSendingInquiry(),
+  };
 
   // dialog adding review
   @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
@@ -86,6 +94,11 @@ export class ProductComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let actionsInParallel = [];
     this.productId = this.activatedRoute.snapshot.params['productId'];
+    this.inquiryToSend = {
+      ...this.inquiryToSend,
+      productId: this.productId,
+    } satisfies Inquiry;
+
     actionsInParallel.push(
       new ProductFetch(this.productId),
       new ProductReviewsFetch(this.productId),
@@ -207,6 +220,10 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   closeReportDialog() {
     this.reportDialogRef.close();
+  }
+
+  openSendInquiryDialog() {
+    this.sendInquiryDialogRef = this.nbDialogService.open(this.sendInquiryDialog, {});
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {

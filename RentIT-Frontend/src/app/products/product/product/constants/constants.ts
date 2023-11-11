@@ -1,4 +1,6 @@
 import {Report} from "src/model/report";
+import {Inquiry} from "src/model/inquiry";
+import {toUTCDate} from "src/core/utils/date.utils";
 
 export enum ReportType {
   USER = 'user',
@@ -15,7 +17,7 @@ export enum SubmitButtonType {
   REPORT =  'report',
 }
 
-export const constructorReportToAdd = (): ReportToAdd => {
+export function constructorReportToAdd(): ReportToAdd {
   return {
     productReport: {
       target: '',
@@ -26,4 +28,13 @@ export const constructorReportToAdd = (): ReportToAdd => {
       message: '',
     } satisfies Report,
   } satisfies ReportToAdd;
+}
+
+export function constructorSendingInquiry(): Inquiry {
+  return {
+    message: '',
+    rentStart: toUTCDate(new Date()),
+    rentEnd: toUTCDate(new Date()),
+    productId: -1,
+  } satisfies Inquiry;
 }

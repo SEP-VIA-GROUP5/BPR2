@@ -7,6 +7,16 @@
                     *ngIf="productOverview.product as product">
       <div class="product-overview-product-name">
         <h2>{{ product.name }}</h2>
+        <button [disabled]="!this.userService.isLoggedIn()"
+                nbTooltip="You need to be logged in to check availability of this product"
+                [nbTooltipDisabled]="this.userService.isLoggedIn()"
+                nbButton
+                size="small"
+                status="success" hero
+                (click)="openSendInquiryDialog()">
+          <nb-icon [icon]="ICONS.CHECKMARK_CIRCLE_OUTLINE"></nb-icon>
+          Check availability
+        </button>
       </div>
       <h3 class="product-overview-rented-until-date" *ngIf="product.rentedUntil">
         Rented until:
@@ -213,5 +223,13 @@
         Add new report
       </button>
     </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #sendInquiryDialog let-data>
+  <nb-card>
+    <nb-card-body>
+      TO BE ADDED
+    </nb-card-body>
   </nb-card>
 </ng-template>
