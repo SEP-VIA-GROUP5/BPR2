@@ -12,23 +12,23 @@ export function mapToMapperFromFilteringOptions(filteringProductOptions: Filteri
   if (filteringProductOptions.city) {
     mapper.set('city', filteringProductOptions.city);
   }
-  if (filteringProductOptions.deposit) {
-    mapper.set('deposit', filteringProductOptions.deposit.toString());
+  if (filteringProductOptions.depositFrom) {
+    mapper.set('deposit', filteringProductOptions.depositFrom.toString());
   }
   if (filteringProductOptions.category) {
     mapper.set('category', filteringProductOptions.category);
   }
-  if (filteringProductOptions.dayPrice) {
-    mapper.set('day_price', filteringProductOptions.dayPrice.toString());
+  if (filteringProductOptions.dayPriceFrom) {
+    mapper.set('day_price', filteringProductOptions.dayPriceFrom.toString());
   }
-  if (filteringProductOptions.weekPrice) {
-    mapper.set('week_price', filteringProductOptions.weekPrice.toString());
+  if (filteringProductOptions.weekPriceFrom) {
+    mapper.set('week_price', filteringProductOptions.weekPriceFrom.toString());
   }
-  if (filteringProductOptions.monthPrice) {
-    mapper.set('month_price', filteringProductOptions.monthPrice.toString());
+  if (filteringProductOptions.monthPriceFrom) {
+    mapper.set('month_price', filteringProductOptions.monthPriceFrom.toString());
   }
-  if (filteringProductOptions.productValue) {
-    mapper.set('product_value', filteringProductOptions.productValue.toString());
+  if (filteringProductOptions.productValueFrom) {
+    mapper.set('product_value', filteringProductOptions.productValueFrom.toString());
   }
   return mapper;
 }

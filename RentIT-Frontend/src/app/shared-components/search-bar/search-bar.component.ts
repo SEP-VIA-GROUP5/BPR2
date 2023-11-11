@@ -1,5 +1,8 @@
 import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
-import {constructDefaultFilteringProductOptions,} from "src/app/shared-components/search-bar/constants/constants";
+import {
+  constructDefaultFilteringProductOptions,
+  ProductPriceFilters,
+} from "src/app/shared-components/search-bar/constants/constants";
 import {ICONS} from "src/app/constants";
 import {NbDialogRef, NbDialogService} from "@nebular/theme";
 import {FilteringProductOptions} from "src/model/filteringProductOptions";
@@ -10,80 +13,7 @@ import {defaultProduct} from "src/app/products/adding-products/constants/constan
 
 @Component({
   selector: 'search-bar',
-  template: `
-    <div class="search-bar-container">
-      <nb-form-field class="form-input-search">
-        <input [(ngModel)]="filteringProductOptions.name" class="input-search" nbInput
-               shape="round" placeholder="Name, for example: GoPro"
-               (input)="onInputChange($event)">
-        <nb-icon nbPrefix pack="eva" [icon]="icon"></nb-icon>
-      </nb-form-field>
-      <button class="select-filtering-options" nbButton shape="round" status="primary" hero
-              (click)="onClickMoreFilteringOptions()">
-        More filtering options
-      </button>
-      <button *ngIf="isListOnFiltering$ | async" class="reset-filtering-options" nbButton shape="round"
-              status="warning" hero
-              (click)="onResetFiltering()">
-        Reset filtering options
-      </button>
-    </div>
-
-    <ng-template #moreFilteringOptionsAction>
-      <nb-card class="more-filtering-options-container">
-        <nb-card-header class="more-filtering-options-header">
-          More filtering options
-        </nb-card-header>
-        <nb-card-body class="more-filtering-options-body">
-          <div class="left-container">
-            <nb-form-field class="product-name-filtering">
-              <input [(ngModel)]="filteringProductOptions.name" nbInput shape="round" type="text"
-                     placeholder="Name">
-            </nb-form-field>
-            <nb-form-field class="product-deposit-filtering">
-              <input [(ngModel)]="filteringProductOptions.deposit" nbInput shape="round" type="number"
-                     placeholder="Price € deposit">
-            </nb-form-field>
-            <nb-form-field>
-              <!--              TODO dayPrice should not be null-->
-              <input [(ngModel)]="filteringProductOptions.dayPrice" name="dayPrice" type="number" fullWidth size="100px"
-                     nbInput shape="round" placeholder="Price € (per day)">
-            </nb-form-field>
-            <nb-form-field>
-              <!--              TODO should that this is optional-->
-              <input [(ngModel)]="filteringProductOptions.weekPrice" name="weekPrice" type="number" fullWidth size="100px"
-                     nbInput shape="round" placeholder="Price € (per week)">
-            </nb-form-field>
-          </div>
-          <div class="right-container">
-            <nb-form-field class="product-location-filtering">
-              <input [(ngModel)]="filteringProductOptions.city" nbInput shape="round" type="text"
-                     placeholder="Location">
-            </nb-form-field>
-            <nb-form-field class="product-category-filtering">
-              <input [(ngModel)]="filteringProductOptions.category" nbInput shape="round" type="text"
-                     placeholder="Category">
-            </nb-form-field>
-            <nb-form-field>
-              <input [(ngModel)]="filteringProductOptions.monthPrice" name="monthPrice" type="number" fullWidth size="100px"
-                     nbInput shape="round" placeholder="Price € (per month)">
-            </nb-form-field>
-            <nb-form-field>
-              <input [(ngModel)]="filteringProductOptions.productValue" name="productValue" type="number" fullWidth
-                     size="100px" nbInput shape="round" placeholder="Product value in €">
-            </nb-form-field>
-          </div>
-        </nb-card-body>
-        <nb-card-footer class="more-filtering-options-footer">
-          <button [disabled]="isSaveFilteringOptionsButtonEnabled()" nbButton shape="round" status="primary"
-                  hero
-                  (click)="onSaveFilteringOptions()">
-            Search
-          </button>
-        </nb-card-footer>
-      </nb-card>
-    </ng-template>
-  `,
+  templateUrl: `./search-bar.component.html`,
   styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent {
@@ -98,6 +28,7 @@ export class SearchBarComponent {
   // redux selectors
   @Select(ProductsSelector.isListOnFiltering)
   isListOnFiltering$: Observable<boolean>;
+  productPriceFilters: ProductPriceFilters[] = ['Deposit', 'Day price', 'Week price', 'Month price', 'Product value'];
 
   //constants
   protected readonly ICONS = ICONS;
@@ -115,12 +46,17 @@ export class SearchBarComponent {
   isSaveFilteringOptionsButtonEnabled() {
     return this.filteringProductOptions.name === '' &&
       this.filteringProductOptions.city === '' &&
-      this.filteringProductOptions.deposit === null &&
+      this.filteringProductOptions.depositFrom === null &&
+      this.filteringProductOptions.depositTo === null &&
       this.filteringProductOptions.category === '' &&
-      this.filteringProductOptions.dayPrice === null &&
-      this.filteringProductOptions.weekPrice === null &&
-      this.filteringProductOptions.monthPrice === null &&
-      this.filteringProductOptions.productValue === null;
+      this.filteringProductOptions.dayPriceFrom === null &&
+      this.filteringProductOptions.dayPriceTo === null &&
+      this.filteringProductOptions.weekPriceFrom === null &&
+      this.filteringProductOptions.weekPriceTo === null &&
+      this.filteringProductOptions.monthPriceFrom === null &&
+      this.filteringProductOptions.monthPriceTo === null &&
+      this.filteringProductOptions.productValueFrom === null &&
+      this.filteringProductOptions.productValueTo === null;
   }
 
   onSaveFilteringOptions() {
@@ -135,6 +71,21 @@ export class SearchBarComponent {
 
   onClickMoreFilteringOptions() {
     this.dialogRef = this.dialogService.open(this.moreFilteringOptionsDialog);
+  }
+
+  getPriceValuesBasedOnPriceFilter(priceFilterType: ProductPriceFilters) {
+    switch (priceFilterType) {
+      case 'Deposit':
+        return ['depositTo', 'depositFrom'];
+      case 'Day price':
+        return ['dayPriceTo', 'dayPriceFrom'];
+      case 'Week price':
+        return ['weekPriceTo', 'weekPriceFrom'];
+      case 'Month price':
+        return ['monthPriceTo', 'monthPriceFrom'];
+      case 'Product value':
+        return ['productValueTo', 'productValueFrom'];
+    }
   }
 
   protected readonly defaultProduct = defaultProduct;

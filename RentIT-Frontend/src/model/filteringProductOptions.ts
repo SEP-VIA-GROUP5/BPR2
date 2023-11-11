@@ -1,10 +1,15 @@
 export interface FilteringProductOptions {
   name?: string;
   city?: string;
-  deposit?: number;
+  depositFrom?: number;
+  depositTo?: number;
   category?: string;
-  dayPrice?: number;
-  weekPrice?: number;
-  monthPrice?: number;
-  productValue?: number;
+  dayPriceFrom?: number;
+  dayPriceTo?: number;
+  weekPriceFrom?: number;
+  weekPriceTo?: number;
+  monthPriceFrom?: number;
+  monthPriceTo?: number;
+  productValueFrom?: number;
+  productValueTo?: number;
 }
