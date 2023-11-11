@@ -5,7 +5,6 @@ import com.rentit.model.Inquiry;
 import com.rentit.model.PriceFilteringColumn;
 import com.rentit.model.User;
 import com.rentit.model.dto.InquiryDTO;
-import com.rentit.model.dto.UserDTO;
 import com.rentit.services.enums.ResponseMessage;
 import com.rentit.services.utils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,9 @@ public class InquiryService {
 //        inquiry.setAccepted(false);
         inquiry.setTimeStamp(LocalDate.now());
         inquiry.setUserEmail(user.getEmail());
-        inquiry.setUserPhoneNumber(user.getPhoneNumber() != null ? user.getPhoneNumber() : null);
+        if(inquiry.getUserPhoneNumber().isEmpty()){
+            inquiry.setUserPhoneNumber(user.getPhoneNumber());
+        }
 
         int directedToId = productService.getProductOwnerId(inquiry.getProductId());
         if(directedToId < 0){
