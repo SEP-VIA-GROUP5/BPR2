@@ -16,7 +16,7 @@ public interface IInquiryMapper {
     List<InquiryDTO> getAllReceivedInquiries(int userId);
     void setViewed(int inquiryId, LocalDate now);
 
-    Inquiry getInquiry(int inquiryId);
+    Inquiry getInquiryById(int inquiryId);
 
 //    void setAccepted(int inquiryId, LocalDate now);
     List<InquiryDTO> getAllMyInquiries(int id);
