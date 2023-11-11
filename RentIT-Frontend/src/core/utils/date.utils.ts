@@ -1,5 +1,5 @@
 import {formatDate} from "@angular/common";
-import {isBefore} from "date-fns";
+import {isBefore, setDay} from "date-fns";
 
 export enum DATE_FORMAT {
   YYYY_MM_DD_HH_MM_SS = 'yyyy-MM-dd HH:mm:ss'
@@ -20,4 +20,9 @@ export function isDateBeforeNow(date: Date) {
 
 export function toUTCDate(date: Date) {
   return new Date(formatDate(date, DATE_FORMAT.YYYY_MM_DD_HH_MM_SS, DATE_LOCALE.EN_US,  DATE_TIMEZONE.UTC));
+}
+
+export function addDays(date: Date, days: number): Date {
+  date.setDate(date.getDate() + days);
+  return date;
 }

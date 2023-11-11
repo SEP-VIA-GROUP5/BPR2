@@ -9,6 +9,7 @@ import {ProductComponent} from "src/app/products/product/product/product.compone
 import {ProductState} from "src/app/products/product/product/product.state";
 import {ReviewsService} from "src/api/reviews.service";
 import {ReportsService} from "src/api/reports.service";
+import {NbDatepickerModule} from "@nebular/theme";
 
 export const PRODUCTS_PROVIDERS = [
   ProductService,
@@ -31,6 +32,7 @@ export const PRODUCTS_COMPONENTS = [
   ],
   imports: [
     CommonModule,
+    NbDatepickerModule.forRoot(),
     ProductRoutingModule,
     SharedModule,
     NgxsModule.forFeature(PRODUCTS_STATES),

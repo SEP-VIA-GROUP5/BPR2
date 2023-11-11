@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Select, Store} from "@ngxs/store";
-import {ICONS} from "src/app/constants";
+import {ICONS, isEmail, isPhoneNumber} from "src/app/constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ProductSelector} from "src/app/products/product/product/product.selector";
@@ -21,12 +21,15 @@ import {Review} from "src/model/review";
 import {UserService} from "src/api/user.service";
 import {ReviewSummary} from "src/model/reviewSummary";
 import {
-  constructorReportToAdd,
+  constructorReportToAdd, constructorSendingInquiry,
   ReportToAdd,
   ReportType,
   SubmitButtonType
 } from "src/app/products/product/product/constants/constants";
 import {ReviewDTO} from "src/model/reviewDTO";
+import {Inquiry} from "src/model/inquiry";
+import {Product} from "src/model/product";
+import {addDays, toUTCDate} from "src/core/utils/date.utils";
 
 @Component({
   selector: 'app-product-overview',
@@ -52,6 +55,17 @@ export class ProductComponent implements OnInit, OnDestroy {
   isUserReportAdded$: Observable<boolean>;
   @Select(ProductSelector.isProductReportAdded)
   isProductReportAdded$: Observable<boolean>;
+
+  // dialog sending inquiry
+  @ViewChild('sendInquiryDialog') sendInquiryDialog: TemplateRef<any>;
+  private sendInquiryDialogRef: NbDialogRef<any>;
+  inquiryToSend: Inquiry = {
+    ...constructorSendingInquiry(),
+  };
+  isPhoneNumberInquiryValid: boolean = true;
+  isEmailInquiryValid: boolean = true;
+  minimumFromRentingDate: Date;
+  minimumToRentingDate: Date;
 
   // dialog adding review
   @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
@@ -86,6 +100,12 @@ export class ProductComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let actionsInParallel = [];
     this.productId = this.activatedRoute.snapshot.params['productId'];
+
+    this.inquiryToSend = {
+      ...this.inquiryToSend,
+      productId: this.productId,
+    } satisfies Inquiry;
+
     actionsInParallel.push(
       new ProductFetch(this.productId),
       new ProductReviewsFetch(this.productId),
@@ -144,7 +164,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.addRatingDialogRef = this.nbDialogService.open(this.addRatingDialog, {});
   }
 
-  onSubmitButtonClicked(submitButtonType: SubmitButtonType, reportType?: ReportType) {
+  onSubmitReportButtonClicked(submitButtonType: SubmitButtonType, reportType?: ReportType) {
     if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
       this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
       this.addRatingDialogRef.close();
@@ -207,6 +227,65 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   closeReportDialog() {
     this.reportDialogRef.close();
+  }
+
+  openSendInquiryDialog() {
+    this.minimumFromRentingDate = toUTCDate(new Date());
+    this.minimumToRentingDate = toUTCDate(addDays(new Date(), 1));
+    this.inquiryToSend = {
+      ...this.inquiryToSend,
+      rentStart: this.minimumToRentingDate,
+      rentEnd: this.minimumToRentingDate,
+    }
+    let product: ProductOverview = this.store.selectSnapshot(ProductSelector.product);
+    this.sendInquiryDialogRef = this.nbDialogService.open(this.sendInquiryDialog, {
+      context: {
+        product: product,
+      }
+    });
+  }
+
+  onInquiryInputType(event) {
+    switch (event.target.name) {
+      case "senderPhoneNumber" : {
+        if(event.target.name || event.target.name !== '') {
+          this.isPhoneNumberInquiryValid = isPhoneNumber(event.target.value);
+        }
+        else if(event.target.name === '') {
+          this.isPhoneNumberInquiryValid = true;
+        }
+        break;
+      }
+      case "senderEmail" : {
+        if(event.target.name || event.target.name !== '') {
+          this.isEmailInquiryValid = isEmail(event.target.value);
+        }
+        else if(event.target.name === '') {
+          this.isEmailInquiryValid = true;
+        }
+        break;
+      }
+    }
+  }
+
+  getCharactersInquiryMessage() {
+    return `${this.inquiryToSend.message.length} / 500`;
+  }
+
+  isOnSubmitInquiryButtonDisabled() {
+    return this.inquiryToSend.message === '' || this.inquiryToSend.message.length > 500 || !this.isEmailInquiryValid || !this.isPhoneNumberInquiryValid;
+  }
+
+  onSubmitInquiryButtonClicked() {
+    // TODO: send inquiry with redux action
+  }
+
+  onCloseInquiryDialog() {
+    this.sendInquiryDialogRef.close();
+  }
+
+  onResetInquiryDialog() {
+  // TODO: reset inquiry dialog with redux action
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {

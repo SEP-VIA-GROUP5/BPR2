@@ -15,6 +15,9 @@ html {
     .product-overview-product-name {
       font-weight: bold;
       font-size: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-evenly;
     }
 
     .product-overview-rented-until-date {
@@ -34,7 +37,7 @@ html {
   .product-overview-body {
     justify-content: space-between;
     display: flex;
-    gap: 10px;
+    gap: 1rem;
 
     .left-section {
       display: table-column;
@@ -178,14 +181,42 @@ html {
   nb-card-body {
     display: table-column;
     text-align: center;
+  }
 
-    nb-form-field {
-      position:relative;
+  nb-card-footer {
+    display: flex;
+    gap: 1rem;
+    align-self: center;
+  }
+}
+
+.sending-inquiry-dialog-container {
+  nb-card-header {
+    align-self: center;
+  }
+
+  nb-card-body {
+    display: table-column;
+    text-align: center;
+
+    .inquiry-phone-email-user {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
     }
-    .remaining-characters {
-      position:absolute;
-      bottom: 10px;
-      right:10px;
+
+    .inquiry-dates {
+      display: flex;
+      justify-content: space-between;
+
+    }
+
+    div {
+      margin-bottom: 1rem;
+
+      p span {
+        font-weight: bold;
+      }
     }
   }
 
@@ -199,6 +230,24 @@ html {
 .report-badge {
   font-size: 1rem;
   cursor: pointer;
+}
+
+.invalid-field {
+  border-color: var(--color-danger-500);
+}
+
+nb-form-field {
+  position: relative;
+
+  .remaining-characters {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+.info-icon-form {
+  cursor: help;
 }
 
 .bold {
