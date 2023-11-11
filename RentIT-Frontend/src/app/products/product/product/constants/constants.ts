@@ -33,8 +33,6 @@ export function constructorReportToAdd(): ReportToAdd {
 export function constructorSendingInquiry(): Inquiry {
   return {
     message: '',
-    rentStart: toUTCDate(new Date()),
-    rentEnd: toUTCDate(new Date()),
     productId: -1,
   } satisfies Inquiry;
 }

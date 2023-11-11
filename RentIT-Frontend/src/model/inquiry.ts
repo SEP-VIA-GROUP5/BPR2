@@ -9,6 +9,6 @@ export interface Inquiry {
   receiverId?: number;
   viewed?: boolean;
   viewedAt?: Date;
-  rentStart: Date;
-  rentEnd: Date;
+  rentStart?: Date;
+  rentEnd?: Date;
 }

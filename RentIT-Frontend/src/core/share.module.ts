@@ -64,7 +64,7 @@ export const NEBULAR_MODULES = [
   NbTagModule,
   NbContextMenuModule,
   NbStepperModule,
-  NbOptionModule
+  NbOptionModule,
 ];
 
 export const SHARED_COMPONENTS = [

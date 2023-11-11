@@ -5,6 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
+  NbDatepickerModule,
   NbDialogModule,
   NbMenuModule,
   NbSidebarModule,
@@ -52,6 +53,7 @@ export const APP_NEBULAR_MODULES = [
   NbDialogModule.forRoot(),
   NbMenuModule.forRoot(),
   NbWindowModule.forRoot(),
+  NbDatepickerModule.forRoot(),
 ];
 
 export const PROVIDERS = [
