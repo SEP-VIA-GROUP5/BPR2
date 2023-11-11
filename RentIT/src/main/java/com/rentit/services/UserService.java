@@ -115,14 +115,4 @@ public class UserService {
         }
         return userMapper.getUserByEmail(email);
     }
-
-    public static UserDTO buildUserDTO(User user){
-        return UserDTO.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .location(user.getLocation())
-                .phoneNumber(user.getPhoneNumber())
-                .email(user.getEmail())
-                .build();
-    }
 }

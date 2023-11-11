@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import static com.rentit.model.dto.InquiryDTO.buildInquiryDTO;
+
 @Service
 public class InquiryService {
 
@@ -28,20 +30,6 @@ public class InquiryService {
     private ProductService productService;
 
     private final ServiceUtils serviceUtils = ServiceUtils.getInstance();
-
-    public static InquiryDTO buildInquiryDTO(Inquiry inquiry, UserDTO userDTO){
-        return InquiryDTO.builder()
-                .productId(inquiry.getProductId())
-//                .accepted(inquiry.isAccepted())
-                .message(inquiry.getMessage())
-                .timeStamp(inquiry.getTimeStamp())
-                .userEmail(inquiry.getUserEmail())
-                .userPhoneNumber(inquiry.getUserPhoneNumber())
-                .viewedAt(inquiry.getViewedAt())
-//                .acceptedAt(inquiry.getAcceptedAt())
-                .userDTO(userDTO)
-                .build();
-    }
 
     public InquiryDTO addInquiry(Inquiry inquiry, String authorizationHeader) {
         if(inquiry.getProductId() < 1) {

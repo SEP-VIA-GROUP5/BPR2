@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import static com.rentit.model.dto.ProductDTO.buildProductDTO;
+import static com.rentit.model.dto.UserDTO.buildUserDTO;
+
 @Service
 public class ProductService {
     @Autowired
@@ -89,7 +92,7 @@ public class ProductService {
         User user = userService.getUserById(product.getUserId());
 
         ProductDTO productDTO = buildProductDTO(product);
-        UserDTO userDTO = UserService.buildUserDTO(user);
+        UserDTO userDTO = buildUserDTO(user);
 
         return ProductPackageDTO.builder().product(productDTO).user(userDTO).build();
     }
@@ -128,30 +131,10 @@ public class ProductService {
         return productMapper.getProductsByUserId(user.getId());
     }
 
-    public int getProductOwnerId(int productId){
-        if (productId<0){
+    public int getProductOwnerId(int productId) {
+        if (productId < 0) {
             return -1;
         }
         return productMapper.getProductOwnerId(productId);
-    }
-
-    public static ProductDTO buildProductDTO(Product product){
-        return ProductDTO.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .dayPrice(product.getDayPrice())
-                .weekPrice(product.getWeekPrice())
-                .monthPrice(product.getMonthPrice())
-                .deposit(product.getDeposit())
-                .city(product.getCity())
-                .productValue(product.getProductValue())
-                .minLeasePeriod(product.getMinLeasePeriod())
-                .category(product.getCategory())
-                .tags(product.getTags())
-                .images(product.getImages())
-                .status(product.getStatus())
-                .rentedUntil(product.getRentedUntil())
-                .build();
     }
 }
