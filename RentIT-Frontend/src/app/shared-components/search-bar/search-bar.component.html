@@ -6,6 +6,7 @@
     <nb-icon nbPrefix pack="eva" [icon]="icon"></nb-icon>
   </nb-form-field>
   <button class="select-filtering-options" nbButton shape="round" status="primary" hero
+          [disabled]="isListOnFiltering$ | async"
           (click)="onClickMoreFilteringOptions()">
     More filtering options
   </button>
