@@ -117,8 +117,8 @@ VALUES (1, 'Im interested in renting your product. Can we discuss the details?',
         '+4581468584', 1, FALSE, NULL, '2023-11-15', '2023-11-20');
 INSERT INTO `inquiries` (`product_id`, `message`, `time_stamp`, `sender_id`, `sender_email`, `sender_phone_no`,
                          `receiver_id`, `viewed`, `viewed_at`, `rent_start`, `rent_end`)
-VALUES (3, 'I would like to know more about your product. Is it available for rent?', '2023-11-11', 1,
-        'sigfred10@example.net', '+4538698799', 3, FALSE, NULL, '2023-11-18', '2023-11-25');
+VALUES (1, 'I would like to know more about your product. Is it available for rent?', '2023-11-11', 2,
+        'sigfred10@example.net', '+4538698799', 1, FALSE, NULL, '2023-11-18', '2023-11-25');
 INSERT INTO `inquiries` (`product_id`, `message`, `time_stamp`, `sender_id`, `sender_email`, `sender_phone_no`,
                          `receiver_id`, `viewed`, `viewed_at`, `rent_start`, `rent_end`)
 VALUES (2, 'Can I rent your product for a week starting next Monday?', '2023-11-11', 4, 'thøgersen.helmuth@example.com',

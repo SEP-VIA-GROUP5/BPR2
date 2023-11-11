@@ -71,7 +71,7 @@ public class InquiryService {
             return null;
         }
         if(filters.isEmpty()){
-            return inquiryMapper.getAllReceivedInquiries(user.getId());
+            return inquiryMapper.getReceivedInquiries(user.getId());
         }
 
         Map<PriceFilteringColumn, String> processedMap = serviceUtils.processFiltering(filters);
@@ -108,7 +108,7 @@ public class InquiryService {
         if(user == null){
             return null;
         }
-        return inquiryMapper.getAllMyInquiries(user.getId());
+        return inquiryMapper.getSentInquiries(user.getId());
     }
 
     public ResponseMessage deleteInquiry(int inquiryId, String authorizationHeader) {
