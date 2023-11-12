@@ -3,7 +3,7 @@
     <nb-tabset (changeTab)="onTabChanged($event)">
       <nb-tab [tabId]="InquiriesTabs.RECEIVED" tabTitle="Received inquiries">
         <nb-card class="inquiries-tab-card-content">
-          <nb-card-body [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
+          <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
             <p *ngIf="!(receivedInquiries$ | async)"> No inquiries received</p>
             <nb-list *ngIf="receivedInquiries$ | async as receivedInquiries">
               <nb-list-item *ngFor="let receivedInquiry of receivedInquiries">
@@ -39,7 +39,7 @@
       </nb-tab>
       <nb-tab [tabId]="InquiriesTabs.SENT" tabTitle="Sent inquiries">
         <nb-card class="inquiries-tab-card-content">
-          <nb-card-body [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
+          <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
             <nb-list *ngIf="sentInquiries$ | async as sentInquiries">
               <nb-list-item *ngFor="let sentInquiry of sentInquiries">
                 <nb-accordion>

@@ -63,14 +63,18 @@ export class InquiriesComponent implements OnInit, OnDestroy {
 
   onTabChanged(event: NbTabComponent) {
     switch (event.tabId) {
-      case InquiriesTabs.RECEIVED:
-      {
-        this.store.dispatch(new FetchReceivedInquiries());
+      case InquiriesTabs.RECEIVED: {
+        let isOnFirstPage: boolean = this.store.selectSnapshot(InquiriesSelector.pageNumberReceivedInquiries) === 1;
+        if (isOnFirstPage) {
+          this.store.dispatch(new FetchReceivedInquiries());
+        }
         break;
       }
-      case InquiriesTabs.SENT:
-      {
-        this.store.dispatch(new FetchSentInquiries());
+      case InquiriesTabs.SENT: {
+        let isOnFirstPage: boolean = this.store.selectSnapshot(InquiriesSelector.pageNumberSentInquiries) === 1;
+        if (isOnFirstPage) {
+          this.store.dispatch(new FetchSentInquiries());
+        }
         break;
       }
     }
