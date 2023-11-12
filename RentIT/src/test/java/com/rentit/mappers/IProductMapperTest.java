@@ -80,11 +80,17 @@ public class IProductMapperTest {
     }
 
     @Test
-    public void get_products_by_user_id_returns_list_of_user_products () {
+    public void get_products_by_user_id_returns_list_of_user_products() {
         int userId = 1;
         UserDTO user = userMapper.getUserDTOById(userId);
         List<ProductDTO> userProducts = productMapper.getProductsByUserId(userId);
         assertThat(userProducts.size()).isEqualTo(1);
 
+    }
+    @Test
+    public void get_product_owener_id_returns_correct_user_id() {
+        int userId = 1;
+        int productOwnerId = productMapper.getProductOwnerId(1);
+        assertThat(userId).isEqualTo(productOwnerId);
     }
 }

@@ -1,0 +1,68 @@
+<div class="search-bar-container">
+  <nb-form-field class="form-input-search">
+    <input [(ngModel)]="filteringProductOptions.name" class="input-search" nbInput
+           shape="round" placeholder="Name, for example: GoPro"
+           (input)="onInputChange($event)">
+    <nb-icon nbPrefix pack="eva" [icon]="icon"></nb-icon>
+  </nb-form-field>
+  <button class="select-filtering-options" nbButton shape="round" status="primary" hero
+          [disabled]="isListOnFiltering$ | async"
+          (click)="onClickMoreFilteringOptions()">
+    More filtering options
+  </button>
+  <button *ngIf="isListOnFiltering$ | async" class="reset-filtering-options" nbButton shape="round"
+          status="warning" hero
+          (click)="onResetFiltering()">
+    Reset filtering options
+  </button>
+</div>
+
+<ng-template #moreFilteringOptionsAction>
+  <nb-card class="more-filtering-options-container">
+    <nb-card-header class="more-filtering-options-header">
+      More filtering options
+    </nb-card-header>
+    <nb-card-body class="more-filtering-options-body">
+      <div class="left-right-container">
+        <div class="left-container">
+          <nb-form-field class="product-name-filtering">
+            <input [(ngModel)]="filteringProductOptions.name" nbInput shape="round" type="text"
+                   placeholder="Name">
+          </nb-form-field>
+        </div>
+        <div class="right-container">
+          <nb-form-field class="product-location-filtering">
+            <input [(ngModel)]="filteringProductOptions.city" nbInput shape="round" type="text"
+                   placeholder="Location">
+          </nb-form-field>
+          <nb-form-field class="product-category-filtering">
+            <input [(ngModel)]="filteringProductOptions.category" nbInput shape="round" type="text"
+                   placeholder="Category">
+          </nb-form-field>
+        </div>
+      </div>
+      <div class="prices-from-to-container">
+        <ng-container *ngFor="let filterType of productPriceFilters">
+          <label>{{filterType}}</label>
+          <div class="price">
+            <nb-form-field class="product-price-from-filtering">
+              <input [(ngModel)]="filteringProductOptions[getPriceValuesBasedOnPriceFilter(filterType)[0]]" nbInput shape="round" type="number"
+                     placeholder="From">
+            </nb-form-field>
+            <nb-form-field class="product-price-to-filtering">
+              <input [(ngModel)]="filteringProductOptions[getPriceValuesBasedOnPriceFilter(filterType)[1]]" nbInput shape="round" type="number"
+                     placeholder="To">
+            </nb-form-field>
+          </div>
+        </ng-container>
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="more-filtering-options-footer">
+      <button [disabled]="isSaveFilteringOptionsButtonEnabled()" nbButton shape="round" status="primary"
+              hero
+              (click)="onSaveFilteringOptions()">
+        Search
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

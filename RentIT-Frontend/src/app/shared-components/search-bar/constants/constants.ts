@@ -5,10 +5,17 @@ export function constructDefaultFilteringProductOptions(): FilteringProductOptio
     name: '',
     category: '',
     city: '',
-    deposit: null,
-    dayPrice: null,
-    weekPrice: null,
-    monthPrice: null,
-    productValue: null
+    depositFrom: null,
+    depositTo: null,
+    dayPriceFrom: null,
+    dayPriceTo: null,
+    weekPriceFrom: null,
+    weekPriceTo: null,
+    monthPriceFrom: null,
+    monthPriceTo: null,
+    productValueFrom: null,
+    productValueTo: null
   } satisfies FilteringProductOptions;
 }
+
+export type ProductPriceFilters = 'Deposit' | 'Day price' | 'Week price' | 'Month price' | 'Product value';

@@ -13,15 +13,15 @@ import java.util.Map;
 public interface IInquiryMapper {
 
     void addInquiry(Inquiry inquiry);
-    List<InquiryDTO> getAllReceivedInquiries(int userId);
-    void setViewed(int inquiryId, LocalDate now);
+    List<InquiryDTO> getReceivedInquiries(int receiverId);
+    void setViewed(int inquiryId, LocalDate viewedAt);
 
-    Inquiry getInquiry(int inquiryId);
+    Inquiry getInquiryById(int inquiryId);
 
 //    void setAccepted(int inquiryId, LocalDate now);
-    List<InquiryDTO> getAllMyInquiries(int id);
+    List<InquiryDTO> getSentInquiries(int senderId);
 
-    void deleteInquiry(int id, int inquiryId);
+    void deleteInquiry(int userId, int inquiryId);
 
     List<InquiryDTO> getAllReceivedInquiriesFiltered(int pageNum, int n, Map<PriceFilteringColumn, String> processedMap);
 }

@@ -17,6 +17,7 @@ export enum ICONS {
   IMAGE_OUTLINE = 'image-outline',
   TRASH_2_OUTLINE = 'trash-2-outline',
   CHECKMARK_OUTLINE = 'checkmark-outline',
+  QUESTION_MARK_CIRCLE_OUTLINE = 'question-mark-circle-outline',
   FUNNEL_OUTLINE = 'funnel-outline',
   BOOK_OPEN_OUTLINE = 'book-open-outline',
 }
@@ -105,12 +106,19 @@ export enum ContextMenuState {
   LOGGED_IN = 'LOGGED_IN'
 }
 
-// insensitive matcher for routes
-export function caseInsensitiveMatcher(segments: UrlSegment[], segmentGroup: UrlSegment[], route: any) {
-  const path = route.path.toLowerCase();
-  const parts = path.split('/');
+export const isEmail = (email: string): boolean => {
+  let regexp = new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$');
+  return regexp.test(email);
+}
 
-  return parts.length === segments.length && parts.every((part, index) => part === segments[index].path.toLowerCase())
-    ? { consumed: segments }
-    : null;
+export const isPassword = (password: string): boolean => {
+  let regexp = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+  return regexp.test(password);
+}
+
+export const isPhoneNumber = (phoneNumber: string): boolean => {
+  let regexp = new RegExp("^\\+[0-9]+$");
+  console.log(regexp.test(phoneNumber));
+  console.log(phoneNumber);
+  return regexp.test(phoneNumber);
 }

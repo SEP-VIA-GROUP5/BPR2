@@ -1,12 +1,9 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {
   defaultUserContent,
-  isEmail,
-  isPassword,
-  isPhoneNumber,
   UserContent
 } from "src/app/authentication/constants/constants";
-import {ICONS, PRODUCTS_MENU_ITEM_URLS} from '../constants';
+import {ICONS, isEmail, isPassword, isPhoneNumber, PRODUCTS_MENU_ITEM_URLS} from '../constants';
 import {Select, Store} from "@ngxs/store";
 import {Login, Register} from "src/app/authentication/authentication.actions";
 import {Observable} from "rxjs";

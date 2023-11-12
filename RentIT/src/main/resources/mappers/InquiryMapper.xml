@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentit.dao.interfaces.IInquiryMapper">
+    <resultMap id="InquiryResultMap" type="Inquiry">
+        <result property="inquiryId" column="inquiry_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="message" column="message"/>
+        <result property="timeStamp" column="time_stamp"/>
+        <result property="senderId" column="sender_id"/>
+        <result property="senderEmail" column="sender_email"/>
+        <result property="senderPhoneNumber" column="sender_phone_no"/>
+        <result property="receiverId" column="receiver_id"/>
+        <result property="viewed" column="viewed"/>
+        <result property="viewedAt" column="viewed_at"/>
+        <result property="rentStart" column="rent_start"/>
+        <result property="rentEnd" column="rent_end"/>
+    </resultMap>
+    <resultMap id="InquiryDTOResultMap" type="InquiryDTO">
+        <result property="inquiryId" column="inquiry_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="message" column="message"/>
+        <result property="timeStamp" column="time_stamp"/>
+        <result property="senderEmail" column="sender_email"/>
+        <result property="senderPhoneNumber" column="sender_phone_no"/>
+        <result property="viewed" column="viewed"/>
+        <result property="viewedAt" column="viewed_at"/>
+        <result property="rentStart" column="rent_start"/>
+        <result property="rentEnd" column="rent_end"/>
+        <association property="userDTO" column="sender_id" select="com.rentit.dao.interfaces.IUserMapper.getUserDTOById"/>
+    </resultMap>
+    <insert id="addInquiry" parameterType="Inquiry" useGeneratedKeys="true" keyProperty="inquiryId">
+        INSERT INTO inquiries
+        (product_id, message, time_stamp, sender_id, sender_email, sender_phone_no, receiver_id, viewed, viewed_at, rent_start, rent_end)
+        VALUES (#{productId}, #{message}, #{timeStamp}, #{senderId}, #{senderEmail}, #{senderPhoneNumber}, #{receiverId}, #{viewed}, #{viewedAt}, #{rentStart}, #{rentEnd});
+    </insert>
+    <update id="setViewed">
+        UPDATE inquiries
+        SET viewed = 1, viewed_at = #{viewedAt}
+        WHERE inquiry_id = #{inquiryId};
+    </update>
+    <select id="getInquiryById" resultMap="InquiryResultMap">
+        SELECT * FROM inquiries WHERE inquiry_id = #{inquiryId}
+    </select>
+    <select id="getReceivedInquiries" resultMap="InquiryDTOResultMap">
+        SELECT * FROM inquiries WHERE receiver_id = #{userId};
+    </select>
+    <select id="getSentInquiries" resultMap="InquiryDTOResultMap">
+        SELECT * FROM inquiries WHERE sender_id = #{senderId};
+    </select>
+</mapper>

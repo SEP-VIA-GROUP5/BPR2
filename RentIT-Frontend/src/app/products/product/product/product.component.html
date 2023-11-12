@@ -7,6 +7,16 @@
                     *ngIf="productOverview.product as product">
       <div class="product-overview-product-name">
         <h2>{{ product.name }}</h2>
+        <button [disabled]="!this.userService.isLoggedIn()"
+                nbTooltip="You need to be logged in to check availability of this product"
+                [nbTooltipDisabled]="this.userService.isLoggedIn()"
+                nbButton
+                size="small"
+                status="success" hero
+                (click)="openSendInquiryDialog()">
+          <nb-icon [icon]="ICONS.CHECKMARK_CIRCLE_OUTLINE"></nb-icon>
+          Check availability
+        </button>
       </div>
       <h3 class="product-overview-rented-until-date" *ngIf="product.rentedUntil">
         Rented until:
@@ -167,7 +177,7 @@
       </div>
     </nb-card-body>
     <nb-card-footer class="add-rating-dialog-footer">
-      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.ADD_REVIEW)" nbButton status="warning" hero (click)="onSubmitButtonClicked(SUBMIT_BUTTON_TYPE.ADD_REVIEW)">
+      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.ADD_REVIEW)" nbButton status="warning" hero (click)="onSubmitReportButtonClicked(SUBMIT_BUTTON_TYPE.ADD_REVIEW)">
         Submit
       </button>
     </nb-card-footer>
@@ -193,7 +203,7 @@
       </nb-form-field>
     </nb-card-body>
     <nb-card-footer>
-      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)" nbButton status="danger" hero (click)="onSubmitButtonClicked(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)">
+      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)" nbButton status="danger" hero (click)="onSubmitReportButtonClicked(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)">
         Submit
       </button>
     </nb-card-footer>
@@ -211,6 +221,74 @@
       </button>
       <button nbButton status="danger" hero (click)="resetReport(data.reportType)">
         Add new report
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #sendInquiryDialog let-data>
+<!--  <nb-card class="sending-inquiry-dialog-container">-->
+<!--    <nb-card-header>-->
+<!--      <p>Send <span class="bold">inquiry</span> for product <span class="bold"> {{data.product.product.name}}</span>?</p>-->
+<!--    </nb-card-header>-->
+<!--    <nb-card-body>-->
+<!--      <div class="inquiry-phone-email-user">-->
+<!--&lt;!&ndash;        todo ADD validation on email and phone number&ndash;&gt;-->
+<!--        <div class="form-content">-->
+<!--          <nb-form-field>-->
+<!--            <input class="inquiry-phone-number" [(ngModel)]="inquiryToSend.senderPhoneNumber" type="text" name="senderPhoneNumber" nbInput shape="round" placeholder="Your phone number"-->
+<!--                   required ngModel (input)="onInquiryInputType($event)" [class.invalid-field]="!isPhoneNumberInquiryValid">-->
+<!--            <nb-icon class="info-icon-form" nbSuffix [icon]="ICONS.QUESTION_MARK_CIRCLE_OUTLINE" nbTooltip="It can be left empty, unless you want to be contacted on another phone number." pack="eva"></nb-icon>-->
+<!--          </nb-form-field>-->
+<!--        </div>-->
+<!--        <div class="form-content">-->
+<!--          <nb-form-field>-->
+<!--            <input class="email" [(ngModel)]="inquiryToSend.senderEmail" type="email" name="senderEmail" nbInput shape="round" placeholder="Your email"-->
+<!--                   required email ngModel (input)="onInquiryInputType($event)" [class.invalid-field]="!isEmailInquiryValid">-->
+<!--            <nb-icon class="info-icon-form" nbSuffix [icon]="ICONS.QUESTION_MARK_CIRCLE_OUTLINE" nbTooltip="It can be left empty, unless you want to be contacted on another email." pack="eva"></nb-icon>-->
+<!--          </nb-form-field>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="inquiry-dates">-->
+<!--        <div class="inquiry-start-date">-->
+<!--          <input nbInput placeholder="Pick rent start date" [nbDatepicker]="pickerStartDate" [(ngModel)]="inquiryToSend.rentStart" shape="round">-->
+<!--          <nb-datepicker #pickerStartDate [min]="minimumFromRentingDate"></nb-datepicker>-->
+<!--        </div>-->
+<!--        <div class="inquiry-end-date">-->
+<!--          <input nbInput placeholder="Pick rent end date" [nbDatepicker]="pickerEndDate" [(ngModel)]="inquiryToSend.rentEnd" shape="round">-->
+<!--          <nb-datepicker #pickerEndDate [min]="minimumToRentingDate"></nb-datepicker>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="inquiry-message">-->
+<!--        <nb-form-field class="inquiry-message">-->
+<!--                <textarea [(ngModel)]="inquiryToSend.message" name="message" type="text" fullWidth nbInput-->
+<!--                          shape="round" placeholder="Inquiry message"></textarea>-->
+<!--          <span class="remaining-characters">{{getCharactersInquiryMessage()}}</span>-->
+<!--        </nb-form-field>-->
+<!--      </div>-->
+<!--    </nb-card-body>-->
+<!--    <nb-card-footer>-->
+<!--      <button status="success" nbButton hero (click)="onSubmitInquiryButtonClicked()" [disabled]="isOnSubmitInquiryButtonDisabled()">-->
+<!--        Submit-->
+<!--      </button>-->
+<!--      <button status="danger" nbButton hero (click)="onCancelInquiryDialog()">-->
+<!--        Cancel-->
+<!--      </button>-->
+<!--    </nb-card-footer>-->
+<!--  </nb-card>-->
+  <nb-card class="sending-inquiry-dialog-container">
+    <nb-card-header>
+      <p>Your inquiry was sent!</p>
+    </nb-card-header>
+    <nb-card-body>
+      <nb-icon [icon]="ICONS.CHECKMARK_CIRCLE_OUTLINE" pack="eva" status="success" style="font-size: 5rem"></nb-icon>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" hero (click)="onCloseInquiryDialog()">
+        Close
+      </button>
+      <button nbButton status="danger" hero (click)="onResetInquiryDialog()">
+        Add new inquiry
       </button>
     </nb-card-footer>
   </nb-card>

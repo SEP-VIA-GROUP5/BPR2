@@ -96,3 +96,23 @@ CREATE TABLE reported_products
     FOREIGN KEY (reported_product_id) REFERENCES products (product_id) ON DELETE CASCADE,
     FOREIGN KEY (reporter_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE inquiries
+(
+    inquiry_id INT AUTO_INCREMENT NOT NULL,
+    product_id INT NOT NULL,
+    message VARCHAR(500),
+    time_stamp DATE NOT NULL,
+    sender_id INT NOT NULL,
+    sender_email VARCHAR(40),
+    sender_phone_no VARCHAR(20),
+    receiver_id INT NOT NULL,
+    viewed BOOLEAN NOT NULL,
+    viewed_at DATE,
+    rent_start DATE NOT NULL,
+    rent_end DATE NOT NULL,
+    PRIMARY KEY (inquiry_id),
+    FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE,
+    FOREIGN KEY (sender_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (receiver_id) REFERENCES users (user_id) ON DELETE CASCADE
+);
