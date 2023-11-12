@@ -24,7 +24,7 @@ public class ServiceUtils {
             StringBuilder sb = new StringBuilder();
             PriceFilteringColumn pfc = new PriceFilteringColumn();
             sb.append(entry.getKey());
-            int split = sb.indexOf("_");
+            int split = sb.lastIndexOf("_");
             if(split < 0) {
                 pfc.setColumnName(sb.toString());
                 pfc.setBoundary("equals");
