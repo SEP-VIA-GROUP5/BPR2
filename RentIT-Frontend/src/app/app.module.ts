@@ -5,6 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
+  NbAccordionModule,
   NbDatepickerModule,
   NbDialogModule,
   NbMenuModule,
@@ -32,14 +33,17 @@ import {ImgurApiService} from "src/core/services/imgur.api.service";
 import {MyProductsComponent} from "src/app/my-products/my-products.component";
 import {SharedModule} from "src/core/share.module";
 import {ProductsModule} from "src/app/products/products.module";
-import {MyProductsState} from "src/app/my-products/my-products.state";
 import {ProductService} from "src/api/product.service";
 import {InquiriesComponent} from "src/app/inquiries/inquiries.component";
+import {InquiryService} from "src/api/inquiry.service";
+import {MyProductsState} from "src/app/my-products/my-products.state";
+import {InquiryState} from "src/app/inquiries/inquiries.state";
 
 export const STATES = [
   AppState,
   AuthenticationState,
   MyProductsState,
+  InquiryState,
 ];
 
 export const PAGE_COMPONENTS = [
@@ -64,6 +68,7 @@ export const PROVIDERS = [
   LocalStorageService,
   ProductService,
   ProductsService,
+  InquiryService,
   UserService,
   {
     provide: UrlSerializer,

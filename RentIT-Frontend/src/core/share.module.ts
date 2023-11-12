@@ -7,6 +7,7 @@ import {AgmCoreModule} from "@agm/core";
 import {environment} from "src/environments/environment.dev";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
+  NbAccordionModule,
   NbActionsModule,
   NbBadgeModule,
   NbButtonModule,
@@ -65,6 +66,7 @@ export const NEBULAR_MODULES = [
   NbContextMenuModule,
   NbStepperModule,
   NbOptionModule,
+  NbAccordionModule,
 ];
 
 export const SHARED_COMPONENTS = [
