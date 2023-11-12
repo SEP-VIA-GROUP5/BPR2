@@ -33,6 +33,7 @@ import {MyProductsComponent} from "src/app/my-products/my-products.component";
 import {SharedModule} from "src/core/share.module";
 import {ProductsModule} from "src/app/products/products.module";
 import {MyProductsState} from "src/app/my-products/my-products.state";
+import {ProductService} from "src/api/product.service";
 
 export const STATES = [
   AppState,
@@ -59,7 +60,7 @@ export const APP_NEBULAR_MODULES = [
 export const PROVIDERS = [
   ApiService,
   LocalStorageService,
-  ProductsService,
+  ProductService,
   ProductsService,
   UserService,
   {

@@ -1,6 +1,7 @@
 import {Review} from "src/model/review";
 import {Report} from "src/model/report";
 import {ReportType} from "src/app/products/product/product/constants/constants";
+import {Inquiry} from "src/model/inquiry";
 
 export class ProductFetch {
   static readonly type = '[Product] Fetch';
@@ -35,6 +36,18 @@ export class SubmitReport {
 export class ResetSubmitReport {
   static readonly type = '[Product] Reset Submit Report';
   constructor(public reportType: ReportType) {
+  }
+}
+
+export class SendingInquiry {
+  static readonly type = '[Product] Sending Inquiry';
+  constructor(public inquiry: Inquiry) {
+  }
+}
+
+export class ResetSendingInquiry {
+  static readonly type = '[Product] Reset Sending Inquiry';
+  constructor() {
   }
 }
 
