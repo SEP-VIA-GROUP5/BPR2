@@ -9,9 +9,11 @@ import {SharedModule} from "src/core/share.module";
 import {ProductsModulePage} from "src/app/products/products.module.page";
 import {ProductsState} from "src/app/products/products/products.state";
 import {ProductsComponent} from "src/app/products/products/products.component";
+import {InquiryService} from "src/api/inquiry.service";
 
 export const PRODUCTS_PROVIDERS = [
   ProductService,
+  InquiryService,
 ]
 
 export const PRODUCTS_STATES = [

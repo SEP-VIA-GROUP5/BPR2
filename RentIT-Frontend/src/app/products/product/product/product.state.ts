@@ -10,8 +10,8 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch,
-  ResetSubmitReport,
+  ProductReviewsFetch, ResetSendingInquiry,
+  ResetSubmitReport, SendingInquiry,
   SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
@@ -21,6 +21,7 @@ import {ReviewSummary} from "src/model/reviewSummary";
 import {ReportsService} from "src/api/reports.service";
 import {ReportType} from "src/app/products/product/product/constants/constants";
 import {ReviewDTO} from "src/model/reviewDTO";
+import {InquiryService} from "src/api/inquiry.service";
 
 export interface ProductStateModel {
   // product
@@ -37,6 +38,9 @@ export interface ProductStateModel {
   isUserReportAdded: boolean;
   isProductReportAdded: boolean,
   isFetchingReport: boolean;
+  // inquiry
+  isInquiryAdded: boolean;
+  isFetchingInquiry: boolean;
 }
 
 export const defaultsState: ProductStateModel = {
@@ -51,6 +55,8 @@ export const defaultsState: ProductStateModel = {
   isUserReportAdded: false,
   isProductReportAdded: false,
   isFetchingReport: false,
+  isInquiryAdded: false,
+  isFetchingInquiry: false,
 }
 
 @State<ProductStateModel>({
@@ -65,6 +71,7 @@ export class ProductState {
     private productService: ProductService,
     private reviewsService: ReviewsService,
     private reportsService: ReportsService,
+    private inquiryService: InquiryService,
   ) {
   }
 
@@ -251,6 +258,46 @@ export class ProductState {
       } else if (action.reportType === ReportType.USER) {
         draft.isUserReportAdded = false;
       }
+    });
+    return setState(newState);
+  }
+
+  @Action(SendingInquiry)
+  async sendingInquiry(
+    {getState, setState}: StateContext<ProductStateModel>,
+    action: SendingInquiry) {
+    let newState = produce(getState(), draft => {
+      draft.isFetchingInquiry = true;
+    });
+    setState(newState);
+
+    try {
+      let inquiryAdded = await this.inquiryService.addInquiry(action.inquiry);
+      newState = produce(getState(), draft => {
+        draft.isFetchingInquiry = false;
+        draft.isInquiryAdded = !!inquiryAdded;
+      });
+      return setState(newState);
+    }
+    catch (e) {
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : e,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+      newState = produce(getState(), draft => {
+        draft.isFetchingInquiry = false;
+        draft.isInquiryAdded = false;
+      });
+      return setState(newState);
+    }
+  }
+
+  @Action(ResetSendingInquiry)
+  async resetSendingInquiry(
+    {getState, setState}: StateContext<ProductStateModel>) {
+    let newState = produce(getState(), draft => {
+      draft.isInquiryAdded = false
     });
     return setState(newState);
   }

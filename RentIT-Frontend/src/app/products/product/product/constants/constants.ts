@@ -34,5 +34,7 @@ export function constructorSendingInquiry(): Inquiry {
   return {
     message: '',
     productId: -1,
+    senderPhoneNumber: '',
+    senderEmail: '',
   } satisfies Inquiry;
 }

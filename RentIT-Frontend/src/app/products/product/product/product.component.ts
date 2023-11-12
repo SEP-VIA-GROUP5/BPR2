@@ -9,8 +9,8 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch,
-  ResetSubmitReport,
+  ProductReviewsFetch, ResetSendingInquiry,
+  ResetSubmitReport, SendingInquiry,
   SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
@@ -55,6 +55,10 @@ export class ProductComponent implements OnInit, OnDestroy {
   isUserReportAdded$: Observable<boolean>;
   @Select(ProductSelector.isProductReportAdded)
   isProductReportAdded$: Observable<boolean>;
+  @Select(ProductSelector.isFetchingInquiry)
+  isFetchingInquiry$: Observable<boolean>;
+  @Select(ProductSelector.isInquiryAdded)
+  isInquiryAdded$: Observable<boolean>;
 
   // dialog sending inquiry
   @ViewChild('sendInquiryDialog') sendInquiryDialog: TemplateRef<any>;
@@ -234,8 +238,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.minimumToRentingDate = toUTCDate(addDays(new Date(), 1));
     this.inquiryToSend = {
       ...this.inquiryToSend,
-      rentStart: this.minimumToRentingDate,
-      rentEnd: this.minimumToRentingDate,
     }
     let product: ProductOverview = this.store.selectSnapshot(ProductSelector.product);
     this.sendInquiryDialogRef = this.nbDialogService.open(this.sendInquiryDialog, {
@@ -277,7 +279,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   onSubmitInquiryButtonClicked() {
-    // TODO: send inquiry with redux action
+    this.store.dispatch(new SendingInquiry(this.inquiryToSend));
   }
 
   onCloseInquiryDialog() {
@@ -285,7 +287,12 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   onResetInquiryDialog() {
-  // TODO: reset inquiry dialog with redux action
+    this.inquiryToSend = {
+      ...constructorSendingInquiry(),
+      productId: this.productId,
+    } satisfies Inquiry;
+
+    this.store.dispatch(new ResetSendingInquiry());
   }
 
   humanizeDurationMinLeasePeriod(minLeasePeriod: number) {

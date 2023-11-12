@@ -48,4 +48,14 @@ export class ProductSelector {
   static isProductReportAdded(state: ProductStateModel) {
     return state.isProductReportAdded;
   }
+
+  @Selector([ProductState])
+  static isFetchingInquiry(state: ProductStateModel) {
+    return state.isFetchingInquiry;
+  }
+
+  @Selector([ProductState])
+  static isInquiryAdded(state: ProductStateModel) {
+    return state.isInquiryAdded;
+  }
 }
