@@ -34,6 +34,7 @@ import {SharedModule} from "src/core/share.module";
 import {ProductsModule} from "src/app/products/products.module";
 import {MyProductsState} from "src/app/my-products/my-products.state";
 import {ProductService} from "src/api/product.service";
+import {InquiriesComponent} from "src/app/inquiries/inquiries.component";
 
 export const STATES = [
   AppState,
@@ -46,6 +47,7 @@ export const PAGE_COMPONENTS = [
   NotFoundComponent,
   AuthenticationComponent,
   MyProductsComponent,
+  InquiriesComponent,
 ];
 
 export const APP_NEBULAR_MODULES = [

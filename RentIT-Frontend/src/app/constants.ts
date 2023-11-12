@@ -17,6 +17,7 @@ export enum ICONS {
   IMAGE_OUTLINE = 'image-outline',
   TRASH_2_OUTLINE = 'trash-2-outline',
   CHECKMARK_OUTLINE = 'checkmark-outline',
+  MESSAGE_SQUARE_OUTLINE = 'message-square-outline',
   QUESTION_MARK_CIRCLE_OUTLINE = 'question-mark-circle-outline',
   FUNNEL_OUTLINE = 'funnel-outline',
   BOOK_OPEN_OUTLINE = 'book-open-outline',
@@ -25,6 +26,7 @@ export enum ICONS {
 export enum GENERAL_MENU_ITEM_URLS {
   AUTHENTICATION = '/authentication',
   MY_PRODUCTS = '/my-products',
+  INQUIRIES = '/inquiries',
 }
 
 export enum PRODUCTS_MENU_ITEM_URLS {
@@ -37,6 +39,7 @@ export enum PRODUCTS_MENU_ITEM_URLS {
 export enum BREADCRUMB_KEYS {
   PRODUCTS = 'Products',
   MY_PRODUCTS = 'My products',
+  INQUIRIES = 'Inquiries',
 }
 
 export enum CONTEXT_MENU_TITLES {
@@ -66,6 +69,11 @@ export function GENERAL_MENU_ITEMS_LOGGED_IN(): NbMenuItem[] {
       icon: ICONS.CUBE_OUTLINE,
       link: PRODUCTS_MENU_ITEM_URLS.MY_PRODUCTS,
     },
+    {
+      title: BREADCRUMB_KEYS.INQUIRIES,
+      icon: ICONS.MESSAGE_SQUARE_OUTLINE,
+      link: GENERAL_MENU_ITEM_URLS.INQUIRIES,
+    }
   ];
 }
 

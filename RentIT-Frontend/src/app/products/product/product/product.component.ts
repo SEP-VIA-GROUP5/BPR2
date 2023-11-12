@@ -214,8 +214,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   getCharactersReportMessage(reportType: ReportType) {
     if (reportType === ReportType.USER) {
       return `${this.reportToAdd.userReport.message.length} / 500`;
-    }
-    else if (reportType === ReportType.PRODUCT) {
+    } else if (reportType === ReportType.PRODUCT) {
       return `${this.reportToAdd.productReport.message.length} / 500`;
     }
   }
@@ -250,19 +249,17 @@ export class ProductComponent implements OnInit, OnDestroy {
   onInquiryInputType(event) {
     switch (event.target.name) {
       case "senderPhoneNumber" : {
-        if(event.target.name || event.target.name !== '') {
+        if (event.target.name || event.target.name !== '') {
           this.isPhoneNumberInquiryValid = isPhoneNumber(event.target.value);
-        }
-        else if(event.target.name === '') {
+        } else if (event.target.name === '') {
           this.isPhoneNumberInquiryValid = true;
         }
         break;
       }
       case "senderEmail" : {
-        if(event.target.name || event.target.name !== '') {
+        if (event.target.name || event.target.name !== '') {
           this.isEmailInquiryValid = isEmail(event.target.value);
-        }
-        else if(event.target.name === '') {
+        } else if (event.target.name === '') {
           this.isEmailInquiryValid = true;
         }
         break;
@@ -275,7 +272,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   isOnSubmitInquiryButtonDisabled() {
-    return this.inquiryToSend.message === '' || this.inquiryToSend.message.length > 500 || !this.isEmailInquiryValid || !this.isPhoneNumberInquiryValid;
+    return this.inquiryToSend.message === '' || this.inquiryToSend.message.length > 500 || !this.isEmailInquiryValid || !this.isPhoneNumberInquiryValid || this.inquiryToSend.rentEnd === null || this.inquiryToSend.rentStart === null
   }
 
   onSubmitInquiryButtonClicked() {
