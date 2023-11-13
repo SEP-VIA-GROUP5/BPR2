@@ -5,70 +5,78 @@
         <nb-card class="inquiries-tab-card-content">
           <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
             <p *ngIf="!(receivedInquiries$ | async)"> No inquiries received</p>
-            <nb-list *ngIf="receivedInquiries$ | async as receivedInquiries">
-              <nb-list-item *ngFor="let receivedInquiry of receivedInquiries">
-                <nb-accordion>
-                  <nb-accordion-item>
-                    <nb-accordion-item-header>
-                      <div class="received-inquiry-user">
-                        <p>{{ receivedInquiry.senderEmail }}</p>
-                        <p>{{ receivedInquiry.senderPhoneNumber }}</p>
+            <div class="inquiry-item-content" *ngIf="receivedInquiries$ | async as receivedInquiries">
+              <nb-accordion>
+                <nb-accordion-item *ngFor="let receivedInquiry of receivedInquiries">
+                  <nb-accordion-item-header>
+                    <div class="received-inquiry-user">
+                      <p><span> Sender email: </span>{{ receivedInquiry.senderEmail }}</p>
+                      <p><span> Sender phone number: </span>{{ receivedInquiry.senderPhoneNumber }}</p>
+                    </div>
+                    <div class="dates">
+                      <p> <span> Start rent </span>{{ receivedInquiry.rentStart | date}}</p>
+                      <p> <span> End rent: </span>{{ receivedInquiry.rentEnd | date}}</p>
+                    </div>
+                    <div class="sent-date">
+                      <p> <span> Received date: </span> {{ receivedInquiry.timeStamp | date }}</p>
+                    </div>
+                    <div class="viewed">
+                      <nb-icon [icon]="receivedInquiry.viewed ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE_2"
+                               [nbTooltip]="getTooltipTimestamp(receivedInquiry)"
+                               [nbTooltipDisabled]="!receivedInquiry.viewed"></nb-icon>
+                    </div>
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                    <div class="receive-inquiry-content">
+                      <div class="message">
+                        <p class="title">Message</p>
+                        <p>{{ receivedInquiry.message }}</p>
                       </div>
-
-                    </nb-accordion-item-header>
-                    <nb-accordion-item-body>
-                      <div classs="receive-inquiry-content">
-                        <div class="viewed">
-                          <p>{{ receivedInquiry.viewed }} <span *ngIf="receivedInquiry.viewed"> at {{ receivedInquiry.viewedAt | date }}</span></p>
-                        </div>
-                        <div class="dates">
-                          <p>{{ receivedInquiry.rentStart | date}}</p>
-                          <p>{{ receivedInquiry.rentEnd | date}}</p>
-                        </div>
-                        <div class="message">
-                          <p>{{ receivedInquiry.message }}</p>
-                        </div>
-                      </div>
-                    </nb-accordion-item-body>
-                  </nb-accordion-item>
-                </nb-accordion>
-              </nb-list-item>
-            </nb-list>
+                    </div>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+              </nb-accordion>
+            </div>
           </nb-card-body>
         </nb-card>
       </nb-tab>
       <nb-tab [tabId]="InquiriesTabs.SENT" tabTitle="Sent inquiries">
         <nb-card class="inquiries-tab-card-content">
           <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
-            <nb-list *ngIf="sentInquiries$ | async as sentInquiries">
-              <nb-list-item *ngFor="let sentInquiry of sentInquiries">
-                <nb-accordion>
-                  <nb-accordion-item>
-                    <nb-accordion-item-header>
-                      <div class="received-inquiry-user">
-                        <p>{{ sentInquiry.senderEmail }}</p>
-                        <p>{{ sentInquiry.senderPhoneNumber }}</p>
+            <p *ngIf="!(receivedInquiries$ | async)"> No inquiries received</p>
+            <div class="inquiry-item-content" *ngIf="receivedInquiries$ | async as receivedInquiries">
+              <nb-accordion>
+                <nb-accordion-item (collapsedChange)="onCollapsedChanged($event, receivedInquiry)" *ngFor="let receivedInquiry of receivedInquiries">
+                  <nb-accordion-item-header>
+                    <div class="received-inquiry-user">
+                      <p><span> Sender email: </span>{{ receivedInquiry.senderEmail }}</p>
+                      <p><span> Sender phone number: </span>{{ receivedInquiry.senderPhoneNumber }}</p>
+                    </div>
+                    <div class="dates">
+                      <p> <span> Start rent </span>{{ receivedInquiry.rentStart | date}}</p>
+                      <p> <span> End rent: </span>{{ receivedInquiry.rentEnd | date}}</p>
+                    </div>
+                    <div class="sent-date">
+                      <p> <span> Received date: </span> {{ receivedInquiry.timeStamp | date }}</p>
+                    </div>
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                    <div class="receive-inquiry-content">
+                      <div class="message">
+                        <p class="title">Message</p>
+                        <p>{{ receivedInquiry.message }}</p>
                       </div>
-
-                    </nb-accordion-item-header>
-                    <nb-accordion-item-body>
-                      <div classs="receive-inquiry-content">
-                        <div class="viewed">
-                          <p>{{ sentInquiry.viewed }} <span *ngIf="sentInquiry.viewed"> at {{ sentInquiry.viewedAt | date }}</span></p>
-                        </div>
-                        <div class="dates">
-                          <p>{{ sentInquiry.rentStart | date}}</p>
-                          <p>{{ sentInquiry.rentEnd | date}}</p>
-                        </div>
-                        <div class="message">
-                          <p>{{ sentInquiry.message }}</p>
+                      <div class="actions">
+                        <p class="title">Actions</p>
+                        <div class="buttons">
+                          <button nbButton status="danger" size="small" (click)="onRemoveInquiry(receivedInquiry)" hero>Remove</button>
                         </div>
                       </div>
-                    </nb-accordion-item-body>
-                  </nb-accordion-item>
-                </nb-accordion>
-              </nb-list-item>
-            </nb-list>
+                    </div>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+              </nb-accordion>
+            </div>
           </nb-card-body>
         </nb-card>
       </nb-tab>

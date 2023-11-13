@@ -8,7 +8,6 @@ export enum ICONS {
   MAP_OUTLINE = 'map-outline',
   LIST_OUTLINE = 'list-outline',
   ARROW_IOS_DOWNWARD_OUTLINE = 'arrow-ios-downward-outline',
-  EYE_OUTLINE = 'eye-outline',
   EYE_OFF_OUTLINE = 'eye-off-2-outline',
   LOG_IN_OUTLINE = 'log-in-outline',
   LOG_OUT_OUTLINE = 'log-out-outline',
@@ -19,6 +18,8 @@ export enum ICONS {
   CHECKMARK_OUTLINE = 'checkmark-outline',
   MESSAGE_SQUARE_OUTLINE = 'message-square-outline',
   QUESTION_MARK_CIRCLE_OUTLINE = 'question-mark-circle-outline',
+  EYE_OFF_OUTLINE_2 = 'eye-off-2-outline',
+  EYE_OUTLINE = 'eye-outline',
   FUNNEL_OUTLINE = 'funnel-outline',
   BOOK_OPEN_OUTLINE = 'book-open-outline',
 }

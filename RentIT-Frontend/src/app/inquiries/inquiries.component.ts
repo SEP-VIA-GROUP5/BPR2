@@ -80,6 +80,14 @@ export class InquiriesComponent implements OnInit, OnDestroy {
     }
   }
 
+  getTooltipTimestamp(inquiry: Inquiry): string {
+   return inquiry.viewedAt ? `Viewed at ${inquiry.viewedAt}` : `This inquiry has not been viewed yet`;
+  }
+
+  onRemoveInquiry(receivedInquiry) {
+    alert('remove');
+  }
+
   ngOnDestroy(): void {
     this.alive = false;
     this.store.dispatch(new ResetInquiry());
