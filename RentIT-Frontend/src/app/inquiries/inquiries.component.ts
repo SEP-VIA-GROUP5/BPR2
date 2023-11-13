@@ -5,7 +5,13 @@ import {Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
 import {NbDialogService, NbTabComponent, NbToastrService} from "@nebular/theme";
 import {InquiriesTabs} from "src/app/inquiries/constants/constants";
-import {FetchReceivedInquiries, FetchSentInquiries, ResetInquiry} from "src/app/inquiries/inquiries.actions";
+import {
+  DeleteInquiry,
+  FetchReceivedInquiries,
+  FetchSentInquiries,
+  ResetInquiry,
+  ViewInquiry
+} from "src/app/inquiries/inquiries.actions";
 import {InquiriesSelector} from "src/app/inquiries/inquiries.selector";
 import {Observable} from "rxjs";
 import {Inquiry} from "src/model/inquiry";
@@ -84,8 +90,14 @@ export class InquiriesComponent implements OnInit, OnDestroy {
    return inquiry.viewedAt ? `Viewed at ${inquiry.viewedAt}` : `This inquiry has not been viewed yet`;
   }
 
-  onRemoveInquiry(receivedInquiry) {
-    alert('remove');
+  onCollapsedChanged(isCollapsed, receivedInquiry: Inquiry) {
+    if (isCollapsed && !receivedInquiry.viewed) {
+      this.store.dispatch(new ViewInquiry(receivedInquiry.inquiryId));
+    }
+  }
+
+  onRemoveInquiry(receivedInquiry: Inquiry) {
+    this.store.dispatch(new DeleteInquiry(receivedInquiry.inquiryId));
   }
 
   ngOnDestroy(): void {

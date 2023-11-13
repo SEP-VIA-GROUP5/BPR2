@@ -7,7 +7,7 @@
             <p *ngIf="!(receivedInquiries$ | async)"> No inquiries received</p>
             <div class="inquiry-item-content" *ngIf="receivedInquiries$ | async as receivedInquiries">
               <nb-accordion>
-                <nb-accordion-item *ngFor="let receivedInquiry of receivedInquiries">
+                <nb-accordion-item (collapsedChange)="onCollapsedChanged($event, receivedInquiry)"  *ngFor="let receivedInquiry of receivedInquiries">
                   <nb-accordion-item-header>
                     <div class="received-inquiry-user">
                       <p><span> Sender email: </span>{{ receivedInquiry.senderEmail }}</p>
@@ -46,7 +46,7 @@
             <p *ngIf="!(receivedInquiries$ | async)"> No inquiries received</p>
             <div class="inquiry-item-content" *ngIf="receivedInquiries$ | async as receivedInquiries">
               <nb-accordion>
-                <nb-accordion-item (collapsedChange)="onCollapsedChanged($event, receivedInquiry)" *ngFor="let receivedInquiry of receivedInquiries">
+                <nb-accordion-item *ngFor="let receivedInquiry of receivedInquiries">
                   <nb-accordion-item-header>
                     <div class="received-inquiry-user">
                       <p><span> Sender email: </span>{{ receivedInquiry.senderEmail }}</p>

@@ -166,6 +166,13 @@ export class InquiryState {
     try {
       await this.inquiryService.viewInquiry(action.inquiryId);
       newState = produce(getState(), draft => {
+        draft.receivedInquiries = [...draft.receivedInquiries.map(inquiry => {
+          if(inquiry.inquiryId === action.inquiryId) {
+            inquiry.viewed = true;
+            inquiry.viewedAt = new Date();
+          }
+          return inquiry;
+        })]
         draft.isFetching = false;
       });
       return setState(newState);
