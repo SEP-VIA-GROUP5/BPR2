@@ -59,7 +59,7 @@ public class InquiryService {
         inquiry.setReceiverId(directedToId);
         inquiryMapper.addInquiry(inquiry);
 
-        return buildInquiryDTO(inquiry,null);
+        return buildInquiryDTO(inquiry,null, null);
     }
 
     public List<InquiryDTO> getAllReceivedInquiries(int pageNum, int n, Map<String, String> filters, String authorizationHeader) {
@@ -100,6 +100,7 @@ public class InquiryService {
         return ResponseMessage.SUCCESS;
     }
 
+    //product id, images, product name, rented until, status
     public List<InquiryDTO> getAllMyInquiries(int pageNum, int n, String authorizationHeader) {
         if(pageNum < 0 || n < 0){
             return null;

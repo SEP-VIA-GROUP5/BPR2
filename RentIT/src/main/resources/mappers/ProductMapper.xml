@@ -73,6 +73,11 @@
         FROM products
         WHERE product_id = #{id};
     </select>
+    <select id="getProductDTOById" resultMap="PublicProductResultMap">
+        SELECT *
+        FROM products
+        WHERE product_id = #{id};
+    </select>
     <select id="getProductsByUserId" resultMap="PublicProductResultMap">
         SELECT *
         FROM products
