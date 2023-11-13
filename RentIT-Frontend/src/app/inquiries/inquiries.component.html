@@ -22,8 +22,7 @@
                     </div>
                     <div class="viewed">
                       <nb-icon [icon]="receivedInquiry.viewed ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE_2"
-                               [nbTooltip]="getTooltipTimestamp(receivedInquiry)"
-                               [nbTooltipDisabled]="!receivedInquiry.viewed"></nb-icon>
+                               [nbTooltip]="getTooltipTimestamp(receivedInquiry)"></nb-icon>
                     </div>
                   </nb-accordion-item-header>
                   <nb-accordion-item-body>
@@ -58,6 +57,10 @@
                     </div>
                     <div class="sent-date">
                       <p> <span> Received date: </span> {{ receivedInquiry.timeStamp | date }}</p>
+                    </div>
+                    <div class="viewed">
+                      <nb-icon [icon]="receivedInquiry.viewed ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE_2"
+                               [nbTooltip]="getTooltipTimestamp(receivedInquiry)"></nb-icon>
                     </div>
                   </nb-accordion-item-header>
                   <nb-accordion-item-body>

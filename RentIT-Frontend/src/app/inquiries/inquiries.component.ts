@@ -87,7 +87,7 @@ export class InquiriesComponent implements OnInit, OnDestroy {
   }
 
   getTooltipTimestamp(inquiry: Inquiry): string {
-   return inquiry.viewedAt ? `Viewed at ${inquiry.viewedAt}` : `This inquiry has not been viewed yet`;
+   return inquiry.viewed ? `Viewed at ${inquiry.viewedAt}` : `This inquiry has not been viewed yet`;
   }
 
   onCollapsedChanged(isCollapsed, receivedInquiry: Inquiry) {
