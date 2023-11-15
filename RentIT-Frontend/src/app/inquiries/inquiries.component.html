@@ -37,6 +37,13 @@
               </nb-accordion>
             </div>
           </nb-card-body>
+          <nb-card-footer>
+            <button [disabled]="isLastPageSentInquiries$ | async" nbButton status="primary"
+                    [nbTooltip]="(isLastPageSentInquiries$ | async) ? 'No more inquiries to load' : 'Load more inquiries'"
+                    (click)="loadNextInquiries(InquiriesTabs.SENT)">
+              <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>
+            </button>
+          </nb-card-footer>
         </nb-card>
       </nb-tab>
       <nb-tab [tabId]="InquiriesTabs.SENT" tabTitle="Sent inquiries">
@@ -81,8 +88,17 @@
               </nb-accordion>
             </div>
           </nb-card-body>
+          <nb-card-footer>
+            <button [disabled]="isLastPageReceivedInquiries$ | async" nbButton status="primary"
+                    [nbTooltip]="(isLastPageReceivedInquiries$ | async) ? 'No more inquiries to load' : 'Load more inquiries'"
+                    (click)="loadNextInquiries(InquiriesTabs.RECEIVED)">
+              <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>
+            </button>
+          </nb-card-footer>
         </nb-card>
       </nb-tab>
     </nb-tabset>
   </nb-card-body>
+  <nb-card-footer>
+  </nb-card-footer>
 </nb-card>

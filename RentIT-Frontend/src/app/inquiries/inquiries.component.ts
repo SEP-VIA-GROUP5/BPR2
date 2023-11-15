@@ -100,6 +100,19 @@ export class InquiriesComponent implements OnInit, OnDestroy {
     this.store.dispatch(new DeleteInquiry(receivedInquiry.inquiryId));
   }
 
+  loadNextInquiries(inquiryType: InquiriesTabs) {
+    switch (inquiryType) {
+      case InquiriesTabs.RECEIVED: {
+        this.store.dispatch(new FetchReceivedInquiries());
+        break;
+      }
+      case InquiriesTabs.SENT: {
+        this.store.dispatch(new FetchSentInquiries());
+        break;
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.alive = false;
     this.store.dispatch(new ResetInquiry());
