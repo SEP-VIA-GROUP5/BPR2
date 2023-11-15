@@ -1,0 +1,105 @@
+<nb-card class="inquiries-content">
+  <nb-card-body class="inquiries-content-body">
+    <nb-tabset (changeTab)="onTabChanged($event)">
+      <nb-tab [tabId]="InquiriesTabs.RECEIVED" tabTitle="Received inquiries">
+        <nb-card class="inquiries-tab-card-content">
+          <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
+            <p *ngIf="(receivedInquiries$ | async).length === 0"> No inquiries received</p>
+            <div class="inquiry-item-content" *ngIf="(receivedInquiries$ | async) as receivedInquiries">
+              <nb-accordion *ngIf="receivedInquiries.length > 0">
+                <nb-accordion-item (collapsedChange)="onCollapsedChanged($event, receivedInquiry)"  *ngFor="let receivedInquiry of receivedInquiries">
+                  <nb-accordion-item-header>
+                    <div class="received-inquiry-user">
+                      <p><span> Sender email: </span>{{ receivedInquiry.senderEmail }}</p>
+                      <p><span> Sender phone number: </span>{{ receivedInquiry.senderPhoneNumber }}</p>
+                    </div>
+                    <div class="dates">
+                      <p> <span> Start rent </span>{{ receivedInquiry.rentStart | date}}</p>
+                      <p> <span> End rent: </span>{{ receivedInquiry.rentEnd | date}}</p>
+                    </div>
+                    <div class="sent-date">
+                      <p> <span> Received date: </span> {{ receivedInquiry.timeStamp | date }}</p>
+                    </div>
+                    <div class="viewed">
+                      <nb-icon [icon]="receivedInquiry.viewed ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE_2"
+                               [nbTooltip]="getTooltipTimestamp(receivedInquiry)"></nb-icon>
+                    </div>
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                    <div class="receive-inquiry-content">
+                      <div class="message">
+                        <p class="title">Message</p>
+                        <p>{{ receivedInquiry.message }}</p>
+                      </div>
+                    </div>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+              </nb-accordion>
+            </div>
+          </nb-card-body>
+          <nb-card-footer *ngIf="(receivedInquiries$ | async).length > 0">
+            <button [disabled]="isLastPageSentInquiries$ | async" nbButton status="primary"
+                    [nbTooltip]="(isLastPageSentInquiries$ | async) ? 'No more inquiries to load' : 'Load more inquiries'"
+                    (click)="loadNextInquiries(InquiriesTabs.SENT)">
+              <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>
+            </button>
+          </nb-card-footer>
+        </nb-card>
+      </nb-tab>
+      <nb-tab [tabId]="InquiriesTabs.SENT" tabTitle="Sent inquiries">
+        <nb-card class="inquiries-tab-card-content">
+          <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
+            <p *ngIf="(receivedInquiries$ | async).length === 0"> No inquiries sent</p>
+            <div class="inquiry-item-content" *ngIf="(receivedInquiries$ | async) as receivedInquiries">
+              <nb-accordion *ngIf="receivedInquiries.length > 0">
+                <nb-accordion-item *ngFor="let receivedInquiry of receivedInquiries">
+                  <nb-accordion-item-header>
+                    <div class="received-inquiry-user">
+                      <p><span> Sender email: </span>{{ receivedInquiry.senderEmail }}</p>
+                      <p><span> Sender phone number: </span>{{ receivedInquiry.senderPhoneNumber }}</p>
+                    </div>
+                    <div class="dates">
+                      <p> <span> Start rent </span>{{ receivedInquiry.rentStart | date}}</p>
+                      <p> <span> End rent: </span>{{ receivedInquiry.rentEnd | date}}</p>
+                    </div>
+                    <div class="sent-date">
+                      <p> <span> Received date: </span> {{ receivedInquiry.timeStamp | date }}</p>
+                    </div>
+                    <div class="viewed">
+                      <nb-icon [icon]="receivedInquiry.viewed ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE_2"
+                               [nbTooltip]="getTooltipTimestamp(receivedInquiry)"></nb-icon>
+                    </div>
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                    <div class="receive-inquiry-content">
+                      <div class="message">
+                        <p class="title">Message</p>
+                        <p>{{ receivedInquiry.message }}</p>
+                      </div>
+<!--                      TODO remove action is not needed for now-->
+<!--                      <div class="actions">-->
+<!--                        <p class="title">Actions</p>-->
+<!--                        <div class="buttons">-->
+<!--                          <button nbButton status="danger" size="small" (click)="onRemoveInquiry(receivedInquiry)" hero>Remove</button>-->
+<!--                        </div>-->
+<!--                      </div>-->
+                    </div>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+              </nb-accordion>
+            </div>
+          </nb-card-body>
+          <nb-card-footer *ngIf="(receivedInquiries$ | async).length > 0">
+            <button [disabled]="isLastPageReceivedInquiries$ | async" nbButton status="primary"
+                    [nbTooltip]="(isLastPageReceivedInquiries$ | async) ? 'No more inquiries to load' : 'Load more inquiries'"
+                    (click)="loadNextInquiries(InquiriesTabs.RECEIVED)">
+              <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>
+            </button>
+          </nb-card-footer>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+  <nb-card-footer>
+  </nb-card-footer>
+</nb-card>

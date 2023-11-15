@@ -24,11 +24,12 @@
       </h3>
       <nb-badge class="product-overview-status-badge" [text]="getProductInfoStatusBadge(product.status)"
                 [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
-      <nb-badge class="report-badge" text="Report"
-                [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.PRODUCT)"
-                [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
-                status="danger" position="top left"
-                (click)="openReportDialog(TYPE_REPORT.PRODUCT)"></nb-badge>
+      <nb-badge
+        *ngIf="!this.userService.isLoggedIn" class="report-badge" text="Report"
+        [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.PRODUCT)"
+        [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
+        status="danger" position="top left"
+        (click)="openReportDialog(TYPE_REPORT.PRODUCT)"></nb-badge>
     </nb-card-header>
     <nb-card-body class="product-overview-body">
       <div class="left-section">
@@ -58,14 +59,15 @@
           </nb-card-header>
           <nb-list *ngIf="(reviews$ | async) as reviews" class="review-container">
             <nb-list-item *ngFor="let review of reviews">
-                              <div class="reviewer-information">
-                                <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"
-                                         onlyPicture>
-                                </nb-user>
-                                <p> {{review.userDTO.firstName}} {{review.userDTO.lastName}}</p>
-                              </div>
+              <div class="reviewer-information">
+                <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="medium"
+                         onlyPicture>
+                </nb-user>
+                <p> {{review.userDTO.firstName}} {{review.userDTO.lastName}}</p>
+              </div>
               <div class="review-rating-information">
-                <stars-rating [rating]="review.review.rating" [showTooltip]="false" [enableClickEvent]="false"></stars-rating>
+                <stars-rating [rating]="review.review.rating" [showTooltip]="false"
+                              [enableClickEvent]="false"></stars-rating>
               </div>
               <div class="review-description">
                 <p><span> Description:</span> {{ review.review.message }}</p>
@@ -116,7 +118,7 @@
             </div>
           </nb-card-header>
           <nb-card-body>
-            <nb-badge class="report-badge" text="Report"
+            <nb-badge *ngIf="!this.userService.isLoggedIn" class="report-badge" text="Report"
                       [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.USER)"
                       [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
                       status="danger" position="top left"
@@ -177,7 +179,8 @@
       </div>
     </nb-card-body>
     <nb-card-footer class="add-rating-dialog-footer">
-      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.ADD_REVIEW)" nbButton status="warning" hero (click)="onSubmitReportButtonClicked(SUBMIT_BUTTON_TYPE.ADD_REVIEW)">
+      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.ADD_REVIEW)" nbButton status="warning" hero
+              (click)="onSubmitReportButtonClicked(SUBMIT_BUTTON_TYPE.ADD_REVIEW)">
         Submit
       </button>
     </nb-card-footer>
@@ -203,7 +206,8 @@
       </nb-form-field>
     </nb-card-body>
     <nb-card-footer>
-      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)" nbButton status="danger" hero (click)="onSubmitReportButtonClicked(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)">
+      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)" nbButton status="danger"
+              hero (click)="onSubmitReportButtonClicked(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)">
         Submit
       </button>
     </nb-card-footer>
@@ -228,37 +232,47 @@
 
 <ng-template #sendInquiryDialog let-data>
   <nb-card *ngIf="!(isInquiryAdded$ | async)" class="sending-inquiry-dialog-container"
-  [nbSpinner]="isFetchingInquiry$ | async"
-  nbSpinnerStatus="primary"
-  nbSpinnerSize="medium">
+           [nbSpinner]="isFetchingInquiry$ | async"
+           nbSpinnerStatus="primary"
+           nbSpinnerSize="medium">
     <nb-card-header>
-      <p>Send <span class="bold">inquiry</span> for product <span class="bold"> {{data.product.product.name}}</span>?</p>
+      <p>Send <span class="bold">inquiry</span> for product <span class="bold"> {{data.product.product.name}}</span>?
+      </p>
     </nb-card-header>
     <nb-card-body>
       <div class="inquiry-phone-email-user">
-<!--        todo ADD validation on email and phone number-->
         <div class="form-content">
           <nb-form-field>
-            <input class="inquiry-phone-number" [(ngModel)]="inquiryToSend.senderPhoneNumber" type="text" name="senderPhoneNumber" nbInput shape="round" placeholder="Your phone number"
-                   required ngModel (input)="onInquiryInputType($event)" [class.invalid-field]="!isPhoneNumberInquiryValid">
-            <nb-icon class="info-icon-form" nbSuffix [icon]="ICONS.QUESTION_MARK_CIRCLE_OUTLINE" nbTooltip="It can be left empty, unless you want to be contacted on another phone number." pack="eva"></nb-icon>
+            <input class="inquiry-phone-number" [(ngModel)]="inquiryToSend.senderPhoneNumber" type="text"
+                   name="senderPhoneNumber" nbInput shape="round" placeholder="Your phone number"
+                   required ngModel (input)="onInquiryInputType($event)"
+                   [class.invalid-field]="!isPhoneNumberInquiryValid">
+            <nb-icon class="info-icon-form" nbSuffix [icon]="ICONS.QUESTION_MARK_CIRCLE_OUTLINE"
+                     nbTooltip="It can be left empty, unless you want to be contacted on another phone number."
+                     pack="eva"></nb-icon>
           </nb-form-field>
         </div>
         <div class="form-content">
           <nb-form-field>
-            <input class="email" [(ngModel)]="inquiryToSend.senderEmail" type="email" name="senderEmail" nbInput shape="round" placeholder="Your email"
-                   required email ngModel (input)="onInquiryInputType($event)" [class.invalid-field]="!isEmailInquiryValid">
-            <nb-icon class="info-icon-form" nbSuffix [icon]="ICONS.QUESTION_MARK_CIRCLE_OUTLINE" nbTooltip="It can be left empty, unless you want to be contacted on another email." pack="eva"></nb-icon>
+            <input class="email" [(ngModel)]="inquiryToSend.senderEmail" type="email" name="senderEmail" nbInput
+                   shape="round" placeholder="Your email"
+                   required email ngModel (input)="onInquiryInputType($event)"
+                   [class.invalid-field]="!isEmailInquiryValid">
+            <nb-icon class="info-icon-form" nbSuffix [icon]="ICONS.QUESTION_MARK_CIRCLE_OUTLINE"
+                     nbTooltip="It can be left empty, unless you want to be contacted on another email."
+                     pack="eva"></nb-icon>
           </nb-form-field>
         </div>
       </div>
       <div class="inquiry-dates">
         <div class="inquiry-start-date">
-          <input nbInput placeholder="Pick rent start date" [nbDatepicker]="pickerStartDate" [(ngModel)]="inquiryToSend.rentStart" shape="round">
+          <input nbInput placeholder="Pick rent start date" [nbDatepicker]="pickerStartDate"
+                 [(ngModel)]="inquiryToSend.rentStart" shape="round">
           <nb-datepicker #pickerStartDate [min]="minimumFromRentingDate"></nb-datepicker>
         </div>
         <div class="inquiry-end-date">
-          <input nbInput placeholder="Pick rent end date" [nbDatepicker]="pickerEndDate" [(ngModel)]="inquiryToSend.rentEnd" shape="round">
+          <input nbInput placeholder="Pick rent end date" [nbDatepicker]="pickerEndDate"
+                 [(ngModel)]="inquiryToSend.rentEnd" shape="round">
           <nb-datepicker #pickerEndDate [min]="minimumToRentingDate"></nb-datepicker>
         </div>
       </div>
@@ -271,7 +285,8 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button status="success" nbButton hero (click)="onSubmitInquiryButtonClicked()" [disabled]="isOnSubmitInquiryButtonDisabled()">
+      <button status="success" nbButton hero (click)="onSubmitInquiryButtonClicked()"
+              [disabled]="isOnSubmitInquiryButtonDisabled()">
         Submit
       </button>
       <button status="danger" nbButton hero (click)="onCloseInquiryDialog()">

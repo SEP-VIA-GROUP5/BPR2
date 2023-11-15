@@ -79,7 +79,7 @@ public class InquiryService {
     }
 
     public ResponseMessage markViewed(int inquiryId, String authorizationHeader) {
-        User user = userService.getUserFromToken(authorizationHeader, false);
+        User user = userService.getUserFromToken(authorizationHeader, true);
         if(user == null){
             return ResponseMessage.CREDENTIALS_ERROR;
         }
@@ -111,6 +111,7 @@ public class InquiryService {
         return inquiryMapper.getSentInquiries(user.getId());
     }
 
+    //TODO fix me
     public ResponseMessage deleteInquiry(int inquiryId, String authorizationHeader) {
         if(inquiryId < 0){
             return ResponseMessage.INVALID_PARAMETERS;
