@@ -79,7 +79,7 @@ public class InquiryService {
     }
 
     public ResponseMessage markViewed(int inquiryId, String authorizationHeader) {
-        User user = userService.getUserFromToken(authorizationHeader, false);
+        User user = userService.getUserFromToken(authorizationHeader, true);
         if(user == null){
             return ResponseMessage.CREDENTIALS_ERROR;
         }
