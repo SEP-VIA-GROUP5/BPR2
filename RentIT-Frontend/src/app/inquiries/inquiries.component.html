@@ -49,32 +49,32 @@
       <nb-tab [tabId]="InquiriesTabs.SENT" tabTitle="Sent inquiries">
         <nb-card class="inquiries-tab-card-content">
           <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
-            <p *ngIf="(receivedInquiries$ | async).length === 0"> No inquiries sent</p>
-            <div class="inquiry-item-content" *ngIf="(receivedInquiries$ | async) as receivedInquiries">
-              <nb-accordion *ngIf="receivedInquiries.length > 0">
-                <nb-accordion-item *ngFor="let receivedInquiry of receivedInquiries">
+            <p *ngIf="(sentInquiries$ | async).length === 0"> No inquiries sent</p>
+            <div class="inquiry-item-content" *ngIf="(sentInquiries$ | async) as sentInquiries">
+              <nb-accordion *ngIf="sentInquiries.length > 0">
+                <nb-accordion-item *ngFor="let sendInquiry of sentInquiries">
                   <nb-accordion-item-header>
                     <div class="received-inquiry-user">
-                      <p><span> Sender email: </span>{{ receivedInquiry.senderEmail }}</p>
-                      <p><span> Sender phone number: </span>{{ receivedInquiry.senderPhoneNumber }}</p>
+                      <p><span> Sender email: </span>{{ sendInquiry.senderEmail }}</p>
+                      <p><span> Sender phone number: </span>{{ sendInquiry.senderPhoneNumber }}</p>
                     </div>
                     <div class="dates">
-                      <p> <span> Start rent </span>{{ receivedInquiry.rentStart | date}}</p>
-                      <p> <span> End rent: </span>{{ receivedInquiry.rentEnd | date}}</p>
+                      <p> <span> Start rent </span>{{ sendInquiry.rentStart | date}}</p>
+                      <p> <span> End rent: </span>{{ sendInquiry.rentEnd | date}}</p>
                     </div>
                     <div class="sent-date">
-                      <p> <span> Received date: </span> {{ receivedInquiry.timeStamp | date }}</p>
+                      <p> <span> Received date: </span> {{ sendInquiry.timeStamp | date }}</p>
                     </div>
                     <div class="viewed">
-                      <nb-icon [icon]="receivedInquiry.viewed ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE_2"
-                               [nbTooltip]="getTooltipTimestamp(receivedInquiry)"></nb-icon>
+                      <nb-icon [icon]="sendInquiry.viewed ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE_2"
+                               [nbTooltip]="getTooltipTimestamp(sendInquiry)"></nb-icon>
                     </div>
                   </nb-accordion-item-header>
                   <nb-accordion-item-body>
                     <div class="receive-inquiry-content">
                       <div class="message">
                         <p class="title">Message</p>
-                        <p>{{ receivedInquiry.message }}</p>
+                        <p>{{ sendInquiry.message }}</p>
                       </div>
 <!--                      TODO remove action is not needed for now-->
 <!--                      <div class="actions">-->
