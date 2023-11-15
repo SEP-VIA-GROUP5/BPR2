@@ -4,9 +4,9 @@
       <nb-tab [tabId]="InquiriesTabs.RECEIVED" tabTitle="Received inquiries">
         <nb-card class="inquiries-tab-card-content">
           <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
-            <p *ngIf="!(receivedInquiries$ | async)"> No inquiries received</p>
-            <div class="inquiry-item-content" *ngIf="receivedInquiries$ | async as receivedInquiries">
-              <nb-accordion>
+            <p *ngIf="(receivedInquiries$ | async).length === 0"> No inquiries received</p>
+            <div class="inquiry-item-content" *ngIf="(receivedInquiries$ | async) as receivedInquiries">
+              <nb-accordion *ngIf="receivedInquiries.length > 0">
                 <nb-accordion-item (collapsedChange)="onCollapsedChanged($event, receivedInquiry)"  *ngFor="let receivedInquiry of receivedInquiries">
                   <nb-accordion-item-header>
                     <div class="received-inquiry-user">
@@ -37,7 +37,7 @@
               </nb-accordion>
             </div>
           </nb-card-body>
-          <nb-card-footer>
+          <nb-card-footer *ngIf="(receivedInquiries$ | async).length > 0">
             <button [disabled]="isLastPageSentInquiries$ | async" nbButton status="primary"
                     [nbTooltip]="(isLastPageSentInquiries$ | async) ? 'No more inquiries to load' : 'Load more inquiries'"
                     (click)="loadNextInquiries(InquiriesTabs.SENT)">
@@ -49,9 +49,9 @@
       <nb-tab [tabId]="InquiriesTabs.SENT" tabTitle="Sent inquiries">
         <nb-card class="inquiries-tab-card-content">
           <nb-card-body class="inquiries-tab-card-body" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
-            <p *ngIf="!(receivedInquiries$ | async)"> No inquiries received</p>
-            <div class="inquiry-item-content" *ngIf="receivedInquiries$ | async as receivedInquiries">
-              <nb-accordion>
+            <p *ngIf="(receivedInquiries$ | async).length === 0"> No inquiries sent</p>
+            <div class="inquiry-item-content" *ngIf="(receivedInquiries$ | async) as receivedInquiries">
+              <nb-accordion *ngIf="receivedInquiries.length > 0">
                 <nb-accordion-item *ngFor="let receivedInquiry of receivedInquiries">
                   <nb-accordion-item-header>
                     <div class="received-inquiry-user">
@@ -89,7 +89,7 @@
               </nb-accordion>
             </div>
           </nb-card-body>
-          <nb-card-footer>
+          <nb-card-footer *ngIf="(receivedInquiries$ | async).length > 0">
             <button [disabled]="isLastPageReceivedInquiries$ | async" nbButton status="primary"
                     [nbTooltip]="(isLastPageReceivedInquiries$ | async) ? 'No more inquiries to load' : 'Load more inquiries'"
                     (click)="loadNextInquiries(InquiriesTabs.RECEIVED)">
