@@ -111,6 +111,7 @@ public class InquiryService {
         return inquiryMapper.getSentInquiries(user.getId());
     }
 
+    //TODO fix me
     public ResponseMessage deleteInquiry(int inquiryId, String authorizationHeader) {
         if(inquiryId < 0){
             return ResponseMessage.INVALID_PARAMETERS;
