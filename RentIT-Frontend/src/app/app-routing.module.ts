@@ -5,6 +5,7 @@ import {GENERAL_MENU_ITEM_URLS, PRODUCTS_MENU_ITEM_URLS} from 'src/app/constants
 import { AuthenticationComponent } from './authentication/authentication.component';
 import {MyProductsComponent} from "src/app/my-products/my-products.component";
 import {InquiriesComponent} from "src/app/inquiries/inquiries.component";
+import {ProfileComponent} from "src/app/profile/profile.component";
 
 export const routes: Routes = [
   {
@@ -26,6 +27,11 @@ export const routes: Routes = [
     path: GENERAL_MENU_ITEM_URLS.AUTHENTICATION.substring(1),
     title: 'Authentication',
     component: AuthenticationComponent,
+  },
+  {
+    path: GENERAL_MENU_ITEM_URLS.PROFILE.substring(1),
+    title: 'Profile',
+    component: ProfileComponent
   },
   {
     path: '',

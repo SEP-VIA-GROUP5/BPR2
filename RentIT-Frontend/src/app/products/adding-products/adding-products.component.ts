@@ -49,14 +49,7 @@ export class AddingProductsComponent implements OnInit, OnDestroy {
       this.productDetails.images = constructProductImagesFromImgurImages(images);
     });
 
-    if (!this.userService.isLoggedIn()) {
-      this.toastrService.info(
-        'You have been redirected to products page',
-        'You need to be authenticated in order to add a product',
-        {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE}
-      );
-      this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
-    }
+    this.userService.redirectUserIfNotLoggedIn();
   }
 
   onImageSelected(event: NgxDropzoneChangeEvent): void {

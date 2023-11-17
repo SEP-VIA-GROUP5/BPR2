@@ -57,14 +57,7 @@ export class InquiriesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (!this.userService.isLoggedIn()) {
-      this.toastrService.info(
-        'You have been redirected to products page',
-        'You need to be authenticated in order to see your inquiries',
-        {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE, duration: 5000}
-      );
-      this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
-    }
+    this.userService.redirectUserIfNotLoggedIn();
   }
 
   onTabChanged(event: NbTabComponent) {

@@ -52,15 +52,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (!this.userService.isLoggedIn()) {
-      this.toastrService.info(
-        'You have been redirected to products page',
-        'You need to be authenticated in order to see your products',
-        {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE, duration: 5000}
-      );
-      this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
-    }
-    else {
+    if (!this.userService.redirectUserIfNotLoggedIn()) {
       this.store.dispatch(new MyProductsFetch());
     }
   }
