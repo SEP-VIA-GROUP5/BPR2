@@ -81,6 +81,17 @@ export class UserService {
     return user;
   }
 
+  redirectUserIfNotLoggedIn() {
+    if (!this.isLoggedIn()) {
+      this.toastrService.info(
+        'You have been redirected to products page',
+        'You need to be authenticated in order to see your products',
+        {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE, duration: 5000}
+      );
+      this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
+    }
+  }
+
   private isTokenObject(obj: any): obj is Token {
     return (
       typeof obj === 'object' &&
