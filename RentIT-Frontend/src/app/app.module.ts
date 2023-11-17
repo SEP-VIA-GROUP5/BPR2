@@ -38,6 +38,7 @@ import {InquiriesComponent} from "src/app/inquiries/inquiries.component";
 import {InquiryService} from "src/api/inquiry.service";
 import {MyProductsState} from "src/app/my-products/my-products.state";
 import {InquiryState} from "src/app/inquiries/inquiries.state";
+import {ProfileComponent} from "src/app/profile/profile.component";
 
 export const STATES = [
   AppState,
@@ -52,6 +53,7 @@ export const PAGE_COMPONENTS = [
   AuthenticationComponent,
   MyProductsComponent,
   InquiriesComponent,
+  ProfileComponent,
 ];
 
 export const APP_NEBULAR_MODULES = [

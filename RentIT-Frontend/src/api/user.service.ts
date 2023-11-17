@@ -89,7 +89,9 @@ export class UserService {
         {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE, duration: 5000}
       );
       this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
+      return true;
     }
+    return false;
   }
 
   private isTokenObject(obj: any): obj is Token {

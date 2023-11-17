@@ -20,14 +20,14 @@ export enum ICONS {
   QUESTION_MARK_CIRCLE_OUTLINE = 'question-mark-circle-outline',
   EYE_OFF_OUTLINE_2 = 'eye-off-2-outline',
   EYE_OUTLINE = 'eye-outline',
-  FUNNEL_OUTLINE = 'funnel-outline',
-  BOOK_OPEN_OUTLINE = 'book-open-outline',
+  PERSON_OUTLINE = 'person-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
   AUTHENTICATION = '/authentication',
   MY_PRODUCTS = '/my-products',
   INQUIRIES = '/inquiries',
+  PROFILE = '/profile/:id',
 }
 
 export enum PRODUCTS_MENU_ITEM_URLS {
@@ -46,6 +46,7 @@ export enum BREADCRUMB_KEYS {
 export enum CONTEXT_MENU_TITLES {
   LOG_IN = 'Log in',
   LOG_OUT = 'Log out',
+  PROFILE = 'Profile',
 }
 
 export function GENERAL_MENU_ITEMS_NOT_LOGGED_IN(): NbMenuItem[] {
@@ -90,6 +91,11 @@ export function LOGGED_OUT_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
 
 export function LOGGED_IN_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
   return [
+    {
+      title: CONTEXT_MENU_TITLES.PROFILE,
+      link: '/profile/myProfile',
+      icon: ICONS.PERSON_OUTLINE,
+    },
     {
       title: CONTEXT_MENU_TITLES.LOG_OUT,
       link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,

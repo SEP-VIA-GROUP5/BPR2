@@ -52,7 +52,9 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userService.redirectUserIfNotLoggedIn();
+    if (!this.userService.redirectUserIfNotLoggedIn()) {
+      this.store.dispatch(new MyProductsFetch());
+    }
   }
 
   getWindowSize() {
