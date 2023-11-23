@@ -1,5 +1,4 @@
 import {NbMenuItem} from '@nebular/theme';
-import {UrlSegment} from "@angular/router";
 
 export enum ICONS {
   CUBE_OUTLINE = 'cube-outline',
@@ -20,14 +19,14 @@ export enum ICONS {
   QUESTION_MARK_CIRCLE_OUTLINE = 'question-mark-circle-outline',
   EYE_OFF_OUTLINE_2 = 'eye-off-2-outline',
   EYE_OUTLINE = 'eye-outline',
-  FUNNEL_OUTLINE = 'funnel-outline',
-  BOOK_OPEN_OUTLINE = 'book-open-outline',
+  PERSON_OUTLINE = 'person-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {
   AUTHENTICATION = '/authentication',
   MY_PRODUCTS = '/my-products',
   INQUIRIES = '/inquiries',
+  PROFILE = '/profile/:id',
 }
 
 export enum PRODUCTS_MENU_ITEM_URLS {
@@ -43,9 +42,10 @@ export enum BREADCRUMB_KEYS {
   INQUIRIES = 'Inquiries',
 }
 
-export enum CONTEXT_MENU_TITLES {
+export enum USER_MENU_ITEMS {
   LOG_IN = 'Log in',
   LOG_OUT = 'Log out',
+  PROFILE = 'Profile',
 }
 
 export function GENERAL_MENU_ITEMS_NOT_LOGGED_IN(): NbMenuItem[] {
@@ -54,6 +54,11 @@ export function GENERAL_MENU_ITEMS_NOT_LOGGED_IN(): NbMenuItem[] {
       title: BREADCRUMB_KEYS.PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
       link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS,
+    },
+    {
+      title: USER_MENU_ITEMS.LOG_IN,
+      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
+      icon: ICONS.LOG_IN_OUTLINE,
     },
   ];
 }
@@ -64,38 +69,33 @@ export function GENERAL_MENU_ITEMS_LOGGED_IN(): NbMenuItem[] {
       title: BREADCRUMB_KEYS.PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
       link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS,
+      selected: false,
     },
     {
       title: BREADCRUMB_KEYS.MY_PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
       link: PRODUCTS_MENU_ITEM_URLS.MY_PRODUCTS,
+      selected: false,
     },
     {
       title: BREADCRUMB_KEYS.INQUIRIES,
       icon: ICONS.MESSAGE_SQUARE_OUTLINE,
       link: GENERAL_MENU_ITEM_URLS.INQUIRIES,
-    }
-  ];
-}
-
-export function LOGGED_OUT_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
-  return [
-    {
-      title: CONTEXT_MENU_TITLES.LOG_IN,
-      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
-      icon: ICONS.LOG_IN_OUTLINE,
+      selected: false,
     },
-  ]
-}
-
-export function LOGGED_IN_CONTEXT_MENU_ITEMS(): NbMenuItem[] {
-  return [
     {
-      title: CONTEXT_MENU_TITLES.LOG_OUT,
+      title: USER_MENU_ITEMS.PROFILE,
+      link: '/profile/myProfile',
+      icon: ICONS.PERSON_OUTLINE,
+      selected: false,
+    },
+    {
+      title: USER_MENU_ITEMS.LOG_OUT,
       link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
       icon: ICONS.LOG_OUT_OUTLINE,
+      selected: false,
     },
-  ]
+  ];
 }
 
 export enum LocalStorageEnum {

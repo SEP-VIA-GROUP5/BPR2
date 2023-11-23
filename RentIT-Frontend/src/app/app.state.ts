@@ -1,7 +1,7 @@
 import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {produce} from "immer";
-import {ContextMenuState, ICONS, LocalStorageEnum, SidebarMenuState} from "src/app/constants";
+import {ContextMenuState, LocalStorageEnum, SidebarMenuState} from "src/app/constants";
 import {LocalStorageService} from "src/core/services/local-storage.service";
 
 // actions
@@ -20,6 +20,20 @@ export class UpdateContextMenuState {
 export class FetchLocalStorageData {
   static readonly type = '[App] Fetch local storage data';
   constructor() {
+  }
+}
+
+export class SelectSidebarMenuItem {
+  static readonly type = '[App] Select sidebar menu item';
+
+  constructor(link: string) {
+  }
+}
+
+export class SelectContextMenuItem {
+  static readonly type = '[App] Select context menu item';
+
+  constructor(link: string) {
   }
 }
 
