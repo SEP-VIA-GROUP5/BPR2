@@ -1,0 +1,43 @@
+.profile-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.user-information {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+
+  nb-form-field {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 23px;
+
+    .invalid-field {
+      border-color: var(--color-danger-500);
+    }
+  }
+
+  .submit-button {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 23px;
+  }
+
+  nb-user {
+    margin-bottom: 1rem;
+    justify-content: center;
+  }
+}
+
+.user-products {
+  flex-grow: 1;
+}

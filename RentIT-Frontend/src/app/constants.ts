@@ -93,7 +93,7 @@ export function USER_MENU_ITEMS_LOGGED_IN(): NbMenuItem[] {
   return [
     {
       title: USER_MENU_ITEMS.PROFILE,
-      link: '/profile/myProfile',
+      link: '/profile/my-profile',
       icon: ICONS.PERSON_OUTLINE,
     },
     {
