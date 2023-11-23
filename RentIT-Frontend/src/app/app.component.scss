@@ -1,7 +1,7 @@
 body {
   overflow: hidden;
   margin: 0;
-  height: 100vh;
+  max-height: 85vh;
 }
 
 .nb-layout-header {
@@ -80,6 +80,7 @@ nb-icon {
 
 nb-sidebar {
   top: 50px;
+  height: 92vh;
 
   @media only screen and (min-width: 473px) and (max-width: 768px) {
     top: 60px;
@@ -94,7 +95,7 @@ nb-sidebar {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 89%;
+  height: 85vh;
 }
 .menu-section {
   display: flex;
