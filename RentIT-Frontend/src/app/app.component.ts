@@ -1,14 +1,12 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {NB_WINDOW, NbMenuItem, NbMenuService, NbSidebarService} from "@nebular/theme";
 import {
-  CONTEXT_MENU_TITLES,
+  USER_MENU_ITEMS,
   ContextMenuState,
   GENERAL_MENU_ITEMS_LOGGED_IN,
   GENERAL_MENU_ITEMS_NOT_LOGGED_IN,
   ICONS,
   LocalStorageEnum,
-  LOGGED_IN_CONTEXT_MENU_ITEMS,
-  LOGGED_OUT_CONTEXT_MENU_ITEMS,
   PRODUCTS_MENU_ITEM_URLS,
   SidebarMenuState
 } from "src/app/constants";
@@ -44,15 +42,11 @@ import {FilteringProductOptions} from "src/model/filteringProductOptions";
                   <img class="logo-image" src="../assets/logo.svg" alt="Logo" (click)="navigateToMainPage()"/>
                   <!--                   picture="user's profile" TODO fetch user's image inside <nb-user></nb-user>-->
                   <nb-user *ngIf="getUserFromLocalStorage() !== null"
-                           [name]="getUserFromLocalStorage().firstName"
-                           [nbContextMenu]="contextMenuItems"
-                           nbContextMenuTag="my-context-menu">
+                           [name]="getUserFromLocalStorage().firstName">
                   </nb-user>
                   <nb-user *ngIf="getUserFromLocalStorage() === null"
                            picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max'
-                           name='Not logged in'
-                           [nbContextMenu]="contextMenuItems"
-                           nbContextMenuTag="my-context-menu">
+                           name='Not logged in'>
                   </nb-user>
               </div>
           </nb-layout-header>
@@ -82,7 +76,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   sidebarMenuItems: NbMenuItem[];
   sidebarVisible: boolean = true;
-  contextMenuItems: NbMenuItem[];
   protected readonly ICONS = ICONS;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -108,14 +101,6 @@ export class AppComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.activatedRoute.url.subscribe(url => {
-      console.log(url);
-    });
-
-    this.contextMenuState$.pipe(takeUntil(this.destroy$))
-      .subscribe(contextMenuState => {
-        this.contextMenuItems = this.getContextMenuItems(contextMenuState);
-      })
     this.sidebarMenuState$.pipe(takeUntil(this.destroy$))
       .subscribe(sidebarMenuState => {
         this.sidebarMenuItems = this.getSidebarMenuItems(sidebarMenuState);
@@ -123,12 +108,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.nbMenuService.onItemClick()
       .pipe(
-        filter(({tag}) => tag === 'my-context-menu'),
+        filter(({tag}) => tag === 'menu'),
         map(({item: {title, link}}) => ({title, link})),
       )
       .subscribe(({title, link}) => {
         // You can use the 'title' and 'link' variables here as needed
-        if (title === CONTEXT_MENU_TITLES.LOG_OUT) {
+        if (title === USER_MENU_ITEMS.LOG_OUT) {
           this.store.dispatch(new Logout());
         } else {
           this.router.navigate([link]);
@@ -150,15 +135,6 @@ export class AppComponent implements OnInit, OnDestroy {
         return GENERAL_MENU_ITEMS_NOT_LOGGED_IN();
       case SidebarMenuState.GENERAL_ITEMS_LOGGED_IN:
         return GENERAL_MENU_ITEMS_LOGGED_IN();
-    }
-  }
-
-  getContextMenuItems(contextMenuState: ContextMenuState) {
-    switch (contextMenuState) {
-      case ContextMenuState.LOGGED_OUT:
-        return LOGGED_OUT_CONTEXT_MENU_ITEMS();
-      case ContextMenuState.LOGGED_IN:
-        return LOGGED_IN_CONTEXT_MENU_ITEMS();
     }
   }
 
@@ -190,6 +166,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isOnMainPage(): boolean {
     return this.router.routerState.snapshot.url === PRODUCTS_MENU_ITEM_URLS.PRODUCTS;
+  }
+
+  onContextChange(event) {
+    console.log(event );
   }
 
   ngOnDestroy() {
