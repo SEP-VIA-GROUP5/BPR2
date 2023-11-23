@@ -1,15 +1,16 @@
 <div class="profile-container">
-    <ng-container *ngIf="profileId === 'my-profile'; then displayCurrentUserProfile; else displayOtherUserProfile"></ng-container>
+  <ng-container
+    *ngIf="profileId === 'my-profile'; then displayCurrentUserProfile; else displayOtherUserProfile"></ng-container>
 </div>
 
 
 <ng-template #displayCurrentUserProfile>
   <div class="user-information">
     <nb-card [nbSpinner]="isFetching$ | async"
-    nbSpinnerStatus="primary"
-    nbSpinnerSize="medium">
+             nbSpinnerStatus="primary"
+             nbSpinnerSize="medium">
       <nb-card-header>
-        <h2>Your profile information</h2>
+        <h4>Your profile information</h4>
       </nb-card-header>
       <nb-card-body *ngIf="userContent">
         <div class="form-fields">
@@ -48,7 +49,8 @@
                    required>
           </nb-form-field>
           <nb-form-field>
-            <input [(ngModel)]="userContent.location" name="location" type="text" nbInput shape="round" placeholder="Location"
+            <input [(ngModel)]="userContent.location" name="location" type="text" nbInput shape="round"
+                   placeholder="Location"
                    (input)="onInputType($event)"
                    required>
           </nb-form-field>
@@ -62,7 +64,8 @@
                    #tooltipPassword="nbTooltip"
                    placeholder="Password" required>
             <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
-              <nb-icon class="show-password-button" [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE" pack="eva"
+              <nb-icon class="show-password-button" [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE"
+                       pack="eva"
                        [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
               </nb-icon>
             </button>
@@ -80,7 +83,9 @@
           </nb-form-field>
           <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero
                   shape="semi-round"
-                  (click)="onFormSubmit()" type="submit">Register</button>
+                  status="primary"
+                  (click)="onFormSubmit()" type="submit">Update
+          </button>
         </div>
       </nb-card-body>
     </nb-card>
@@ -91,7 +96,45 @@
 </ng-template>
 
 <ng-template #displayOtherUserProfile>
-  adasdaaddasdadasa I AM OTHER
+  <div class="user-information">
+    <nb-spinner *ngIf="isFetching$ | async"
+                status="primary"
+                size="medium">
+    </nb-spinner>
+    <div *ngIf="!(isFetching$ | async) && !(userContent$ | async)">
+      <p> This user does not exist </p>
+    </div>
+    <nb-card *ngIf="!(isFetching$ | async) && userContent$ | async">
+      <nb-card-header>
+        <h4> {{userContent.firstName }} {{ userContent.lastName }} information</h4>
+      </nb-card-header>
+      <nb-card-body *ngIf="userContent">
+        <div class="user-information">
+          <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
+                   onlyPicture>
+          </nb-user>
+          <div class="user-info">
+            <div><h6><span>Name</span> {{ userContent.firstName }} {{ userContent.lastName }}</h6></div>
+            <div><h6><span>Email:</span> {{ userContent.email }}</h6></div>
+            <div><h6><span>City:</span> {{ userContent.location }}</h6></div>
+            <div><h6><span>Phone number: </span> {{ userContent.phoneNumber }}</h6></div>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="user-products">
+    <nb-card>
+      <nb-card-header>
+        <h4> {{userContent.firstName }} {{ userContent.lastName }} products</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="product-grid" [class]="getProductGridClass(userProducts$ | async)">
+          <product *ngFor="let product of userProducts$ | async" [product]="product"></product>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
 </ng-template>
 
 <ng-template #locationChooser let-data>

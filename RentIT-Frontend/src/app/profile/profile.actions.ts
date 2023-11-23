@@ -21,6 +21,13 @@ export class UpdateUser {
   }
 }
 
+export class FetchUserProducts {
+  static readonly type = '[Profile] Fetch user products';
+
+  constructor(public email: string) {
+  }
+}
+
 export class ProfileReset {
   static readonly type = '[Profile] Reset';
 

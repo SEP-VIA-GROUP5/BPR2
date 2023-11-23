@@ -1,6 +1,6 @@
 <nb-card [nbSpinner]="isFetching$ | async" nbSpinnerSize="large" nbSpinnerStatus="primary">
   <nb-card-header>
-    <h1> Here are your products </h1>
+    <h4> Here are your products </h4>
     <div class="my-products-header-buttons">
       <button [disabled]="productsSelected.length < 1" class="perform-action-button"
               *ngIf="actionSelected.isButtonEnabled" size="medium"

@@ -1,6 +1,6 @@
 <nb-card [nbSpinner]="isFetching$ | async" nbSpinnerSize="large" nbSpinnerStatus="primary">
   <nb-card-header>
-    <h1> Here are some products for you</h1>
+    <h4> Here are some products for you</h4>
     <button class="adding-product-button" [status]="'primary'" [nbTooltip]="this.userService.isLoggedIn() ? 'Add product' : 'Please, login to add product'"
             [disabled]="!this.userService.isLoggedIn()"
             nbButton (click)="navigateToAddingProductPage()">

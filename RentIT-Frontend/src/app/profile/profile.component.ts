@@ -8,7 +8,8 @@ import {defaultUserContent, UserContent} from "src/app/authentication/constants/
 import {Select, Store} from "@ngxs/store";
 import {ProfileSelector} from "src/app/profile/profile.selector";
 import {Observable} from "rxjs";
-import {FetchCurrentUserLoggedIn, FetchUser, ProfileReset} from "src/app/profile/profile.actions";
+import {FetchCurrentUserLoggedIn, FetchUser, FetchUserProducts, ProfileReset} from "src/app/profile/profile.actions";
+import {Product} from "src/model/product";
 
 @Component({
   selector: 'app-profile',
@@ -22,6 +23,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userContent$: Observable<UserContent>;
   @Select(ProfileSelector.user)
   user$: Observable<User>;
+  @Select(ProfileSelector.userProducts)
+  userProducts$: Observable<Product[]>;
 
   profileId: string;
   userContent: UserContent = defaultUserContent();
@@ -60,6 +63,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
       else {
         this.store.dispatch(new FetchUser(this.profileId));
+        this.store.dispatch(new FetchUserProducts(this.profileId));
       }
 
       this.userContent$.subscribe(userContent => {
@@ -97,7 +101,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
       case "repeatPassword":
       case "password": {
-        this.isPasswordValid = (this.userContent.password === this.userContent.repeatPassword) && isPassword(this.userContent.password);
+        this.isPasswordValid = this.userContent.password === '' || ((this.userContent.password === this.userContent.repeatPassword) && isPassword(this.userContent.password));
         this.showRepeatPasswordForm = this.userContent.password !== this.initialUserContent.password;
         break;
       }
@@ -148,6 +152,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   onFormSubmit() {
     alert('form submitted');
+  }
+
+  getProductGridClass(products: Product[]): string {
+    if (products.length >= 1 && products.length <= 3) {
+      return 'limited-products';
+    }
+    return '';
   }
 
   ngOnDestroy() {

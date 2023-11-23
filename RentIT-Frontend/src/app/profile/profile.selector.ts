@@ -14,6 +14,11 @@ export class ProfileSelector {
   }
 
   @Selector([ProfileState])
+  static userProducts(state: ProfileStateModel) {
+    return state.userProducts;
+  }
+
+  @Selector([ProfileState])
   static userContent(state: ProfileStateModel) {
     return {
       email: state.user.email,
