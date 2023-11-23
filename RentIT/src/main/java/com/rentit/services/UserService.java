@@ -80,7 +80,7 @@ public class UserService {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .location(user.getPhoneNumber())
+                .location(user.getLocation())
                 .phoneNumber(user.getPhoneNumber())
                 .build();
     }
