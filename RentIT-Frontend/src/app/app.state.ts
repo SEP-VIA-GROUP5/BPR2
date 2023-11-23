@@ -1,19 +1,19 @@
 import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {produce} from "immer";
-import {ContextMenuState, LocalStorageEnum, SidebarMenuState} from "src/app/constants";
+import {GeneralSidebarMenuState, LocalStorageEnum, UserSidebarMenuState} from "src/app/constants";
 import {LocalStorageService} from "src/core/services/local-storage.service";
 
 // actions
-export class UpdateSidebarMenuState {
-  static readonly type = '[App] Update sidebar menu items';
-  constructor(public sidebarMenuState: SidebarMenuState) {
+export class UpdateGeneralSidebarMenuState {
+  static readonly type = '[App] Update general sidebar menu items';
+  constructor(public generalSidebarMenuState: GeneralSidebarMenuState) {
   }
 }
 
-export class UpdateContextMenuState {
-  static readonly type = '[App] Update context menu items';
-  constructor(public contextMenuState: ContextMenuState) {
+export class UpdateUserSidebarMenuState {
+  static readonly type = '[App] Update user sidebar menu items';
+  constructor(public userSidebarMenuState: UserSidebarMenuState) {
   }
 }
 
@@ -41,15 +41,15 @@ export class SelectContextMenuItem {
 export interface AppStateModel {
   isFetching: boolean;
   sidebarVisible: boolean;
-  sidebarMenuState: SidebarMenuState;
-  contextMenuState: ContextMenuState;
+  generalSidebarMenuState: GeneralSidebarMenuState;
+  userSidebarMenuState: UserSidebarMenuState;
 }
 
 export const defaultsState: AppStateModel = {
   isFetching: false,
   sidebarVisible: true,
-  sidebarMenuState: SidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN,
-  contextMenuState: ContextMenuState.LOGGED_OUT,
+  generalSidebarMenuState: GeneralSidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN,
+  userSidebarMenuState: UserSidebarMenuState.USER_ITEMS_NOT_LOGGED_IN,
 }
 
 @State<AppStateModel>({
@@ -68,35 +68,35 @@ export class AppState {
   async fetchLocalStorageData(
     {getState, setState}: StateContext<AppStateModel>
   ) {
-    let sidebarMenuState = this.localStorageService.getData(LocalStorageEnum.SIDEBAR_MENU_ITEMS) as SidebarMenuState;
-    let contextMenuState = this.localStorageService.getData(LocalStorageEnum.CONTEXT_MENU_ITEMS) as ContextMenuState;
+    let generalSidebarMenuState = this.localStorageService.getData(LocalStorageEnum.GENERAL_SIDEBAR_MENU_ITEMS) as GeneralSidebarMenuState;
+    let userSidebarMenuState = this.localStorageService.getData(LocalStorageEnum.USER_SIDEBAR_MENU_ITEMS) as UserSidebarMenuState;
     let newState = produce(getState(), draft => {
-      draft.sidebarMenuState = sidebarMenuState ? sidebarMenuState : SidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN;
-      draft.contextMenuState = contextMenuState ? contextMenuState : ContextMenuState.LOGGED_OUT;
+      draft.generalSidebarMenuState = generalSidebarMenuState ? generalSidebarMenuState : GeneralSidebarMenuState.GENERAL_ITEMS_NOT_LOGGED_IN;
+      draft.userSidebarMenuState = userSidebarMenuState ? userSidebarMenuState : UserSidebarMenuState.USER_ITEMS_NOT_LOGGED_IN;
     })
     setState(newState);
   }
 
-  @Action(UpdateSidebarMenuState)
-  async updateSidebarMenu(
+  @Action(UpdateGeneralSidebarMenuState)
+  async updateGeneralSidebarMenuState(
     {getState, setState}: StateContext<AppStateModel>,
-    action: UpdateSidebarMenuState) {
+    action: UpdateGeneralSidebarMenuState) {
 
     let newState = produce(getState(), draft => {
-      draft.sidebarMenuState = action.sidebarMenuState;
-      this.localStorageService.saveData(LocalStorageEnum.SIDEBAR_MENU_ITEMS, action.sidebarMenuState);
+      draft.generalSidebarMenuState = action.generalSidebarMenuState;
+      this.localStorageService.saveData(LocalStorageEnum.GENERAL_SIDEBAR_MENU_ITEMS, action.generalSidebarMenuState);
     })
     setState(newState);
   }
 
-  @Action(UpdateContextMenuState)
-  async contextMenuState(
+  @Action(UpdateUserSidebarMenuState)
+  async updateUserSidebarMenuState(
     {getState, setState}: StateContext<AppStateModel>,
-    action: UpdateContextMenuState) {
+    action: UpdateUserSidebarMenuState) {
 
     let newState = produce(getState(), draft => {
-      draft.contextMenuState = action.contextMenuState;
-      this.localStorageService.saveData(LocalStorageEnum.CONTEXT_MENU_ITEMS, action.contextMenuState);
+      draft.userSidebarMenuState = action.userSidebarMenuState;
+      this.localStorageService.saveData(LocalStorageEnum.USER_SIDEBAR_MENU_ITEMS, action.userSidebarMenuState);
     })
     setState(newState);
   }
@@ -105,13 +105,13 @@ export class AppState {
 // selectors
 export class AppSelector {
   @Selector([AppState])
-  static sidebarMenuState(state: AppStateModel) {
-    return state.sidebarMenuState;
+  static generalSidebarMenuState(state: AppStateModel) {
+    return state.generalSidebarMenuState;
   }
 
   @Selector([AppState])
-  static contextMenuState(state: AppStateModel) {
-    return state.contextMenuState;
+  static userSidebarMenuState(state: AppStateModel) {
+    return state.userSidebarMenuState;
   }
 
   @Selector([AppState])

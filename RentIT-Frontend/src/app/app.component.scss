@@ -89,3 +89,24 @@ nb-sidebar {
     top: 75px;
   }
 }
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 89%;
+}
+.menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.general-menu-items {
+  order: 1; /* Display at the top */
+}
+
+.user-menu-items {
+  margin-top: auto;
+  order: 2; /* Display at the bottom */
+}
