@@ -3,7 +3,9 @@ import {Action, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {UserService} from "src/api/user.service";
 import {NbToastrService} from "@nebular/theme";
-import {FetchCurrentUserLoggedIn, FetchUser, UpdateUser} from "src/app/profile/profile.actions";
+import {FetchCurrentUserLoggedIn, FetchUser, ProfileReset, UpdateUser} from "src/app/profile/profile.actions";
+import {produce} from "immer";
+import {ICONS} from "src/app/constants";
 
 export interface ProfileStateModel {
   isFetching: boolean;
@@ -37,15 +39,44 @@ export class ProfileState {
 
   @Action(FetchUser)
   async fetchUser(
-    {getState, setState}: StateContext<ProfileStateModel>
-  ){
+    {getState, setState}: StateContext<ProfileStateModel>,
+    action: FetchUser
+  ) {
     // do action fetch user
   }
 
   @Action(FetchCurrentUserLoggedIn)
   async fetchCurrentUserLoggedIn(
-    {getState, setState}: StateContext<ProfileStateModel>,
-    action: FetchCurrentUserLoggedIn) {
-    // do action fetch current user logged in
+    {getState, setState}: StateContext<ProfileStateModel>) {
+    let newState = produce(getState(), draft => {
+      draft.isFetching = true;
+    });
+    setState(newState);
+
+    let user: User;
+    try {
+      user = await this.userService.getUser();
+      newState = produce(getState(), draft => {
+        draft.user = user;
+        draft.isFetching = false;
+      });
+      setState(newState);
+    } catch (error) {
+      this.toastrService.warning(
+        'The account exists or credentials are incorrect',
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+      newState = produce(getState(), draft => {
+        draft.isFetching = false;
+      });
+      setState(newState);
+    }
+  }
+
+  @Action(ProfileReset)
+  async profileReset(
+    {getState, setState}: StateContext<ProfileStateModel>) {
+    setState(defaultState);
   }
 }

@@ -5,11 +5,13 @@
 
 <ng-template #displayCurrentUserProfile>
   <div class="user-information">
-    <nb-card>
+    <nb-card [nbSpinner]="isFetching$ | async"
+    nbSpinnerStatus="primary"
+    nbSpinnerSize="medium">
       <nb-card-header>
         <h2>Your profile information</h2>
       </nb-card-header>
-      <nb-card-body>
+      <nb-card-body *ngIf="userContent">
         <div class="form-fields">
           <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
                    onlyPicture>

@@ -5,7 +5,10 @@ import {User} from "src/model/user";
 import {ICONS, isEmail, isPassword, isPhoneNumber} from "src/app/constants";
 import {NbToastrService, NbTooltipDirective, NbWindowRef, NbWindowService} from "@nebular/theme";
 import {defaultUserContent, UserContent} from "src/app/authentication/constants/constants";
-import {Login, Register} from "src/app/authentication/authentication.actions";
+import {Select, Store} from "@ngxs/store";
+import {ProfileSelector} from "src/app/profile/profile.selector";
+import {Observable} from "rxjs";
+import {FetchCurrentUserLoggedIn, FetchUser, ProfileReset} from "src/app/profile/profile.actions";
 
 @Component({
   selector: 'app-profile',
@@ -13,6 +16,12 @@ import {Login, Register} from "src/app/authentication/authentication.actions";
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+  @Select(ProfileSelector.isFetching)
+  isFetching$: Observable<boolean>;
+  @Select(ProfileSelector.userContent)
+  userContent$: Observable<UserContent>;
+  @Select(ProfileSelector.user)
+  user$: Observable<User>;
 
   profileId: string;
   userContent: UserContent = defaultUserContent();
@@ -37,6 +46,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
+              private store: Store,
               private userService: UserService,
               private toastrService: NbToastrService,
               private windowService: NbWindowService) {
@@ -44,18 +54,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.profileId = this.activatedRoute.snapshot.params['id'];
-    if(!this.userService.redirectUserIfNotLoggedIn()) {
-      // fetching action and initiliazing initialUserContent
+    if (!this.userService.redirectUserIfNotLoggedIn()) {
+      if(this.profileId === 'my-profile') {
+        this.store.dispatch(new FetchCurrentUserLoggedIn());
+      }
+      else {
+        this.store.dispatch(new FetchUser(this.profileId));
+      }
+
+      this.userContent$.subscribe(userContent => {
+        this.userContent = userContent;
+        this.initialUserContent = {...userContent};
+      });
     }
   }
 
   isButtonDisabled() {
-   return this.userContent.email === this.initialUserContent.email &&
-        this.userContent.firstName === this.initialUserContent.firstName &&
-        this.userContent.lastName === this.initialUserContent.lastName &&
-        this.userContent.location === this.initialUserContent.location &&
-        this.userContent.password === this.initialUserContent.password &&
-        this.userContent.phoneNumber === this.initialUserContent.phoneNumber;
+    return this.userContent.email === this.initialUserContent.email &&
+      this.userContent.firstName === this.initialUserContent.firstName &&
+      this.userContent.lastName === this.initialUserContent.lastName &&
+      this.userContent.location === this.initialUserContent.location &&
+      this.userContent.password === this.initialUserContent.password &&
+      this.userContent.phoneNumber === this.initialUserContent.phoneNumber;
   }
 
   getInputType() {
@@ -89,7 +109,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         if (this.userContent.location !== '') {
           this.windowRef = this.windowService.open(
             this.locationChooser,
-            {windowClass: 'window-location', title: 'Choose your location', context: {location: this.userContent.location}},
+            {
+              windowClass: 'window-location',
+              title: 'Choose your location',
+              context: {location: this.userContent.location}
+            },
           );
         }
       }
@@ -127,6 +151,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.store.dispatch(new ProfileReset());
     this.alive = false;
   }
 }

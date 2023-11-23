@@ -83,8 +83,15 @@ export class UserService {
   }
 
   async getUser() {
-    let user = await this.apiService.call(userMocked, this.apiService.request('get',`${this.PATH_CONTROLLER}/getUser`, null,true));
-    return user;
+    return await this.apiService.call(userMocked, this.apiService.request('get', `${this.PATH_CONTROLLER}/getUser`, null, true)) as User;
+  }
+
+  async updateUser(user: User) {
+    throw new Error('Method not implemented.');
+  }
+
+  async getUserByEmail(email: string) {
+   return Promise.resolve(userMocked);
   }
 
   redirectUserIfNotLoggedIn() {

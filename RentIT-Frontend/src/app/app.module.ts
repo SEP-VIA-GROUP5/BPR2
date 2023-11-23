@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  NbAccordionModule,
   NbDatepickerModule,
   NbDialogModule,
   NbMenuModule,
@@ -39,12 +38,14 @@ import {InquiryService} from "src/api/inquiry.service";
 import {MyProductsState} from "src/app/my-products/my-products.state";
 import {InquiryState} from "src/app/inquiries/inquiries.state";
 import {ProfileComponent} from "src/app/profile/profile.component";
+import {ProfileState} from "src/app/profile/profile.state";
 
 export const STATES = [
   AppState,
   AuthenticationState,
   MyProductsState,
   InquiryState,
+  ProfileState,
 ];
 
 export const PAGE_COMPONENTS = [
