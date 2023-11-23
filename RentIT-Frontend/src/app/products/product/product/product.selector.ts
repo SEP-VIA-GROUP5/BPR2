@@ -1,7 +1,5 @@
 import {Selector} from "@ngxs/store";
 import {ProductState, ProductStateModel} from "src/app/products/product/product/product.state";
-import {Review} from "src/model/review";
-import {User} from "src/model/user";
 
 export class ProductSelector {
   @Selector([ProductState])

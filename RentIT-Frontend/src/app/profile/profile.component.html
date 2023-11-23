@@ -1,1 +1,145 @@
-profile page works
+<div class="profile-container">
+  <ng-container
+    *ngIf="profileId === 'my-profile'; then displayCurrentUserProfile; else displayOtherUserProfile"></ng-container>
+</div>
+
+
+<ng-template #displayCurrentUserProfile>
+  <div class="user-information">
+    <nb-card [nbSpinner]="isFetching$ | async"
+             nbSpinnerStatus="primary"
+             nbSpinnerSize="medium">
+      <nb-card-header>
+        <h4>Your profile information</h4>
+      </nb-card-header>
+      <nb-card-body *ngIf="userContent">
+        <div class="form-fields">
+          <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
+                   onlyPicture>
+          </nb-user>
+          <nb-form-field>
+            <input [(ngModel)]="userContent.email" name="email" type="email" nbInput shape="round" placeholder="Email"
+                   (input)="onInputType($event)" [class.invalid-field]="!isEmailValid"
+                   nbTooltip="The email is not valid. It needs to contain '@','.'"
+                   [nbTooltipDisabled]="isEmailValid"
+                   nbTooltipPlacement="bottom"
+                   (nbTooltipShowStateChange)="!isEmailValid ? showTooltip() : hideTooltip()"
+                   #tooltipEmail="nbTooltip"
+                   required email>
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="userContent.phoneNumber" name="phoneNumber" type="text" nbInput shape="round"
+                   placeholder="Phone number"
+                   (input)="onInputType($event)" [class.invalid-field]="!isPhoneNumberValid"
+                   nbTooltip="The phone number is not valid. It needs to contain '+' and only numbers"
+                   [nbTooltipDisabled]="isPhoneNumberValid"
+                   nbTooltipPlacement="bottom"
+                   (nbTooltipShowStateChange)="!isPhoneNumberValid ? showTooltip() : hideTooltip()"
+                   #tooltipPhoneNumber="nbTooltip"
+                   required email>
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="userContent.firstName" name="firstName" type="text" nbInput shape="round"
+                   placeholder="First name" (input)="onInputType($event)"
+                   required>
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="userContent.lastName" name="lastName" type="text" nbInput shape="round"
+                   placeholder="Last name"
+                   required>
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="userContent.location" name="location" type="text" nbInput shape="round"
+                   placeholder="Location"
+                   (input)="onInputType($event)"
+                   required>
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="userContent.password" name="password" [type]="getInputType()" nbInput shape="round"
+                   (input)="onInputType($event)" [class.invalid-field]="!isPasswordValid"
+                   [nbTooltip]="'The password is not valid.\n The passwords do not match.\n It needs to contain at least 8 characters, one uppercase character, numbers and special characters.'"
+                   [nbTooltipDisabled]="isPasswordValid"
+                   nbTooltipPlacement="top"
+                   (nbTooltipShowStateChange)="!isPasswordValid ? showTooltip() : hideTooltip()"
+                   #tooltipPassword="nbTooltip"
+                   placeholder="Password" required>
+            <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+              <nb-icon class="show-password-button" [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE"
+                       pack="eva"
+                       [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+              </nb-icon>
+            </button>
+          </nb-form-field>
+          <nb-form-field *ngIf="showRepeatPasswordForm">
+            <input [(ngModel)]="userContent.repeatPassword" name="repeatPassword" [type]="getInputType()"
+                   (input)="onInputType($event)" nbInput
+                   shape="round"
+                   placeholder="Repeat password" required>
+            <button class="show-password-button" nbSuffix nbButton ghost (click)="toggleShowPassword()">
+              <nb-icon [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE" pack="eva"
+                       [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+              </nb-icon>
+            </button>
+          </nb-form-field>
+          <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero
+                  shape="semi-round"
+                  status="primary"
+                  (click)="onFormSubmit()" type="submit">Update
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="user-products">
+    <app-my-products></app-my-products>
+  </div>
+</ng-template>
+
+<ng-template #displayOtherUserProfile>
+  <div class="user-information">
+    <nb-spinner *ngIf="isFetching$ | async"
+                status="primary"
+                size="medium">
+    </nb-spinner>
+    <div *ngIf="!(isFetching$ | async) && !(userContent$ | async)">
+      <p> This user does not exist </p>
+    </div>
+    <nb-card *ngIf="!(isFetching$ | async) && userContent$ | async">
+      <nb-card-header>
+        <h4> {{userContent.firstName }} {{ userContent.lastName }} information</h4>
+      </nb-card-header>
+      <nb-card-body *ngIf="userContent">
+        <div class="user-information">
+          <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
+                   onlyPicture>
+          </nb-user>
+          <div class="user-info">
+            <div><h6><span>Name</span> {{ userContent.firstName }} {{ userContent.lastName }}</h6></div>
+            <div><h6><span>Email:</span> {{ userContent.email }}</h6></div>
+            <div><h6><span>City:</span> {{ userContent.location }}</h6></div>
+            <div><h6><span>Phone number: </span> {{ userContent.phoneNumber }}</h6></div>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="user-products">
+    <nb-card>
+      <nb-card-header>
+        <h4> {{userContent.firstName }} {{ userContent.lastName }} products</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="product-grid" [class]="getProductGridClass(userProducts$ | async)">
+          <product *ngFor="let product of userProducts$ | async" [product]="product"></product>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</ng-template>
+
+<ng-template #locationChooser let-data>
+  <div class="location-chooser">
+    <map-picker [location]="data.location" buttonTitle="Save location"
+                (buttonEvent)="onSaveLocation($event)"></map-picker>
+  </div>
+</ng-template>

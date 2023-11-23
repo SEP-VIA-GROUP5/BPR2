@@ -55,11 +55,6 @@ export function GENERAL_MENU_ITEMS_NOT_LOGGED_IN(): NbMenuItem[] {
       icon: ICONS.CUBE_OUTLINE,
       link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS,
     },
-    {
-      title: USER_MENU_ITEMS.LOG_IN,
-      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
-      icon: ICONS.LOG_IN_OUTLINE,
-    },
   ];
 }
 
@@ -69,31 +64,42 @@ export function GENERAL_MENU_ITEMS_LOGGED_IN(): NbMenuItem[] {
       title: BREADCRUMB_KEYS.PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
       link: PRODUCTS_MENU_ITEM_URLS.PRODUCTS,
-      selected: false,
     },
     {
       title: BREADCRUMB_KEYS.MY_PRODUCTS,
       icon: ICONS.CUBE_OUTLINE,
       link: PRODUCTS_MENU_ITEM_URLS.MY_PRODUCTS,
-      selected: false,
     },
     {
       title: BREADCRUMB_KEYS.INQUIRIES,
       icon: ICONS.MESSAGE_SQUARE_OUTLINE,
       link: GENERAL_MENU_ITEM_URLS.INQUIRIES,
+    }
+  ];
+}
+
+export function USER_MENU_ITEMS_NOT_LOGGED_IN(): NbMenuItem[] {
+  return [
+    {
+      title: USER_MENU_ITEMS.LOG_IN,
+      link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
+      icon: ICONS.LOG_IN_OUTLINE,
       selected: false,
     },
+  ];
+}
+
+export function USER_MENU_ITEMS_LOGGED_IN(): NbMenuItem[] {
+  return [
     {
       title: USER_MENU_ITEMS.PROFILE,
-      link: '/profile/myProfile',
+      link: '/profile/my-profile',
       icon: ICONS.PERSON_OUTLINE,
-      selected: false,
     },
     {
       title: USER_MENU_ITEMS.LOG_OUT,
       link: GENERAL_MENU_ITEM_URLS.AUTHENTICATION,
       icon: ICONS.LOG_OUT_OUTLINE,
-      selected: false,
     },
   ];
 }
@@ -101,20 +107,24 @@ export function GENERAL_MENU_ITEMS_LOGGED_IN(): NbMenuItem[] {
 export enum LocalStorageEnum {
   TOKEN = 'TOKEN',
   USER = 'USER',
-  SIDEBAR_MENU_ITEMS = 'SidebarMenuItems',
-  CONTEXT_MENU_ITEMS = 'ContextMenuItems',
+  GENERAL_SIDEBAR_MENU_ITEMS = 'SidebarMenuItems',
+  USER_SIDEBAR_MENU_ITEMS = 'ContextMenuItems',
 }
 
-export enum SidebarMenuState {
+export enum GeneralSidebarMenuState {
   GENERAL_ITEMS_NOT_LOGGED_IN = 'GENERAL_ITEMS_NOT_LOGGED_IN',
   GENERAL_ITEMS_LOGGED_IN = 'GENERAL_ITEMS_LOGGED_IN',
 }
 
-export enum ContextMenuState {
-  LOGGED_OUT = 'LOGGED_OUT',
-  LOGGED_IN = 'LOGGED_IN'
+export enum UserSidebarMenuState {
+  USER_ITEMS_NOT_LOGGED_IN = 'USER_ITEMS_NOT_LOGGED_IN',
+  USER_ITEMS_LOGGED_IN = 'USER_ITEMS_LOGGED_IN',
 }
 
+export enum TAG_MENU_ITEMS {
+  USER_MENU = 'user-menu',
+  GENERAL_MENU = 'general-menu',
+}
 export const isEmail = (email: string): boolean => {
   let regexp = new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$');
   return regexp.test(email);
