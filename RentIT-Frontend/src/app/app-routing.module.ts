@@ -9,6 +9,11 @@ import {ProfileComponent} from "src/app/profile/profile.component";
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: PRODUCTS_MENU_ITEM_URLS.PRODUCTS.substring(1),
+    pathMatch: 'full',
+  },
+  {
     path: PRODUCTS_MENU_ITEM_URLS.PRODUCTS.substring(1),
     loadChildren: () =>
       import('./products/products.module').then((m) => m.ProductsModule),
@@ -32,11 +37,6 @@ export const routes: Routes = [
     path: GENERAL_MENU_ITEM_URLS.PROFILE.substring(1),
     title: 'Profile',
     component: ProfileComponent
-  },
-  {
-    path: '',
-    redirectTo: PRODUCTS_MENU_ITEM_URLS.PRODUCTS.substring(1),
-    pathMatch: 'full',
   },
   {
     path: '**',
