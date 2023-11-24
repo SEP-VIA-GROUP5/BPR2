@@ -13,7 +13,7 @@ import {
   UserSidebarMenuState
 } from "src/app/constants";
 import {filter, map, takeUntil} from "rxjs/operators";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Select, Store} from "@ngxs/store";
 import {Observable, Subject} from "rxjs";
 import {
@@ -105,6 +105,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private store: Store,
     private activatedRoute: ActivatedRoute,
     @Inject(NB_WINDOW) private window) {
+    // doing rerouting from '/' to '/products' manually
+    this.router.events.pipe(takeUntil(this.destroy$))
+      .subscribe((event) => {
+        if(event instanceof NavigationEnd) {
+          if(event.url === '/') {
+            this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
+          }
+        }
+      });
   }
 
   ngOnInit() {
@@ -127,6 +136,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(sidebarMenuState => {
         this.userSidebarMenuItems = this.getUserSideMenuItems(sidebarMenuState);
       });
+
 
 
     this.nbMenuService.onItemClick()
