@@ -6,13 +6,14 @@ import {
   GeneralSidebarMenuState,
   ICONS,
   LocalStorageEnum,
-  PRODUCTS_MENU_ITEM_URLS, TAG_MENU_ITEMS,
+  PRODUCTS_MENU_ITEM_URLS,
+  TAG_MENU_ITEMS,
   USER_MENU_ITEMS,
   USER_MENU_ITEMS_LOGGED_IN,
   USER_MENU_ITEMS_NOT_LOGGED_IN,
   UserSidebarMenuState
 } from "src/app/constants";
-import {filter, map, takeUntil} from "rxjs/operators";
+import {takeUntil} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Select, Store} from "@ngxs/store";
 import {Observable, Subject} from "rxjs";
