@@ -60,8 +60,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public UserDTO editUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody UserDTO userDTO){
-        return userService.editUser(authorizationHeader, userDTO);
+    public UserDTO editUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody User user){
+        return userService.editUser(authorizationHeader, user);
     }
 
     public void setResponse(HttpServletResponse response, boolean success) {

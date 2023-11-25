@@ -124,22 +124,27 @@ public class UserService {
         return UserDTO.buildUserDTO(user);
     }
 
-    public UserDTO editUser(String authorizationHeader, UserDTO userDTO) {
-        User user = getUserFromToken(authorizationHeader, true);
+    public UserDTO editUser(String authorizationHeader, User user) {
+        User retreivedUser = getUserFromToken(authorizationHeader, true);
         if(user == null) {
             return null;
         }
-        if(UserDTO.buildUserDTO(user).equals(userDTO)){
-            return userDTO;
+        if(UserDTO.buildUserDTO(user).equals(retreivedUser)){
+            return UserDTO.buildUserDTO(user);
         }
 
-        user.setEmail((!user.getEmail().equals(userDTO.getEmail()) && !userDTO.getEmail().isEmpty()) ? userDTO.getEmail() : user.getEmail());
-        user.setFirstName((!user.getFirstName().equals(userDTO.getFirstName()) && !userDTO.getFirstName().isEmpty()) ? userDTO.getFirstName() : user.getFirstName());
-        user.setLastName((!user.getLastName().equals(userDTO.getLastName()) && !userDTO.getLastName().isEmpty()) ? userDTO.getLastName() : user.getLastName());
-        user.setLocation((!user.getLocation().equals(userDTO.getLocation()) && !userDTO.getLocation().isEmpty()) ? userDTO.getLocation() : user.getLocation());
-        user.setPhoneNumber((!user.getPhoneNumber().equals(userDTO.getPhoneNumber()) && !userDTO.getPhoneNumber().isEmpty()) ? userDTO.getPhoneNumber() : user.getPhoneNumber());
+        if (!user.getPassword().isEmpty() && !user.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+            return null;
+        }
 
-        userMapper.updateUserProfile(user);
-        return UserDTO.buildUserDTO(user);
+        retreivedUser.setEmail((!retreivedUser.getEmail().equals(user.getEmail()) && !user.getEmail().isEmpty()) ? user.getEmail() : retreivedUser.getEmail());
+        retreivedUser.setFirstName((!retreivedUser.getFirstName().equals(user.getFirstName()) && !user.getFirstName().isEmpty()) ? user.getFirstName() : retreivedUser.getFirstName());
+        retreivedUser.setLastName((!retreivedUser.getLastName().equals(user.getLastName()) && !user.getLastName().isEmpty()) ? user.getLastName() : retreivedUser.getLastName());
+        retreivedUser.setLocation((!retreivedUser.getLocation().equals(user.getLocation()) && !user.getLocation().isEmpty()) ? user.getLocation() : retreivedUser.getLocation());
+        retreivedUser.setPhoneNumber((!retreivedUser.getPhoneNumber().equals(user.getPhoneNumber()) && !user.getPhoneNumber().isEmpty()) ? user.getPhoneNumber() : retreivedUser.getPhoneNumber());
+        retreivedUser.setHashedPassword(user.getPassword().isEmpty() ? null : hashUtil.hash(user.getPassword(), null));
+
+        userMapper.updateUserProfile(retreivedUser);
+        return UserDTO.buildUserDTO(retreivedUser);
     }
 }

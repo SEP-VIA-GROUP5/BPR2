@@ -8,7 +8,13 @@ import {defaultUserContent, UserContent} from "src/app/authentication/constants/
 import {Select, Store} from "@ngxs/store";
 import {ProfileSelector} from "src/app/profile/profile.selector";
 import {Observable} from "rxjs";
-import {FetchCurrentUserLoggedIn, FetchUser, FetchUserProducts, ProfileReset} from "src/app/profile/profile.actions";
+import {
+  FetchCurrentUserLoggedIn,
+  FetchUser,
+  FetchUserProducts,
+  ProfileReset,
+  UpdateUser
+} from "src/app/profile/profile.actions";
 import {Product} from "src/model/product";
 
 @Component({
@@ -151,7 +157,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onFormSubmit() {
-    alert('form submitted');
+    this.store.dispatch(new UpdateUser(this.userContent));
   }
 
   getProductGridClass(products: Product[]): string {

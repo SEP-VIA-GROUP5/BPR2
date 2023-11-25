@@ -46,7 +46,39 @@ export class ProfileState {
     {getState, setState}: StateContext<ProfileStateModel>,
     action: UpdateUser
   ) {
-    // do action update user
+    let newState = produce(getState(), draft => {
+      draft.isFetching = true;
+    });
+    setState(newState);
+
+    let updatedUser: User;
+    try {
+      const changedUser = {
+        email: action.user.email,
+        firstName: action.user.firstName,
+        lastName: action.user.lastName,
+        location: action.user.location,
+        phoneNumber: action.user.phoneNumber,
+        password: action.user.password,
+      } satisfies User;
+      // TODO does not work for now
+      updatedUser = await this.userService.updateUser(changedUser);
+      newState = produce(getState(), draft => {
+        draft.user = updatedUser;
+        draft.isFetching = false;
+      });
+      setState(newState);
+    } catch (error) {
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : error,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+      newState = produce(getState(), draft => {
+        draft.isFetching = false;
+      });
+      setState(newState);
+    }
   }
 
   @Action(FetchUser)
