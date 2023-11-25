@@ -59,6 +59,11 @@ public class UserController {
        return userService.refreshToken(authorizationHeader);
     }
 
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public UserDTO refreshToken(@RequestHeader("Authorization") String authorizationHeader, @RequestBody UserDTO userDTO){
+        return userService.editUser(authorizationHeader, userDTO);
+    }
+
     public void setResponse(HttpServletResponse response, boolean success) {
         if (success) {
             response.setStatus(HttpStatus.OK.value());

@@ -123,4 +123,23 @@ public class UserService {
         }
         return UserDTO.buildUserDTO(user);
     }
+
+    public UserDTO editUser(String authorizationHeader, UserDTO userDTO) {
+        User user = getUserFromToken(authorizationHeader, true);
+        if(user == null) {
+            return null;
+        }
+        if(UserDTO.buildUserDTO(user).equals(userDTO)){
+            return userDTO;
+        }
+
+        user.setEmail((!user.getEmail().equals(userDTO.getEmail()) && !userDTO.getEmail().isEmpty()) ? userDTO.getEmail() : user.getEmail());
+        user.setFirstName((!user.getFirstName().equals(userDTO.getFirstName()) && !userDTO.getFirstName().isEmpty()) ? userDTO.getFirstName() : user.getFirstName());
+        user.setLastName((!user.getLastName().equals(userDTO.getLastName()) && !userDTO.getLastName().isEmpty()) ? userDTO.getLastName() : user.getLastName());
+        user.setLocation((!user.getLocation().equals(userDTO.getLocation()) && !userDTO.getLocation().isEmpty()) ? userDTO.getLocation() : user.getLocation());
+        user.setPhoneNumber((!user.getPhoneNumber().equals(userDTO.getPhoneNumber()) && !userDTO.getPhoneNumber().isEmpty()) ? userDTO.getPhoneNumber() : user.getPhoneNumber());
+
+        userMapper.updateUserProfile(user);
+        return UserDTO.buildUserDTO(user);
+    }
 }
