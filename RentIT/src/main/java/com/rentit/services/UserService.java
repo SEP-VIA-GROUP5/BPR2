@@ -144,7 +144,7 @@ public class UserService {
         retreivedUser.setPhoneNumber((!retreivedUser.getPhoneNumber().equals(user.getPhoneNumber()) && !user.getPhoneNumber().isEmpty()) ? user.getPhoneNumber() : retreivedUser.getPhoneNumber());
         retreivedUser.setHashedPassword(user.getPassword().isEmpty() ? null : hashUtil.hash(user.getPassword(), null));
 
-        userMapper.updateUserProfile(user);
-        return UserDTO.buildUserDTO(user);
+        userMapper.updateUserProfile(retreivedUser);
+        return UserDTO.buildUserDTO(retreivedUser);
     }
 }
