@@ -62,7 +62,7 @@ public class ProductController {
         return productService.getUserProductList(email);
     }
     @RequestMapping(value = "/status/{id}/{status}", method = RequestMethod.POST)
-    public void setProductStatus(@PathVariable int id, String status, @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
+    public void setProductStatus(@PathVariable int id, @PathVariable String status, @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
         ResponseMessage responseMessage = productService.setProductStatus(id, status, authorizationHeader);
         switch (responseMessage) {
             case SUCCESS -> response.setStatus(200);

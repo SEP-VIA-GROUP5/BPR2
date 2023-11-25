@@ -88,7 +88,7 @@ public class IProductMapperTest {
 
     }
     @Test
-    public void get_product_owener_id_returns_correct_user_id() {
+    public void get_product_owner_id_returns_correct_user_id() {
         int userId = 1;
         int productOwnerId = productMapper.getProductOwnerId(1);
         assertThat(userId).isEqualTo(productOwnerId);
