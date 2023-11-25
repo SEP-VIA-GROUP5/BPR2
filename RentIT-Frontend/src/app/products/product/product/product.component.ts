@@ -9,8 +9,10 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch, ResetSendingInquiry,
-  ResetSubmitReport, SendingInquiry,
+  ProductReviewsFetch,
+  ResetSendingInquiry,
+  ResetSubmitReport,
+  SendingInquiry,
   SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
@@ -21,14 +23,14 @@ import {Review} from "src/model/review";
 import {UserService} from "src/api/user.service";
 import {ReviewSummary} from "src/model/reviewSummary";
 import {
-  constructorReportToAdd, constructorSendingInquiry,
+  constructorReportToAdd,
+  constructorSendingInquiry,
   ReportToAdd,
   ReportType,
   SubmitButtonType
 } from "src/app/products/product/product/constants/constants";
 import {ReviewDTO} from "src/model/reviewDTO";
 import {Inquiry} from "src/model/inquiry";
-import {Product} from "src/model/product";
 import {addDays, toUTCDate} from "src/core/utils/date.utils";
 
 @Component({
@@ -299,6 +301,10 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   loadNextReviews() {
     this.store.dispatch(new ProductReviewsFetch(this.productId));
+  }
+
+  navigateToUsersProfile(email: string) {
+    this.router.navigate([`/profile/${email}`]);
   }
 
   ngOnDestroy(): void {

@@ -117,7 +117,7 @@
               </p>
             </div>
           </nb-card-header>
-          <nb-card-body>
+          <nb-card-body nbTooltip="Click for going to user's details" (click)="navigateToUsersProfile(productOverview.user.email)">
             <nb-badge *ngIf="!this.userService.isLoggedIn" class="report-badge" text="Report"
                       [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.USER)"
                       [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
