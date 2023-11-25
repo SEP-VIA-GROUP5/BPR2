@@ -6,13 +6,14 @@ import {
   GeneralSidebarMenuState,
   ICONS,
   LocalStorageEnum,
-  PRODUCTS_MENU_ITEM_URLS, TAG_MENU_ITEMS,
+  PRODUCTS_MENU_ITEM_URLS,
+  TAG_MENU_ITEMS,
   USER_MENU_ITEMS,
   USER_MENU_ITEMS_LOGGED_IN,
   USER_MENU_ITEMS_NOT_LOGGED_IN,
   UserSidebarMenuState
 } from "src/app/constants";
-import {filter, map, takeUntil} from "rxjs/operators";
+import {takeUntil} from "rxjs/operators";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Select, Store} from "@ngxs/store";
 import {Observable, Subject} from "rxjs";
@@ -151,18 +152,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // deselecting previous selected item
         if (this.currentSelectedItem) {
-         this.handleSelectionOfMenuItem(this.currentSelectedItem.tag, false, this.currentSelectedItem);
+         this.handleSelectionOfMenuItem(false, this.currentSelectedItem);
         }
 
         // selecting current selected item
-        this.handleSelectionOfMenuItem(item.tag, true, item)
+        this.handleSelectionOfMenuItem( true, item)
         this.currentSelectedItem = item;
       });
 
     this.store.dispatch([...actionsInParallel]);
   }
 
-  handleSelectionOfMenuItem(tag: string, selected: boolean, item: NbMenuBag) {
+  handleSelectionOfMenuItem(selected: boolean, item: NbMenuBag) {
     let indexOfCurrentSelectedItem;
     if (item.tag === TAG_MENU_ITEMS.USER_MENU) {
       indexOfCurrentSelectedItem = this.userSidebarMenuItems.findIndex(menuItem => menuItem.link === item.item.link);
@@ -221,14 +222,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   navigateToMainPage() {
     this.router.navigate([PRODUCTS_MENU_ITEM_URLS.PRODUCTS]);
+    if (this.currentSelectedItem) {
+      this.handleSelectionOfMenuItem(false, this.currentSelectedItem);
+    }
+    // find the menu item for products
+    let indexOfProductsMenuItem = this.generalSidebarMenuItems.findIndex(menuItem => menuItem.link === PRODUCTS_MENU_ITEM_URLS.PRODUCTS);
+    let item = {
+      tag: TAG_MENU_ITEMS.GENERAL_MENU,
+      item: this.generalSidebarMenuItems[indexOfProductsMenuItem]
+    } satisfies NbMenuBag;
+    this.handleSelectionOfMenuItem( true, item)
+    this.currentSelectedItem = item;
+
   }
 
   isOnMainPage(): boolean {
     return this.router.routerState.snapshot.url === PRODUCTS_MENU_ITEM_URLS.PRODUCTS;
-  }
-
-  onContextChange(event) {
-    console.log(event );
   }
 
   ngOnDestroy() {
