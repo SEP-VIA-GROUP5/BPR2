@@ -55,15 +55,15 @@
         FROM products
         WHERE (
         <foreach collection="filters" index="key" item="value" separator=" AND ">
-                <if test="key.boundary == 'up'">
-                    ${key.columnName} &lt; #{value}
-                </if>
-                <if test="key.boundary == 'down'">
-                    ${key.columnName} &gt; #{value}
-                </if>
-                <if test="key.boundary == 'equals'">
-                    ${key.columnName} = #{value}
-                </if>
+            <if test="key.boundary == 'up'">
+                ${key.columnName} &lt; #{value}
+            </if>
+            <if test="key.boundary == 'down'">
+                ${key.columnName} &gt; #{value}
+            </if>
+            <if test="key.boundary == 'equals'">
+                ${key.columnName} = #{value}
+            </if>
         </foreach>
         )
         LIMIT ${(pageNum - 1) * n}, #{n};
@@ -89,8 +89,8 @@
         WHERE product_id = #{productId};
     </select>
     <insert id="addProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO products (name, description, day_price, week_price, month_price, deposit,city,product_value,
-                             min_lease_period,category,product_status,rented_until,user_id)
+        INSERT INTO products (name, description, day_price, week_price, month_price, deposit, city, product_value,
+                              min_lease_period, category, product_status, rented_until, user_id)
         VALUES (#{name}, #{description}, #{dayPrice}, #{weekPrice},
                 #{monthPrice},
                 #{deposit}, #{city}, #{productValue}, #{minLeasePeriod},
@@ -102,4 +102,9 @@
         FROM products
         WHERE product_id = #{id};
     </delete>
+    <update id="changeProductStatus">
+        UPDATE products
+        SET product_status = #{productStatus}
+        WHERE product_id = #{productId};
+    </update>
 </mapper>

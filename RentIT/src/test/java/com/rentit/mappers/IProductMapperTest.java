@@ -93,4 +93,16 @@ public class IProductMapperTest {
         int productOwnerId = productMapper.getProductOwnerId(1);
         assertThat(userId).isEqualTo(productOwnerId);
     }
+
+    @Test
+    public void changeProductStatus_successfully_changes_product_status() {
+        int productId = 1;
+        ProductStatus newStatus = ProductStatus.PAUSED;
+        ProductStatus oldStatus = productMapper.getProductById(productId).getStatus();
+        assertThat(oldStatus).isNotEqualTo(newStatus);
+        productMapper.changeProductStatus(productId, newStatus);
+        assertThat(productMapper.getProductById(productId).getStatus()).isEqualTo(newStatus);
+        //Change back the status after test.
+        productMapper.changeProductStatus(productId, oldStatus);
+    }
 }
