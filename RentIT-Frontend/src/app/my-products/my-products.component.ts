@@ -186,7 +186,26 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         return this.productsSelected.length === 0;
       }
       case ActionsConstants.STATUS: {
-        return this.productsSelected.length === 0 || !this.computeIsButtonDisabledForStatus();
+        return (this.productsSelected.length === 0 || this.productsSelected.length > 5) || !this.computeIsButtonDisabledForStatus();
+      }
+    }
+  }
+
+  getButtonForPerformingTooltip(): string {
+    switch (this.actionSelected.action) {
+      case ActionsConstants.REMOVE: {
+        return 'Select at least one product to remove';
+      }
+      case ActionsConstants.STATUS: {
+        if (this.productsSelected.length === 0) {
+          return 'Select at least one product to change status';
+        }
+        else if(this.productsSelected.length > 5) {
+          return 'Select maximum 5 products to change status';
+        }
+        else if(!this.computeIsButtonDisabledForStatus()) {
+          return 'Select a different status for each product';
+        }
       }
     }
   }

@@ -57,7 +57,7 @@
     </nb-card-body>
     <nb-card-footer>
       <div class="dialog-buttons-footer">
-        <button nbButton hero [status]="data.status" [disabled]="isButtonForPerformingActionDisabled()" (click)="performAction()">
+        <button nbButton hero [nbTooltip]="getButtonForPerformingTooltip()" [nbTooltipDisabled]="!isButtonForPerformingActionDisabled()" [status]="data.status" [disabled]="isButtonForPerformingActionDisabled()" (click)="performAction()">
           <span *ngIf="data.action === ActionsConstants.REMOVE">Remove</span>
           <span *ngIf="data.action === ActionsConstants.STATUS">Change status</span>
         </button>
