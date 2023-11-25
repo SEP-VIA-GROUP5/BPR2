@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import {Product} from "src/model/product";
 import {mockedProducts} from "src/mocks/products.mock";
 import {HttpParams} from "@angular/common/http";
+import {ProductStatus} from "src/model/productStatus";
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ export class ProductsService {
 
   async getUsersProducts(): Promise<Product[]> {
     return await this.apiService.call(mockedProducts, this.apiService.request('get', `${this.PATH_CONTROLLER}/myList`, null, true));
+  }
+
+  async updateProductStatus(productId: number, status: ProductStatus): Promise<void> {
+    await this.apiService.call(null, this.apiService.request('post', `${this.PATH_CONTROLLER}/status/${productId}/${status}`, null, true));
   }
 
   async getProductsByUserEmail(email: string): Promise<Product[]> {

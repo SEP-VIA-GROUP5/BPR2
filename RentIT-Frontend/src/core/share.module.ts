@@ -11,7 +11,7 @@ import {
   NbActionsModule,
   NbBadgeModule,
   NbButtonModule,
-  NbCardModule,
+  NbCardModule, NbCheckboxModule,
   NbContextMenuModule,
   NbFormFieldModule,
   NbIconModule,
@@ -67,6 +67,7 @@ export const NEBULAR_MODULES = [
   NbStepperModule,
   NbOptionModule,
   NbAccordionModule,
+  NbCheckboxModule,
 ];
 
 export const SHARED_COMPONENTS = [
