@@ -1,4 +1,4 @@
-nb-card {
+.my-products-container {
   height: 85vh;
   overflow-y: auto;
   display: flex;
@@ -75,6 +75,33 @@ nb-card-footer {
 
 .dialog-action-container {
   align-items: center;
+
+  nb-card-body {
+    .dialog-action-body {
+      .dialog-action-change-status {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .product-status-change {
+          display: flex;
+          justify-content: space-between;
+          gap:1rem;
+          p {
+            font-size: var(--tag-medium-text-font-size);
+            span {
+              font-weight: bold;
+            }
+          }
+          nb-tag-list {
+            nb-tag {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .dialog-buttons-footer {

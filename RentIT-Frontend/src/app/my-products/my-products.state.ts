@@ -3,11 +3,18 @@ import {Injectable} from "@angular/core";
 import {produce} from "immer";
 import {NbToastrService} from "@nebular/theme";
 import {Product} from "src/model/product";
-import {MyProductsFetch, MyProductsReset, RemoveProducts} from "src/app/my-products/my-products.actions";
+import {
+  ChangeProductsStatus,
+  MyProductsFetch,
+  MyProductsReset,
+  RemoveProducts
+} from "src/app/my-products/my-products.actions";
 import {ProductsService} from "src/api/products.service";
 import {ProductService} from "src/api/product.service";
 import {environment} from "src/environments/environment.dev";
 import {ICONS} from "src/app/constants";
+import {ProductStatus} from "src/model/productStatus";
+import {StatusSelected} from "src/app/shared-components/product-card/constants/constants";
 
 export interface MyProductsStateModel {
   isFetching: boolean;
@@ -94,11 +101,59 @@ export class MyProductsState {
     }
   }
 
+  @Action(ChangeProductsStatus)
+  async changeProductsStatus(
+    {getState, setState}: StateContext<MyProductsStateModel>,
+    action: ChangeProductsStatus) {
+    let newState = produce(getState(), draft => {
+      draft.isFetching = true;
+    })
+    setState(newState);
+
+    try {
+      for (const productSelected of action.productsSelected) {
+        const statusSelected: ProductStatus = this.getSelectedStatus(productSelected.statusSelectedList);
+        await this.productsService.updateProductStatus(productSelected.product.id, statusSelected);
+      }
+      newState = produce(getState(), draft => {
+        draft.products = draft.products.map(product => {
+          for (const productSelected of action.productsSelected) {
+            if (product.id === productSelected.product.id) {
+              const statusSelected: ProductStatus = this.getSelectedStatus(productSelected.statusSelectedList);
+              return {
+                ...product,
+                status: statusSelected,
+              }
+            }
+          }
+          return product;
+        });
+        draft.isFetching = false;
+      });
+      setState(newState);
+      window.location.reload();
+    }
+    catch (error) {
+      newState = produce(getState(), draft => {
+        draft.isFetching = false;
+      })
+      setState(newState);
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : error,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+    }
+  }
+
   @Action(MyProductsReset)
   async myProductsReset(
     {setState}: StateContext<MyProductsStateModel>) {
     setState(defaultsState);
   }
 
+  private getSelectedStatus(statusSelectedList: StatusSelected[]): ProductStatus {
+    return statusSelectedList.find(statusSelected => statusSelected.isStatusListSelected).productStatus;
+  }
 
 }
