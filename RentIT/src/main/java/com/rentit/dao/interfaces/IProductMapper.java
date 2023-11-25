@@ -21,6 +21,5 @@ public interface IProductMapper {
     List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<PriceFilteringColumn, String> filters);
     List<ProductDTO> getProductsByUserId(int userId);
     int getProductOwnerId(int productId);
-
     void changeProductStatus(int productId, ProductStatus productStatus);
 }
