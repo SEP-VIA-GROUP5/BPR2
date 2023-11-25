@@ -27,6 +27,7 @@
         <result property="rentStart" column="rent_start"/>
         <result property="rentEnd" column="rent_end"/>
         <association property="userDTO" column="sender_id" select="com.rentit.dao.interfaces.IUserMapper.getUserDTOById"/>
+        <association property="productDTO" column="product_id" select="com.rentit.dao.interfaces.IProductMapper.getProductDTOById"/>
     </resultMap>
     <insert id="addInquiry" parameterType="Inquiry" useGeneratedKeys="true" keyProperty="inquiryId">
         INSERT INTO inquiries

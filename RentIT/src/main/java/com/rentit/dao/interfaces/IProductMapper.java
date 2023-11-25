@@ -14,6 +14,7 @@ public interface IProductMapper {
     List<ProductDTO> getNProductsByPage(int pageNum, int n);
     int addProduct(Product product);
     Product getProductById(int id);
+    ProductDTO getProductDTOById(int id);
     List<Product> getProductsByName(String name);
     void deleteProductById(int id);
     List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<PriceFilteringColumn, String> filters);
