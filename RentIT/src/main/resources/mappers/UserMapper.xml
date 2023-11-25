@@ -49,4 +49,15 @@
         VALUES (#{email}, #{firstName}, #{lastName}, #{location}, #{phoneNumber}, #{hashedPassword.hashedString},
                 #{hashedPassword.salt});
     </insert>
+    <update id="updateUserProfile" parameterType="User">
+        UPDATE users
+        SET email    = #{email},
+            f_name   = #{firstName},
+            l_name   = #{lastName},
+            location = #{location},
+            phone_no = #{phoneNumber},
+            password = #{hashedPassword.hashedString},
+            salt     = #{hashedPassword.salt}
+        WHERE user_id = #{id};
+    </update>
 </mapper>
