@@ -28,12 +28,13 @@ export class UserService {
     private store: Store,
     private router: Router,
     private toastrService: NbToastrService
-  ) {}
+  ) {
+  }
 
   PATH_CONTROLLER = 'user';
 
   async register(user: User) {
-    let response = await this.apiService.call(null, this.apiService.request('post',`${this.PATH_CONTROLLER}/register`, user, false));
+    let response = await this.apiService.call(null, this.apiService.request('post', `${this.PATH_CONTROLLER}/register`, user, false));
     this.toastrService.info(
       'You have been logged in successfully!',
       'Authentication',
@@ -42,10 +43,13 @@ export class UserService {
   }
 
   async login(user: User) {
-    let token = await this.apiService.call(null, this.apiService.request('post',`${this.PATH_CONTROLLER}/login`, { email: user.email, password: user.password }, false));
+    let token = await this.apiService.call(null, this.apiService.request('post', `${this.PATH_CONTROLLER}/login`, {
+      email: user.email,
+      password: user.password
+    }, false));
     if (this.isTokenObject(token) && token) {
       this.localStorageService.saveData(LocalStorageEnum.TOKEN, JSON.stringify(token));
-      user = await this.apiService.call(userMocked, this.apiService.request('get',`${this.PATH_CONTROLLER}/getUser`, null,true)) as User;
+      user = await this.apiService.call(userMocked, this.apiService.request('get', `${this.PATH_CONTROLLER}/getUser`, null, true)) as User;
       this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify(user));
     }
     this.store.dispatch(new UpdateUserSidebarMenuState(UserSidebarMenuState.USER_ITEMS_LOGGED_IN));
@@ -76,7 +80,7 @@ export class UserService {
     if (tokenParsed && tokenParsed.expires) {
       const expireDate = formatDate(new Date(tokenParsed.expires), DATE_FORMAT.YYYY_MM_DD_HH_MM_SS, DATE_LOCALE.EN_US, DATE_TIMEZONE.UTC);
       const isTokenNotExpired = isDateBeforeNow(new Date(expireDate));
-      if(!isTokenNotExpired) this.logout();
+      if (!isTokenNotExpired) this.logout();
       return isTokenNotExpired;
     }
     return false;
@@ -85,13 +89,13 @@ export class UserService {
   async getUser() {
     return await this.apiService.call(userMocked, this.apiService.request('get', `${this.PATH_CONTROLLER}/getUser`, null, true)) as User;
   }
-
+  
   async updateUser(user: User) {
-    throw new Error('Method not implemented.');
+    return await this.apiService.call(userMocked, this.apiService.request('post', `${this.PATH_CONTROLLER}/edit`, user, true)) as User;
   }
 
   async getUserByEmail(email: string) {
-   return Promise.resolve(userMocked);
+    return await this.apiService.call(userMocked, this.apiService.request('get', `${this.PATH_CONTROLLER}/getUser/${email}`, null, false)) as User;
   }
 
   redirectUserIfNotLoggedIn() {

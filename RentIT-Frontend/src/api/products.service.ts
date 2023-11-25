@@ -34,6 +34,6 @@ export class ProductsService {
   }
 
   async getProductsByUserEmail(email: string): Promise<Product[]> {
-    return Promise.resolve(mockedProducts);
+    return await this.apiService.call(mockedProducts, this.apiService.request('get', `${this.PATH_CONTROLLER}/productList/${email}`, null, false));
   }
 }

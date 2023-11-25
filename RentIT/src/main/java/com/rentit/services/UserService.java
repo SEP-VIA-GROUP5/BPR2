@@ -115,4 +115,36 @@ public class UserService {
         }
         return userMapper.getUserByEmail(email);
     }
+
+    public UserDTO getUserByEmail(String userEmail) {
+        User user = getUserFromEmail(userEmail);
+        if(user == null) {
+            return null;
+        }
+        return UserDTO.buildUserDTO(user);
+    }
+
+    public UserDTO editUser(String authorizationHeader, User user) {
+        User retreivedUser = getUserFromToken(authorizationHeader, true);
+        if(user == null) {
+            return null;
+        }
+        if(UserDTO.buildUserDTO(user).equals(retreivedUser)){
+            return UserDTO.buildUserDTO(user);
+        }
+
+        if (!user.getPassword().isEmpty() && !user.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+            return null;
+        }
+
+        retreivedUser.setEmail((!retreivedUser.getEmail().equals(user.getEmail()) && !user.getEmail().isEmpty()) ? user.getEmail() : retreivedUser.getEmail());
+        retreivedUser.setFirstName((!retreivedUser.getFirstName().equals(user.getFirstName()) && !user.getFirstName().isEmpty()) ? user.getFirstName() : retreivedUser.getFirstName());
+        retreivedUser.setLastName((!retreivedUser.getLastName().equals(user.getLastName()) && !user.getLastName().isEmpty()) ? user.getLastName() : retreivedUser.getLastName());
+        retreivedUser.setLocation((!retreivedUser.getLocation().equals(user.getLocation()) && !user.getLocation().isEmpty()) ? user.getLocation() : retreivedUser.getLocation());
+        retreivedUser.setPhoneNumber((!retreivedUser.getPhoneNumber().equals(user.getPhoneNumber()) && !user.getPhoneNumber().isEmpty()) ? user.getPhoneNumber() : retreivedUser.getPhoneNumber());
+        retreivedUser.setHashedPassword(user.getPassword().isEmpty() ? null : hashUtil.hash(user.getPassword(), null));
+
+        userMapper.updateUserProfile(retreivedUser);
+        return UserDTO.buildUserDTO(retreivedUser);
+    }
 }

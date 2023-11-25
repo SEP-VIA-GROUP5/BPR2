@@ -49,9 +49,19 @@ public class UserController {
         return userService.getUser(authorizationHeader);
     }
 
+    @RequestMapping(value = "/getUser/{userEmail}", method = RequestMethod.GET)
+    public UserDTO getUserByEmail(@PathVariable String userEmail) {
+        return userService.getUserByEmail(userEmail);
+    }
+
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
     public Token refreshToken(@RequestHeader("Authorization") String authorizationHeader){
        return userService.refreshToken(authorizationHeader);
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public UserDTO editUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody User user){
+        return userService.editUser(authorizationHeader, user);
     }
 
     public void setResponse(HttpServletResponse response, boolean success) {

@@ -14,6 +14,10 @@ INSERT INTO `users` (`email`, `f_name`, `l_name`, `location`, `phone_no`, `passw
 VALUES ('daniel.grøn@example.com', 'dolores', 'deleniti', 'Kofodvej 4, st.\n2491 Bjergby', '52 29 21 72',
         '8a5debbaa9651202070e2eb351cad9bec1b88628', 'wnqv');
 
+INSERT INTO `users` (`email`, `f_name`, `l_name`, `location`, `phone_no`, `password`, `salt`)
+VALUES ('aslan.grøn@example.com', 'aslan', 'deleniti', 'Kofodvej 4, st.\n2491 Bjergby', '52 29 21 72',
+        '8a5debbaa9651202070e2eb351cad9bec1b88628', 'wnqv');
+
 INSERT INTO `products` (`name`, `description`, `day_price`, `week_price`, `month_price`, `deposit`, `city`,
                         `product_value`, `min_lease_period`, `category`, `product_status`, `rented_until`, `user_id`)
 VALUES ('reiciendis',

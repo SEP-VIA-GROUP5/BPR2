@@ -24,18 +24,21 @@ public class IUserMapperTest {
         User user = userMapper.getUserByEmail(email);
         assertThat(user.getEmail()).isEqualTo(email);
     }
+
     @Test
     public void getUserByEmail_returns_null_with_incorrect_email() {
         String email = "wrongEmail";
         User user = userMapper.getUserByEmail(email);
         assertThat(user).isEqualTo(null);
     }
+
     @Test
     public void getUserById_returns_correct_user() {
         int id = 1;
         User user = userMapper.getUserById(id);
         assertThat(user.getId()).isEqualTo(id);
     }
+
     @Test
     public void getUserById_returns_null_with_incorrect_id() {
         int id = 10;
@@ -49,7 +52,7 @@ public class IUserMapperTest {
         String email = "johndoe@email.com";
         HashPair hashPair = hashUtil.hash(password, null);
         User user = User.builder()
-                .id(6)
+                .id(7)
                 .email(email)
                 .firstName("John")
                 .lastName("Doe")
@@ -63,5 +66,24 @@ public class IUserMapperTest {
         //We save only hashed password in db
         user.setPassword(null);
         assertThat(registeredUser).isEqualTo(user);
+    }
+
+    @Test
+    public void updateUserProfile_updates_user_in_db() {
+        String oldEmail = "aslan.grøn@example.com";
+        String newEmail = "emailUpdated";
+        HashPair updatedHashPair = hashUtil.hash("passwordUpdated", null);
+        User updatedUser = User.builder()
+                .id(6)
+                .firstName("fNameUpdated")
+                .lastName("lNameUpdated")
+                .phoneNumber("741")
+                .email(newEmail)
+                .location("locationUpdated")
+                .hashedPassword(updatedHashPair)
+                .build();
+        assertThat(userMapper.getUserByEmail(oldEmail)).isNotEqualTo(updatedUser);
+        userMapper.updateUserProfile(updatedUser);
+        assertThat(userMapper.getUserByEmail(newEmail)).isEqualTo(updatedUser);
     }
 }

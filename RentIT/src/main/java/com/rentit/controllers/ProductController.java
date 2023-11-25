@@ -37,10 +37,10 @@ public class ProductController {
 
     @RequestMapping(value = "/id/{productId}", method = RequestMethod.DELETE)
     public void deleteProductById(@PathVariable int productId,
-                                               @RequestHeader("Authorization") String authorizationHeader,
-                                               HttpServletResponse response) {
+                                  @RequestHeader("Authorization") String authorizationHeader,
+                                  HttpServletResponse response) {
         ResponseMessage responseMessage = productService.deleteProductById(productId, authorizationHeader);
-        switch (responseMessage){
+        switch (responseMessage) {
             case SUCCESS -> response.setStatus(204);
             case DELETION_ERROR -> response.setStatus(404);
             case INTERNAL_ERROR -> response.setStatus(500);
@@ -58,7 +58,16 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/productList/{email}", method = RequestMethod.GET)
-    public List<ProductDTO> getUserList(@PathVariable String email) {
-        return productService.getUserList(email);
+    public List<ProductDTO> getUserProductList(@PathVariable String email) {
+        return productService.getUserProductList(email);
+    }
+    @RequestMapping(value = "/status/{id}/{status}", method = RequestMethod.POST)
+    public void setProductStatus(@PathVariable int id, @PathVariable String status, @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
+        ResponseMessage responseMessage = productService.setProductStatus(id, status, authorizationHeader);
+        switch (responseMessage) {
+            case SUCCESS -> response.setStatus(200);
+            case CREDENTIALS_ERROR -> response.setStatus(401);
+            case INVALID_PARAMETERS -> response.setStatus(400);
+        }
     }
 }

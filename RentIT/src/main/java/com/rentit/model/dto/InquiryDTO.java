@@ -24,8 +24,9 @@ public class InquiryDTO {
     LocalDate rentStart;
     LocalDate rentEnd;
     UserDTO userDTO;
+    ProductDTO productDTO;
 
-    public static InquiryDTO buildInquiryDTO(Inquiry inquiry, UserDTO userDTO){
+    public static InquiryDTO buildInquiryDTO(Inquiry inquiry, UserDTO userDTO, ProductDTO productDTO){
         return InquiryDTO.builder()
                 .productId(inquiry.getProductId())
 //                .accepted(inquiry.isAccepted())
@@ -36,6 +37,7 @@ public class InquiryDTO {
                 .viewedAt(inquiry.getViewedAt())
 //                .acceptedAt(inquiry.getAcceptedAt())
                 .userDTO(userDTO)
+                .productDTO(productDTO)
                 .build();
     }
 }

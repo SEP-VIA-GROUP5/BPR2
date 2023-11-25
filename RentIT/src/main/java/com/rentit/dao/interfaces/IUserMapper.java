@@ -10,4 +10,5 @@ public interface IUserMapper {
     User getUserById(int id);
     UserDTO getUserDTOById(int id);
     void registerUser(User user);
+    void updateUserProfile(User user);
 }
