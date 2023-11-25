@@ -61,4 +61,13 @@ public class ProductController {
     public List<ProductDTO> getUserProductList(@PathVariable String email) {
         return productService.getUserProductList(email);
     }
+    @RequestMapping(value = "/status/{id}/{status}", method = RequestMethod.POST)
+    public void setProductStatus(@PathVariable int id, String status, @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
+        ResponseMessage responseMessage = productService.setProductStatus(id, status, authorizationHeader);
+        switch (responseMessage) {
+            case SUCCESS -> response.setStatus(200);
+            case CREDENTIALS_ERROR -> response.setStatus(401);
+            case INVALID_PARAMETERS -> response.setStatus(400);
+        }
+    }
 }

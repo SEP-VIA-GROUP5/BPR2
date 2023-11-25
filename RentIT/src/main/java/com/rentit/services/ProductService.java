@@ -137,4 +137,26 @@ public class ProductService {
         }
         return productMapper.getProductOwnerId(productId);
     }
+
+    public ResponseMessage setProductStatus(int id, String status, String authorizationHeader) {
+        User user = userService.getUserFromToken(authorizationHeader, false);
+        Product product = productMapper.getProductById(id);
+        if(user == null || product.getUserId() != user.getId()){
+            return ResponseMessage.CREDENTIALS_ERROR;
+        }
+        if(id < 0 && status.isEmpty()){
+            return ResponseMessage.INVALID_PARAMETERS;
+        }
+
+        switch (status.toUpperCase()){
+            case "AVAILABLE" -> productMapper.changeProductStatus(id, ProductStatus.AVAILABLE);
+            case "RENTED" -> productMapper.changeProductStatus(id, ProductStatus.RENTED);
+            case "PAUSED" -> productMapper.changeProductStatus(id, ProductStatus.PAUSED);
+            case "UNAVAILABLE" -> productMapper.changeProductStatus(id, ProductStatus.UNAVAILABLE);
+            default -> {
+                return ResponseMessage.INVALID_PARAMETERS;
+            }
+        }
+        return ResponseMessage.SUCCESS;
+    }
 }
