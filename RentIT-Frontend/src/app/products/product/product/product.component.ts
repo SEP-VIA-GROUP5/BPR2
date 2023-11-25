@@ -303,6 +303,10 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.store.dispatch(new ProductReviewsFetch(this.productId));
   }
 
+  navigateToUsersProfile(email: string) {
+    this.router.navigate([`/profile/${email}`]);
+  }
+
   ngOnDestroy(): void {
     this.alive = false;
     this.store.dispatch(new ProductReset());
