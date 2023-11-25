@@ -49,6 +49,11 @@ public class UserController {
         return userService.getUser(authorizationHeader);
     }
 
+    @RequestMapping(value = "/getUser/{userEmail}", method = RequestMethod.GET)
+    public UserDTO getUserByEmail(@PathVariable String userEmail) {
+        return userService.getUserByEmail(userEmail);
+    }
+
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
     public Token refreshToken(@RequestHeader("Authorization") String authorizationHeader){
        return userService.refreshToken(authorizationHeader);

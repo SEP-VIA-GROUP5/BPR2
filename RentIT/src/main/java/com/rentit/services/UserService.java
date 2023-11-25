@@ -115,4 +115,12 @@ public class UserService {
         }
         return userMapper.getUserByEmail(email);
     }
+
+    public UserDTO getUserByEmail(String userEmail) {
+        User user = getUserFromEmail(userEmail);
+        if(user == null) {
+            return null;
+        }
+        return UserDTO.buildUserDTO(user);
+    }
 }
