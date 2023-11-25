@@ -11,7 +11,12 @@ import {
   computeStatusSelectedListFromProducts,
   ProductSelected
 } from "src/app/shared-components/product-card/constants/constants";
-import {MyProductsFetch, MyProductsReset, RemoveProducts} from "src/app/my-products/my-products.actions";
+import {
+  ChangeProductsStatus,
+  MyProductsFetch,
+  MyProductsReset,
+  RemoveProducts
+} from "src/app/my-products/my-products.actions";
 import {Observable} from "rxjs";
 import {MyProductsSelector} from "src/app/my-products/my-products.selector";
 import {ProductStatus} from "src/model/productStatus";
@@ -199,6 +204,9 @@ export class MyProductsComponent implements OnInit, OnDestroy {
       case ActionsConstants.REMOVE: {
         actionToPerform = new RemoveProducts(this.productsSelected.map(product => product.product));
         break;
+      }
+      case ActionsConstants.STATUS: {
+        actionToPerform = new ChangeProductsStatus(this.productsSelected);
       }
     }
     if (actionToPerform) {
