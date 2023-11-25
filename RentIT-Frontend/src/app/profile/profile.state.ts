@@ -113,7 +113,7 @@ export class ProfileState {
   }
 
   @Action(FetchCurrentUserLoggedIn)
-  async fetchCurrentUserLoggedIn(
+  fetchCurrentUserLoggedIn(
     {getState, setState}: StateContext<ProfileStateModel>) {
     let newState = produce(getState(), draft => {
       draft.isFetching = true;
@@ -122,7 +122,7 @@ export class ProfileState {
 
     let user: User;
     try {
-      user = await this.userService.getUser();
+      user = this.userService.getUser();
       newState = produce(getState(), draft => {
         draft.user = user;
         draft.isFetching = false;

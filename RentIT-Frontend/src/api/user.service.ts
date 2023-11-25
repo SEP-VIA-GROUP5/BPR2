@@ -86,10 +86,10 @@ export class UserService {
     return false;
   }
 
-  async getUser() {
-    return await this.apiService.call(userMocked, this.apiService.request('get', `${this.PATH_CONTROLLER}/getUser`, null, true)) as User;
+  getUser() {
+    return JSON.parse(this.localStorageService.getData(LocalStorageEnum.USER)) as User;
   }
-  
+
   async updateUser(user: User) {
     return await this.apiService.call(userMocked, this.apiService.request('post', `${this.PATH_CONTROLLER}/edit`, user, true)) as User;
   }
@@ -120,26 +120,6 @@ export class UserService {
       typeof obj.tokenName === 'string' &&
       typeof obj.tokenBody === 'string' &&
       typeof obj.expires === 'string'
-    );
-  }
-
-  private isUserObject(obj: any): obj is User {
-    return (
-      typeof obj === 'object' &&
-      'email' in obj &&
-      'id' in obj &&
-      'firstName' in obj &&
-      'lastName' in obj &&
-      'location' in obj &&
-      'hashedPassword' in obj &&
-      'password' in obj &&
-      typeof obj.email === 'string' &&
-      typeof obj.id === 'number' &&
-      typeof obj.firstName === 'string' &&
-      typeof obj.lastName === 'string' &&
-      typeof obj.location === 'string' &&
-      typeof obj.hashedPassword === 'string' &&
-      typeof obj.password === 'string'
     );
   }
 }
