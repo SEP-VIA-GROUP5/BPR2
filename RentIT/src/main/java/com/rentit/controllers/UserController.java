@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public UserDTO refreshToken(@RequestHeader("Authorization") String authorizationHeader, @RequestBody UserDTO userDTO){
+    public UserDTO editUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody UserDTO userDTO){
         return userService.editUser(authorizationHeader, userDTO);
     }
 
