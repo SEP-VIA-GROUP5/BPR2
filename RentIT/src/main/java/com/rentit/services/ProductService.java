@@ -139,7 +139,7 @@ public class ProductService {
     }
 
     public ResponseMessage setProductStatus(int id, String status, String authorizationHeader) {
-        User user = userService.getUserFromToken(authorizationHeader, false);
+        User user = userService.getUserFromToken(authorizationHeader, true);
         Product product = productMapper.getProductById(id);
         if(user == null || product.getUserId() != user.getId()){
             return ResponseMessage.CREDENTIALS_ERROR;
