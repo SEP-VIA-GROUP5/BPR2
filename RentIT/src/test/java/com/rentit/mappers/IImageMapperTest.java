@@ -40,4 +40,22 @@ public class IImageMapperTest {
         List<Image>productImages = imageMapper.getImagesByProductId(id);
         assertThat(images).containsAll(productImages);
     }
+    @Test
+    public void updateImages_removes_old_images_and_adds_new_ones() {
+        int productId = 1;
+
+        List<Image> newImages = List.of(
+                Image.builder().imageUrl("newUrl1").id(productId).build(),
+                Image.builder().imageUrl("newUrl2").id(productId).build()
+        );
+        List<Image> oldImages = imageMapper.getImagesByProductId(productId);
+
+        assertThat(oldImages).isNotEqualTo(newImages);
+        imageMapper.updateImages(productId, newImages);
+        List<Image> updatedImages = imageMapper.getImagesByProductId(productId);
+        assertThat(updatedImages.size()).isEqualTo(newImages.size());
+        assertThat(updatedImages.get(0).getImageUrl()).isEqualTo(newImages.get(0).getImageUrl());
+        assertThat(updatedImages.get(1).getImageUrl()).isEqualTo(newImages.get(1).getImageUrl());
+        imageMapper.updateImages(productId, oldImages);
+    }
 }

@@ -107,4 +107,20 @@
         SET product_status = #{productStatus}
         WHERE product_id = #{productId};
     </update>
+    <update id="updateProduct" parameterType="Product">
+        UPDATE products
+        SET name = #{name},
+            description = #{description},
+            day_price = #{dayPrice},
+            week_price = #{weekPrice},
+            month_price = #{monthPrice},
+            deposit = #{deposit},
+            city = #{city},
+            product_value = #{productValue},
+            min_lease_period = #{minLeasePeriod},
+            category = #{category},
+            product_status = #{status},
+            rented_until = #{rentedUntil}
+        WHERE product_id = #{id}
+    </update>
 </mapper>
