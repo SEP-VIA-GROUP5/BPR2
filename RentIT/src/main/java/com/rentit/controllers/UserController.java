@@ -59,7 +59,7 @@ public class UserController {
        return userService.refreshToken(authorizationHeader);
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.PATCH)
     public UserDTO editUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody User user){
         return userService.editUser(authorizationHeader, user);
     }

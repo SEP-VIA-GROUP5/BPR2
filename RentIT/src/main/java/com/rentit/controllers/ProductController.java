@@ -70,4 +70,9 @@ public class ProductController {
             case INVALID_PARAMETERS -> response.setStatus(400);
         }
     }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.PATCH, consumes = "application/json")
+    public ProductDTO editProduct(@RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
+        return productService.editProduct(product, authorizationHeader);
+    }
 }

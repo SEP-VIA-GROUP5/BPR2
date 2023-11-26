@@ -14,6 +14,7 @@ import com.rentit.services.utils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -158,5 +159,35 @@ public class ProductService {
             }
         }
         return ResponseMessage.SUCCESS;
+    }
+
+    public ProductDTO editProduct(Product product, String authorizationHeader) {
+        User user = userService.getUserFromToken(authorizationHeader, true);
+        if(user == null){
+            return null;
+        }
+        Product retreivedProduct = productMapper.getProductById(product.getId());
+        int productUserId = productMapper.getProductOwnerId(product.getId());
+        if(user.getId() != productUserId) {
+            return null;
+        }
+
+        retreivedProduct.setName((!product.getName().isEmpty()) ? product.getName() : retreivedProduct.getName());
+        retreivedProduct.setDescription((!product.getDescription().isEmpty()) ? product.getDescription() : retreivedProduct.getDescription());
+        retreivedProduct.setDayPrice((product.getDayPrice() > 0) ? product.getDayPrice() : retreivedProduct.getDayPrice());
+        retreivedProduct.setWeekPrice((product.getWeekPrice() > 0) ? product.getWeekPrice() : retreivedProduct.getWeekPrice());
+        retreivedProduct.setMonthPrice((product.getMonthPrice() > 0) ? product.getMonthPrice() : retreivedProduct.getMonthPrice());
+        retreivedProduct.setDeposit((product.getDeposit() > 0) ? product.getDeposit() : retreivedProduct.getDeposit());
+        retreivedProduct.setCity((!product.getCity().isEmpty()) ? product.getCity() : retreivedProduct.getCity());
+        retreivedProduct.setProductValue((product.getProductValue() > 0) ? product.getProductValue() : retreivedProduct.getProductValue());
+        retreivedProduct.setMinLeasePeriod((product.getMinLeasePeriod() > 0) ? product.getMinLeasePeriod() : retreivedProduct.getMinLeasePeriod());
+        retreivedProduct.setCategory((!product.getCategory().isEmpty()) ? product.getCategory() : retreivedProduct.getCategory());
+        retreivedProduct.setTags((!product.getTags().isEmpty()) ? product.getTags() : retreivedProduct.getTags());
+        retreivedProduct.setImages((!product.getImages().isEmpty()) ? product.getImages() : retreivedProduct.getImages());
+        retreivedProduct.setRentedUntil((product.getRentedUntil().isAfter(LocalDate.now())) ? product.getRentedUntil() : retreivedProduct.getRentedUntil());
+
+        productMapper.updateImages(retreivedProduct.getId(), retreivedProduct.getImages());
+        productMapper.updateProduct(retreivedProduct);
+        return ProductDTO.buildProductDTO(retreivedProduct);
     }
 }
