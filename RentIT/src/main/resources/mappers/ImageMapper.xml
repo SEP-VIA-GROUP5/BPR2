@@ -18,13 +18,7 @@
                 (#{image.imageUrl}, #{productId})
             </foreach>
     </insert>
-    <update id="updateImages">
-        DELETE FROM images WHERE product_id = #{productId};
-
-        INSERT INTO images(image_url, product_id)
-        VALUES
-        <foreach collection="images" item="image" separator=" , ">
-            (#{image.imageUrl}, #{productId})
-        </foreach>
-    </update>
+    <delete id="deleteImagesByProductId" parameterType="int">
+        DELETE FROM images WHERE product_id = #{productId}
+    </delete>
 </mapper>

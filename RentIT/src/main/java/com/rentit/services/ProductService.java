@@ -186,7 +186,8 @@ public class ProductService {
         retreivedProduct.setImages((!product.getImages().isEmpty()) ? product.getImages() : retreivedProduct.getImages());
         retreivedProduct.setRentedUntil((product.getRentedUntil().isAfter(LocalDate.now())) ? product.getRentedUntil() : retreivedProduct.getRentedUntil());
 
-        productMapper.updateImages(retreivedProduct.getId(), retreivedProduct.getImages());
+        imageMapper.deleteImagesByProductId(retreivedProduct.getId());
+        imageMapper.addImages(retreivedProduct.getImages(), retreivedProduct.getId());
         productMapper.updateProduct(retreivedProduct);
         return ProductDTO.buildProductDTO(retreivedProduct);
     }

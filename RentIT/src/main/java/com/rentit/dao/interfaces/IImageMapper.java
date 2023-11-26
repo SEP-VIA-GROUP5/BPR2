@@ -9,5 +9,5 @@ import java.util.List;
 public interface IImageMapper {
     List<Image> getImagesByProductId(int productId);
     void addImages(List<Image> images, int productId);
-    void updateImages(int productId, List<Image> images);
+    void deleteImagesByProductId(int productId);
 }
