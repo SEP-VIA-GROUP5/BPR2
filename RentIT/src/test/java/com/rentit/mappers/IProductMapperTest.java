@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,5 +105,35 @@ public class IProductMapperTest {
         assertThat(productMapper.getProductById(productId).getStatus()).isEqualTo(newStatus);
         //Change back the status after test.
         productMapper.changeProductStatus(productId, oldStatus);
+    }
+
+    @Test
+    public void updateProduct_successfully_updates_product() {
+        int productId = 1;
+        Product updatedProduct = Product.builder()
+                .id(productId)
+                .name("Product Name")
+                .description("Product Description")
+                .dayPrice(10.0f)
+                .weekPrice(50.0f)
+                .monthPrice(180.0f)
+                .deposit(100.0f)
+                .city("City")
+                .productValue(5.0f)
+                .minLeasePeriod(3)
+                .category("Category")
+                .status(ProductStatus.AVAILABLE)
+                .rentedUntil(LocalDate.now().plusMonths(1))
+                .build();
+        Product oldProduct = productMapper.getProductById(productId);
+
+        //Set old values that should not be updated or have to updated separately
+        updatedProduct.setImages(oldProduct.getImages());
+        updatedProduct.setUserId(oldProduct.getUserId());
+
+        assertThat(oldProduct).isNotEqualTo(updatedProduct);
+        productMapper.updateProduct(updatedProduct);
+        assertThat(productMapper.getProductById(productId)).isEqualTo(updatedProduct);
+        productMapper.updateProduct(oldProduct);
     }
 }

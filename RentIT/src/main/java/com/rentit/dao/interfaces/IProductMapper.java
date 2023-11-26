@@ -22,4 +22,5 @@ public interface IProductMapper {
     List<ProductDTO> getProductsByUserId(int userId);
     int getProductOwnerId(int productId);
     void changeProductStatus(int productId, ProductStatus productStatus);
+    void updateProduct(Product product);
 }
