@@ -91,7 +91,7 @@ export class UserService {
   }
 
   async updateUser(user: User) {
-    return await this.apiService.call(userMocked, this.apiService.request('post', `${this.PATH_CONTROLLER}/edit`, user, true)) as User;
+    return await this.apiService.call(userMocked, this.apiService.request('patch', `${this.PATH_CONTROLLER}/edit`, user, true)) as User;
   }
 
   async getUserByEmail(email: string) {
