@@ -14,6 +14,7 @@ import java.util.Map;
 public interface IProductMapper {
     List<ProductDTO> getNProductsByPage(int pageNum, int n);
     int addProduct(Product product);
+    void addTags(List<String> tags, int productId);
     Product getProductById(int id);
     ProductDTO getProductDTOById(int id);
     List<Product> getProductsByName(String name);

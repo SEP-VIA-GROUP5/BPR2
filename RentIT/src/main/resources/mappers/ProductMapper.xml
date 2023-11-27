@@ -18,6 +18,8 @@
         <result property="userId" column="user_id"/>
         <collection property="images" column="product_id"
                     select="com.rentit.dao.interfaces.IImageMapper.getImagesByProductId"/>
+        <collection property="tags" column="product_id"
+                    select="getTagsByProductId"/>
     </resultMap>
 
     <resultMap id="PublicProductResultMap" type="ProductDTO">
@@ -36,6 +38,8 @@
         <result property="rentedUntil" column="rented_until" javaType="java.time.LocalDate"/>
         <collection property="images" column="product_id"
                     select="com.rentit.dao.interfaces.IImageMapper.getImagesByProductId"/>
+        <collection property="tags" column="product_id"
+                    select="getTagsByProductId"/>
     </resultMap>
 
     <select id="getProductsByName" resultMap="ProductResultMap">
@@ -88,6 +92,11 @@
         FROM products
         WHERE product_id = #{productId};
     </select>
+    <select id="getTagsByProductId" resultType="string">
+        SELECT name
+        FROM tags
+        WHERE product_id = #{product_id};
+    </select>
     <insert id="addProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO products (name, description, day_price, week_price, month_price, deposit, city, product_value,
                               min_lease_period, category, product_status, rented_until, user_id)
@@ -96,6 +105,13 @@
                 #{deposit}, #{city}, #{productValue}, #{minLeasePeriod},
                 #{category},
                 #{status}, #{rentedUntil}, #{userId});
+    </insert>
+    <insert id="addTags">
+        INSERT INTO tags (name, product_id)
+        VALUES
+        <foreach collection="tags" item="tag" separator=" , ">
+            (#{tag}, #{productId})
+        </foreach>
     </insert>
     <delete id="deleteProductById">
         DELETE
@@ -109,18 +125,18 @@
     </update>
     <update id="updateProduct" parameterType="Product">
         UPDATE products
-        SET name = #{name},
-            description = #{description},
-            day_price = #{dayPrice},
-            week_price = #{weekPrice},
-            month_price = #{monthPrice},
-            deposit = #{deposit},
-            city = #{city},
-            product_value = #{productValue},
+        SET name             = #{name},
+            description      = #{description},
+            day_price        = #{dayPrice},
+            week_price       = #{weekPrice},
+            month_price      = #{monthPrice},
+            deposit          = #{deposit},
+            city             = #{city},
+            product_value    = #{productValue},
             min_lease_period = #{minLeasePeriod},
-            category = #{category},
-            product_status = #{status},
-            rented_until = #{rentedUntil}
+            category         = #{category},
+            product_status   = #{status},
+            rented_until     = #{rentedUntil}
         WHERE product_id = #{id}
     </update>
 </mapper>

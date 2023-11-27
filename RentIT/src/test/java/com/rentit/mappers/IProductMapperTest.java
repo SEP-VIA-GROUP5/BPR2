@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,11 +63,26 @@ public class IProductMapperTest {
                 .category("test_category")
                 .status(ProductStatus.AVAILABLE)
                 .images(List.of())
+                .tags(List.of())
                 .userId(1)
                 .build();
         productMapper.addProduct(product);
         List<Product> products = productMapper.getProductsByName("test_product");
         assertThat(products.get(0)).isEqualTo(product);
+    }
+
+    @Test
+    public void addTags_successfully_adds_tags() {
+        int productId = 1;
+        ArrayList<String> previousTags = new ArrayList<>(productMapper.getProductById(productId).getTags());
+        ArrayList<String> tags = new ArrayList<>();
+        tags.add("tag1");
+        tags.add("tag2");
+        tags.addAll(previousTags);
+
+        productMapper.addTags(tags, productId);
+        Product result = productMapper.getProductById(productId);
+        assertThat(result.getTags()).containsAll(tags);
     }
 
     @Test
@@ -130,6 +143,7 @@ public class IProductMapperTest {
         //Set old values that should not be updated or have to updated separately
         updatedProduct.setImages(oldProduct.getImages());
         updatedProduct.setUserId(oldProduct.getUserId());
+        updatedProduct.setTags(oldProduct.getTags());
 
         assertThat(oldProduct).isNotEqualTo(updatedProduct);
         productMapper.updateProduct(updatedProduct);
