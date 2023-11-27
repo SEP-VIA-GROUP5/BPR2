@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,6 @@ public class ProductController {
         return productService.getNProductsByPage(pageNum, n);
     }
 
-    //TODO maybe change into response entity
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json")
     public ProductDTO addProduct(@RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
         return productService.addProduct(product, authorizationHeader);
@@ -61,9 +61,10 @@ public class ProductController {
     public List<ProductDTO> getUserProductList(@PathVariable String email) {
         return productService.getUserProductList(email);
     }
-    @RequestMapping(value = "/status/{id}/{status}", method = RequestMethod.POST)
-    public void setProductStatus(@PathVariable int id, @PathVariable String status, @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
-        ResponseMessage responseMessage = productService.setProductStatus(id, status, authorizationHeader);
+    @RequestMapping(value = {"/status/{id}/{status}","/status/{id}/{status}/{rentedUntil}"}, method = RequestMethod.POST)
+    public void setProductStatus(@PathVariable int id, @PathVariable String status, @PathVariable(required = false) LocalDate rentedUntil,
+                                 @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
+        ResponseMessage responseMessage = productService.setProductStatus(id, status, authorizationHeader, rentedUntil);
         switch (responseMessage) {
             case SUCCESS -> response.setStatus(200);
             case CREDENTIALS_ERROR -> response.setStatus(401);

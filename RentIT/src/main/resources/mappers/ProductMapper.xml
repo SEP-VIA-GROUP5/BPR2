@@ -107,6 +107,11 @@
         SET product_status = #{productStatus}
         WHERE product_id = #{productId};
     </update>
+    <update id="setProductRentedUntilDate">
+        UPDATE products
+        SET rented_until = #{rentedUntil}
+        WHERE product_id = #{productId};
+    </update>
     <update id="updateProduct" parameterType="Product">
         UPDATE products
         SET name = #{name},
