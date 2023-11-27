@@ -91,6 +91,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   protected readonly ICONS = ICONS;
   protected readonly TYPE_REPORT = ReportType;
   protected readonly SUBMIT_BUTTON_TYPE = SubmitButtonType;
+  protected readonly ProductStatus = ProductStatus;
 
   alive: boolean = true;
 

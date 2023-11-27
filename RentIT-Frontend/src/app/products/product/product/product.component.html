@@ -18,7 +18,7 @@
           Check availability
         </button>
       </div>
-      <h3 class="product-overview-rented-until-date" *ngIf="product.rentedUntil">
+      <h3 class="product-overview-rented-until-date" *ngIf="product.rentedUntil && product.status === ProductStatus.RENTED">
         Rented until:
         <span>{{ product.rentedUntil }}</span>
       </h3>
