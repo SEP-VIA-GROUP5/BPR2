@@ -7,6 +7,7 @@ import com.rentit.model.dto.ProductDTO;
 import com.rentit.model.enums.ProductStatus;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -24,4 +25,5 @@ public interface IProductMapper {
     int getProductOwnerId(int productId);
     void changeProductStatus(int productId, ProductStatus productStatus);
     void updateProduct(Product product);
+    void setProductRentedUntilDate(int productId, LocalDate rentedUntil);
 }
