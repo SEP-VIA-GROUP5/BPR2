@@ -29,7 +29,7 @@ export class ProductService {
     await this.apiService.call(null, this.apiService.request('delete', `${this.PATH_CONTROLLER}/id/${productId}`, null, true));
   }
 
-  async updateProductById(productId: number, product: Product): Promise<Product> {
+  async updateProductById(product: Product): Promise<Product> {
     return await this.apiService.call(mockedProducts[0], this.apiService.request('patch',`${this.PATH_CONTROLLER}/edit`, product, true)) as Product;
   }
 }
