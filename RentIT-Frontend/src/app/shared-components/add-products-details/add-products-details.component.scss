@@ -86,7 +86,12 @@ button[nbStepperNext] {
 
 .button-submit {
   display: flex;
-  place-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  button {
+    width: fit-content;
+  }
 }
 
 nb-stepper .step-content {

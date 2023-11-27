@@ -22,7 +22,7 @@ import {environment} from "src/environments/environment.dev";
   templateUrl: './add-products-details.component.html',
   styleUrls: ['./add-products-details.component.scss']
 })
-export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChanges {
+export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
   @Input() productDetails: Product = undefined;
   @Input() addingDetailsToCurrentProduct: boolean = false;
   @Output() onUploadImages: EventEmitter<any> = new EventEmitter<any>();
@@ -46,18 +46,15 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
   ngOnInit(): void {
     if (this.productDetails !== undefined) {
       this.uploadedImages = constructImgurImagesFromProductImages(this.productDetails.images);
-    }
-    else {
+      this.minLeasePeriodSelectedPeriod = this.substractCurrentLeasePeriod();
+    } else {
       this.productDetails = defaultProduct;
     }
-    this.productDetails.tags = [];
+    this.productDetails = {
+      ...this.productDetails,
+      tags: [],
+    };
     this.initialProductDetails = {...this.productDetails};
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.uploadedImages) {
-      this.productDetails.images = constructProductImagesFromImgurImages(changes.uploadedImages.currentValue);
-    }
   }
 
   onImageSelected(event) {
@@ -91,6 +88,10 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
     }
     this.isFetching = false;
     this.uploadedImages = [...uploadedImages];
+    this.productDetails = {
+      ...this.productDetails,
+      images: constructProductImagesFromImgurImages(this.uploadedImages)
+    }
     this.selectedImages = [];
   }
 
@@ -114,7 +115,17 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
     this.uploadedImages = imgurImageResponses;
   }
 
-  isSubmitButtonDisabled(): boolean {
+  getSubmitButtonTooltip = (): string => {
+    if (this.isInitialProductEqualsTheEditedProduct()) {
+      return 'You have not made any changes to the product';
+    }
+    else if (this.isSubmitButtonDisabled()) {
+      return 'Please fill in all the details. The category, week and month price are optional.';
+    }
+    return '';
+  }
+
+  isSubmitButtonDisabled() {
     return this.productDetails.name === '' ||
       this.productDetails.description === '' ||
       this.productDetails.dayPrice === null ||
@@ -122,11 +133,10 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
       this.productDetails.productValue === null ||
       this.productDetails.minLeasePeriod === null ||
       this.minLeasePeriodSelectedPeriod === PERIOD.DEFAULT ||
-      // this.productDetails.images.length === 0 ||
       this.productDetails.tags.length === 0;
   }
 
-  isInitialProductEqualsTheEditedProduct(): boolean {
+  isInitialProductEqualsTheEditedProduct() {
     return this.initialProductDetails.name === this.productDetails.name &&
       this.initialProductDetails.description === this.productDetails.description &&
       this.initialProductDetails.dayPrice === this.productDetails.dayPrice &&
@@ -151,6 +161,16 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
       case PERIOD.MONTH:
         return this.productDetails.minLeasePeriod * 30;
     }
+  }
+
+  substractCurrentLeasePeriod() {
+    if (this.productDetails.minLeasePeriod / 7 === 0) {
+      return PERIOD.WEEK;
+    }
+    if (this.productDetails.minLeasePeriod / 30 === 0) {
+      return PERIOD.MONTH;
+    }
+    return PERIOD.DAY;
   }
 
   ngOnDestroy(): void {
