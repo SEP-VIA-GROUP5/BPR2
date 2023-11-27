@@ -9,12 +9,13 @@ import {NbTagComponent, NbTagInputAddEvent, NbToastrService} from "@nebular/them
 import {Router} from "@angular/router";
 import {
   ADDING_PRODUCTS_STEP,
-  ADDING_PRODUCTS_TITLE, constructProductImagesFromImgurImages,
+  ADDING_PRODUCTS_TITLE, constructImgurImagesFromProductImages, constructProductImagesFromImgurImages,
   defaultProduct,
   PERIOD
 } from "src/app/shared-components/add-products-details/constants";
 import {ICONS} from "src/app/constants";
-import {AddProduct} from "src/app/products/adding-products/adding-products.actions";
+import {ImgurApiService} from "src/core/services/imgur.api.service";
+import {environment} from "src/environments/environment.dev";
 
 @Component({
   selector: 'add-products-details',
@@ -22,7 +23,8 @@ import {AddProduct} from "src/app/products/adding-products/adding-products.actio
   styleUrls: ['./add-products-details.component.scss']
 })
 export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() uploadedImages: ImgurImageResponse[];
+  @Input() productDetails: Product = undefined;
+  @Input() addingDetailsToCurrentProduct: boolean = false;
   @Output() onUploadImages: EventEmitter<any> = new EventEmitter<any>();
   @Output() onSubmit: EventEmitter<any> = new EventEmitter<any>();
 
@@ -31,16 +33,21 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
   protected readonly ICONS = ICONS;
   protected readonly PERIOD = PERIOD;
 
+  isFetching: boolean = false;
+  uploadedImages: ImgurImageResponse[] = [];
   selectedImages: File[] = [];
-  productDetails: Product = defaultProduct;
   minLeasePeriodSelectedPeriod: PERIOD = PERIOD.DEFAULT;
 
-  constructor() {
+  constructor(private imgurApiService: ImgurApiService,
+              private toastrService: NbToastrService) {
   }
 
   ngOnInit(): void {
-    if (this.uploadedImages.length > 0) {
-      this.productDetails.images = constructProductImagesFromImgurImages(this.uploadedImages);
+    if (this.productDetails !== undefined) {
+      this.uploadedImages = constructImgurImagesFromProductImages(this.productDetails.images);
+    }
+    else {
+      this.productDetails = defaultProduct;
     }
   }
 
@@ -54,9 +61,33 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
     this.selectedImages.push(...event.addedFiles);
   }
 
-  onEventUploadImages() {
-    // probably it needs to be sent something through emit(something)
-    this.onUploadImages.emit(this.selectedImages);
+  async uploadImages() {
+    let uploadedImages: ImgurImageResponse[] = [...this.uploadedImages];
+    this.uploadedImages = [];
+    this.isFetching = true;
+    for (const image of this.selectedImages) {
+      try {
+        const uploadedImage = await this.imgurApiService.post(image);
+        if (uploadedImage.status === 200) {
+          uploadedImages.push(uploadedImage);
+          this.toastrService.info(`Image '${image.name}' uploaded successfully!`, 'Success');
+        } else {
+          return this.toastrService.danger(
+            environment.production ?
+              'Please contact the administration' : 'Could not upload image',
+            {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+          );
+        }
+      } catch (error) {
+        return this.toastrService.danger(
+          environment.production ? 'Please contact the administration' : error,
+          'Something went wrong',
+          {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+        );
+      }
+    }
+    this.isFetching = false;
+    this.uploadedImages = [...uploadedImages];
     this.selectedImages = [];
   }
 
@@ -74,6 +105,10 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
       this.productDetails.tags.push(value)
     }
     input.nativeElement.value = '';
+  }
+
+  onDeleteSelectedImage(imgurImageResponses: ImgurImageResponse[]) {
+    this.uploadedImages = imgurImageResponses;
   }
 
   isSubmitButtonDisabled(): boolean {

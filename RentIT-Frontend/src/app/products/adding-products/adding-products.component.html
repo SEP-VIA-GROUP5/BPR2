@@ -5,9 +5,7 @@
   [nbSpinner]="isFetching$ | async">
   <nb-card-body>
     <add-products-details
-    [uploadedImages]="uploadedImages$ | async"
-    (onSubmit)="onSubmit($event)"
-    (onUploadImages)="uploadImages($event)">
+    (onSubmit)="onSubmit($event)">
 
     </add-products-details>
   </nb-card-body>

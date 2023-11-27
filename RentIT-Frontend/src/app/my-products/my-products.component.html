@@ -16,6 +16,8 @@
                      [value]="ActionsConstants.REMOVE"> {{ ActionsConstants.REMOVE }}</nb-option>
           <nb-option [disabled]="actionSelected.action === ActionsConstants.STATUS"
                      [value]="ActionsConstants.STATUS"> {{ ActionsConstants.STATUS }}</nb-option>
+          <nb-option [disabled]="actionSelected.action === ActionsConstants.EDIT"
+                     [value]="ActionsConstants.EDIT"> {{ ActionsConstants.EDIT }}</nb-option>
           <nb-option *ngIf="actionSelected.isButtonEnabled"
                      [disabled]="productsSelected.length > 0"
                      [value]="ActionsConstants.NOT_SELECTED">{{ ActionsConstants.NOT_SELECTED }}</nb-option>
@@ -49,17 +51,30 @@
           <div class="product-status-change" *ngFor="let productSelected of productsSelected">
             <p> Product <span>{{ productSelected.product.name }}</span></p>
             <nb-tag-list>
-              <nb-tag [status]="action.isStatusListSelected ? data.status : 'basic'" (click)="changeStatus(productSelected.product, action.productStatus)" [appearance]="action.isStatusListSelected ? 'filled' : 'outline'" *ngFor="let action of productSelected.statusSelectedList" [text]="action.productStatus" >{{ action }}</nb-tag>
+              <nb-tag [status]="action.isStatusListSelected ? data.status : 'basic'"
+                      (click)="changeStatus(productSelected.product, action.productStatus)"
+                      [appearance]="action.isStatusListSelected ? 'filled' : 'outline'"
+                      *ngFor="let action of productSelected.statusSelectedList"
+                      [text]="action.productStatus">{{ action }}</nb-tag>
             </nb-tag-list>
           </div>
+        </div>
+        <div class="dialog-action-edit-product" *ngIf="data.action === ActionsConstants.EDIT && !isButtonForPerformingActionDisabled()">
+          <add-products-details [productDetails]="productsSelected[0].product"
+          [addingDetailsToCurrentProduct]="true">
+          </add-products-details>
+        </div>
+        <div class="dialog-action-edit-product" *ngIf="data.action === ActionsConstants.EDIT && isButtonForPerformingActionDisabled()">
+          <p> {{ getButtonForPerformingTooltip() }}</p>
         </div>
       </div>
     </nb-card-body>
     <nb-card-footer>
       <div class="dialog-buttons-footer">
-        <button nbButton hero [nbTooltip]="getButtonForPerformingTooltip()" [nbTooltipDisabled]="!isButtonForPerformingActionDisabled()" [status]="data.status" [disabled]="isButtonForPerformingActionDisabled()" (click)="performAction()">
-          <span *ngIf="data.action === ActionsConstants.REMOVE">Remove</span>
-          <span *ngIf="data.action === ActionsConstants.STATUS">Change status</span>
+        <button nbButton hero [nbTooltip]="getButtonForPerformingTooltip()"
+                [nbTooltipDisabled]="!isButtonForPerformingActionDisabled()" [status]="data.status"
+                [disabled]="isButtonForPerformingActionDisabled()" (click)="performAction()">
+          {{ data.actionButtonText }}
         </button>
         <button nbButton hero status="basic" (click)="cancelAction()">Cancel</button>
       </div>

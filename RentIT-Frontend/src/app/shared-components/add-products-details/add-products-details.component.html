@@ -3,18 +3,18 @@
     <nb-step class="adding-pictures-step" [label]="STEPS.PICTURES">
       <h4>{{ TITLES.ADD_PICTURES }}</h4>
       <div class="full-width-content">
-        <ngx-dropzone [disabled]="uploadedImages.length > 0" (change)="onImageSelected($event)"
+        <ngx-dropzone [disabled]="uploadedImages.length > 0 && !addingDetailsToCurrentProduct" (change)="onImageSelected($event)"
                       [multiple]="true" accept=".png, .jpeg, .jpg">
           <div class="dropzone text-center">
             <nb-icon [icon]="ICONS.IMAGE_OUTLINE"></nb-icon>
             <p class="pictures-first-row-text">Add pictures by clicking</p>
             <p class="pictures-second-row-text">or drag and drop</p>
-            <p class="pictures-second-row-text" style="color:red" *ngIf="uploadedImages.length > 0">You
+            <p class="pictures-second-row-text" style="color:red" *ngIf="uploadedImages.length > 0 && !addingDetailsToCurrentProduct">You
               need to delete all images in order to upload again.</p>
           </div>
         </ngx-dropzone>
 
-        <div *ngIf="(selectedImages.length > 0) && uploadedImages?.length < 1">
+        <div *ngIf="selectedImages.length > 0">
           <h3>Selected Images:</h3>
           <ul>
             <li *ngFor="let image of selectedImages">
@@ -28,9 +28,10 @@
         <view-images-slider
           *ngIf="uploadedImages.length > 0"
           [imgurImages]="uploadedImages"
+          (eventDeleteSelectedImage)="onDeleteSelectedImage($event)"
         >
         </view-images-slider>
-        <button status="primary" (click)="onEventUploadImages()" *ngIf="selectedImages.length > 0" nbButton>Save</button>
+        <button status="primary" (click)="uploadImages()" *ngIf="selectedImages.length > 0" nbButton>Upload images</button>
       </div>
       <div class="buttons-stepper">
         <button nbButton disabled nbStepperPrevious>prev</button>
@@ -100,8 +101,8 @@
       <div class="button-submit" *ngIf="isSubmitButtonDisabled()">
         <p style="color:red"> You need to insert all fields. The category, week and month price are optional.</p>
       </div>
-      <div class="button-submit">
-        <button type="submit" [status]="'primary'" [disabled]="isSubmitButtonDisabled()" (click)="onEventSubmit()"
+      <div *ngIf="!addingDetailsToCurrentProduct" class="button-submit">
+        <button type="submit" [status]="'primary'"  [disabled]="isSubmitButtonDisabled()" (click)="onEventSubmit()"
                 nbButton hero>Submit
         </button>
       </div>

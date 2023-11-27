@@ -27,6 +27,20 @@ export const constructProductImagesFromImgurImages = (imgurImages: ImgurImageRes
   });
 };
 
+export const constructImgurImagesFromProductImages = (images: Image[]) => {
+  return images.map(image => {
+    return {
+      data: {
+        id: image.id.toString(),
+        link: image.imageUrl,
+        title: `Image ${image.id}`
+      },
+      success: true,
+      status: 200
+    } satisfies ImgurImageResponse;
+  });
+}
+
 export const defaultProduct: Product = {
   name: '',
   description: '',

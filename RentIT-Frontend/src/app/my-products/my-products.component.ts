@@ -6,7 +6,6 @@ import {Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
 import {NbDialogRef, NbDialogService, NbToastrService} from "@nebular/theme";
 import {Action, ActionsConstants} from "src/app/my-products/constants/actions.constants";
-import {mockedProducts} from "src/mocks/products.mock";
 import {
   computeStatusSelectedListFromProducts,
   ProductSelected
@@ -39,12 +38,11 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   };
   protected readonly ActionsConstants = ActionsConstants;
   productsSelected: ProductSelected[] = [];
+  initialProductSelectedForEdit: Product;
 
   // dialog actions
   @ViewChild('dialogAction') dialogAction: TemplateRef<any>;
   private dialogRef: NbDialogRef<any>;
-  // todo to be deleted
-  protected readonly mockedProducts = mockedProducts;
 
   // constants
   protected readonly ICONS = ICONS;
@@ -91,6 +89,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         title: `${this.actionSelected.action} confirmation`,
         status: this.actionSelected.status,
         bodyText: this.getBodyTextBasedOnAction(),
+        actionButtonText: this.actionSelected.actionButtonText,
         action: this.actionSelected.action,
       }
     })
@@ -111,6 +110,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
           isButtonEnabled: true,
           status: 'danger',
           icon: ICONS.TRASH_2_OUTLINE,
+          actionButtonText: 'Remove',
         } satisfies Action;
         break;
       }
@@ -119,7 +119,18 @@ export class MyProductsComponent implements OnInit, OnDestroy {
           action: ActionsConstants.STATUS,
           isButtonEnabled: true,
           status: 'warning',
-          icon: ICONS.ALERT_CIRCLE_OUTLINE,
+          icon: ICONS.EDIT_2_OUTLINE,
+          actionButtonText: 'Change status',
+        } satisfies Action;
+        break;
+      }
+      case ActionsConstants.EDIT: {
+        this.actionSelected = {
+          action: ActionsConstants.EDIT,
+          isButtonEnabled: true,
+          status: 'primary',
+          icon: ICONS.EDIT_2_OUTLINE,
+          actionButtonText: 'Edit product',
         } satisfies Action;
         break;
       }
@@ -188,6 +199,9 @@ export class MyProductsComponent implements OnInit, OnDestroy {
       case ActionsConstants.STATUS: {
         return (this.productsSelected.length === 0 || this.productsSelected.length > 5) || !this.computeIsButtonDisabledForStatus();
       }
+      case ActionsConstants.EDIT: {
+        return this.productsSelected.length !== 1;
+      }
     }
   }
 
@@ -199,19 +213,26 @@ export class MyProductsComponent implements OnInit, OnDestroy {
       case ActionsConstants.STATUS: {
         if (this.productsSelected.length === 0) {
           return 'Select at least one product to change status';
-        }
-        else if(this.productsSelected.length > 5) {
+        } else if (this.productsSelected.length > 5) {
           return 'Select maximum 5 products to change status';
-        }
-        else if(!this.computeIsButtonDisabledForStatus()) {
+        } else if (!this.computeIsButtonDisabledForStatus()) {
           return 'Select a different status for each product';
-        }
+        } else return '';
+      }
+      case ActionsConstants.EDIT: {
+        if (this.productsSelected.length > 1) {
+          return 'Select only one product to edit';
+        } else if (this.productsSelected.length === 0) {
+          return 'Select a product to edit';
+        } else return '';
       }
     }
+
   }
 
   getProductGridClass(): string {
-    if (this.mockedProducts.length >= 1 && this.mockedProducts.length <= 3) {
+    const products = this.store.selectSnapshot(MyProductsSelector.products);
+    if (products.length >= 1 && products.length <= 3) {
       return 'limited-products';
     }
     return '';
@@ -226,12 +247,20 @@ export class MyProductsComponent implements OnInit, OnDestroy {
       }
       case ActionsConstants.STATUS: {
         actionToPerform = new ChangeProductsStatus(this.productsSelected);
+        break;
+      }
+      case ActionsConstants.EDIT: {
+        // perform action
       }
     }
     if (actionToPerform) {
       this.store.dispatch(actionToPerform);
       this.dialogRef.close();
     }
+  }
+
+  getActionOptionsList(): ActionsConstants[] {
+    return Object.values(ActionsConstants).map(action => action);
   }
 
   cancelAction(): void {
