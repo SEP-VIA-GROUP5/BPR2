@@ -98,10 +98,9 @@
           </nb-tag-list>
         </div>
       </div>
-      <div class="button-submit" *ngIf="isSubmitButtonDisabled()">
-        <p style="color:red"> You need to insert all fields. The category, week and month price are optional.</p>
-      </div>
-      <div *ngIf="!addingDetailsToCurrentProduct" class="button-submit">
+      <div class="button-submit">
+        <p style="color:red" *ngIf="isSubmitButtonDisabled"> You need to insert all fields. The category, week and month price are optional.</p>
+        <p style="color:red" *ngIf="isInitialProductEqualsTheEditedProduct">You have not changed anything to this product.</p>
         <button type="submit" [status]="'primary'"  [disabled]="isSubmitButtonDisabled()" (click)="onEventSubmit()"
                 nbButton hero>Submit
         </button>

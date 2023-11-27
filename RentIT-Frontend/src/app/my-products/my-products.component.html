@@ -61,7 +61,8 @@
         </div>
         <div class="dialog-action-edit-product" *ngIf="data.action === ActionsConstants.EDIT && !isButtonForPerformingActionDisabled()">
           <add-products-details [productDetails]="productsSelected[0].product"
-          [addingDetailsToCurrentProduct]="true">
+          [addingDetailsToCurrentProduct]="true"
+          (onSubmit)="performAction($event)">
           </add-products-details>
         </div>
         <div class="dialog-action-edit-product" *ngIf="data.action === ActionsConstants.EDIT && isButtonForPerformingActionDisabled()">
@@ -71,7 +72,7 @@
     </nb-card-body>
     <nb-card-footer>
       <div class="dialog-buttons-footer">
-        <button nbButton hero [nbTooltip]="getButtonForPerformingTooltip()"
+        <button *ngIf="actionSelected.action !== ActionsConstants.EDIT" nbButton hero [nbTooltip]="getButtonForPerformingTooltip()"
                 [nbTooltipDisabled]="!isButtonForPerformingActionDisabled()" [status]="data.status"
                 [disabled]="isButtonForPerformingActionDisabled()" (click)="performAction()">
           {{ data.actionButtonText }}

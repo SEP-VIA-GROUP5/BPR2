@@ -12,6 +12,7 @@ import {
 } from "src/app/shared-components/product-card/constants/constants";
 import {
   ChangeProductsStatus,
+  EditProduct,
   MyProductsFetch,
   MyProductsReset,
   RemoveProducts
@@ -39,6 +40,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   protected readonly ActionsConstants = ActionsConstants;
   productsSelected: ProductSelected[] = [];
   initialProductSelectedForEdit: Product;
+  editedProduct: Product;
 
   // dialog actions
   @ViewChild('dialogAction') dialogAction: TemplateRef<any>;
@@ -93,6 +95,14 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         action: this.actionSelected.action,
       }
     })
+    if(this.actionSelected.action === ActionsConstants.EDIT) {
+      this.initialProductSelectedForEdit = {
+        ...this.productsSelected[0].product
+      };
+      this.editedProduct = {
+        ...this.initialProductSelectedForEdit
+      };
+    }
   }
 
   onSelectActionChanged(action: ActionsConstants) {
@@ -238,7 +248,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  performAction(): void {
+  performAction(event?): void {
     let actionToPerform;
     switch (this.actionSelected.action) {
       case ActionsConstants.REMOVE: {
@@ -250,17 +260,13 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         break;
       }
       case ActionsConstants.EDIT: {
-        // perform action
+        actionToPerform = new EditProduct(event);
       }
     }
     if (actionToPerform) {
       this.store.dispatch(actionToPerform);
       this.dialogRef.close();
     }
-  }
-
-  getActionOptionsList(): ActionsConstants[] {
-    return Object.values(ActionsConstants).map(action => action);
   }
 
   cancelAction(): void {

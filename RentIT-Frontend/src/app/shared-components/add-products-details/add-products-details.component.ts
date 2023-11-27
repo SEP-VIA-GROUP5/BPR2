@@ -34,6 +34,7 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
   protected readonly PERIOD = PERIOD;
 
   isFetching: boolean = false;
+  initialProductDetails: Product;
   uploadedImages: ImgurImageResponse[] = [];
   selectedImages: File[] = [];
   minLeasePeriodSelectedPeriod: PERIOD = PERIOD.DEFAULT;
@@ -49,6 +50,8 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
     else {
       this.productDetails = defaultProduct;
     }
+    this.productDetails.tags = [];
+    this.initialProductDetails = {...this.productDetails};
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -121,6 +124,22 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy, OnChan
       this.minLeasePeriodSelectedPeriod === PERIOD.DEFAULT ||
       // this.productDetails.images.length === 0 ||
       this.productDetails.tags.length === 0;
+  }
+
+  isInitialProductEqualsTheEditedProduct(): boolean {
+    return this.initialProductDetails.name === this.productDetails.name &&
+      this.initialProductDetails.description === this.productDetails.description &&
+      this.initialProductDetails.dayPrice === this.productDetails.dayPrice &&
+      this.initialProductDetails.weekPrice === this.productDetails.weekPrice &&
+      this.initialProductDetails.monthPrice === this.productDetails.monthPrice &&
+      this.initialProductDetails.deposit === this.productDetails.deposit &&
+      this.initialProductDetails.city === this.productDetails.city &&
+      this.initialProductDetails.productValue === this.productDetails.productValue &&
+      this.initialProductDetails.minLeasePeriod === this.productDetails.minLeasePeriod &&
+      this.initialProductDetails.category === this.productDetails.category &&
+      this.initialProductDetails.tags === this.productDetails.tags &&
+      this.initialProductDetails.images === this.productDetails.images &&
+      this.addingDetailsToCurrentProduct;
   }
 
   private constructMinLeasePeriod(): number {
