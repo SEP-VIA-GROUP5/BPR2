@@ -1,6 +1,6 @@
-import {Product} from "src/model/product";
 import {ImgurImageResponse} from "src/model/imgurImageResponse";
 import {Image} from "src/model/image";
+import {Product} from "src/model/product";
 
 export enum ADDING_PRODUCTS_STEP {
   PICTURES = 'Pictures',
