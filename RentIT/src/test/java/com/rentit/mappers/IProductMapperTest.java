@@ -99,7 +99,6 @@ public class IProductMapperTest {
         UserDTO user = userMapper.getUserDTOById(userId);
         List<ProductDTO> userProducts = productMapper.getProductsByUserId(userId);
         assertThat(userProducts.size()).isEqualTo(1);
-
     }
     @Test
     public void get_product_owner_id_returns_correct_user_id() {
@@ -149,5 +148,16 @@ public class IProductMapperTest {
         productMapper.updateProduct(updatedProduct);
         assertThat(productMapper.getProductById(productId)).isEqualTo(updatedProduct);
         productMapper.updateProduct(oldProduct);
+    }
+
+    @Test
+    public void setProductRentedUntilDate_successfully_sets_the_date() {
+        int productId = 1;
+        LocalDate rentedUntil = LocalDate.now();
+        Product product = productMapper.getProductById(productId);
+        assertThat(product.getRentedUntil()).isNotEqualTo(rentedUntil);
+        productMapper.setProductRentedUntilDate(productId, rentedUntil);
+        product = productMapper.getProductById(productId);
+        assertThat(product.getRentedUntil()).isEqualTo(rentedUntil);
     }
 }
