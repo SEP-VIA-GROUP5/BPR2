@@ -87,20 +87,25 @@ nb-card-footer {
 
         .product-status-change {
           display: flex;
-          justify-content: space-between;
-          gap: 1rem;
+          flex-direction: column;
 
-          p {
-            font-size: var(--tag-medium-text-font-size);
+          .product-status-change-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
 
-            span {
-              font-weight: bold;
+            p {
+              font-size: var(--tag-medium-text-font-size);
+
+              span {
+                font-weight: bold;
+              }
             }
-          }
 
-          nb-tag-list {
-            nb-tag {
-              cursor: pointer;
+            nb-tag-list {
+              nb-tag {
+                cursor: pointer;
+              }
             }
           }
         }

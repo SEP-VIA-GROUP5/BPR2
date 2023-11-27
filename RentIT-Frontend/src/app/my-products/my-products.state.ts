@@ -112,6 +112,7 @@ export class MyProductsState {
 
     try {
       for (const productSelected of action.productsSelected) {
+        //TODO fetch data as well, if that's available and status of the product is RENTED
         const statusSelected: ProductStatus = this.getSelectedStatus(productSelected.statusSelectedList);
         await this.productsService.updateProductStatus(productSelected.product.id, statusSelected);
       }

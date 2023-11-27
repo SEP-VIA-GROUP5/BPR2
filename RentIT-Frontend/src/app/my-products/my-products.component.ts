@@ -20,6 +20,7 @@ import {
 import {Observable} from "rxjs";
 import {MyProductsSelector} from "src/app/my-products/my-products.selector";
 import {ProductStatus} from "src/model/productStatus";
+import {toUTCDate} from "src/core/utils/date.utils";
 
 @Component({
   selector: 'app-my-products',
@@ -160,10 +161,17 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         product: productSelected.product,
         isProductSelected: productSelected.isProductSelected,
         statusSelectedList: computeStatusSelectedListFromProducts(productSelected.product),
+        rentedUntil: this.actionSelected.action === ActionsConstants.STATUS ?
+          productSelected.product?.rentedUntil ? toUTCDate(new Date(productSelected.product?.rentedUntil)) : toUTCDate(new Date()) :
+          null,
       });
     } else {
       this.productsSelected = this.productsSelected.filter(product => product.product.id !== productSelected.product.id);
     }
+  }
+
+  isRentedStatusSelected(productSelected: ProductSelected) {
+    return productSelected.statusSelectedList.some(statusSelected => statusSelected.isStatusListSelected && statusSelected.productStatus === ProductStatus.RENTED);
   }
 
   changeStatus(product: Product, productStatus: ProductStatus) {

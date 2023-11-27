@@ -10,6 +10,8 @@ export interface StatusSelected {
 export interface ProductSelected {
   isProductSelected: boolean;
   statusSelectedList: StatusSelected[];
+  // dedicated for product's status, this will be only used when setting product's status to RENTED
+  rentedUntil?: Date;
   product: Product;
 }
 

@@ -49,14 +49,22 @@
       <div class="dialog-action-body">
         <div class="dialog-action-change-status" *ngIf="data.action === ActionsConstants.STATUS">
           <div class="product-status-change" *ngFor="let productSelected of productsSelected">
-            <p> Product <span>{{ productSelected.product.name }}</span></p>
-            <nb-tag-list>
-              <nb-tag [status]="action.isStatusListSelected ? data.status : 'basic'"
-                      (click)="changeStatus(productSelected.product, action.productStatus)"
-                      [appearance]="action.isStatusListSelected ? 'filled' : 'outline'"
-                      *ngFor="let action of productSelected.statusSelectedList"
-                      [text]="action.productStatus">{{ action }}</nb-tag>
-            </nb-tag-list>
+            <div class="product-status-change-title">
+              <p> Product <span>{{ productSelected.product.name }}</span></p>
+              <nb-tag-list>
+                <nb-tag [status]="action.isStatusListSelected ? data.status : 'basic'"
+                        (click)="changeStatus(productSelected.product, action.productStatus)"
+                        [appearance]="action.isStatusListSelected ? 'filled' : 'outline'"
+                        *ngFor="let action of productSelected.statusSelectedList"
+                        [text]="action.productStatus">{{ action }}</nb-tag>
+              </nb-tag-list>
+            </div>
+            <div class="product-add-rented-until" *ngIf="isRentedStatusSelected(productSelected)">
+              <p> Rented until </p>
+              <input nbInput placeholder="Pick rent end date" [nbDatepicker]="pickerEndDate"
+                     [(ngModel)]="productSelected.rentedUntil" shape="round">
+              <nb-datepicker #pickerEndDate [min]="productSelected.rentedUntil"></nb-datepicker>
+            </div>
           </div>
         </div>
         <div class="dialog-action-edit-product" *ngIf="data.action === ActionsConstants.EDIT && !isButtonForPerformingActionDisabled()">
