@@ -74,6 +74,7 @@ public class ProductService {
         product.setStatus(ProductStatus.AVAILABLE);
 
         productMapper.addProduct(product);
+        productMapper.addTags(product.getTags(), product.getId());
         imageMapper.addImages(product.getImages(), product.getId());
 
         return buildProductDTO(product);
@@ -139,7 +140,7 @@ public class ProductService {
         return productMapper.getProductOwnerId(productId);
     }
 
-    public ResponseMessage setProductStatus(int id, String status, String authorizationHeader) {
+    public ResponseMessage setProductStatus(int id, String status, String authorizationHeader, LocalDate rentedUntil) {
         User user = userService.getUserFromToken(authorizationHeader, true);
         Product product = productMapper.getProductById(id);
         if(user == null || product.getUserId() != user.getId()){
@@ -150,10 +151,27 @@ public class ProductService {
         }
 
         switch (status.toUpperCase()){
-            case "AVAILABLE" -> productMapper.changeProductStatus(id, ProductStatus.AVAILABLE);
-            case "RENTED" -> productMapper.changeProductStatus(id, ProductStatus.RENTED);
-            case "PAUSED" -> productMapper.changeProductStatus(id, ProductStatus.PAUSED);
-            case "UNAVAILABLE" -> productMapper.changeProductStatus(id, ProductStatus.UNAVAILABLE);
+            case "AVAILABLE" -> {
+                productMapper.changeProductStatus(id, ProductStatus.AVAILABLE);
+                productMapper.setProductRentedUntilDate(id, null);
+            }
+            case "RENTED" -> {
+                if(rentedUntil != null && rentedUntil.isAfter(LocalDate.now())){
+                    productMapper.setProductRentedUntilDate(id, rentedUntil);
+                    productMapper.changeProductStatus(id, ProductStatus.RENTED);
+                }
+                else {
+                    return ResponseMessage.INVALID_PARAMETERS;
+                }
+            }
+            case "PAUSED" -> {
+                productMapper.changeProductStatus(id, ProductStatus.PAUSED);
+                productMapper.setProductRentedUntilDate(id, null);
+            }
+            case "UNAVAILABLE" -> {
+                productMapper.changeProductStatus(id, ProductStatus.UNAVAILABLE);
+                productMapper.setProductRentedUntilDate(id, null);
+            }
             default -> {
                 return ResponseMessage.INVALID_PARAMETERS;
             }
@@ -184,7 +202,6 @@ public class ProductService {
         retreivedProduct.setCategory((!product.getCategory().isEmpty()) ? product.getCategory() : retreivedProduct.getCategory());
         retreivedProduct.setTags((!product.getTags().isEmpty()) ? product.getTags() : retreivedProduct.getTags());
         retreivedProduct.setImages((!product.getImages().isEmpty()) ? product.getImages() : retreivedProduct.getImages());
-        retreivedProduct.setRentedUntil((product.getRentedUntil().isAfter(LocalDate.now())) ? product.getRentedUntil() : retreivedProduct.getRentedUntil());
 
         imageMapper.deleteImagesByProductId(retreivedProduct.getId());
         imageMapper.addImages(retreivedProduct.getImages(), retreivedProduct.getId());
