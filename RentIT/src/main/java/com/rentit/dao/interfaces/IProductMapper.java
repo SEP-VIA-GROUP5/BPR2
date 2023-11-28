@@ -24,5 +24,6 @@ public interface IProductMapper {
     int getProductOwnerId(int productId);
     void changeProductStatus(int productId, ProductStatus productStatus);
     void updateProduct(Product product);
+    void deleteTags(int productId);
     void setProductRentedUntilDate(int productId, LocalDate rentedUntil);
 }
