@@ -1,6 +1,7 @@
 package com.rentit.mappers;
 
 import com.rentit.dao.interfaces.IImageMapper;
+import com.rentit.dao.interfaces.IProductMapper;
 import com.rentit.model.Image;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,14 @@ public class IImageMapperTest {
 
     @Autowired
     private IImageMapper imageMapper;
+    @Autowired
+    private IProductMapper productMapper;
 
     @Test
     public void getImagesByProductId_returns_all_product_images () {
-        int id = 1;
-        List<Image>images = imageMapper.getImagesByProductId(id);
-        assertThat(images.size()).isEqualTo(2);
+        int productId = 1;
+        List<Image>images = imageMapper.getImagesByProductId(productId);
+        assertThat(productMapper.getProductById(productId).getImages()).containsAll(images);
     }
     @Test
     public void getImagesByProductId_product_with_no_images_returns_empty_list () {
@@ -31,13 +34,13 @@ public class IImageMapperTest {
     }
     @Test
     public void addImages_correctly_insert_images() {
-        int id = 4;
+        int productId = 4;
         List<Image>images = List.of(
                 Image.builder().imageUrl("testUrl1").id(6).build(),
                 Image.builder().imageUrl("testUrl2").id(7).build()
         );
-        imageMapper.addImages(images, id);
-        List<Image>productImages = imageMapper.getImagesByProductId(id);
+        imageMapper.addImages(images, productId);
+        List<Image>productImages = imageMapper.getImagesByProductId(productId);
         assertThat(images).containsAll(productImages);
     }
     @Test
