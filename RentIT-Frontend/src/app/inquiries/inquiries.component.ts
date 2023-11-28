@@ -84,7 +84,7 @@ export class InquiriesComponent implements OnInit, OnDestroy {
   }
 
   onCollapsedChanged(isCollapsed, receivedInquiry: Inquiry) {
-    if (isCollapsed && !receivedInquiry.viewed) {
+    if (!isCollapsed && !receivedInquiry.viewed) {
       this.store.dispatch(new ViewInquiry(receivedInquiry.inquiryId));
     }
   }

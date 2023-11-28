@@ -7,7 +7,7 @@
                     *ngIf="productOverview.product as product">
       <div class="product-overview-product-name">
         <h2>{{ product.name }}</h2>
-        <button *ngIf="this.userService.getUser().email !== productOverview.user.email" [disabled]="!this.userService.isLoggedIn()"
+        <button [disabled]="!this.userService.isLoggedIn()"
                 nbTooltip="You need to be logged in to check availability of this product"
                 [nbTooltipDisabled]="this.userService.isLoggedIn()"
                 nbButton
