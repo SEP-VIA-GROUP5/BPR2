@@ -13,6 +13,7 @@ import {
 import {ICONS} from "src/app/constants";
 import {ImgurApiService} from "src/core/services/imgur.api.service";
 import {environment} from "src/environments/environment.dev";
+import {Image} from "src/model/image";
 
 @Component({
   selector: 'add-products-details',
@@ -90,6 +91,7 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
       images: constructProductImagesFromImgurImages(this.uploadedImages)
     }
     this.selectedImages = [];
+    this.isInitialProductEqualsTheEditedProduct = this.constructInitialProductEqualsTheEditedProduct();
   }
 
   onEventSubmit() {
@@ -118,16 +120,32 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
 
   onDeleteSelectedImage(imgurImageResponses: ImgurImageResponse[]) {
     this.uploadedImages = imgurImageResponses;
+    this.productDetailsModel = {
+      ...this.productDetailsModel,
+      images: constructProductImagesFromImgurImages(this.uploadedImages)
+    }
+    this.isInitialProductEqualsTheEditedProduct = this.constructInitialProductEqualsTheEditedProduct();
   }
 
   getSubmitButtonTooltip = (): string => {
     if (this.constructInitialProductEqualsTheEditedProduct()) {
       return 'You have not made any changes to the product';
     }
-    else if (this.isSubmitButtonDisabled()) {
+    else if (this.isSubmitButtonDisabled() && !this.addingDetailsToCurrentProduct) {
       return 'Please fill in all the details. The category, week and month price are optional.';
     }
+    else if(this.productDetailsModel.images.length === 0) {
+      const submitButtonText = this.getSubmitButtonText();
+      return `You need to have at least one image to ${submitButtonText.charAt(0).toLowerCase().concat(submitButtonText.substring(1))}  the product`;
+    }
     return '';
+  }
+
+  getSubmitButtonText(): string {
+    if (this.addingDetailsToCurrentProduct) {
+      return 'Edit';
+    }
+    return 'Submit';
   }
 
   isSubmitButtonDisabled() {
@@ -138,7 +156,8 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
       this.productDetailsModel.productValue === null ||
       this.productDetailsModel.minLeasePeriod === null ||
       this.minLeasePeriodSelectedPeriod === PERIOD.DEFAULT ||
-      this.productDetailsModel.tags.length === 0;
+      this.productDetailsModel.tags.length === 0 ||
+    this.productDetailsModel.images.length === 0;
   }
 
   onInputType($event) {
@@ -157,8 +176,14 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
       this.initialProductDetailsModel.minLeasePeriod === this.productDetailsModel.minLeasePeriod &&
       this.initialProductDetailsModel.category === this.productDetailsModel.category &&
       this.initialProductDetailsModel.tags === this.productDetailsModel.tags &&
-      this.initialProductDetailsModel.images === this.productDetails.images &&
+      this.imagesAreTheSame(this.initialProductDetailsModel.images, this.productDetailsModel.images) &&
+      this.productDetails.images.length > 0 &&
       this.addingDetailsToCurrentProduct;
+  }
+
+  private imagesAreTheSame(images: Image[], otherImages: Image[]): boolean {
+    return images.length === otherImages.length &&
+      images.every((image, index) => image.imageUrl === otherImages[index].imageUrl);
   }
 
   private constructMinLeasePeriod(): number {

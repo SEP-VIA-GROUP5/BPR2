@@ -103,7 +103,7 @@
       <div class="button-submit">
         <button type="submit" [status]="'primary'" [nbTooltipDisabled]="getSubmitButtonTooltip() === ''"
                 [nbTooltip]="getSubmitButtonTooltip()" [disabled]="isSubmitButtonDisabled() || isInitialProductEqualsTheEditedProduct" (click)="onEventSubmit()"
-                nbButton hero>Submit
+                nbButton hero> {{ getSubmitButtonText() }}
         </button>
       </div>
       <div class="buttons-stepper">
