@@ -74,7 +74,9 @@ public class ProductService {
 
         productMapper.addProduct(product);
         productMapper.addTags(product.getTags(), product.getId());
-        imageMapper.addImages(product.getImages(), product.getId());
+        if(product.getImages() != null && !product.getImages().isEmpty()){
+            imageMapper.addImages(product.getImages(), product.getId());
+        }
 
         return buildProductDTO(product);
     }
