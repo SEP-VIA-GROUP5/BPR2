@@ -9,7 +9,9 @@
         <nb-icon [icon]="actionSelected.icon"/>
         <span *ngIf="getWindowSize().width > 768">Perform action</span>
       </button>
-      <nb-select class="selector-actions" size='medium' fullWidth [(selected)]="actionSelected.action"
+      <nb-select [disabled]="(products$ | async).length < 1"
+                 class="selector-actions" size='medium' fullWidth
+                 [(selected)]="actionSelected.action"
                  (selectedChange)="onSelectActionChanged($event)" placeholder="Select action">
         <nb-option-group title="Actions" [disabled]="!this.userService.isLoggedIn()">
           <nb-option [disabled]="actionSelected.action === ActionsConstants.REMOVE"
@@ -60,25 +62,29 @@
             <div class="product-add-rented-until" *ngIf="isRentedStatusSelected(productSelected)">
               <p> Rented until </p>
               <input nbInput placeholder="Pick rent end date" [nbDatepicker]="pickerEndDate"
-                     [(ngModel)]="this.productsSelected[findIndexOfProductSelected(productSelected.product.id)].rentedUntil" shape="round">
+                     [(ngModel)]="this.productsSelected[findIndexOfProductSelected(productSelected.product.id)].rentedUntil"
+                     shape="round">
               <nb-datepicker #pickerEndDate [min]="productSelected.rentedUntil"></nb-datepicker>
             </div>
           </div>
         </div>
-        <div class="dialog-action-edit-product" *ngIf="data.action === ActionsConstants.EDIT && !isButtonForPerformingActionDisabled()">
+        <div class="dialog-action-edit-product"
+             *ngIf="data.action === ActionsConstants.EDIT && !isButtonForPerformingActionDisabled()">
           <add-products-details [productDetails]="productsSelected[0].product"
-          [addingDetailsToCurrentProduct]="true"
-          (onSubmit)="performAction($event)">
+                                [addingDetailsToCurrentProduct]="true"
+                                (onSubmit)="performAction($event)">
           </add-products-details>
         </div>
-        <div class="dialog-action-edit-product" *ngIf="data.action === ActionsConstants.EDIT && isButtonForPerformingActionDisabled()">
+        <div class="dialog-action-edit-product"
+             *ngIf="data.action === ActionsConstants.EDIT && isButtonForPerformingActionDisabled()">
           <p> {{ getButtonForPerformingTooltip() }}</p>
         </div>
       </div>
     </nb-card-body>
     <nb-card-footer>
       <div class="dialog-buttons-footer">
-        <button *ngIf="actionSelected.action !== ActionsConstants.EDIT" nbButton hero [nbTooltip]="getButtonForPerformingTooltip()"
+        <button *ngIf="actionSelected.action !== ActionsConstants.EDIT" nbButton hero
+                [nbTooltip]="getButtonForPerformingTooltip()"
                 [nbTooltipDisabled]="!isButtonForPerformingActionDisabled()" [status]="data.status"
                 [disabled]="isButtonForPerformingActionDisabled()" (click)="performAction()">
           {{ data.actionButtonText }}
