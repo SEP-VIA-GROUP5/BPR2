@@ -19,6 +19,11 @@ export class ProfileSelector {
   }
 
   @Selector([ProfileState])
+  static isUserReportAdded(state: ProfileStateModel) {
+    return state.isUserReportAdded;
+  }
+
+  @Selector([ProfileState])
   static userContent(state: ProfileStateModel) {
     return {
       email: state.user.email,

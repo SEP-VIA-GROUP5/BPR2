@@ -1,6 +1,6 @@
-import {Product} from "src/model/product";
 import {ImgurImageResponse} from "src/model/imgurImageResponse";
 import {Image} from "src/model/image";
+import {Product} from "src/model/product";
 
 export enum ADDING_PRODUCTS_STEP {
   PICTURES = 'Pictures',
@@ -26,6 +26,20 @@ export const constructProductImagesFromImgurImages = (imgurImages: ImgurImageRes
     } satisfies Image;
   });
 };
+
+export const constructImgurImagesFromProductImages = (images: Image[]) => {
+  return images.map(image => {
+    return {
+      data: {
+        id: image.id.toString(),
+        link: image.imageUrl,
+        title: `Image ${image.id}`
+      },
+      success: true,
+      status: 200
+    } satisfies ImgurImageResponse;
+  });
+}
 
 export const defaultProduct: Product = {
   name: '',

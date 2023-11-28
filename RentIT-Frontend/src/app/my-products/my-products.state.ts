@@ -4,7 +4,7 @@ import {produce} from "immer";
 import {NbToastrService} from "@nebular/theme";
 import {Product} from "src/model/product";
 import {
-  ChangeProductsStatus,
+  ChangeProductsStatus, EditProduct,
   MyProductsFetch,
   MyProductsReset,
   RemoveProducts
@@ -112,8 +112,14 @@ export class MyProductsState {
 
     try {
       for (const productSelected of action.productsSelected) {
+        //TODO fetch data as well, if that's available and status of the product is RENTED
         const statusSelected: ProductStatus = this.getSelectedStatus(productSelected.statusSelectedList);
-        await this.productsService.updateProductStatus(productSelected.product.id, statusSelected);
+        if(productSelected.rentedUntil && statusSelected === ProductStatus.RENTED) {
+          await this.productsService.updateProductStatusWithRentedUntil(productSelected.product.id, statusSelected, productSelected.rentedUntil);
+        }
+        else {
+          await this.productsService.updateProductStatus(productSelected.product.id, statusSelected);
+        }
       }
       newState = produce(getState(), draft => {
         draft.products = draft.products.map(product => {
@@ -139,6 +145,41 @@ export class MyProductsState {
       })
       setState(newState);
       this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : error,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+    }
+  }
+
+  @Action(EditProduct)
+  async editProduct(
+    {getState, setState}: StateContext<MyProductsStateModel>,
+    action: EditProduct) {
+    let newState = produce(getState(), draft => {
+      draft.isFetching = true;
+    })
+    setState(newState);
+
+    try {
+      const updatedProduct = await this.productService.updateProductById(action.product);
+      newState = produce(getState(), draft => {
+        draft.products = draft.products.map(product => {
+          if (product.id === action.product.id) {
+            return action.product;
+          }
+          return product;
+        });
+        draft.isFetching = false;
+      });
+      setState(newState);
+      window.location.reload();
+    } catch (error) {
+      newState = produce(getState(), draft => {
+        draft.isFetching = false;
+      })
+      setState(newState);
+      return this.toastrService.danger(
         environment.production ? 'Please contact the administration' : error,
         'Something went wrong',
         {icon: ICONS.ALERT_CIRCLE_OUTLINE}

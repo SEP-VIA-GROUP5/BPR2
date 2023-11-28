@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
 import { ImgurImageResponse } from "src/model/imgurImageResponse";
 import { NgImageSliderComponent } from 'ng-image-slider';
 import {NbWindowRef, NbWindowService} from "@nebular/theme";
@@ -22,30 +22,24 @@ import {
                          #nav>
         </ng-image-slider>
       </div>
-      <nb-card *ngIf="selectedImage" class="selected-image-container" size="tiny" [nbTooltip]="getTooltip()"
-               (click)="openImage()">
+      <nb-card *ngIf="selectedImage" class="selected-image-container" size="tiny" [nbTooltip]="getTooltip()">
         <nb-card-header>
           <img [src]="selectedImage.image" [alt]="selectedImage.title" class="selected-image"/>
         </nb-card-header>
+        <nb-card-body>
+          <button (click)="onDeleteSelectedImage()" status="danger" size="medium" nbButton>Remove {{ selectedImage.title }}</button>
+        </nb-card-body>
       </nb-card>
     </div>
-
-    <ng-template #selectedImageWindow let-data>
-      <div class="selected-window">
-        <img [src]="selectedImage.image" [alt]="selectedImage.title" class="window-selected-image"/>
-        <button (click)="onDeleteSelectedImage()" status="danger" size="medium" nbButton>Remove {{ selectedImage.title }}</button>
-      </div>
-    </ng-template>
   `,
   styleUrls: ['./view-images-slider.component.scss']
 })
 export class ViewImagesSliderComponent implements OnInit, OnChanges {
   @Input() imgurImages: ImgurImageResponse[];
+  @Output() eventDeleteSelectedImage: EventEmitter<ImgurImageResponse[]> = new EventEmitter<ImgurImageResponse[]>();
   ngSliderImages: NgSliderImage[] = [];
   selectedImage: NgSliderImage;
 
-  @ViewChild('selectedImageWindow') selectedImageWindow: TemplateRef<any>;
-  windowRef: NbWindowRef;
   @ViewChild('nav') slider: NgImageSliderComponent;
 
   constructor(private windowService: NbWindowService,
@@ -66,24 +60,15 @@ export class ViewImagesSliderComponent implements OnInit, OnChanges {
     this.selectedImage = this.ngSliderImages[$event];
   }
 
-  openImage() {
-    this.windowRef = this.windowService.open(
-      this.selectedImageWindow,
-      { title: this.selectedImage.title },
-    );
-  }
-
   onDeleteSelectedImage() {
     let imgurImageSelected = findImgurImageResponseFromNgSliderImage(this.imgurImages, this.selectedImage);
     this.imgurImages = this.imgurImages.filter(image => image !== imgurImageSelected);
-    this.store.dispatch(new UpdateImages(this.imgurImages));
     this.selectedImage = null;
-    this.windowRef.close();
-
+    this.eventDeleteSelectedImage.emit(this.imgurImages);
   }
 
   getTooltip() {
-    return `You selected ${this.selectedImage.title}. Click to view it in full screen.`
+    return `You selected ${this.selectedImage.title}.`
   }
 
 }

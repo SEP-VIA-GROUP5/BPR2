@@ -18,6 +18,12 @@ export class ChangeProductsStatus {
   }
 }
 
+export class EditProduct {
+  static readonly type = '[My products] Edit product';
+  constructor(public product: Product) {
+  }
+}
+
 export class MyProductsReset {
   static readonly type = '[My products] Reset';
 }

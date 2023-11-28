@@ -1,12 +1,21 @@
-nb-card {
-  display: inline-flex;
-  align-items: center;
-  box-shadow: 0px 5px 15px black;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 10px;
-  border: 10px;
-  border-radius: 4%;
+.fof-container {
+  display: flex;
+  justify-content: center;
+
+  nb-card {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    align-items: center;
+
+    nb-card-header {
+
+      img {
+        width: 40vh;
+        height: 40vh;
+      }
+    }
+  }
+
 }

@@ -42,6 +42,7 @@ import {
   ViewImagesSwiperComponent
 } from "src/app/shared-components/view-images/view-images-swiper/view-images-swiper.component";
 import {StarsRatingComponent} from "src/app/shared-components/stars-rating/stars-rating.component";
+import {AddingProductsDetailsComponent} from "src/app/shared-components/add-products-details/add-products-details.component";
 
 export const NEBULAR_MODULES = [
   NbLayoutModule,
@@ -76,7 +77,8 @@ export const SHARED_COMPONENTS = [
   MapPickerComponent,
   ViewImagesSliderComponent,
   ViewImagesSwiperComponent,
-  StarsRatingComponent
+  StarsRatingComponent,
+  AddingProductsDetailsComponent,
 ];
 
 export const NG_MODULES = [
