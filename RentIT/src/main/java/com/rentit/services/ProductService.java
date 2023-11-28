@@ -209,7 +209,9 @@ public class ProductService {
 
         imageMapper.deleteImagesByProductId(retreivedProduct.getId());
         imageMapper.addImages(retreivedProduct.getImages(), retreivedProduct.getId());
+        productMapper.deleteTags(retreivedProduct.getId());
         productMapper.updateProduct(retreivedProduct);
+        productMapper.addTags(retreivedProduct.getTags(), retreivedProduct.getId());
         return ProductDTO.buildProductDTO(retreivedProduct);
     }
 }

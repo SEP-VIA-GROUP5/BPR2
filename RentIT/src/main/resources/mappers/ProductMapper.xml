@@ -118,6 +118,11 @@
         FROM products
         WHERE product_id = #{id};
     </delete>
+    <delete id="deleteTags">
+        DELETE
+        FROM tags
+        WHERE product_id = #{productId}
+    </delete>
     <update id="changeProductStatus">
         UPDATE products
         SET product_status = #{productStatus}
