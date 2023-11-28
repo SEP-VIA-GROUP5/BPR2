@@ -10,7 +10,7 @@ import com.rentit.model.dto.ProductPackageDTO;
 import com.rentit.model.dto.UserDTO;
 import com.rentit.model.enums.ProductStatus;
 import com.rentit.services.enums.ResponseMessage;
-import com.rentit.services.utils.ServiceUtils;
+import com.rentit.utils.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +27,10 @@ public class ProductService {
     private IProductMapper productMapper;
     @Autowired
     private IImageMapper imageMapper;
-
     @Autowired
     private UserService userService;
-
-    private final ServiceUtils serviceUtils = ServiceUtils.getInstance();
+    @Autowired
+    private ServiceUtil serviceUtil;
 
     public List<ProductDTO> getNProductsByPage(int pageNum, int n) {
         if (pageNum > 0 && n > 0) {
@@ -42,7 +41,7 @@ public class ProductService {
 
     public List<ProductDTO> getNProductsByPageWithFilters(int pageNum, int n, Map<String, String> filters) {
         if (pageNum > 0 && n > 0) {
-            Map<PriceFilteringColumn, String> processedMap = serviceUtils.processFiltering(filters);
+            Map<PriceFilteringColumn, String> processedMap = serviceUtil.processFiltering(filters);
             return productMapper.getNProductsByPageWithFilters(pageNum, n, processedMap);
         }
         return null;
@@ -75,7 +74,9 @@ public class ProductService {
 
         productMapper.addProduct(product);
         productMapper.addTags(product.getTags(), product.getId());
-        imageMapper.addImages(product.getImages(), product.getId());
+        if(product.getImages() != null && !product.getImages().isEmpty()){
+            imageMapper.addImages(product.getImages(), product.getId());
+        }
 
         return buildProductDTO(product);
     }
@@ -103,7 +104,7 @@ public class ProductService {
         User user = userService.getUserFromToken(authorizationHeader, true);
 
         if (user == null || productId < 0) {
-            return ResponseMessage.DELETION_ERROR;
+            return ResponseMessage.INVALID_PARAMETERS;
         }
 
         Product productToBeDeleted = productMapper.getProductById(productId);
@@ -112,8 +113,9 @@ public class ProductService {
             productMapper.deleteProductById(productId);
             return ResponseMessage.SUCCESS;
         }
-
-        return ResponseMessage.INTERNAL_ERROR;
+        else {
+            return ResponseMessage.CREDENTIALS_ERROR;
+        }
     }
 
     public List<ProductDTO> getMyList(String authorizationHeader) {
