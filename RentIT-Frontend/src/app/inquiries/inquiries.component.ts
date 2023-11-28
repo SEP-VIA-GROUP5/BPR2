@@ -93,6 +93,10 @@ export class InquiriesComponent implements OnInit, OnDestroy {
     this.store.dispatch(new DeleteInquiry(receivedInquiry.inquiryId));
   }
 
+  redirectToProduct(productId: number) {
+    this.router.navigate([`${PRODUCTS_MENU_ITEM_URLS.PRODUCT}/${productId}`]);
+  }
+
   loadNextInquiries(inquiryType: InquiriesTabs) {
     switch (inquiryType) {
       case InquiriesTabs.RECEIVED: {
