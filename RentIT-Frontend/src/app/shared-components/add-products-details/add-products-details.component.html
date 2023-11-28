@@ -49,37 +49,33 @@
       <div class="product-information-forms">
         <div class="left-forms">
           <nb-form-field>
-            <!--                TODO name should not be null-->
-            <input [(ngModel)]="productDetails.name" name="name" type="text" fullWidth size="100px" nbInput
-                   shape="round" placeholder="Name">
+            <input [(ngModel)]="productDetailsModel.name" name="name" type="text" fullWidth size="100px" nbInput
+                   shape="round" placeholder="Name" (input)="onInputType($event)">
           </nb-form-field>
           <nb-form-field>
-            <!--              TODO dayPrice should not be null-->
-            <input [(ngModel)]="productDetails.dayPrice" name="dayPrice" type="number" fullWidth size="100px"
-                   nbInput shape="round" placeholder="Price (per day)">
+            <input [(ngModel)]="productDetailsModel.dayPrice" name="dayPrice" type="number" fullWidth size="100px"
+                   nbInput shape="round" placeholder="Price (per day)" (input)="onInputType($event)">
           </nb-form-field>
           <nb-form-field>
-            <!--              TODO should that this is optional-->
-            <input [(ngModel)]="productDetails.weekPrice" name="weekPrice" type="number" fullWidth size="100px"
-                   nbInput shape="round" placeholder="Price (per week)">
+            <input [(ngModel)]="productDetailsModel.weekPrice" name="weekPrice" type="number" fullWidth size="100px"
+                   nbInput shape="round" placeholder="Price (per week)" (input)="onInputType($event)">
           </nb-form-field>
           <nb-form-field>
-            <!--              TODO should that this is optional-->
-            <input [(ngModel)]="productDetails.monthPrice" name="monthPrice" type="number" fullWidth size="100px"
-                   nbInput shape="round" placeholder="Price (per month)">
+            <input [(ngModel)]="productDetailsModel.monthPrice" name="monthPrice" type="number" fullWidth size="100px"
+                   nbInput shape="round" placeholder="Price (per month)" (input)="onInputType($event)">
           </nb-form-field>
           <nb-form-field>
-            <input [(ngModel)]="productDetails.deposit" name="deposit" type="number" fullWidth size="100px" nbInput
-                   shape="round" placeholder="Deposit">
+            <input [(ngModel)]="productDetailsModel.deposit" name="deposit" type="number" fullWidth size="100px" nbInput
+                   shape="round" placeholder="Deposit" (input)="onInputType($event)">
           </nb-form-field>
           <nb-form-field>
-            <input [(ngModel)]="productDetails.productValue" name="productValue" type="number" fullWidth
-                   size="100px" nbInput shape="round" placeholder="Product value">
+            <input [(ngModel)]="productDetailsModel.productValue" name="productValue" type="number" fullWidth
+                   size="100px" nbInput shape="round" placeholder="Product value" (input)="onInputType($event)">
           </nb-form-field>
           <div class="min-lease-period">
             <nb-form-field>
-              <input [(ngModel)]="productDetails.minLeasePeriod" name="minLeasePeriod" type="number" fullWidth
-                     size="100px" nbInput shape="round" placeholder="Min lease period">
+              <input [(ngModel)]="productDetailsModel.minLeasePeriod" name="minLeasePeriod" type="number" fullWidth
+                     size="100px" nbInput shape="round" placeholder="Min lease period" (input)="onInputType($event)">
             </nb-form-field>
             <nb-select placeholder="Select Showcase" [(selected)]="minLeasePeriodSelectedPeriod" shape="round">
               <nb-option [value]="PERIOD.DEFAULT">Select period</nb-option>
@@ -91,22 +87,22 @@
         </div>
         <div class="right-form">
           <nb-form-field class="description">
-                <textarea [(ngModel)]="productDetails.description" name="description" type="text" fullWidth nbInput
-                          shape="round" placeholder="Description"></textarea>
+                <textarea [(ngModel)]="productDetailsModel.description" name="description" type="text" fullWidth nbInput
+                          shape="round" placeholder="Description" (input)="onInputType($event)"></textarea>
           </nb-form-field>
           <nb-form-field>
-            <input [(ngModel)]="productDetails.category" name="category" type="text" fullWidth size="100px" nbInput
-                   shape="round" placeholder="Category">
+            <input [(ngModel)]="productDetailsModel.category" name="category" type="text" fullWidth size="100px" nbInput
+                   shape="round" placeholder="Category" (input)="onInputType($event)">
           </nb-form-field>
           <nb-tag-list (tagRemove)="onTagRemove($event)">
-            <nb-tag *ngFor="let tree of productDetails.tags" [text]="tree" removable></nb-tag>
+            <nb-tag *ngFor="let tree of productDetailsModel.tags" [text]="tree" removable></nb-tag>
             <input placeholder="Tags" shape="round" type="text" nbTagInput (tagAdd)="onTagAdd($event)" fullWidth>
           </nb-tag-list>
         </div>
       </div>
       <div class="button-submit">
         <button type="submit" [status]="'primary'" [nbTooltipDisabled]="getSubmitButtonTooltip() === ''"
-                [nbTooltip]="getSubmitButtonTooltip()" [disabled]="isSubmitButtonDisabled()" (click)="onEventSubmit()"
+                [nbTooltip]="getSubmitButtonTooltip()" [disabled]="isSubmitButtonDisabled() || isInitialProductEqualsTheEditedProduct" (click)="onEventSubmit()"
                 nbButton hero>Submit
         </button>
       </div>

@@ -205,7 +205,6 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   private computeIsButtonDisabledForStatus(): boolean {
     const isNotAStatusSelected = this.productsSelected.some(productSelected => productSelected.statusSelectedList.some(statusSelected => !statusSelected.isStatusListSelected));
     const isNotTheSameStatusAsBefore = this.isNotTheSameStatusAsBefore();
-    console.log(isNotAStatusSelected, isNotTheSameStatusAsBefore, this.isRentedUntilDateAfterTheAllowedOne());
     return isNotAStatusSelected && isNotTheSameStatusAsBefore && this.isRentedUntilDateAfterTheAllowedOne();
   }
 

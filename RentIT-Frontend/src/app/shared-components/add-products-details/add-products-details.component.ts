@@ -1,15 +1,12 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from "@angular/core";
-import {Select, Store} from "@ngxs/store";
-import {AddingProductsSelectors} from "src/app/products/adding-products/adding-products.selectors";
-import {Observable} from "rxjs";
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from "@angular/core";
 import {ImgurImageResponse} from "src/model/imgurImageResponse";
 import {Product} from "src/model/product";
-import {UserService} from "src/api/user.service";
 import {NbTagComponent, NbTagInputAddEvent, NbToastrService} from "@nebular/theme";
-import {Router} from "@angular/router";
 import {
   ADDING_PRODUCTS_STEP,
-  ADDING_PRODUCTS_TITLE, constructImgurImagesFromProductImages, constructProductImagesFromImgurImages,
+  ADDING_PRODUCTS_TITLE,
+  constructImgurImagesFromProductImages,
+  constructProductImagesFromImgurImages,
   defaultProduct,
   PERIOD
 } from "src/app/shared-components/add-products-details/constants";
@@ -34,10 +31,12 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
   protected readonly PERIOD = PERIOD;
 
   isFetching: boolean = false;
-  initialProductDetails: Product;
+  productDetailsModel: Product = defaultProduct;
+  initialProductDetailsModel: Product = defaultProduct;
   uploadedImages: ImgurImageResponse[] = [];
   selectedImages: File[] = [];
   minLeasePeriodSelectedPeriod: PERIOD = PERIOD.DEFAULT;
+  isInitialProductEqualsTheEditedProduct: boolean = false;
 
   constructor(private imgurApiService: ImgurApiService,
               private toastrService: NbToastrService) {
@@ -50,7 +49,9 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.productDetails = defaultProduct;
     }
-    this.initialProductDetails = {...this.productDetails};
+    this.productDetailsModel = {...this.productDetails};
+    this.initialProductDetailsModel = {...this.productDetailsModel};
+    this.isInitialProductEqualsTheEditedProduct = this.constructInitialProductEqualsTheEditedProduct();
   }
 
   onImageSelected(event) {
@@ -84,27 +85,35 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
     }
     this.isFetching = false;
     this.uploadedImages = [...uploadedImages];
-    this.productDetails = {
-      ...this.productDetails,
+    this.productDetailsModel = {
+      ...this.productDetailsModel,
       images: constructProductImagesFromImgurImages(this.uploadedImages)
     }
     this.selectedImages = [];
   }
 
   onEventSubmit() {
-    this.productDetails.minLeasePeriod = this.constructMinLeasePeriod();
-    this.onSubmit.emit(this.productDetails);
+    this.productDetailsModel.minLeasePeriod = this.constructMinLeasePeriod();
+    this.onSubmit.emit(this.productDetailsModel);
   }
 
   onTagRemove(tagToRemove: NbTagComponent) {
-    this.productDetails.tags = this.productDetails.tags.filter(tag => tag !== tagToRemove.text);
+    this.productDetailsModel = {
+      ...this.productDetailsModel,
+      tags: this.productDetailsModel.tags.filter(tag => tag !== tagToRemove.text)
+    };
+    this.isInitialProductEqualsTheEditedProduct = this.constructInitialProductEqualsTheEditedProduct();
   }
 
-  onTagAdd({value, input}: NbTagInputAddEvent): void {
+  onTagAdd({ value, input }: NbTagInputAddEvent): void {
     if (value) {
-      this.productDetails.tags.push(value)
+      this.productDetailsModel = {
+        ...this.productDetailsModel,
+        tags: [...this.productDetailsModel.tags, value]
+      };
     }
     input.nativeElement.value = '';
+    this.isInitialProductEqualsTheEditedProduct = this.constructInitialProductEqualsTheEditedProduct();
   }
 
   onDeleteSelectedImage(imgurImageResponses: ImgurImageResponse[]) {
@@ -112,7 +121,7 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
   }
 
   getSubmitButtonTooltip = (): string => {
-    if (this.isInitialProductEqualsTheEditedProduct()) {
+    if (this.constructInitialProductEqualsTheEditedProduct()) {
       return 'You have not made any changes to the product';
     }
     else if (this.isSubmitButtonDisabled()) {
@@ -122,48 +131,54 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
   }
 
   isSubmitButtonDisabled() {
-    return this.productDetails.name === '' ||
-      this.productDetails.description === '' ||
-      this.productDetails.dayPrice === null ||
-      this.productDetails.deposit === null ||
-      this.productDetails.productValue === null ||
-      this.productDetails.minLeasePeriod === null ||
+    return this.productDetailsModel.name === '' ||
+      this.productDetailsModel.description === '' ||
+      this.productDetailsModel.dayPrice === null ||
+      this.productDetailsModel.deposit === null ||
+      this.productDetailsModel.productValue === null ||
+      this.productDetailsModel.minLeasePeriod === null ||
       this.minLeasePeriodSelectedPeriod === PERIOD.DEFAULT ||
-      this.productDetails.tags.length === 0;
+      this.productDetailsModel.tags.length === 0;
   }
 
-  isInitialProductEqualsTheEditedProduct() {
-    return this.initialProductDetails.name === this.productDetails.name &&
-      this.initialProductDetails.description === this.productDetails.description &&
-      this.initialProductDetails.dayPrice === this.productDetails.dayPrice &&
-      this.initialProductDetails.weekPrice === this.productDetails.weekPrice &&
-      this.initialProductDetails.monthPrice === this.productDetails.monthPrice &&
-      this.initialProductDetails.deposit === this.productDetails.deposit &&
-      this.initialProductDetails.city === this.productDetails.city &&
-      this.initialProductDetails.productValue === this.productDetails.productValue &&
-      this.initialProductDetails.minLeasePeriod === this.productDetails.minLeasePeriod &&
-      this.initialProductDetails.category === this.productDetails.category &&
-      this.initialProductDetails.tags === this.productDetails.tags &&
-      this.initialProductDetails.images === this.productDetails.images &&
+  onInputType($event) {
+    this.isInitialProductEqualsTheEditedProduct = this.constructInitialProductEqualsTheEditedProduct();
+  }
+
+  constructInitialProductEqualsTheEditedProduct() {
+    return this.initialProductDetailsModel.name === this.productDetailsModel.name &&
+      this.initialProductDetailsModel.description === this.productDetailsModel.description &&
+      this.initialProductDetailsModel.dayPrice === this.productDetailsModel.dayPrice &&
+      this.initialProductDetailsModel.weekPrice === this.productDetailsModel.weekPrice &&
+      this.initialProductDetailsModel.monthPrice === this.productDetailsModel.monthPrice &&
+      this.initialProductDetailsModel.deposit === this.productDetailsModel.deposit &&
+      this.initialProductDetailsModel.city === this.productDetailsModel.city &&
+      this.initialProductDetailsModel.productValue === this.productDetailsModel.productValue &&
+      this.initialProductDetailsModel.minLeasePeriod === this.productDetailsModel.minLeasePeriod &&
+      this.initialProductDetailsModel.category === this.productDetailsModel.category &&
+      this.initialProductDetailsModel.tags === this.productDetailsModel.tags &&
+      this.initialProductDetailsModel.images === this.productDetails.images &&
       this.addingDetailsToCurrentProduct;
   }
 
   private constructMinLeasePeriod(): number {
     switch (this.minLeasePeriodSelectedPeriod) {
       case PERIOD.DAY:
-        return this.productDetails.minLeasePeriod;
+        return this.productDetailsModel.minLeasePeriod;
       case PERIOD.WEEK:
-        return this.productDetails.minLeasePeriod * 7;
+        return this.productDetailsModel.minLeasePeriod * 7;
       case PERIOD.MONTH:
-        return this.productDetails.minLeasePeriod * 30;
+        return this.productDetailsModel.minLeasePeriod * 30;
+      default:
+        return this.productDetailsModel.minLeasePeriod;
     }
   }
 
   substractCurrentLeasePeriod() {
-    if (this.productDetails.minLeasePeriod / 7 === 0) {
+    if (this.productDetailsModel.minLeasePeriod % 7 === 0) {
       return PERIOD.WEEK;
     }
-    if (this.productDetails.minLeasePeriod / 30 === 0) {
+    if (this.productDetailsModel.minLeasePeriod % 30 === 0) {
       return PERIOD.MONTH;
     }
     return PERIOD.DAY;

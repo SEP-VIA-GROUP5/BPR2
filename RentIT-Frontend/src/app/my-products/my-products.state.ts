@@ -172,7 +172,8 @@ export class MyProductsState {
         });
         draft.isFetching = false;
       });
-      return setState(newState);
+      setState(newState);
+      window.location.reload();
     } catch (error) {
       newState = produce(getState(), draft => {
         draft.isFetching = false;
