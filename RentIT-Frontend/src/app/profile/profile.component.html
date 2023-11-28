@@ -107,6 +107,14 @@
     <nb-card *ngIf="!(isFetching$ | async) && userContent$ | async">
       <nb-card-header>
         <h4> {{userContent.firstName }} {{ userContent.lastName }} information</h4>
+        <button
+          *ngIf="this.userService.isLoggedIn" class="report-badge"
+          [nbTooltip]="'Report this user? Click here!'"
+          [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
+          status="danger"
+          nbButton
+          (click)="openReportDialog()">Report
+        </button>
       </nb-card-header>
       <nb-card-body *ngIf="userContent">
         <div class="user-information">
@@ -142,4 +150,41 @@
     <map-picker [location]="data.location" buttonTitle="Save location"
                 (buttonEvent)="onSaveLocation($event)"></map-picker>
   </div>
+</ng-template>
+
+<ng-template #reportDialog>
+  <nb-card *ngIf="!(isUserReportAdded$ | async)" class="report-dialog-container">
+    <nb-card-header>
+      <p>Why do you want to report this <span class="bold"> user </span>?</p>
+    </nb-card-header>
+    <nb-card-body>
+      <nb-form-field class="description">
+                <textarea [(ngModel)]="reportToAdd.userReport.message" name="message" type="text" fullWidth nbInput
+                          shape="round" placeholder="Reporting user message"></textarea>
+        <span class="remaining-characters">{{getCharactersReportMessage()}}</span>
+      </nb-form-field>
+    </nb-card-body>
+    <nb-card-footer>
+      <button [disabled]="isOnSubmitButtonDisabled()" nbButton status="danger"
+              hero (click)="onSubmitReportButtonClicked()">
+        Submit
+      </button>
+    </nb-card-footer>
+  </nb-card>
+  <nb-card *ngIf="isUserReportAdded$ | async" class="report-dialog-container">
+    <nb-card-header>
+      <p>Thank you for reporting this <span class="bold"> user</span>!</p>
+    </nb-card-header>
+    <nb-card-body>
+      <nb-icon [icon]="ICONS.CHECKMARK_CIRCLE_OUTLINE" pack="eva" status="success" style="font-size: 5rem"></nb-icon>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" hero (click)="closeReportDialog()">
+        Close
+      </button>
+      <button nbButton status="danger" hero (click)="resetReport()">
+        Add new report
+      </button>
+    </nb-card-footer>
+  </nb-card>
 </ng-template>

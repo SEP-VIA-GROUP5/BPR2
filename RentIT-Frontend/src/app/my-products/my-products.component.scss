@@ -16,6 +16,7 @@ nb-card-header {
     .perform-action-button {
       height: min-content;
     }
+
     .selector-actions {
     }
   }
@@ -47,7 +48,6 @@ nb-card-footer {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 10px;
   height: 100%;
 }
@@ -75,6 +75,7 @@ nb-card-footer {
 
 .dialog-action-container {
   align-items: center;
+  max-height: 85vh;
 
   nb-card-body {
     .dialog-action-body {
@@ -85,18 +86,38 @@ nb-card-footer {
 
         .product-status-change {
           display: flex;
-          justify-content: space-between;
-          gap:1rem;
-          p {
-            font-size: var(--tag-medium-text-font-size);
-            span {
-              font-weight: bold;
+          flex-direction: column;
+
+          .product-status-change-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+
+            p {
+              font-size: var(--tag-medium-text-font-size);
+
+              span {
+                font-weight: bold;
+              }
+            }
+
+            nb-tag-list {
+              nb-tag {
+                cursor: pointer;
+              }
             }
           }
-          nb-tag-list {
-            nb-tag {
-              cursor: pointer;
-            }
+        }
+      }
+
+      .dialog-action-edit-product {
+        p {
+          font-size: var(--tag-medium-text-font-size);
+          color: red;
+          font-style: italic;
+
+          span {
+            font-weight: bold;
           }
         }
       }

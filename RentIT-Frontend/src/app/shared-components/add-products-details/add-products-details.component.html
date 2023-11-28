@@ -1,0 +1,115 @@
+<div class="d-flex-center">
+  <nb-stepper orientation="horizontal"
+              [nbSpinner]="isFetching"
+              nbSpinnerSize="large"
+              nbSpinnerStatus="primary">
+    <nb-step class="adding-pictures-step" [label]="STEPS.PICTURES">
+      <h4>{{ TITLES.ADD_PICTURES }}</h4>
+      <div class="full-width-content">
+        <ngx-dropzone [disabled]="uploadedImages.length > 0 && !addingDetailsToCurrentProduct"
+                      (change)="onImageSelected($event)"
+                      [multiple]="true" accept=".png, .jpeg, .jpg">
+          <div class="dropzone text-center">
+            <nb-icon [icon]="ICONS.IMAGE_OUTLINE"></nb-icon>
+            <p class="pictures-first-row-text">Add pictures by clicking</p>
+            <p class="pictures-second-row-text">or drag and drop</p>
+            <p class="pictures-second-row-text" style="color:red"
+               *ngIf="uploadedImages.length > 0 && !addingDetailsToCurrentProduct">You
+              need to delete all images in order to upload again.</p>
+          </div>
+        </ngx-dropzone>
+
+        <div *ngIf="selectedImages.length > 0">
+          <h3>Selected Images:</h3>
+          <ul>
+            <li *ngFor="let image of selectedImages">
+              {{ image.name }}
+            </li>
+          </ul>
+        </div>
+        <p *ngIf="uploadedImages.length > 0" style="color:red; font-style:italic; padding:0;"> You need
+          to select an
+          image by clicking, in order to remove it.</p>
+        <view-images-slider
+          *ngIf="uploadedImages.length > 0"
+          [imgurImages]="uploadedImages"
+          (eventDeleteSelectedImage)="onDeleteSelectedImage($event)"
+        >
+        </view-images-slider>
+        <button status="primary" (click)="uploadImages()" [disabled]="isFetching" nbTooltip="Uploading images..." [nbTooltipDisabled]="!isFetching" *ngIf="selectedImages.length > 0" nbButton>Upload images
+        </button>
+      </div>
+      <div class="buttons-stepper">
+        <button nbButton disabled nbStepperPrevious>prev</button>
+        <button nbButton nbStepperNext>next</button>
+      </div>
+    </nb-step>
+    <nb-step class="details-step" [label]="STEPS.DETAILS">
+      <h4>{{ TITLES.ADD_DETAILS }}</h4>
+      <div class="product-information-forms">
+        <div class="left-forms">
+          <nb-form-field>
+            <input [(ngModel)]="productDetailsModel.name" name="name" type="text" fullWidth size="100px" nbInput
+                   shape="round" placeholder="Name" (input)="onInputType($event)">
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="productDetailsModel.dayPrice" name="dayPrice" type="number" fullWidth size="100px"
+                   nbInput shape="round" placeholder="Price (per day)" (input)="onInputType($event)">
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="productDetailsModel.weekPrice" name="weekPrice" type="number" fullWidth size="100px"
+                   nbInput shape="round" placeholder="Price (per week)" (input)="onInputType($event)">
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="productDetailsModel.monthPrice" name="monthPrice" type="number" fullWidth size="100px"
+                   nbInput shape="round" placeholder="Price (per month)" (input)="onInputType($event)">
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="productDetailsModel.deposit" name="deposit" type="number" fullWidth size="100px" nbInput
+                   shape="round" placeholder="Deposit" (input)="onInputType($event)">
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="productDetailsModel.productValue" name="productValue" type="number" fullWidth
+                   size="100px" nbInput shape="round" placeholder="Product value" (input)="onInputType($event)">
+          </nb-form-field>
+          <div class="min-lease-period">
+            <nb-form-field>
+              <input [(ngModel)]="productDetailsModel.minLeasePeriod" name="minLeasePeriod" type="number" fullWidth
+                     size="100px" nbInput shape="round" placeholder="Min lease period" (input)="onInputType($event)">
+            </nb-form-field>
+            <nb-select placeholder="Select Showcase" [(selected)]="minLeasePeriodSelectedPeriod" shape="round">
+              <nb-option [value]="PERIOD.DEFAULT">Select period</nb-option>
+              <nb-option [value]="PERIOD.DAY"> {{ PERIOD.DAY }}</nb-option>
+              <nb-option [value]="PERIOD.WEEK"> {{ PERIOD.WEEK }}</nb-option>
+              <nb-option [value]="PERIOD.MONTH"> {{ PERIOD.MONTH }}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="right-form">
+          <nb-form-field class="description">
+                <textarea [(ngModel)]="productDetailsModel.description" name="description" type="text" fullWidth nbInput
+                          shape="round" placeholder="Description" (input)="onInputType($event)"></textarea>
+          </nb-form-field>
+          <nb-form-field>
+            <input [(ngModel)]="productDetailsModel.category" name="category" type="text" fullWidth size="100px" nbInput
+                   shape="round" placeholder="Category" (input)="onInputType($event)">
+          </nb-form-field>
+          <nb-tag-list (tagRemove)="onTagRemove($event)">
+            <nb-tag *ngFor="let tree of productDetailsModel.tags" [text]="tree" removable></nb-tag>
+            <input placeholder="Tags" shape="round" type="text" nbTagInput (tagAdd)="onTagAdd($event)" fullWidth>
+          </nb-tag-list>
+        </div>
+      </div>
+      <div class="button-submit">
+        <button type="submit" [status]="'primary'" [nbTooltipDisabled]="getSubmitButtonTooltip() === ''"
+                [nbTooltip]="getSubmitButtonTooltip()" [disabled]="isSubmitButtonDisabled() || isInitialProductEqualsTheEditedProduct" (click)="onEventSubmit()"
+                nbButton hero> {{ getSubmitButtonText() }}
+        </button>
+      </div>
+      <div class="buttons-stepper">
+        <button nbButton nbStepperPrevious>prev</button>
+        <button disabled nbButton nbStepperNext>next</button>
+      </div>
+    </nb-step>
+  </nb-stepper>
+</div>

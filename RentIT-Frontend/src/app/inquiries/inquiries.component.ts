@@ -84,13 +84,17 @@ export class InquiriesComponent implements OnInit, OnDestroy {
   }
 
   onCollapsedChanged(isCollapsed, receivedInquiry: Inquiry) {
-    if (isCollapsed && !receivedInquiry.viewed) {
+    if (!isCollapsed && !receivedInquiry.viewed) {
       this.store.dispatch(new ViewInquiry(receivedInquiry.inquiryId));
     }
   }
 
   onRemoveInquiry(receivedInquiry: Inquiry) {
     this.store.dispatch(new DeleteInquiry(receivedInquiry.inquiryId));
+  }
+
+  redirectToProduct(productId: number) {
+    this.router.navigate([`${PRODUCTS_MENU_ITEM_URLS.PRODUCT}/${productId}`]);
   }
 
   loadNextInquiries(inquiryType: InquiriesTabs) {

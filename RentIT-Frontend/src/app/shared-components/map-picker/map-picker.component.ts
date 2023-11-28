@@ -80,7 +80,7 @@ export class MapPickerComponent implements OnInit, AfterViewInit {
           if (this.isTyping) {
             this.updateLocation();
           }
-        }, 5000);
+        }, 2000);
         break;
       }
     }

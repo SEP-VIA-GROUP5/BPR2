@@ -9,7 +9,6 @@ import {FilteringProductOptions} from "src/model/filteringProductOptions";
 import {Select} from "@ngxs/store";
 import {ProductsSelector} from "src/app/products/products/products.selector";
 import {Observable} from "rxjs";
-import {defaultProduct} from "src/app/products/adding-products/constants/constants";
 
 @Component({
   selector: 'search-bar',
@@ -87,6 +86,4 @@ export class SearchBarComponent {
         return ['productValueTo', 'productValueFrom'];
     }
   }
-
-  protected readonly defaultProduct = defaultProduct;
 }

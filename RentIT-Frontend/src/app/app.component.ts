@@ -33,7 +33,7 @@ import {FilteringProductOptions} from "src/model/filteringProductOptions";
 @Component({
   selector: 'app-root',
   template: `
-    <nb-layout windowMode>
+    <nb-layout>
       <nb-layout-header>
         <div class="left-section">
           <nb-icon [icon]="ICONS.LIST_OUTLINE" (click)="toggleSidebar()"></nb-icon>

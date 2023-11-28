@@ -7,7 +7,7 @@
                     *ngIf="productOverview.product as product">
       <div class="product-overview-product-name">
         <h2>{{ product.name }}</h2>
-        <button *ngIf="this.userService.getUser().email !== productOverview.user.email" [disabled]="!this.userService.isLoggedIn()"
+        <button [disabled]="!this.userService.isLoggedIn()"
                 nbTooltip="You need to be logged in to check availability of this product"
                 [nbTooltipDisabled]="this.userService.isLoggedIn()"
                 nbButton
@@ -18,18 +18,19 @@
           Check availability
         </button>
       </div>
-      <h3 class="product-overview-rented-until-date" *ngIf="product.rentedUntil">
+      <h3 class="product-overview-rented-until-date"
+          *ngIf="product.rentedUntil && product.status === ProductStatus.RENTED">
         Rented until:
         <span>{{ product.rentedUntil }}</span>
       </h3>
       <nb-badge class="product-overview-status-badge" [text]="getProductInfoStatusBadge(product.status)"
                 [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
       <nb-badge
-        *ngIf="!this.userService.isLoggedIn" class="report-badge" text="Report"
-        [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.PRODUCT)"
+        *ngIf="this.userService.isLoggedIn" class="report-badge" text="Report"
+        [nbTooltip]="'Report this product? Click here!'"
         [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
         status="danger" position="top left"
-        (click)="openReportDialog(TYPE_REPORT.PRODUCT)"></nb-badge>
+        (click)="openReportDialog()"></nb-badge>
     </nb-card-header>
     <nb-card-body class="product-overview-body">
       <div class="left-section">
@@ -117,12 +118,8 @@
               </p>
             </div>
           </nb-card-header>
-          <nb-card-body nbTooltip="Click for going to user's details" (click)="navigateToUsersProfile(productOverview.user.email)">
-            <nb-badge *ngIf="!this.userService.isLoggedIn" class="report-badge" text="Report"
-                      [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.USER)"
-                      [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
-                      status="danger" position="top left"
-                      (click)="openReportDialog(TYPE_REPORT.USER)"></nb-badge>
+          <nb-card-body nbTooltip="Click for going to user's details"
+                        (click)="navigateToUsersProfile(productOverview.user.email)">
             <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
                      onlyPicture>
             </nb-user>
@@ -188,33 +185,28 @@
 </ng-template>
 
 
-<ng-template #reportDialog let-data>
-  <nb-card *ngIf="!(isReportAdded(data.reportType))" class="report-dialog-container">
+<ng-template #reportDialog>
+  <nb-card *ngIf="!(isProductReportAdded$ | async)" class="report-dialog-container">
     <nb-card-header>
-      <p>Why do you want to report this <span class="bold"> {{data.reportType}} </span>?</p>
+      <p>Why do you want to report this <span class="bold"> product </span>?</p>
     </nb-card-header>
     <nb-card-body>
-      <nb-form-field *ngIf="data.reportType === TYPE_REPORT.USER" class="description">
-                <textarea [(ngModel)]="reportToAdd.userReport.message" name="message" type="text" fullWidth nbInput
-                          shape="round" placeholder="Reporting user message"></textarea>
-        <span class="remaining-characters">{{getCharactersReportMessage(data.reportType)}}</span>
-      </nb-form-field>
-      <nb-form-field *ngIf="data.reportType === TYPE_REPORT.PRODUCT" class="description">
+      <nb-form-field class="description">
                 <textarea [(ngModel)]="reportToAdd.productReport.message" name="message" type="text" fullWidth nbInput
                           shape="round" placeholder="Reporting product message"></textarea>
-        <span class="remaining-characters">{{getCharactersReportMessage(data.reportType)}}</span>
+        <span class="remaining-characters">{{getCharactersReportMessage()}}</span>
       </nb-form-field>
     </nb-card-body>
     <nb-card-footer>
-      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)" nbButton status="danger"
-              hero (click)="onSubmitReportButtonClicked(SUBMIT_BUTTON_TYPE.REPORT, data.reportType)">
+      <button [disabled]="isOnSubmitButtonDisabled(SUBMIT_BUTTON_TYPE.REPORT)" nbButton status="danger"
+              hero (click)="onSubmitReportButtonClicked(SUBMIT_BUTTON_TYPE.REPORT)">
         Submit
       </button>
     </nb-card-footer>
   </nb-card>
-  <nb-card *ngIf="isReportAdded(data.reportType)" class="report-dialog-container">
+  <nb-card *ngIf="isProductReportAdded$ | async" class="report-dialog-container">
     <nb-card-header>
-      <p>Thank you for reporting this <span class="bold"> {{data.reportType}}</span>!</p>
+      <p>Thank you for reporting this <span class="bold"> product</span>!</p>
     </nb-card-header>
     <nb-card-body>
       <nb-icon [icon]="ICONS.CHECKMARK_CIRCLE_OUTLINE" pack="eva" status="success" style="font-size: 5rem"></nb-icon>
@@ -223,7 +215,7 @@
       <button nbButton status="success" hero (click)="closeReportDialog()">
         Close
       </button>
-      <button nbButton status="danger" hero (click)="resetReport(data.reportType)">
+      <button nbButton status="danger" hero (click)="resetReport()">
         Add new report
       </button>
     </nb-card-footer>

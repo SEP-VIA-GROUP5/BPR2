@@ -9,13 +9,17 @@
         <nb-icon [icon]="actionSelected.icon"/>
         <span *ngIf="getWindowSize().width > 768">Perform action</span>
       </button>
-      <nb-select class="selector-actions" size='medium' fullWidth [(selected)]="actionSelected.action"
+      <nb-select [disabled]="(products$ | async).length < 1"
+                 class="selector-actions" size='medium' fullWidth
+                 [(selected)]="actionSelected.action"
                  (selectedChange)="onSelectActionChanged($event)" placeholder="Select action">
         <nb-option-group title="Actions" [disabled]="!this.userService.isLoggedIn()">
           <nb-option [disabled]="actionSelected.action === ActionsConstants.REMOVE"
                      [value]="ActionsConstants.REMOVE"> {{ ActionsConstants.REMOVE }}</nb-option>
           <nb-option [disabled]="actionSelected.action === ActionsConstants.STATUS"
                      [value]="ActionsConstants.STATUS"> {{ ActionsConstants.STATUS }}</nb-option>
+          <nb-option [disabled]="actionSelected.action === ActionsConstants.EDIT"
+                     [value]="ActionsConstants.EDIT"> {{ ActionsConstants.EDIT }}</nb-option>
           <nb-option *ngIf="actionSelected.isButtonEnabled"
                      [disabled]="productsSelected.length > 0"
                      [value]="ActionsConstants.NOT_SELECTED">{{ ActionsConstants.NOT_SELECTED }}</nb-option>
@@ -23,15 +27,13 @@
       </nb-select>
     </div>
   </nb-card-header>
-  <nb-card-body *ngIf="products$ | async as products">
-    <div class="product-grid" [class]="getProductGridClass()">
+  <nb-card-body *ngIf="(products$ | async) as products">
+    <div class="product-grid" *ngIf="products.length > 0" [class]="getProductGridClass()">
       <product *ngFor="let product of products" [product]="product"
                [canPerformSelectProductAction]="actionSelected.isButtonEnabled"
                (selectProduct)="onSelectProduct($event)"></product>
     </div>
-  </nb-card-body>
-  <nb-card-body *ngIf="(products$ | async).length <= 0">
-    <div class="products-not-found">
+    <div class="products-not-found" *ngIf="products.length < 1">
       You do not have any products yet.
     </div>
   </nb-card-body>
@@ -47,19 +49,45 @@
       <div class="dialog-action-body">
         <div class="dialog-action-change-status" *ngIf="data.action === ActionsConstants.STATUS">
           <div class="product-status-change" *ngFor="let productSelected of productsSelected">
-            <p> Product <span>{{ productSelected.product.name }}</span></p>
-            <nb-tag-list>
-              <nb-tag [status]="action.isStatusListSelected ? data.status : 'basic'" (click)="changeStatus(productSelected.product, action.productStatus)" [appearance]="action.isStatusListSelected ? 'filled' : 'outline'" *ngFor="let action of productSelected.statusSelectedList" [text]="action.productStatus" >{{ action }}</nb-tag>
-            </nb-tag-list>
+            <div class="product-status-change-title">
+              <p> Product <span>{{ productSelected.product.name }}</span></p>
+              <nb-tag-list>
+                <nb-tag [status]="action.isStatusListSelected ? data.status : 'basic'"
+                        (click)="changeStatus(productSelected.product, action.productStatus)"
+                        [appearance]="action.isStatusListSelected ? 'filled' : 'outline'"
+                        *ngFor="let action of productSelected.statusSelectedList"
+                        [text]="action.productStatus">{{ action }}</nb-tag>
+              </nb-tag-list>
+            </div>
+            <div class="product-add-rented-until" *ngIf="isRentedStatusSelected(productSelected)">
+              <p> Rented until </p>
+              <input nbInput placeholder="Pick rent end date" [nbDatepicker]="pickerEndDate"
+                     [(ngModel)]="this.productsSelected[findIndexOfProductSelected(productSelected.product.id)].rentedUntil"
+                     shape="round">
+              <nb-datepicker #pickerEndDate [min]="productSelected.rentedUntil"></nb-datepicker>
+            </div>
           </div>
+        </div>
+        <div class="dialog-action-edit-product"
+             *ngIf="data.action === ActionsConstants.EDIT && !isButtonForPerformingActionDisabled()">
+          <add-products-details [productDetails]="productsSelected[0].product"
+                                [addingDetailsToCurrentProduct]="true"
+                                (onSubmit)="performAction($event)">
+          </add-products-details>
+        </div>
+        <div class="dialog-action-edit-product"
+             *ngIf="data.action === ActionsConstants.EDIT && isButtonForPerformingActionDisabled()">
+          <p> {{ getButtonForPerformingTooltip() }}</p>
         </div>
       </div>
     </nb-card-body>
     <nb-card-footer>
       <div class="dialog-buttons-footer">
-        <button nbButton hero [nbTooltip]="getButtonForPerformingTooltip()" [nbTooltipDisabled]="!isButtonForPerformingActionDisabled()" [status]="data.status" [disabled]="isButtonForPerformingActionDisabled()" (click)="performAction()">
-          <span *ngIf="data.action === ActionsConstants.REMOVE">Remove</span>
-          <span *ngIf="data.action === ActionsConstants.STATUS">Change status</span>
+        <button *ngIf="actionSelected.action !== ActionsConstants.EDIT" nbButton hero
+                [nbTooltip]="getButtonForPerformingTooltip()"
+                [nbTooltipDisabled]="!isButtonForPerformingActionDisabled()" [status]="data.status"
+                [disabled]="isButtonForPerformingActionDisabled()" (click)="performAction()">
+          {{ data.actionButtonText }}
         </button>
         <button nbButton hero status="basic" (click)="cancelAction()">Cancel</button>
       </div>

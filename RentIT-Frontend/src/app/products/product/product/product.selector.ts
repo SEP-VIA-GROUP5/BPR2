@@ -38,11 +38,6 @@ export class ProductSelector {
   }
 
   @Selector([ProductState])
-  static isUserReportAdded(state: ProductStateModel) {
-    return state.isUserReportAdded;
-  }
-
-  @Selector([ProductState])
   static isProductReportAdded(state: ProductStateModel) {
     return state.isProductReportAdded;
   }

@@ -3,7 +3,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
 import {User} from "src/model/user";
 import {ICONS, isEmail, isPassword, isPhoneNumber} from "src/app/constants";
-import {NbToastrService, NbTooltipDirective, NbWindowRef, NbWindowService} from "@nebular/theme";
+import {
+  NbDialogRef,
+  NbDialogService,
+  NbToastrService,
+  NbTooltipDirective,
+  NbWindowRef,
+  NbWindowService
+} from "@nebular/theme";
 import {defaultUserContent, UserContent} from "src/app/authentication/constants/constants";
 import {Select, Store} from "@ngxs/store";
 import {ProfileSelector} from "src/app/profile/profile.selector";
@@ -12,10 +19,17 @@ import {
   FetchCurrentUserLoggedIn,
   FetchUser,
   FetchUserProducts,
-  ProfileReset,
+  ProfileReset, ResetSubmitReport, SubmitReport,
   UpdateUser
 } from "src/app/profile/profile.actions";
 import {Product} from "src/model/product";
+import {
+  constructorReportToAdd,
+  ReportToAdd,
+  ReportType,
+  SubmitButtonType
+} from "src/app/products/product/product/constants/constants";
+import {ProductSelector} from "src/app/products/product/product/product.selector";
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +45,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   user$: Observable<User>;
   @Select(ProfileSelector.userProducts)
   userProducts$: Observable<Product[]>;
+  @Select(ProfileSelector.isUserReportAdded)
+  isUserReportAdded$: Observable<boolean>;
 
   profileId: string;
   userContent: UserContent = defaultUserContent();
@@ -50,24 +66,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('locationChooser') locationChooser: TemplateRef<any>;
   windowRef: NbWindowRef;
 
+  // report
+  @ViewChild('reportDialog') reportDialog: TemplateRef<any>;
+  private reportDialogRef: NbDialogRef<any>;
+  reportToAdd: ReportToAdd = constructorReportToAdd();
+
   protected readonly ICONS = ICONS;
   alive: boolean = true;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private store: Store,
-              private userService: UserService,
+              public userService: UserService,
               private toastrService: NbToastrService,
+              private nbDialogService: NbDialogService,
               private windowService: NbWindowService) {
   }
 
   ngOnInit() {
     this.profileId = this.activatedRoute.snapshot.params['id'];
     if (!this.userService.redirectUserIfNotLoggedIn()) {
-      if(this.profileId === 'my-profile') {
+      if (this.profileId === 'my-profile') {
         this.store.dispatch(new FetchCurrentUserLoggedIn());
-      }
-      else {
+      } else {
         this.store.dispatch(new FetchUser(this.profileId));
         this.store.dispatch(new FetchUserProducts(this.profileId));
       }
@@ -167,8 +188,36 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return '';
   }
 
+  openReportDialog() {
+    this.reportDialogRef = this.nbDialogService.open(this.reportDialog);
+  }
+
+  isOnSubmitButtonDisabled(): boolean {
+    return this.reportToAdd.userReport.message === '' || this.reportToAdd.userReport.message.length > 500;
+  }
+
+  getCharactersReportMessage() {
+    return `${this.reportToAdd.userReport.message.length} / 500`;
+  }
+
+
+  onSubmitReportButtonClicked() {
+    let report = this.reportToAdd.userReport;
+    this.store.dispatch(new SubmitReport(report));
+  }
+
+  resetReport() {
+    this.reportToAdd.userReport = constructorReportToAdd().userReport;
+    this.store.dispatch(new ResetSubmitReport());
+  }
+
+  closeReportDialog() {
+    this.reportDialogRef.close();
+  }
+
   ngOnDestroy() {
     this.store.dispatch(new ProfileReset());
     this.alive = false;
   }
+
 }

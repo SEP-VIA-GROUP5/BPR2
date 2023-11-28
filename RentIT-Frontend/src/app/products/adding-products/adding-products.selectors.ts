@@ -6,9 +6,4 @@ export class AddingProductsSelectors {
   static isFetching(state: AddingProductsStateModel) {
     return state.isFetching;
   }
-
-  @Selector([AddingProductsState])
-  static uploadedImages(state: AddingProductsStateModel) {
-    return state.uploadedImages;
-  }
 }

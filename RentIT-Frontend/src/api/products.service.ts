@@ -4,6 +4,7 @@ import {Product} from "src/model/product";
 import {mockedProducts} from "src/mocks/products.mock";
 import {HttpParams} from "@angular/common/http";
 import {ProductStatus} from "src/model/productStatus";
+import {format} from "date-fns";
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,15 @@ export class ProductsService {
 
   async updateProductStatus(productId: number, status: ProductStatus): Promise<void> {
     await this.apiService.call(null, this.apiService.request('post', `${this.PATH_CONTROLLER}/status/${productId}/${status}`, null, true));
+  }
+
+  async updateProductStatusWithRentedUntil(productId: number, status: ProductStatus, rentedUntil: Date): Promise<void> {
+    const formattedRentedUntil = format(rentedUntil, 'yyyy-MM-dd');
+
+    await this.apiService.call(
+      null,
+      this.apiService.request('post', `${this.PATH_CONTROLLER}/status/${productId}/${status}/${formattedRentedUntil}`, null, true)
+    );
   }
 
   async getProductsByUserEmail(email: string): Promise<Product[]> {
