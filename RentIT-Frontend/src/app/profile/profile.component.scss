@@ -14,6 +14,11 @@
     justify-content: center;
   }
 
+  nb-card-header {
+    justify-content: space-between;
+    display: flex;
+  }
+
   .user-info {
     display: flex;
     flex-direction: column;
@@ -73,6 +78,23 @@
   flex-grow: 1;
 
   nb-card {
-    height:80vh;
+    height: 80vh;
+  }
+}
+
+.report-dialog-container {
+  nb-card-header {
+    align-self: center;
+  }
+
+  nb-card-body {
+    display: table-column;
+    text-align: center;
+  }
+
+  nb-card-footer {
+    display: flex;
+    gap: 1rem;
+    align-self: center;
   }
 }

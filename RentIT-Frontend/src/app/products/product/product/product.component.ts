@@ -26,7 +26,6 @@ import {
   constructorReportToAdd,
   constructorSendingInquiry,
   ReportToAdd,
-  ReportType,
   SubmitButtonType
 } from "src/app/products/product/product/constants/constants";
 import {ReviewDTO} from "src/model/reviewDTO";
@@ -53,8 +52,6 @@ export class ProductComponent implements OnInit, OnDestroy {
   endOfListReviews$: Observable<boolean>;
   @Select(ProductSelector.isFetchingReport)
   isFetchingReport$: Observable<boolean>;
-  @Select(ProductSelector.isUserReportAdded)
-  isUserReportAdded$: Observable<boolean>;
   @Select(ProductSelector.isProductReportAdded)
   isProductReportAdded$: Observable<boolean>;
   @Select(ProductSelector.isFetchingInquiry)
@@ -89,7 +86,6 @@ export class ProductComponent implements OnInit, OnDestroy {
   productId: number;
   // constants
   protected readonly ICONS = ICONS;
-  protected readonly TYPE_REPORT = ReportType;
   protected readonly SUBMIT_BUTTON_TYPE = SubmitButtonType;
   protected readonly ProductStatus = ProductStatus;
 
@@ -155,80 +151,39 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.reviewToAdd.rating = starsNumber;
   }
 
-  openReportDialog(reportType: ReportType) {
-    this.reportDialogRef = this.nbDialogService.open(this.reportDialog, {
-      context: {
-        reportType: reportType,
-      }
-    });
-  }
-
-  getReportBadgeTooltip(typeReport: ReportType) {
-    return `Report this ${typeReport}? Click here!`;
+  openReportDialog() {
+    this.reportDialogRef = this.nbDialogService.open(this.reportDialog);
   }
 
   openAddReviewDialog() {
     this.addRatingDialogRef = this.nbDialogService.open(this.addRatingDialog, {});
   }
 
-  onSubmitReportButtonClicked(submitButtonType: SubmitButtonType, reportType?: ReportType) {
+  onSubmitReportButtonClicked(submitButtonType: SubmitButtonType) {
     if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
       this.store.dispatch(new ProductAddReview(this.productId, this.reviewToAdd));
       this.addRatingDialogRef.close();
     } else if (submitButtonType === SubmitButtonType.REPORT) {
-      let report = null;
-      if (reportType === ReportType.PRODUCT) {
-        report = this.reportToAdd.productReport;
-      } else if (reportType === ReportType.USER) {
-        report = this.reportToAdd.userReport;
-      }
-      this.store.dispatch(new SubmitReport(report, reportType));
+      let report = this.reportToAdd.productReport;
+      this.store.dispatch(new SubmitReport(report));
     }
   }
 
-  isOnSubmitButtonDisabled(submitButtonType: SubmitButtonType, reportType?: ReportType): boolean {
+  isOnSubmitButtonDisabled(submitButtonType: SubmitButtonType): boolean {
     if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
       return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
     } else if (submitButtonType === SubmitButtonType.REPORT) {
-      if (reportType === ReportType.PRODUCT) {
-        return this.reportToAdd.productReport.message === '' || this.reportToAdd.productReport.message.length > 500;
-      } else if (reportType === ReportType.USER) {
-        return this.reportToAdd.userReport.message === '' || this.reportToAdd.userReport.message.length > 500;
-      }
+      return this.reportToAdd.productReport.message === '' || this.reportToAdd.productReport.message.length > 500;
     }
   }
 
-  isReportAdded(reportType: ReportType) {
-    if (reportType === ReportType.PRODUCT) {
-      let isProductReportAdded = false;
-      this.isProductReportAdded$.subscribe(isProductReportAddedValue => {
-        isProductReportAdded = isProductReportAddedValue;
-      });
-      return isProductReportAdded;
-    } else if (reportType === ReportType.USER) {
-      let isUserReportAdded = false;
-      this.isUserReportAdded$.subscribe(isUserReportAddedValue => {
-        isUserReportAdded = isUserReportAddedValue;
-      });
-      return isUserReportAdded;
-    }
+  getCharactersReportMessage() {
+    return `${this.reportToAdd.productReport.message.length} / 500`;
   }
 
-  getCharactersReportMessage(reportType: ReportType) {
-    if (reportType === ReportType.USER) {
-      return `${this.reportToAdd.userReport.message.length} / 500`;
-    } else if (reportType === ReportType.PRODUCT) {
-      return `${this.reportToAdd.productReport.message.length} / 500`;
-    }
-  }
-
-  resetReport(reportType: ReportType) {
-    if (reportType === ReportType.PRODUCT) {
-      this.reportToAdd.productReport = constructorReportToAdd().productReport;
-    } else if (reportType === ReportType.USER) {
-      this.reportToAdd.userReport = constructorReportToAdd().userReport;
-    }
-    this.store.dispatch(new ResetSubmitReport(reportType));
+  resetReport() {
+    this.reportToAdd.productReport = constructorReportToAdd().productReport;
+    this.store.dispatch(new ResetSubmitReport());
   }
 
   closeReportDialog() {
