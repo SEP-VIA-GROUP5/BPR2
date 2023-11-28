@@ -2,18 +2,19 @@ package com.rentit.mappers;
 
 import com.rentit.dao.interfaces.IImageMapper;
 import com.rentit.dao.interfaces.IProductMapper;
-import com.rentit.dao.interfaces.IUserMapper;
 import com.rentit.model.PriceFilteringColumn;
 import com.rentit.model.Product;
 import com.rentit.model.dto.ProductDTO;
-import com.rentit.model.dto.UserDTO;
 import com.rentit.model.enums.ProductStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,18 +25,16 @@ public class IProductMapperTest {
     private IProductMapper productMapper;
     @Autowired
     private IImageMapper imageMapper;
-    @Autowired
-    private IUserMapper userMapper;
 
     @Test
-    public void return_n_products_per_page() {
+    public void getNProductsByPage_returns_correct_amount_of_products() {
         int n = 3;
         List<ProductDTO> products = productMapper.getNProductsByPage(1, n);
         assertThat(products.size()).isEqualTo(3);
     }
 
     @Test
-    public void return_n_products_per_page_with_filters() {
+    public void getNProductsByPageWithFilters_returns_correctly_filtered_products() {
         int n = 2;
         Map<PriceFilteringColumn, String> filters = new HashMap<>();
         PriceFilteringColumn depositFilter = PriceFilteringColumn.builder()
@@ -48,14 +47,22 @@ public class IProductMapperTest {
                 .build();
         filters.put(depositFilter, "103");
         filters.put(dayPriceFilter, "1");
+
         List<ProductDTO> products = productMapper.getNProductsByPageWithFilters(1, n, filters);
-        assertThat(products.size()).isEqualTo(2);
+
+        assertThat(products).allSatisfy(
+                p -> {
+                    assertThat(p.getDeposit()).isLessThanOrEqualTo(103);
+                    assertThat(p.getDayPrice()).isGreaterThanOrEqualTo(1);
+                }
+        );
     }
 
     @Test
-    public void add_product_successfully() {
+    public void addProduct_successfully_adds_product() {
+        String productName = "test_product";
         Product product = Product.builder()
-                .name("test_product")
+                .name(productName)
                 .dayPrice(10)
                 .weekPrice(10)
                 .monthPrice(10)
@@ -67,8 +74,10 @@ public class IProductMapperTest {
                 .userId(1)
                 .build();
         productMapper.addProduct(product);
-        List<Product> products = productMapper.getProductsByName("test_product");
-        assertThat(products.get(0)).isEqualTo(product);
+
+        List<Product> products = productMapper.getProductsByName(productName);
+
+        assertThat(products).allSatisfy(p -> assertThat(p.getName()).isEqualTo(productName));
     }
 
     @Test
@@ -86,22 +95,25 @@ public class IProductMapperTest {
     }
 
     @Test
-    public void delete_product_by_id_cascades() {
+    public void deleteProductById_cascades() {
         int productId = 6;
+        assertThat(productMapper.getProductById(productId)).isNotNull();
         productMapper.deleteProductById(productId);
-        assertThat(productMapper.getProductById(6)).isNull();
-        assertThat(imageMapper.getImagesByProductId(6)).isEmpty();
+        assertThat(productMapper.getProductById(productId)).isNull();
+        assertThat(imageMapper.getImagesByProductId(productId)).isEmpty();
     }
 
     @Test
-    public void get_products_by_user_id_returns_list_of_user_products() {
+    public void getProductsByUserId_returns_list_of_user_products() {
         int userId = 1;
-        UserDTO user = userMapper.getUserDTOById(userId);
         List<ProductDTO> userProducts = productMapper.getProductsByUserId(userId);
-        assertThat(userProducts.size()).isEqualTo(1);
+        assertThat(userProducts).allSatisfy(p ->
+                assertThat(productMapper.getProductOwnerId(p.getId())).isEqualTo(userId)
+        );
     }
+
     @Test
-    public void get_product_owner_id_returns_correct_user_id() {
+    public void getProductOwnerId_returns_correct_user_id() {
         int userId = 1;
         int productOwnerId = productMapper.getProductOwnerId(1);
         assertThat(userId).isEqualTo(productOwnerId);

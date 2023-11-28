@@ -29,13 +29,11 @@ public class InquiryDTO {
     public static InquiryDTO buildInquiryDTO(Inquiry inquiry, UserDTO userDTO, ProductDTO productDTO){
         return InquiryDTO.builder()
                 .productId(inquiry.getProductId())
-//                .accepted(inquiry.isAccepted())
                 .message(inquiry.getMessage())
                 .timeStamp(inquiry.getTimeStamp())
                 .senderEmail(inquiry.getSenderEmail())
                 .senderPhoneNumber(inquiry.getSenderPhoneNumber())
                 .viewedAt(inquiry.getViewedAt())
-//                .acceptedAt(inquiry.getAcceptedAt())
                 .userDTO(userDTO)
                 .productDTO(productDTO)
                 .build();

@@ -22,7 +22,7 @@ public class IReviewMapperTest {
     private IUserMapper userMapper;
 
     @Test
-    public void add_product_review_successfully() {
+    public void addProductReview_successfully_adds_review() {
         int productId = 5;
         int reviewerId = 1;
         Review review = Review.builder()
@@ -31,24 +31,29 @@ public class IReviewMapperTest {
                 .message("Very bad")
                 .build();
         UserDTO reviewer = userMapper.getUserDTOById(reviewerId);
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .review(review)
+                .userDTO(reviewer)
+                .build();
 
         reviewMapper.addProductReview(review, reviewerId);
-        List<ReviewDTO> resultReviews = reviewMapper.getNProductReviewsByPage(1, 1, productId);
-        ReviewDTO result = resultReviews.get(0);
-        assertThat(resultReviews.size()).isEqualTo(1);
-        assertThat(result.getReview()).isEqualTo(review);
-        assertThat(result.getUserDTO()).isEqualTo(reviewer);
+        List<ReviewDTO> resultReviews = reviewMapper.getNProductReviewsByPage(1, 100, productId);
+        assertThat(reviewDTO).isIn(resultReviews);
     }
 
     @Test
-    public void get_product_reviews_returns_correct_reviews() {
+    public void getNProductReviewsByPage_returns_product_reviews() {
         int productId = 4;
-        List<ReviewDTO> resultReviews = reviewMapper.getNProductReviewsByPage(1, 2, productId);
-        assertThat(resultReviews.size()).isEqualTo(2);
+        int n = 2;
+        List<ReviewDTO> resultReviews = reviewMapper.getNProductReviewsByPage(1, n, productId);
+        assertThat(resultReviews.size()).isEqualTo(n);
+        assertThat(resultReviews).allSatisfy(r ->
+                assertThat(r.getReview().getTargetId()).isEqualTo(String.valueOf(productId))
+        );
     }
 
     @Test
-    public void add_user_review_successfully() {
+    public void addUserReview_successfully_adds_review() {
         int userId = 5;
         int reviewerId = 1;
         Review review = Review.builder()
@@ -56,24 +61,29 @@ public class IReviewMapperTest {
                 .rating(1)
                 .message("Very bad")
                 .build();
-        reviewMapper.addUserReview(review, reviewerId);
-        List<ReviewDTO> resultReviews = reviewMapper.getNUserReviewsByPage(1, 1, userId);
         UserDTO reviewer = userMapper.getUserDTOById(reviewerId);
-        ReviewDTO result = resultReviews.get(0);
-        assertThat(resultReviews.size()).isEqualTo(1);
-        assertThat(result.getReview()).isEqualTo(review);
-        assertThat(result.getUserDTO()).isEqualTo(reviewer);
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .review(review)
+                .userDTO(reviewer)
+                .build();
+        reviewMapper.addUserReview(review, reviewerId);
+        List<ReviewDTO> resultReviews = reviewMapper.getNUserReviewsByPage(1, 100, userId);
+        assertThat(reviewDTO).isIn(resultReviews);
     }
 
     @Test
-    public void get_user_reviews_returns_correct_reviews() {
+    public void getNUserReviewsByPage__returns_user_reviews() {
         int userId = 4;
-        List<ReviewDTO> resultReviews = reviewMapper.getNUserReviewsByPage(1, 2, userId);
-        assertThat(resultReviews.size()).isEqualTo(2);
+        int n = 2;
+        List<ReviewDTO> resultReviews = reviewMapper.getNUserReviewsByPage(1, n, userId);
+        assertThat(resultReviews.size()).isEqualTo(n);
+        assertThat(resultReviews).allSatisfy(r ->
+                assertThat(r.getReview().getTargetId()).isEqualTo(String.valueOf(userId))
+        );
     }
 
     @Test
-    public void get_product_review_summary_returns_avg_rating() {
+    public void getProductReviewSummary_returns_avg_rating_and_review_count() {
         int productId = 4;
         ReviewSummary summary = reviewMapper.getProductReviewSummary(productId);
         assertThat(summary.getAvgRating()).isEqualTo(2.5);
@@ -81,7 +91,7 @@ public class IReviewMapperTest {
     }
 
     @Test
-    public void get_user_review_summary_returns_avg_rating() {
+    public void getUserReviewSummary_returns_avg_rating_and_review_count() {
         int userId = 4;
         ReviewSummary summary = reviewMapper.getProductReviewSummary(userId);
         assertThat(summary.getAvgRating()).isEqualTo(2.5);

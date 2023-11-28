@@ -32,7 +32,6 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // TODO "/report/**" should not be here, this should be refactored later and find a better solution
                         .requestMatchers("/product/**", "/product/**", "/user/**", "/review/**", "/report/**", "/inquiry/**").permitAll()
                         .anyRequest().authenticated()
                 )

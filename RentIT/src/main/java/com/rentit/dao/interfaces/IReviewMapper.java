@@ -13,8 +13,6 @@ public interface IReviewMapper {
     void addUserReview(Review review, int reviewerId);
     List<ReviewDTO> getNProductReviewsByPage(int pageNum, int n, int productId);
     List<ReviewDTO> getNUserReviewsByPage(int pageNum, int n, int userId);
-
     ReviewSummary getProductReviewSummary(int productId);
-
     ReviewSummary getUserReviewSummary(int userId);
 }

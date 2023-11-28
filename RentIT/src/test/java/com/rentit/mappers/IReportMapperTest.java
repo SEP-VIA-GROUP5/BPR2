@@ -13,22 +13,22 @@ public class IReportMapperTest {
     IReportMapper reportMapper;
 
     @Test
-    void submit_product_report_success() {
+    void submitProductReport_successfully_reports_product() {
         int reporterId = 1;
         int productId = 1;
         String message = "Was broken";
-        assertThat(reportMapper.getProductReportCount()).isEqualTo(5);
+        int initialReportCount = reportMapper.getProductReportCount();
         reportMapper.submitProductReport(reporterId, productId, message);
-        assertThat(reportMapper.getProductReportCount()).isEqualTo(6);
+        assertThat(reportMapper.getProductReportCount()).isEqualTo(initialReportCount + 1);
     }
 
     @Test
-    void submit_user_report_success() {
+    void submitUserReport_successfully_reports_user() {
         int reporterId = 1;
         int userId = 2;
         String message = "Inappropriate";
-        assertThat(reportMapper.getUserReportCount()).isEqualTo(5);
+        int initialReportCount = reportMapper.getUserReportCount();
         reportMapper.submitUserReport(reporterId, userId, message);
-        assertThat(reportMapper.getUserReportCount()).isEqualTo(6);
+        assertThat(reportMapper.getUserReportCount()).isEqualTo(initialReportCount+1);
     }
 }

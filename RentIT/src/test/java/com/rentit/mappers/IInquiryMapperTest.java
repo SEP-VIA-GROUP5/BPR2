@@ -22,7 +22,7 @@ public class IInquiryMapperTest {
     IUserMapper userMapper;
 
     @Test
-    public void add_inquiry_successfully() {
+    public void addInquiry_successfully_adds_inquiry() {
         LocalDate now = LocalDate.now();
         Inquiry inquiry = Inquiry.builder()
                 .productId(2)
@@ -42,10 +42,11 @@ public class IInquiryMapperTest {
     }
 
     @Test
-    public void get_all_received_inquiries_size_is_correct() {
+    public void getAllReceivedInquiries_size_is_correct() {
         int receiverId = 1;
         User receiver = userMapper.getUserById(receiverId);
         List<InquiryDTO> receivedInquiries = inquiryMapper.getReceivedInquiries(receiverId);
+        // Assert that inquiries were not sent by the user.
         assertThat(receivedInquiries)
                 .isNotEmpty()
                 .allSatisfy(
@@ -55,7 +56,7 @@ public class IInquiryMapperTest {
     }
 
     @Test
-    public void set_viewed_sets_inquiry_as_viewed_with_date_stamp() {
+    public void setViewed_sets_inquiry_as_viewed_with_date_stamp() {
         int inquiryId = 3;
         LocalDate now = LocalDate.now();
         inquiryMapper.setViewed(inquiryId, now);
@@ -66,10 +67,11 @@ public class IInquiryMapperTest {
     }
 
     @Test
-    public void get_sent_inquiries_returns_only_sent_inquiries() {
+    public void getSentInquiries_returns_only_sent_inquiries() {
         int senderId = 2;
         User sender = userMapper.getUserById(senderId);
         List<InquiryDTO> sentInquiries = inquiryMapper.getSentInquiries(senderId);
+        //Assert that sent inquiries were sent by the user.
         assertThat(sentInquiries)
                 .isNotEmpty()
                 .allSatisfy(inquiryDTO -> assertThat(inquiryDTO.getUserDTO().getEmail()).isEqualTo(sender.getEmail()));

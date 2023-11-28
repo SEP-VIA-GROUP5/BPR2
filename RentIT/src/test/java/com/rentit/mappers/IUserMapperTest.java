@@ -47,7 +47,7 @@ public class IUserMapperTest {
     }
 
     @Test
-    public void registerUser_correctly_insert_user() {
+    public void registerUser_correctly_inserts_user() {
         String password = "password";
         String email = "johndoe@email.com";
         HashPair hashPair = hashUtil.hash(password, null);

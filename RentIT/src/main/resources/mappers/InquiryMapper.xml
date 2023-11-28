@@ -48,4 +48,9 @@
     <select id="getSentInquiries" resultMap="InquiryDTOResultMap">
         SELECT * FROM inquiries WHERE sender_id = #{senderId};
     </select>
+    <delete id="deleteInquiry">
+        DELETE
+        FROM inquiries
+        WHERE inquiry_id = #{inquiryId}
+    </delete>
 </mapper>
