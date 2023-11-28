@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +61,7 @@ public class ProductController {
         return productService.getUserProductList(email);
     }
     @RequestMapping(value = {"/status/{id}/{status}","/status/{id}/{status}/{rentedUntil}"}, method = RequestMethod.POST)
-    public void setProductStatus(@PathVariable int id, @PathVariable String status, @PathVariable(required = false) LocalDate rentedUntil,
+    public void setProductStatus(@PathVariable int id, @PathVariable String status, @PathVariable(required = false) String rentedUntil,
                                  @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
         ResponseMessage responseMessage = productService.setProductStatus(id, status, authorizationHeader, rentedUntil);
         switch (responseMessage) {

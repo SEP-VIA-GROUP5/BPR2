@@ -140,7 +140,7 @@ public class ProductService {
         return productMapper.getProductOwnerId(productId);
     }
 
-    public ResponseMessage setProductStatus(int id, String status, String authorizationHeader, LocalDate rentedUntil) {
+    public ResponseMessage setProductStatus(int id, String status, String authorizationHeader, String rentedUntil) {
         User user = userService.getUserFromToken(authorizationHeader, true);
         Product product = productMapper.getProductById(id);
         if(user == null || product.getUserId() != user.getId()){
@@ -156,8 +156,12 @@ public class ProductService {
                 productMapper.setProductRentedUntilDate(id, null);
             }
             case "RENTED" -> {
-                if(rentedUntil != null && rentedUntil.isAfter(LocalDate.now())){
-                    productMapper.setProductRentedUntilDate(id, rentedUntil);
+                if(rentedUntil == null || "".equals(rentedUntil)){
+                    return ResponseMessage.INVALID_PARAMETERS;
+                }
+                LocalDate rentedUntilLD = LocalDate.parse(rentedUntil);
+                if(rentedUntilLD.isAfter(LocalDate.now())){
+                    productMapper.setProductRentedUntilDate(id, rentedUntilLD);
                     productMapper.changeProductStatus(id, ProductStatus.RENTED);
                 }
                 else {
