@@ -17,6 +17,6 @@ public interface IInquiryMapper {
     void setViewed(int inquiryId, LocalDate viewedAt);
     Inquiry getInquiryById(int inquiryId);
     List<InquiryDTO> getSentInquiries(int senderId);
-    void deleteInquiry(int userId, int inquiryId);
+    void deleteInquiry(int inquiryId);
     List<InquiryDTO> getAllReceivedInquiriesFiltered(int pageNum, int n, Map<PriceFilteringColumn, String> processedMap);
 }

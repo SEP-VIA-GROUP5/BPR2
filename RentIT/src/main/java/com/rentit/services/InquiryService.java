@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.rentit.model.dto.InquiryDTO.buildInquiryDTO;
 
@@ -114,16 +115,18 @@ public class InquiryService {
 
     //TODO fix me
     public ResponseMessage deleteInquiry(int inquiryId, String authorizationHeader) {
+        User user = userService.getUserFromToken(authorizationHeader, true);
+        Inquiry inquiry = inquiryMapper.getInquiryById(inquiryId);
         if(inquiryId < 0){
             return ResponseMessage.INVALID_PARAMETERS;
         }
-
-        User user = userService.getUserFromToken(authorizationHeader, true);
-        if(user == null){
+        else if(user == null){
             return null;
         }
-
-        inquiryMapper.deleteInquiry(user.getId(), inquiryId);
-        return ResponseMessage.SUCCESS;
+        else if(!Objects.equals(inquiry.getSenderEmail(), user.getEmail())) return null;
+        else {
+            inquiryMapper.deleteInquiry(inquiryId);
+            return ResponseMessage.SUCCESS;
+        }
     }
 }
