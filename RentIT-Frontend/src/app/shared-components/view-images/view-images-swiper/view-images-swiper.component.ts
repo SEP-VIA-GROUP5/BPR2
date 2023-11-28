@@ -57,8 +57,11 @@ export class ViewImagesSwiperComponent implements OnInit, OnChanges {
   }
 
   constructImagesInNgSliderImageS() {
-    if (this.images) {
+    if (this.images.length > 0) {
       this.urlsImages = constructUrlsFromImages(this.images);
+    }
+    else {
+      this.urlsImages = constructUrlsFromImages([{imageUrl: 'https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg'}]);
     }
   }
 
