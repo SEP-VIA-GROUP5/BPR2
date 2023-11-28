@@ -142,7 +142,7 @@ public class UserService {
         retreivedUser.setLastName((!retreivedUser.getLastName().equals(user.getLastName()) && !user.getLastName().isEmpty()) ? user.getLastName() : retreivedUser.getLastName());
         retreivedUser.setLocation((!retreivedUser.getLocation().equals(user.getLocation()) && !user.getLocation().isEmpty()) ? user.getLocation() : retreivedUser.getLocation());
         retreivedUser.setPhoneNumber((!retreivedUser.getPhoneNumber().equals(user.getPhoneNumber()) && !user.getPhoneNumber().isEmpty()) ? user.getPhoneNumber() : retreivedUser.getPhoneNumber());
-        retreivedUser.setHashedPassword(user.getPassword().isEmpty() ? null : hashUtil.hash(user.getPassword(), null));
+        retreivedUser.setHashedPassword(user.getPassword().isEmpty() ? retreivedUser.getHashedPassword() : hashUtil.hash(user.getPassword(), null));
 
         userMapper.updateUserProfile(retreivedUser);
         return UserDTO.buildUserDTO(retreivedUser);
