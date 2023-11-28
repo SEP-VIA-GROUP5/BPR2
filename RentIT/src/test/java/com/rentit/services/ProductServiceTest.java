@@ -144,12 +144,12 @@ public class ProductServiceTest {
     public void deleteProductTestError(){
         when(userService.getUserFromToken(anyString(),eq(true))).thenReturn(null);
         ResponseMessage responseMessage = productService.deleteProductById(1, "test");
-        assertEquals(responseMessage, ResponseMessage.DELETION_ERROR);
+        assertEquals(responseMessage, ResponseMessage.INVALID_PARAMETERS);
 
         when(userService.getUserFromToken(anyString(),eq(true))).thenReturn(User.builder().id(1).build());
         product.setUserId(2);
         when(productMapper.getProductById(anyInt())).thenReturn(product);
         responseMessage = productService.deleteProductById(1, "test");
-        assertEquals(responseMessage, ResponseMessage.INTERNAL_ERROR);
+        assertEquals(responseMessage, ResponseMessage.CREDENTIALS_ERROR);
     }
 }
