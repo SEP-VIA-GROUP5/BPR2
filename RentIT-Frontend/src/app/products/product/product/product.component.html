@@ -25,7 +25,7 @@
       <nb-badge class="product-overview-status-badge" [text]="getProductInfoStatusBadge(product.status)"
                 [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
       <nb-badge
-        *ngIf="!this.userService.isLoggedIn" class="report-badge" text="Report"
+        *ngIf="this.userService.isLoggedIn" class="report-badge" text="Report"
         [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.PRODUCT)"
         [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
         status="danger" position="top left"
@@ -118,11 +118,6 @@
             </div>
           </nb-card-header>
           <nb-card-body nbTooltip="Click for going to user's details" (click)="navigateToUsersProfile(productOverview.user.email)">
-            <nb-badge *ngIf="!this.userService.isLoggedIn" class="report-badge" text="Report"
-                      [nbTooltip]="getReportBadgeTooltip(TYPE_REPORT.USER)"
-                      [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
-                      status="danger" position="top left"
-                      (click)="openReportDialog(TYPE_REPORT.USER)"></nb-badge>
             <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
                      onlyPicture>
             </nb-user>
