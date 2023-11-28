@@ -1,4 +1,6 @@
 import {ICONS} from "src/app/constants";
+import {addDays, toUTCDate} from "src/core/utils/date.utils";
+import {ProductSelected} from "src/app/shared-components/product-card/constants/constants";
 
 export enum ActionsConstants {
   REMOVE = 'Remove products',
@@ -14,4 +16,15 @@ export interface Action {
   actionButtonText?: string;
   status?: string;
   icon?: ICONS;
+}
+
+export function computeRentedUntilDateWhenEditingStatus(productSelected: ProductSelected, actionSelected: Action) {
+  if(actionSelected.action === ActionsConstants.STATUS) {
+    let rentedUntilDate: Date = new Date();
+    if(productSelected.product.rentedUntil) {
+      rentedUntilDate = new Date(productSelected.product.rentedUntil);
+    }
+    return addDays(rentedUntilDate, 1);
+  }
+  return null;
 }

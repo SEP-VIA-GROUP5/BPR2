@@ -62,7 +62,7 @@
             <div class="product-add-rented-until" *ngIf="isRentedStatusSelected(productSelected)">
               <p> Rented until </p>
               <input nbInput placeholder="Pick rent end date" [nbDatepicker]="pickerEndDate"
-                     [(ngModel)]="productSelected.rentedUntil" shape="round">
+                     [(ngModel)]="this.productsSelected[findIndexOfProductSelected(productSelected.product.id)].rentedUntil" shape="round">
               <nb-datepicker #pickerEndDate [min]="productSelected.rentedUntil"></nb-datepicker>
             </div>
           </div>

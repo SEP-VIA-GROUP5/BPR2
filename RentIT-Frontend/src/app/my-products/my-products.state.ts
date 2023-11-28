@@ -114,7 +114,12 @@ export class MyProductsState {
       for (const productSelected of action.productsSelected) {
         //TODO fetch data as well, if that's available and status of the product is RENTED
         const statusSelected: ProductStatus = this.getSelectedStatus(productSelected.statusSelectedList);
-        await this.productsService.updateProductStatus(productSelected.product.id, statusSelected);
+        if(productSelected.rentedUntil && statusSelected === ProductStatus.RENTED) {
+          await this.productsService.updateProductStatusWithRentedUntil(productSelected.product.id, statusSelected, productSelected.rentedUntil);
+        }
+        else {
+          await this.productsService.updateProductStatus(productSelected.product.id, statusSelected);
+        }
       }
       newState = produce(getState(), draft => {
         draft.products = draft.products.map(product => {

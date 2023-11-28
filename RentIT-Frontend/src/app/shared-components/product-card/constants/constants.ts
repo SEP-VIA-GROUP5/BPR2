@@ -1,5 +1,4 @@
 import {Product} from "src/model/product";
-import {ProductsService} from "src/api/products.service";
 import {ProductStatus} from "src/model/productStatus";
 
 export interface StatusSelected {

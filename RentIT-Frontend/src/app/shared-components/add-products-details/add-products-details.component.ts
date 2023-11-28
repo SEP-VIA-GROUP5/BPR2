@@ -50,10 +50,6 @@ export class AddingProductsDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.productDetails = defaultProduct;
     }
-    this.productDetails = {
-      ...this.productDetails,
-      tags: [],
-    };
     this.initialProductDetails = {...this.productDetails};
   }
 

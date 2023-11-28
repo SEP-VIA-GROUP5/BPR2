@@ -252,7 +252,6 @@ export class ProductComponent implements OnInit, OnDestroy {
   onInquiryInputType(event) {
     switch (event.target.name) {
       case "senderPhoneNumber" : {
-        console.log(event.target.value);
         if (event.target.value || event.target.value.length > 0) {
           this.isPhoneNumberInquiryValid = isPhoneNumber(event.target.value);
         } else if (event.target.value === '') {

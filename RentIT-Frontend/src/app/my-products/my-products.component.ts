@@ -5,7 +5,11 @@ import {ICONS} from "src/app/constants";
 import {Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
 import {NbDialogRef, NbDialogService, NbToastrService} from "@nebular/theme";
-import {Action, ActionsConstants} from "src/app/my-products/constants/actions.constants";
+import {
+  Action,
+  ActionsConstants,
+  computeRentedUntilDateWhenEditingStatus
+} from "src/app/my-products/constants/actions.constants";
 import {
   computeStatusSelectedListFromProducts,
   ProductSelected
@@ -20,7 +24,8 @@ import {
 import {Observable} from "rxjs";
 import {MyProductsSelector} from "src/app/my-products/my-products.selector";
 import {ProductStatus} from "src/model/productStatus";
-import {toUTCDate} from "src/core/utils/date.utils";
+import {isSameDay} from "src/core/utils/date.utils";
+import {isBefore} from "date-fns";
 
 @Component({
   selector: 'app-my-products',
@@ -161,9 +166,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         product: productSelected.product,
         isProductSelected: productSelected.isProductSelected,
         statusSelectedList: computeStatusSelectedListFromProducts(productSelected.product),
-        rentedUntil: this.actionSelected.action === ActionsConstants.STATUS ?
-          productSelected.product?.rentedUntil ? toUTCDate(new Date(productSelected.product?.rentedUntil)) : toUTCDate(new Date()) :
-          null,
+        rentedUntil: computeRentedUntilDateWhenEditingStatus(productSelected, this.actionSelected),
       });
     } else {
       this.productsSelected = this.productsSelected.filter(product => product.product.id !== productSelected.product.id);
@@ -200,13 +203,30 @@ export class MyProductsComponent implements OnInit, OnDestroy {
   }
 
   private computeIsButtonDisabledForStatus(): boolean {
-    const isAStatusSelected = this.productsSelected.some(productSelected => productSelected.statusSelectedList.some(statusSelected => statusSelected.isStatusListSelected));
+    const isNotAStatusSelected = this.productsSelected.some(productSelected => productSelected.statusSelectedList.some(statusSelected => !statusSelected.isStatusListSelected));
+    const isNotTheSameStatusAsBefore = this.isNotTheSameStatusAsBefore();
+    console.log(isNotAStatusSelected, isNotTheSameStatusAsBefore, this.isRentedUntilDateAfterTheAllowedOne());
+    return isNotAStatusSelected && isNotTheSameStatusAsBefore && this.isRentedUntilDateAfterTheAllowedOne();
+  }
+
+  private isNotTheSameStatusAsBefore(): boolean {
     const products: Product[] = this.store.selectSnapshot(MyProductsSelector.products);
-    const isNotTheSameStatusAsBefore = this.productsSelected.some(productSelected => {
+    return this.productsSelected.some(productSelected => {
       const product = products.find(product => product.id === productSelected.product.id);
-      return productSelected.statusSelectedList.some(statusSelected => statusSelected.isStatusListSelected && product.status === statusSelected.productStatus);
+      return productSelected.statusSelectedList.some(statusSelected => statusSelected.isStatusListSelected && product.status !== statusSelected.productStatus);
     });
-    return isAStatusSelected && !isNotTheSameStatusAsBefore;
+  }
+
+  private isRentedUntilDateAfterTheAllowedOne(): boolean {
+    return this.productsSelected.some(productSelected => {
+      return productSelected.statusSelectedList.some(statusSelected => {
+        if (statusSelected.isStatusListSelected && statusSelected.productStatus === ProductStatus.RENTED) {
+          const rentedUntilDate = computeRentedUntilDateWhenEditingStatus(productSelected, this.actionSelected);
+          return !isBefore(rentedUntilDate, productSelected.rentedUntil) || isSameDay(rentedUntilDate, productSelected.rentedUntil);
+        }
+        return false;
+      });
+    });
   }
 
   isButtonForPerformingActionDisabled(): boolean {
@@ -215,7 +235,7 @@ export class MyProductsComponent implements OnInit, OnDestroy {
         return this.productsSelected.length === 0;
       }
       case ActionsConstants.STATUS: {
-        return (this.productsSelected.length === 0 || this.productsSelected.length > 5) || !this.computeIsButtonDisabledForStatus();
+        return (this.productsSelected.length === 0 || this.productsSelected.length > 5) || this.computeIsButtonDisabledForStatus();
       }
       case ActionsConstants.EDIT: {
         return this.productsSelected.length !== 1;
@@ -233,9 +253,11 @@ export class MyProductsComponent implements OnInit, OnDestroy {
           return 'Select at least one product to change status';
         } else if (this.productsSelected.length > 5) {
           return 'Select maximum 5 products to change status';
-        } else if (!this.computeIsButtonDisabledForStatus()) {
+        } else if (!this.isNotTheSameStatusAsBefore()) {
           return 'Select a different status for each product';
-        } else return '';
+        } else if(this.isRentedUntilDateAfterTheAllowedOne()) {
+          return 'Please select a date that is after the one allowed in the date picker';
+        }
       }
       case ActionsConstants.EDIT: {
         if (this.productsSelected.length > 1) {
@@ -275,6 +297,10 @@ export class MyProductsComponent implements OnInit, OnDestroy {
       this.store.dispatch(actionToPerform);
       this.dialogRef.close();
     }
+  }
+
+  findIndexOfProductSelected(productSelectedId: number): number {
+    return this.productsSelected.findIndex(productSelected => productSelected.product.id === productSelectedId);
   }
 
   cancelAction(): void {
