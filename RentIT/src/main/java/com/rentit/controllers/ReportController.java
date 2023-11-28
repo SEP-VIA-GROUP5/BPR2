@@ -16,7 +16,7 @@ public class ReportController {
     @Autowired
     ReportService reportService;
 
-    @RequestMapping(value = "/{target}/{targetId}", method = RequestMethod.POST)
+    @PostMapping(value = "/{target}/{targetId}")
     void SubmitReport(@PathVariable String target,
                       @PathVariable String targetId,
                       @RequestBody String message,

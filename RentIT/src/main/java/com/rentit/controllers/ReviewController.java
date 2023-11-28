@@ -17,17 +17,17 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
-    @RequestMapping(value = "/{target}/page/{targetId}/{pageNum}/{n}", method = RequestMethod.GET)
+    @GetMapping(value = "/{target}/page/{targetId}/{pageNum}/{n}")
     List<ReviewDTO> getReviewsByPage(@PathVariable String target, @PathVariable int targetId, @PathVariable int pageNum, @PathVariable int n){
         return reviewService.getReviewsByPage(target, targetId, pageNum, n);
     }
 
-    @RequestMapping(value = "/{target}", method = RequestMethod.POST)
+    @PostMapping(value = "/{target}")
     Review addReview(@PathVariable String target, @RequestBody Review review, @RequestHeader("Authorization") String authorizationHeader){
         return reviewService.addReview(target, review, authorizationHeader);
     }
 
-    @RequestMapping(value = "/summary/{target}/{targetId}", method = RequestMethod.GET)
+    @GetMapping(value = "/summary/{target}/{targetId}")
     ReviewSummary getItemReviewSummary(@PathVariable String target, @PathVariable String targetId){
         return reviewService.getItemReviewSummary(target, targetId);
     }

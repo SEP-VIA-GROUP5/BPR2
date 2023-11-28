@@ -6,7 +6,7 @@ import com.rentit.model.PriceFilteringColumn;
 import com.rentit.model.User;
 import com.rentit.model.dto.InquiryDTO;
 import com.rentit.services.enums.ResponseMessage;
-import com.rentit.services.utils.ServiceUtils;
+import com.rentit.utils.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,8 @@ public class InquiryService {
     @Autowired
     private ProductService productService;
 
-    private final ServiceUtils serviceUtils = ServiceUtils.getInstance();
+    @Autowired
+    private ServiceUtil serviceUtil;
 
     public InquiryDTO addInquiry(Inquiry inquiry, String authorizationHeader) {
         if(inquiry.getProductId() < 1) {
@@ -74,7 +75,7 @@ public class InquiryService {
             return inquiryMapper.getReceivedInquiries(user.getId());
         }
 
-        Map<PriceFilteringColumn, String> processedMap = serviceUtils.processFiltering(filters);
+        Map<PriceFilteringColumn, String> processedMap = serviceUtil.processFiltering(filters);
         return inquiryMapper.getAllReceivedInquiriesFiltered(pageNum, n, processedMap);
     }
 
@@ -100,7 +101,6 @@ public class InquiryService {
         return ResponseMessage.SUCCESS;
     }
 
-    //product id, images, product name, rented until, status
     public List<InquiryDTO> getAllMyInquiries(int pageNum, int n, String authorizationHeader) {
         if(pageNum < 0 || n < 0){
             return null;
@@ -126,27 +126,4 @@ public class InquiryService {
         inquiryMapper.deleteInquiry(user.getId(), inquiryId);
         return ResponseMessage.SUCCESS;
     }
-
-//    public ResponseMessage acceptInquiry(int inquiryId, String authorizationHeader) {
-//        User user = userService.getUserFromToken(authorizationHeader, false);
-//        if(user == null){
-//            return ResponseMessage.CREDENTIALS_ERROR;
-//        }
-//        if(inquiryId < 0){
-//            return ResponseMessage.INVALID_PARAMETERS;
-//        }
-//
-//        Inquiry inquiry = inquiryMapper.getInquiry(inquiryId);
-//
-//        if(inquiry.isAccepted()){
-//            return ResponseMessage.SUCCESS;
-//        }
-//        if(inquiry.getDirectedToId() != user.getId()){
-//            return ResponseMessage.CREDENTIALS_ERROR;
-//        }
-//
-//        inquiryMapper.setAccepted(inquiryId, LocalDate.now());
-//        return ResponseMessage.SUCCESS;
-//    }
-
 }

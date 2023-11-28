@@ -23,7 +23,7 @@ public class InquiryController {
         return inquiryService.addInquiry(inquiry, authorizationHeader);
     }
 
-    @RequestMapping(value = "/page/{pageNum}/{n}", method = RequestMethod.GET)
+    @GetMapping(value = "/page/{pageNum}/{n}")
     public List<InquiryDTO> getAllInquiries(@PathVariable int pageNum, @PathVariable int n,
                                             @RequestParam Map<String, String> filters,
                                             @RequestHeader("Authorization") String authorizationHeader){
@@ -57,15 +57,4 @@ public class InquiryController {
             case INVALID_PARAMETERS -> response.sendError(400, "Invalid/missing parameters");
         }
     }
-
-//    @PostMapping(value = "accept/{inquiryId}")
-//    public void acceptInquiry(@PathVariable int inquiryId, @RequestHeader("Authorization") String authorizationHeader,
-//                            HttpServletResponse response) throws IOException {
-//        ResponseMessage responseMessage = inquiryService.acceptInquiry(inquiryId, authorizationHeader);
-//        switch (responseMessage){
-//            case SUCCESS -> response.setStatus(200);
-//            case CREDENTIALS_ERROR -> response.sendError(401, "Invalid/missing authorization");
-//            case INVALID_PARAMETERS -> response.sendError(400, "Invalid/missing parameters");
-//        }
-//    }
 }

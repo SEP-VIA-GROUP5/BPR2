@@ -19,48 +19,49 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/page/{pageNum}/{n}", method = RequestMethod.GET)
+    @GetMapping(value = "/page/{pageNum}/{n}")
     public List<ProductDTO> getPageOfProducts(@PathVariable int pageNum, @PathVariable int n) {
         return productService.getNProductsByPage(pageNum, n);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json")
+    @PostMapping(value = "/add", consumes = "application/json")
     public ProductDTO addProduct(@RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
         return productService.addProduct(product, authorizationHeader);
     }
 
-    @RequestMapping(value = "/id/{productId}", method = RequestMethod.GET)
+    @GetMapping(value = "/id/{productId}")
     public ProductPackageDTO getProductById(@PathVariable int productId) {
         return productService.getProductById(productId);
     }
 
-    @RequestMapping(value = "/id/{productId}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/id/{productId}")
     public void deleteProductById(@PathVariable int productId,
                                   @RequestHeader("Authorization") String authorizationHeader,
                                   HttpServletResponse response) {
         ResponseMessage responseMessage = productService.deleteProductById(productId, authorizationHeader);
         switch (responseMessage) {
             case SUCCESS -> response.setStatus(204);
-            case DELETION_ERROR -> response.setStatus(404);
-            case INTERNAL_ERROR -> response.setStatus(500);
+            case INVALID_PARAMETERS -> response.setStatus(404);
+            case CREDENTIALS_ERROR -> response.setStatus(401);
+            default -> response.setStatus(500);
         }
     }
 
-    @RequestMapping(value = "/page/{pageNum}/{n}/filter", method = RequestMethod.GET)
+    @GetMapping(value = "/page/{pageNum}/{n}/filter")
     public List<ProductDTO> getPageOfFilteredProducts(@PathVariable int pageNum, @PathVariable int n, @RequestParam Map<String, String> filters) {
         return productService.getNProductsByPageWithFilters(pageNum, n, filters);
     }
 
-    @RequestMapping(value = "/myList", method = RequestMethod.GET)
+    @GetMapping(value = "/myList")
     public List<ProductDTO> getMyList(@RequestHeader("Authorization") String authorizationHeader) {
         return productService.getMyList(authorizationHeader);
     }
 
-    @RequestMapping(value = "/productList/{email}", method = RequestMethod.GET)
+    @GetMapping(value = "/productList/{email}")
     public List<ProductDTO> getUserProductList(@PathVariable String email) {
         return productService.getUserProductList(email);
     }
-    @RequestMapping(value = {"/status/{id}/{status}","/status/{id}/{status}/{rentedUntil}"}, method = RequestMethod.POST)
+    @PostMapping(value = {"/status/{id}/{status}","/status/{id}/{status}/{rentedUntil}"})
     public void setProductStatus(@PathVariable int id, @PathVariable String status, @PathVariable(required = false) String rentedUntil,
                                  @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
         ResponseMessage responseMessage = productService.setProductStatus(id, status, authorizationHeader, rentedUntil);
@@ -71,7 +72,7 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.PATCH, consumes = "application/json")
+    @PatchMapping(value = "/edit", consumes = "application/json")
     public ProductDTO editProduct(@RequestBody Product product, @RequestHeader("Authorization") String authorizationHeader) {
         return productService.editProduct(product, authorizationHeader);
     }
