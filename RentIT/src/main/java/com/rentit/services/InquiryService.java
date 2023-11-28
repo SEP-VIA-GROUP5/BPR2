@@ -123,7 +123,7 @@ public class InquiryService {
         else if(user == null){
             return null;
         }
-        else if(!Objects.equals(inquiry.getSenderEmail(), user.getEmail())) return null;
+        else if(!Objects.equals(inquiry.getSenderId(), user.getId())) return null;
         else {
             inquiryMapper.deleteInquiry(inquiryId);
             return ResponseMessage.SUCCESS;
