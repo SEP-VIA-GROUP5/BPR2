@@ -7,7 +7,7 @@
                     *ngIf="productOverview.product as product">
       <div class="product-overview-product-name">
         <h2>{{ product.name }}</h2>
-        <button [disabled]="!this.userService.isLoggedIn()"
+        <button *ngIf="canShowCheckAvailabilityButton" [disabled]="!this.userService.isLoggedIn()"
                 nbTooltip="You need to be logged in to check availability of this product"
                 [nbTooltipDisabled]="this.userService.isLoggedIn()"
                 nbButton
@@ -26,7 +26,7 @@
       <nb-badge class="product-overview-status-badge" [text]="getProductInfoStatusBadge(product.status)"
                 [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
       <nb-badge
-        *ngIf="this.userService.isLoggedIn" class="report-badge" text="Report"
+        *ngIf="this.userService.isLoggedIn()" class="report-badge" text="Report"
         [nbTooltip]="'Report this product? Click here!'"
         [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
         status="danger" position="top left"

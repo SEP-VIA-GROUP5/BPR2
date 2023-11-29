@@ -263,6 +263,13 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.router.navigate([`/profile/${email}`]);
   }
 
+  canShowCheckAvailabilityButton() {
+    if(this.userService.isLoggedIn()) {
+      return this.userService.getUser().email !== this.store.selectSnapshot(ProductSelector.product).user.email;
+    }
+    return true;
+  }
+
   ngOnDestroy(): void {
     this.alive = false;
     this.store.dispatch(new ProductReset());
