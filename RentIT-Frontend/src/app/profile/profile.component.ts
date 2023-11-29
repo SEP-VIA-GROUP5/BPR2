@@ -85,19 +85,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.profileId = this.activatedRoute.snapshot.params['id'];
-    if (!this.userService.redirectUserIfNotLoggedIn()) {
-      if (this.profileId === 'my-profile') {
+    if (this.profileId === 'my-profile') {
+      if (!this.userService.redirectUserIfNotLoggedIn()) {
         this.store.dispatch(new FetchCurrentUserLoggedIn());
-      } else {
-        this.store.dispatch(new FetchUser(this.profileId));
-        this.store.dispatch(new FetchUserProducts(this.profileId));
       }
-
-      this.userContent$.subscribe(userContent => {
-        this.userContent = userContent;
-        this.initialUserContent = {...userContent};
-      });
+    } else {
+      this.store.dispatch(new FetchUser(this.profileId));
+      this.store.dispatch(new FetchUserProducts(this.profileId));
     }
+
+    this.userContent$.subscribe(userContent => {
+      this.userContent = userContent;
+      this.initialUserContent = {...userContent};
+    });
   }
 
   isButtonDisabled() {
@@ -157,7 +157,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.toastrService.info('Location saved successfully!', 'Success', {icon: ICONS.CHECKMARK_CIRCLE_OUTLINE});
   }
 
-  showTooltip() {
+  showTooltipForInputs() {
     if (!this.isEmailValid) {
       this.tooltipEmail.show();
     } else if (!this.isPasswordValid) {
@@ -167,7 +167,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  hideTooltip() {
+  hideTooltipForInputs() {
     if (this.isEmailValid) {
       this.tooltipEmail.hide();
     } else if (this.isPasswordValid) {
@@ -175,6 +175,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
     } else if (this.isPhoneNumberValid) {
       this.tooltipPhoneNumber.hide();
     }
+  }
+
+  showTooltipForReportButton() {
+    if (!this.userService.isLoggedIn()) {
+      return 'You need to be logged-in in order to report a user';
+    } else {
+      return 'Report this user? Click here!';
+    }
+  }
+
+  isReportButtonDisabled() {
+    return !this.userService.isLoggedIn();
   }
 
   onFormSubmit() {

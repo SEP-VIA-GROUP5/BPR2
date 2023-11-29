@@ -23,7 +23,7 @@
                    nbTooltip="The email is not valid. It needs to contain '@','.'"
                    [nbTooltipDisabled]="isEmailValid"
                    nbTooltipPlacement="bottom"
-                   (nbTooltipShowStateChange)="!isEmailValid ? showTooltip() : hideTooltip()"
+                   (nbTooltipShowStateChange)="!isEmailValid ? showTooltipForInputs() : hideTooltipForInputs()"
                    #tooltipEmail="nbTooltip"
                    required email>
           </nb-form-field>
@@ -34,7 +34,7 @@
                    nbTooltip="The phone number is not valid. It needs to contain '+' and only numbers"
                    [nbTooltipDisabled]="isPhoneNumberValid"
                    nbTooltipPlacement="bottom"
-                   (nbTooltipShowStateChange)="!isPhoneNumberValid ? showTooltip() : hideTooltip()"
+                   (nbTooltipShowStateChange)="!isPhoneNumberValid ? showTooltipForInputs() : hideTooltipForInputs()"
                    #tooltipPhoneNumber="nbTooltip"
                    required email>
           </nb-form-field>
@@ -60,7 +60,7 @@
                    [nbTooltip]="'The password is not valid.\n The passwords do not match.\n It needs to contain at least 8 characters, one uppercase character, numbers and special characters.'"
                    [nbTooltipDisabled]="isPasswordValid"
                    nbTooltipPlacement="top"
-                   (nbTooltipShowStateChange)="!isPasswordValid ? showTooltip() : hideTooltip()"
+                   (nbTooltipShowStateChange)="!isPasswordValid ? showTooltipForInputs() : hideTooltipForInputs()"
                    #tooltipPassword="nbTooltip"
                    placeholder="Password" required>
             <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
@@ -90,7 +90,7 @@
       </nb-card-body>
     </nb-card>
   </div>
-  <div class="user-products">
+  <div class="user-products" *ngIf="userContent">
     <app-my-products></app-my-products>
   </div>
 </ng-template>
@@ -108,8 +108,9 @@
       <nb-card-header>
         <h4> {{userContent.firstName }} {{ userContent.lastName }} information</h4>
         <button
-          *ngIf="this.userService.isLoggedIn" class="report-badge"
-          [nbTooltip]="'Report this user? Click here!'"
+          class="report-badge"
+          [nbTooltipDisabled]="isReportButtonDisabled()"
+          [nbTooltip]="showTooltipForReportButton()"
           [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
           status="danger"
           nbButton
@@ -131,7 +132,7 @@
       </nb-card-body>
     </nb-card>
   </div>
-  <div class="user-products">
+  <div class="user-products" *ngIf="userContent">
     <nb-card>
       <nb-card-header>
         <h4> {{userContent.firstName }} {{ userContent.lastName }} products</h4>
