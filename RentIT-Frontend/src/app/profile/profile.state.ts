@@ -13,13 +13,14 @@ import {
   UpdateUser
 } from "src/app/profile/profile.actions";
 import {produce} from "immer";
-import {ICONS} from "src/app/constants";
+import {ICONS, LocalStorageEnum} from "src/app/constants";
 import {environment} from "src/environments/environment.dev";
 import {Product} from "src/model/product";
 import {ProductsService} from "src/api/products.service";
 import {Report} from "src/model/report";
 import {ReportType} from "src/app/products/product/product/constants/constants";
 import {ReportsService} from "src/api/reports.service";
+import {LocalStorageService} from "src/core/services/local-storage.service";
 
 export interface ProfileStateModel {
   isFetching: boolean;
@@ -48,6 +49,7 @@ export class ProfileState {
     private productsService: ProductsService,
     private toastrService: NbToastrService,
     private reportsService: ReportsService,
+    private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -72,6 +74,7 @@ export class ProfileState {
         password: action.user.password,
       } satisfies User;
       updatedUser = await this.userService.updateUser(changedUser);
+      this.localStorageService.saveData(LocalStorageEnum.USER, JSON.stringify(updatedUser));
       newState = produce(getState(), draft => {
         draft.user = updatedUser;
         draft.isFetching = false;
