@@ -136,7 +136,7 @@ export class InquiryState {
     try {
       await this.inquiryService.deleteInquiry(action.inquiryId);
       newState = produce(getState(), draft => {
-        draft.receivedInquiries = draft.receivedInquiries.filter(inquiry => inquiry.inquiryId !== action.inquiryId);
+        draft.sentInquiries = [...draft.sentInquiries.filter(inquiry => inquiry.inquiryId !== action.inquiryId)];
         draft.isFetching = false;
       });
       return setState(newState);

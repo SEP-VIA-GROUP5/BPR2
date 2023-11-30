@@ -31,6 +31,15 @@
                         <p class="title">Message</p>
                         <p>{{ receivedInquiry.message }}</p>
                       </div>
+                      <div class="actions">
+                        <p class="title">Actions</p>
+                        <div class="buttons">
+                          <button nbButton status="primary" size="small" (click)="redirectToProduct(receivedInquiry.productId)">
+                            <nb-icon [icon]="ICONS.CUBE_OUTLINE" pack="eva"></nb-icon>
+                            <span>See product</span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </nb-accordion-item-body>
                 </nb-accordion-item>
@@ -76,13 +85,16 @@
                         <p class="title">Message</p>
                         <p>{{ sendInquiry.message }}</p>
                       </div>
-<!--                      TODO remove action is not needed for now-->
-<!--                      <div class="actions">-->
-<!--                        <p class="title">Actions</p>-->
-<!--                        <div class="buttons">-->
-<!--                          <button nbButton status="danger" size="small" (click)="onRemoveInquiry(receivedInquiry)" hero>Remove</button>-->
-<!--                        </div>-->
-<!--                      </div>-->
+                      <div class="actions">
+                        <p class="title">Actions</p>
+                        <div class="buttons">
+                          <button nbButton status="danger" size="small" (click)="onRemoveInquiry(sendInquiry)" hero>Remove</button>
+                          <button nbButton status="primary" size="small" (click)="redirectToProduct(sendInquiry.productId)">
+                            <nb-icon [icon]="ICONS.CUBE_OUTLINE" pack="eva"></nb-icon>
+                            <span>See product</span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </nb-accordion-item-body>
                 </nb-accordion-item>

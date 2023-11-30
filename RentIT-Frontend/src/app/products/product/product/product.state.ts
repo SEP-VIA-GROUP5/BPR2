@@ -10,8 +10,10 @@ import {
   ProductAverageRatingReviewFetch,
   ProductFetch,
   ProductReset,
-  ProductReviewsFetch, ResetSendingInquiry,
-  ResetSubmitReport, SendingInquiry,
+  ProductReviewsFetch,
+  ResetSendingInquiry,
+  ResetSubmitReport,
+  SendingInquiry,
   SubmitReport
 } from "src/app/products/product/product/product.actions";
 import {ProductOverview} from "src/model/product-overview";
@@ -22,6 +24,7 @@ import {ReportsService} from "src/api/reports.service";
 import {ReportType} from "src/app/products/product/product/constants/constants";
 import {ReviewDTO} from "src/model/reviewDTO";
 import {InquiryService} from "src/api/inquiry.service";
+import {Report} from "src/model/report";
 
 export interface ProductStateModel {
   // product
@@ -35,7 +38,6 @@ export interface ProductStateModel {
   pageNumberReviews: number;
   endOfListReviews: boolean;
   // report
-  isUserReportAdded: boolean;
   isProductReportAdded: boolean,
   isFetchingReport: boolean;
   // inquiry
@@ -52,7 +54,6 @@ export const defaultsState: ProductStateModel = {
   pageSizeReviews: 5,
   pageNumberReviews: 1,
   endOfListReviews: false,
-  isUserReportAdded: false,
   isProductReportAdded: false,
   isFetchingReport: false,
   isInquiryAdded: false,
@@ -204,29 +205,20 @@ export class ProductState {
     });
     setState(newState);
 
-    let targetId = null;
-    if (action.reportType === ReportType.PRODUCT) {
-      targetId = getState().product.product.id;
-    } else if (action.reportType === ReportType.USER) {
-      targetId = getState().product.user.email;
-    }
+    let targetId = getState().product.product.id;
 
     // prepare report
-    let reportToAdd = {
+    let reportToAdd: Report = {
       ...action.report,
-      target: action.reportType,
-      targetId: targetId,
+      target: ReportType.PRODUCT,
+      targetId: targetId.toString(),
     }
 
     try {
       await this.reportsService.submitReport(reportToAdd);
 
       newState = produce(getState(), draft => {
-        if (action.reportType === ReportType.PRODUCT) {
-          draft.isProductReportAdded = true;
-        } else if (action.reportType === ReportType.USER) {
-          draft.isUserReportAdded = true;
-        }
+        draft.isProductReportAdded = true;
         draft.isFetchingReport = false;
       });
       return setState(newState);
@@ -237,11 +229,7 @@ export class ProductState {
         {icon: ICONS.ALERT_CIRCLE_OUTLINE}
       );
       newState = produce(getState(), draft => {
-        if (action.reportType === ReportType.PRODUCT) {
-          draft.isProductReportAdded = false;
-        } else if (action.reportType === ReportType.USER) {
-          draft.isUserReportAdded = false;
-        }
+        draft.isProductReportAdded = false;
         draft.isFetchingReport = false;
       });
       return setState(newState);
@@ -250,14 +238,9 @@ export class ProductState {
 
   @Action(ResetSubmitReport)
   async resetSubmitReport(
-    {getState, setState}: StateContext<ProductStateModel>,
-    action: ResetSubmitReport) {
+    {getState, setState}: StateContext<ProductStateModel>) {
     let newState = produce(getState(), draft => {
-      if (action.reportType === ReportType.PRODUCT) {
-        draft.isProductReportAdded = false;
-      } else if (action.reportType === ReportType.USER) {
-        draft.isUserReportAdded = false;
-      }
+      draft.isProductReportAdded = false;
     });
     return setState(newState);
   }
@@ -278,8 +261,7 @@ export class ProductState {
         draft.isInquiryAdded = !!inquiryAdded;
       });
       return setState(newState);
-    }
-    catch (e) {
+    } catch (e) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : e,
         'Something went wrong',

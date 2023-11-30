@@ -1,6 +1,5 @@
 import {Review} from "src/model/review";
 import {Report} from "src/model/report";
-import {ReportType} from "src/app/products/product/product/constants/constants";
 import {Inquiry} from "src/model/inquiry";
 
 export class ProductFetch {
@@ -29,13 +28,13 @@ export class ProductAddReview {
 
 export class SubmitReport {
   static readonly type = '[Product] Submit Report';
-  constructor(public report: Report, public reportType: ReportType){
+  constructor(public report: Report){
   }
 }
 
 export class ResetSubmitReport {
   static readonly type = '[Product] Reset Submit Report';
-  constructor(public reportType: ReportType) {
+  constructor() {
   }
 }
 

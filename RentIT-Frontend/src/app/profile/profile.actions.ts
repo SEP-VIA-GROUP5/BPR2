@@ -1,4 +1,5 @@
 import {UserContent} from "src/app/authentication/constants/constants";
+import {Report} from "src/model/report";
 
 export class FetchCurrentUserLoggedIn {
   static readonly type = '[Profile] Fetch current user logged in';
@@ -25,6 +26,20 @@ export class FetchUserProducts {
   static readonly type = '[Profile] Fetch user products';
 
   constructor(public email: string) {
+  }
+}
+
+export class SubmitReport {
+  static readonly type = '[Profile] Submit Report';
+
+  constructor(public report: Report) {
+  }
+}
+
+export class ResetSubmitReport {
+  static readonly type = '[Profile] Reset Submit Report';
+
+  constructor() {
   }
 }
 

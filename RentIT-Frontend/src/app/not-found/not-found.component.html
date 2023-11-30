@@ -1,21 +1,20 @@
-<div>
-  <nb-card class="container">
+<div class="fof-container">
+  <nb-card>
     <nb-card-header>
-      <a href="/products">
-        <img src="assets/logo.svg"/>
-      </a>
+      <img src="assets/logo.svg"/>
     </nb-card-header>
     <nb-card-body>
-      You entered a page that's not available!
+      <p>
+        You entered a page that's not available!
+      </p>
     </nb-card-body>
     <nb-card-footer>
       <button
         nbButton
         status="primary"
-      (click)="goBackToMainPage()">
+        (click)="goBackToMainPage()">
         Go back
       </button>
     </nb-card-footer>
   </nb-card>
-
 </div>

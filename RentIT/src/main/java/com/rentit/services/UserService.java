@@ -74,6 +74,13 @@ public class UserService {
         return user;
     }
 
+    public User getUserFromTokenToEdit(String authHeader){
+        String token = authHeader.substring(7);
+        int userId = Integer.parseInt(tokenService.decodeToken(token,  "sub"));
+        User user = userMapper.getUserToEditById(userId);
+        return user;
+    }
+
     public UserDTO getUser(String authHeader){
         User user = getUserFromToken(authHeader, false);
         return UserDTO.builder()
@@ -125,7 +132,7 @@ public class UserService {
     }
 
     public UserDTO editUser(String authorizationHeader, User user) {
-        User retreivedUser = getUserFromToken(authorizationHeader, true);
+        User retreivedUser = getUserFromTokenToEdit(authorizationHeader);
         if(user == null) {
             return null;
         }
@@ -133,16 +140,18 @@ public class UserService {
             return UserDTO.buildUserDTO(user);
         }
 
-        if (!user.getPassword().isEmpty() && !user.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+        if (user.getPassword() != null
+                && !user.getPassword().isEmpty()
+                && !user.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
             return null;
         }
 
-        retreivedUser.setEmail((!retreivedUser.getEmail().equals(user.getEmail()) && !user.getEmail().isEmpty()) ? user.getEmail() : retreivedUser.getEmail());
-        retreivedUser.setFirstName((!retreivedUser.getFirstName().equals(user.getFirstName()) && !user.getFirstName().isEmpty()) ? user.getFirstName() : retreivedUser.getFirstName());
-        retreivedUser.setLastName((!retreivedUser.getLastName().equals(user.getLastName()) && !user.getLastName().isEmpty()) ? user.getLastName() : retreivedUser.getLastName());
-        retreivedUser.setLocation((!retreivedUser.getLocation().equals(user.getLocation()) && !user.getLocation().isEmpty()) ? user.getLocation() : retreivedUser.getLocation());
-        retreivedUser.setPhoneNumber((!retreivedUser.getPhoneNumber().equals(user.getPhoneNumber()) && !user.getPhoneNumber().isEmpty()) ? user.getPhoneNumber() : retreivedUser.getPhoneNumber());
-        retreivedUser.setHashedPassword(user.getPassword().isEmpty() ? null : hashUtil.hash(user.getPassword(), null));
+        retreivedUser.setEmail((user.getEmail() != null && !retreivedUser.getEmail().equals(user.getEmail()) && !user.getEmail().isEmpty()) ? user.getEmail() : retreivedUser.getEmail());
+        retreivedUser.setFirstName((user.getFirstName() != null && !retreivedUser.getFirstName().equals(user.getFirstName()) && !user.getFirstName().isEmpty()) ? user.getFirstName() : retreivedUser.getFirstName());
+        retreivedUser.setLastName((user.getLastName() != null && !retreivedUser.getLastName().equals(user.getLastName()) && !user.getLastName().isEmpty()) ? user.getLastName() : retreivedUser.getLastName());
+        retreivedUser.setLocation((user.getLocation() != null && !retreivedUser.getLocation().equals(user.getLocation()) && !user.getLocation().isEmpty()) ? user.getLocation() : retreivedUser.getLocation());
+        retreivedUser.setPhoneNumber((user.getPhoneNumber() != null && !retreivedUser.getPhoneNumber().equals(user.getPhoneNumber()) && !user.getPhoneNumber().isEmpty()) ? user.getPhoneNumber() : retreivedUser.getPhoneNumber());
+        retreivedUser.setHashedPassword(user.getPassword() != null && user.getPassword().isEmpty() ? retreivedUser.getHashedPassword() : hashUtil.hash(user.getPassword(), null));
 
         userMapper.updateUserProfile(retreivedUser);
         return UserDTO.buildUserDTO(retreivedUser);

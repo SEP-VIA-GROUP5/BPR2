@@ -1,5 +1,4 @@
 import {Product} from "src/model/product";
-import {ProductsService} from "src/api/products.service";
 import {ProductStatus} from "src/model/productStatus";
 
 export interface StatusSelected {
@@ -10,6 +9,8 @@ export interface StatusSelected {
 export interface ProductSelected {
   isProductSelected: boolean;
   statusSelectedList: StatusSelected[];
+  // dedicated for product's status, this will be only used when setting product's status to RENTED
+  rentedUntil?: Date;
   product: Product;
 }
 

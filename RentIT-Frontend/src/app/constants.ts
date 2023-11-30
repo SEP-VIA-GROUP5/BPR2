@@ -20,6 +20,7 @@ export enum ICONS {
   EYE_OFF_OUTLINE_2 = 'eye-off-2-outline',
   EYE_OUTLINE = 'eye-outline',
   PERSON_OUTLINE = 'person-outline',
+  EDIT_2_OUTLINE = 'edit-2-outline',
 }
 
 export enum GENERAL_MENU_ITEM_URLS {

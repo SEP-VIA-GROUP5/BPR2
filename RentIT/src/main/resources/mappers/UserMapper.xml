@@ -44,6 +44,11 @@
         FROM users
         WHERE email = #{email};
     </select>
+    <select id="getUserToEditById" resultMap="UserResultMap">
+        SELECT *
+        FROM users
+        WHERE user_id = #{id};
+    </select>
     <insert id="registerUser" parameterType="User">
         INSERT INTO users (email, f_name, l_name, location, phone_no, password, salt)
         VALUES (#{email}, #{firstName}, #{lastName}, #{location}, #{phoneNumber}, #{hashedPassword.hashedString},
