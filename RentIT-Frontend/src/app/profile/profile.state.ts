@@ -65,6 +65,7 @@ export class ProfileState {
 
     let updatedUser: User;
     try {
+
       const changedUser = {
         email: action.user.email,
         firstName: action.user.firstName,
