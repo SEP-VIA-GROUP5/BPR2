@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Application Properties ###
+RentIT/src/main/resources/application.properties
+RentIT/src/main/resources/private.pem
+RentIT/src/main/resources/public.pem
