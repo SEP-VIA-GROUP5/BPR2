@@ -30,8 +30,8 @@ jobs:
       - name: Create api key and Google credentials
         run: |
           echo '${{ secrets.APPLICATION_PROPERTIES }}' | base64 --decode > RentIT/src/main/resources/application.properties
-          echo  ${{ secrets.PRIVATE_KEY }} > RentIT/src/main/resources/private.pem
-          echo '${{ secrets.PUBLIC_KEY }}' | RentIT/src/main/resources/public.pem
+          echo '${{ secrets.PRIVATE_KEY }}' > RentIT/src/main/resources/private.pem
+          echo '${{ secrets.PUBLIC_KEY }}' > RentIT/src/main/resources/public.pem
 
       - name: Build Docker image
         run: docker build -f RentIT/Dockerfile -t $IMAGE_NAME .
