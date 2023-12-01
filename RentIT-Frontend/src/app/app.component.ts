@@ -94,9 +94,6 @@ export class AppComponent implements OnInit, OnDestroy {
   protected readonly TAG_MENU_ITEMS = TAG_MENU_ITEMS;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  // //filtering
-  // filteredOptionChose = FilteredOptionsEnum.DEFAULT;
-
   constructor(
     private nbMenuService: NbMenuService,
     private sidebarService: NbSidebarService,

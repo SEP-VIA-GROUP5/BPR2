@@ -177,16 +177,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  showTooltipForReportButton() {
+  showTooltipForReportButton(): string {
     if (!this.userService.isLoggedIn()) {
       return 'You need to be logged-in in order to report a user';
-    } else {
+    }
+    else if(this.canDisplayCurrentUserProfile()) {
+      return 'You cannot report yourself';
+    }
+    else {
       return 'Report this user? Click here!';
     }
   }
 
   isReportButtonDisabled() {
-    return !this.userService.isLoggedIn();
+    if(this.userService.isLoggedIn()) {
+      return this.canDisplayCurrentUserProfile();
+    }
+    console.log('works');
+    return true;
   }
 
   onFormSubmit() {
@@ -228,7 +236,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   canDisplayCurrentUserProfile() {
-    return this.profileId === 'my-profile' || (this.userContent && this.userContent.email === this.userService.getUser().email);
+    return this.profileId === 'my-profile' || (this.userService.isLoggedIn() && this.userContent.email === this.userService.getUser().email);
   }
 
   ngOnDestroy() {
