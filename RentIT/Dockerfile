@@ -1,6 +1,6 @@
 FROM maven:3-openjdk-17 AS build
 WORKDIR /app
-COPY / .
+COPY RentIT .
 RUN mvn -f /app/pom.xml package shade:shade -DskipTests
 
 FROM openjdk:17-jdk-slim
