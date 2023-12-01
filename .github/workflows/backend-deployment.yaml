@@ -1,0 +1,43 @@
+name: Docker
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  deploy:
+
+    name: Setup Gcloud Account
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+    steps:
+
+      - name: Login
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_SERVICE_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SERVICE_KEY }}
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create api key and Google credentials
+        run: |
+          echo '${{ secrets.APPLICATION_PROPERTIES }}' | base64 --decode > RentIT/src/main/resources/application.properties
+          echo  ${{ secrets.PRIVATE_KEY }} > RentIT/src/main/resources/private.pem
+          echo '${{ secrets.PUBLIC_KEY }}' | RentIT/src/main/resources/public.pem
+
+      - name: Build Docker image
+        run: docker build -f RentIT/Dockerfile -t $IMAGE_NAME .
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME
+
+      - name: Deploy Docker image
+        run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
