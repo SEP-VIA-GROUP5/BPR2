@@ -227,6 +227,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.reportDialogRef.close();
   }
 
+  canDisplayCurrentUserProfile() {
+    return this.profileId === 'my-profile' || (this.userContent && this.userContent.email === this.userService.getUser().email);
+  }
+
   ngOnDestroy() {
     this.store.dispatch(new ProfileReset());
     this.alive = false;
