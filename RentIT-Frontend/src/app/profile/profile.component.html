@@ -1,6 +1,6 @@
 <div class="profile-container">
   <ng-container
-    *ngIf="profileId === 'my-profile'; then displayCurrentUserProfile; else displayOtherUserProfile"></ng-container>
+    *ngIf="canDisplayCurrentUserProfile(); then displayCurrentUserProfile; else displayOtherUserProfile"></ng-container>
 </div>
 
 
@@ -109,7 +109,8 @@
         <h4> {{userContent.firstName }} {{ userContent.lastName }} information</h4>
         <button
           class="report-badge"
-          [nbTooltipDisabled]="isReportButtonDisabled()"
+          [disabled]="isReportButtonDisabled()"
+          [nbTooltipDisabled]="showTooltipForReportButton() === ''"
           [nbTooltip]="showTooltipForReportButton()"
           [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
           status="danger"

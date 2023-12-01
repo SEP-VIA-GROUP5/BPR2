@@ -263,7 +263,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.router.navigate([`/profile/${email}`]);
   }
 
-  canShowCheckAvailabilityButton() {
+  canShowAvailabilityOrReportButton() {
     if(this.userService.isLoggedIn()) {
       return this.userService.getUser().email !== this.store.selectSnapshot(ProductSelector.product).user.email;
     }

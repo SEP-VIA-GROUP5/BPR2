@@ -3506,7 +3506,7 @@ cssstyle@^2.3.0:
 
 cypress@^13.3.1:
   version "13.3.1"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-13.3.1.tgz#d72f922e167891574c7773d07ac64d7114e11d49"
+  resolved "https://registry.npmjs.org/cypress/-/cypress-13.3.1.tgz"
   integrity sha512-g4mJLZxYN+UAF2LMy3Znd4LBnUmS59Vynd81VES59RdW48Yt+QtR2cush3melOoVNz0PPbADpWr8DcUx6mif8Q==
   dependencies:
     "@cypress/request" "^3.0.0"
@@ -4757,7 +4757,7 @@ human-signals@^2.1.0:
 
 humanize-duration-ts@^2.1.1:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/humanize-duration-ts/-/humanize-duration-ts-2.1.1.tgz#5382b2789f851005a67229eaf031931d71f37ee9"
+  resolved "https://registry.npmjs.org/humanize-duration-ts/-/humanize-duration-ts-2.1.1.tgz"
   integrity sha512-TibNF2/fkypjAfHdGpWL/dmWUS0G6Qi+3mKyiB6LDCowbMy+PtzbgPTnFMNTOVAJXDau01jYrJ3tFoz5AJSqhA==
 
 humanize-ms@^1.2.1:
@@ -6270,7 +6270,7 @@ ngx-dropzone@^3.1.0:
 
 ngx-image-swiper@^1.2.3:
   version "1.2.3"
-  resolved "https://registry.yarnpkg.com/ngx-image-swiper/-/ngx-image-swiper-1.2.3.tgz#6f76f3ba07f9f412bf4cadffab0714f047bc5573"
+  resolved "https://registry.npmjs.org/ngx-image-swiper/-/ngx-image-swiper-1.2.3.tgz"
   integrity sha512-AlYIm34gJigt4kFZu2EDGK2gzw/0d4KNGp3Fw+7exEdRgngxo9qkUq/X4hdjTA5q39aooHBCT3+DAaGJjrMwkg==
   dependencies:
     tslib "^2.0.0"
