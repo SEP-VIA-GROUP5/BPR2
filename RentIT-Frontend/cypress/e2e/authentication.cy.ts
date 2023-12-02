@@ -127,7 +127,6 @@ describe('AuthenticationComponent', () => {
 
     it('should not enable register button if password is invalid', () => {
       cy.visit('/authentication');
-      expect(cy.get('.register-redirect')).to.exist;
       cy.get('.register-redirect').click();
 
       cy.get('nb-form-field').eq(0).find('input').type('test@cypress.com');
