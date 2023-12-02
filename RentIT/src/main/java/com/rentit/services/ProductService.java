@@ -73,7 +73,9 @@ public class ProductService {
         product.setStatus(ProductStatus.AVAILABLE);
 
         productMapper.addProduct(product);
-        productMapper.addTags(product.getTags(), product.getId());
+        if(product.getTags() != null && !product.getTags().isEmpty()){
+            productMapper.addTags(product.getTags(), product.getId());
+        }
         if(product.getImages() != null && !product.getImages().isEmpty()){
             imageMapper.addImages(product.getImages(), product.getId());
         }
