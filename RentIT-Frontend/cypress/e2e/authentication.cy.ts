@@ -30,8 +30,8 @@ describe('AuthenticationComponent', () => {
       cy.visit('/authentication');
       cy.intercept('POST', 'https://digital-yeti-406718-lq2q3x3hfa-uc.a.run.app/user/login').as('loginRequest');
 
-      cy.get('nb-form-field').eq(1).find('input').type('test@cypress.com');
-      cy.get('nb-form-field').eq(2).find('input').type('StrongPassword1!');
+      cy.get('nb-form-field').eq(0).find('input').type('test@cypress.com');
+      cy.get('nb-form-field').eq(1).find('input').type('StrongPassword1!');
 
       cy.get('.submit-button').click();
 
