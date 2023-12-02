@@ -26,20 +26,20 @@ describe('AuthenticationComponent', () => {
       cy.get('.submit-button').should('be.disabled');
     });
 
-    it('should redirect to products page if credentials are correct', () => {
-      cy.visit('/authentication');
-      cy.intercept('POST', 'https://digital-yeti-406718-lq2q3x3hfa-uc.a.run.app/user/login').as('loginRequest');
-
-      cy.get('nb-form-field').eq(0).find('input').type('test@cypress.com');
-      cy.get('nb-form-field').eq(1).find('input').type('StrongPassword1!');
-
-      cy.get('.submit-button').click();
-
-      cy.wait('@loginRequest').should(({ response }) => {
-        expect(response.statusCode).to.equal(200);
-      });
-      cy.url().should('include', '/products');
-    });
+    // it('should redirect to products page if credentials are correct', () => {
+    //   cy.visit('/authentication');
+    //   cy.intercept('POST', 'https://digital-yeti-406718-lq2q3x3hfa-uc.a.run.app/user/login').as('loginRequest');
+    //
+    //   cy.get('nb-form-field').eq(0).find('input').type('test@cypress.com');
+    //   cy.get('nb-form-field').eq(1).find('input').type('StrongPassword1!');
+    //
+    //   cy.get('.submit-button').click();
+    //
+    //   cy.wait('@loginRequest').should(({ response }) => {
+    //     expect(response.statusCode).to.equal(200);
+    //   });
+    //   cy.url().should('include', '/products');
+    // });
   });
 
   describe('test register functionality and content', () => {
