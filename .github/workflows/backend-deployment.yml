@@ -34,9 +34,7 @@ jobs:
           echo '${{ secrets.PUBLIC_KEY }}' > RentIT/src/main/resources/public.pem
 
       - name: Build Docker image
-        run: |
-          echo $IMAGE_NAME
-          docker build -f RentIT/Dockerfile -t $IMAGE_NAME .
+        run: docker build -f RentIT/Dockerfile -t $IMAGE_NAME .
 
       - name: Push Docker image
         run: docker push $IMAGE_NAME
