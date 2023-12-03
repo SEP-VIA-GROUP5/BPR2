@@ -92,7 +92,7 @@ export class ProductState {
         draft.product = product;
         draft.isFetchingProduct = false;
       });
-      return setState(newState);
+      setState(newState);
     } catch (e) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : e,
@@ -102,7 +102,7 @@ export class ProductState {
       newState = produce(getState(), draft => {
         draft.isFetchingProduct = false;
       });
-      return setState(newState);
+      setState(newState);
     }
   }
 
@@ -125,7 +125,7 @@ export class ProductState {
         draft.pageNumberReviews = draft.pageNumberReviews + 1;
         draft.endOfListReviews = reviews.length !== draft.pageSizeReviews;
       });
-      return setState(newState);
+      setState(newState);
     } catch (e) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : e,
@@ -135,7 +135,7 @@ export class ProductState {
       newState = produce(getState(), draft => {
         draft.isFetchingReviewsOverview = false;
       });
-      return setState(newState);
+      setState(newState);
     }
   }
 
@@ -155,7 +155,7 @@ export class ProductState {
         draft.reviewSummary = reviewSummary;
         draft.isFetchingReviewsOverview = false;
       });
-      return setState(newState);
+      setState(newState);
     } catch (e) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : e,
@@ -165,7 +165,7 @@ export class ProductState {
       newState = produce(getState(), draft => {
         draft.isFetchingReviewsOverview = false;
       });
-      return setState(newState);
+      setState(newState);
     }
   }
 
