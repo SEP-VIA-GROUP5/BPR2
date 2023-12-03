@@ -267,7 +267,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     if(this.userService.isLoggedIn()) {
       return this.userService.getUser().email !== this.store.selectSnapshot(ProductSelector.product).user.email;
     }
-    return true;
+    return false;
   }
 
   ngOnDestroy(): void {

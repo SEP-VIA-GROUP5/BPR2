@@ -26,42 +26,20 @@ describe('AuthenticationComponent', () => {
       cy.get('.submit-button').should('be.disabled');
     });
 
-    // TODO commented as the backend api is not available on cloud
-    // it('should not redirect user to products page if credentials are incorrect', () => {
+    // it('should redirect to products page if credentials are correct', () => {
     //   cy.visit('/authentication');
-
-    //   cy.get('nb-form-field').eq(1).find('input').type('test@cypress.com');
-    //   cy.get('nb-form-field').eq(2).find('input').type('apasswordfornoaccount');
-
+    //   cy.intercept('POST', 'https://digital-yeti-406718-lq2q3x3hfa-uc.a.run.app/user/login').as('loginRequest');
+    //
+    //   cy.get('nb-form-field').eq(0).find('input').type('test@cypress.com');
+    //   cy.get('nb-form-field').eq(1).find('input').type('StrongPassword1!');
+    //
     //   cy.get('.submit-button').click();
-    //   cy.document().then((doc) => {
-    //     expect(doc.location.pathname).to.equal('/authentication');
+    //
+    //   cy.wait('@loginRequest').should(({ response }) => {
+    //     expect(response.statusCode).to.equal(200);
     //   });
-
-    //   cy.request({
-    //     method: 'POST',
-    //     url: 'http://localhost:8080/user/login',
-    //     failOnStatusCode: false,
-    //   }).then((response) => {
-    //     expect(response.status).to.equal(401);
-    //   });
+    //   cy.url().should('include', '/products');
     // });
-
-    // TODO commented as the backend api is not available on cloud
-  //   it('should redirect to products page if credentials are correct', () => {
-  //     cy.visit('/authentication');
-  //     cy.intercept('POST', 'http://localhost:8080/user/login').as('loginRequest');
-
-  //     cy.get('nb-form-field').eq(1).find('input').type('test@cypress.com');
-  //     cy.get('nb-form-field').eq(2).find('input').type('StrongPassword1!');
-
-  //     cy.get('.submit-button').click();
-
-  //     cy.wait('@loginRequest').should(({ response }) => {
-  //       expect(response.statusCode).to.equal(200);
-  //     });
-  //     cy.url().should('include', '/products');
-  //   });
   });
 
   describe('test register functionality and content', () => {
@@ -149,7 +127,6 @@ describe('AuthenticationComponent', () => {
 
     it('should not enable register button if password is invalid', () => {
       cy.visit('/authentication');
-      expect(cy.get('.register-redirect')).to.exist;
       cy.get('.register-redirect').click();
 
       cy.get('nb-form-field').eq(0).find('input').type('test@cypress.com');
