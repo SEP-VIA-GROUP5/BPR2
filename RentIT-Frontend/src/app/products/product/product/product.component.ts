@@ -264,10 +264,20 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   canShowAvailabilityOrReportButton() {
-    if(this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
       return this.userService.getUser().email !== this.store.selectSnapshot(ProductSelector.product).user.email;
     }
     return false;
+  }
+
+  getAvailabilityButtonTooltip(): string {
+    if (this.userService.isLoggedIn()) {
+      if (this.userService.getUser().email === this.store.selectSnapshot(ProductSelector.product).user.email) {
+        return 'You cannot send an inquiry to yourself';
+      }
+      return 'Send an inquiry to the owner of this product';
+    }
+    return 'You must be logged in to send an inquiry';
   }
 
   ngOnDestroy(): void {
