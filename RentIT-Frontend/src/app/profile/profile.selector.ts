@@ -24,6 +24,36 @@ export class ProfileSelector {
   }
 
   @Selector([ProfileState])
+  static isFetchingReport(state: ProfileStateModel) {
+    return state.isFetchingReport;
+  }
+
+  @Selector([ProfileState])
+  static userReviews(state: ProfileStateModel) {
+    return state.userReviews;
+  }
+
+  @Selector([ProfileState])
+  static userSummaryReviews(state: ProfileStateModel) {
+    return state.userSummaryReviews;
+  }
+
+  @Selector([ProfileState])
+  static pageNumberReviews(state: ProfileStateModel) {
+    return state.pageNumberReviews;
+  }
+
+  @Selector([ProfileState])
+  static pageSizeReviews(state: ProfileStateModel) {
+    return state.pageSizeReviews;
+  }
+
+  @Selector([ProfileState])
+  static endOfListReviews(state: ProfileStateModel) {
+    return state.endOfListReviews;
+  }
+
+  @Selector([ProfileState])
   static userContent(state: ProfileStateModel) {
     return {
       email: state.user.email,

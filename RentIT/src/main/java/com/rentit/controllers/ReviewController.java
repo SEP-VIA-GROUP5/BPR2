@@ -18,7 +18,7 @@ public class ReviewController {
     ReviewService reviewService;
 
     @GetMapping(value = "/{target}/page/{targetId}/{pageNum}/{n}")
-    List<ReviewDTO> getReviewsByPage(@PathVariable String target, @PathVariable int targetId, @PathVariable int pageNum, @PathVariable int n){
+    List<ReviewDTO> getReviewsByPage(@PathVariable String target, @PathVariable String targetId, @PathVariable int pageNum, @PathVariable int n){
         return reviewService.getReviewsByPage(target, targetId, pageNum, n);
     }
 

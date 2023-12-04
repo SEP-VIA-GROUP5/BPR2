@@ -142,3 +142,8 @@ export const isPhoneNumber = (phoneNumber: string): boolean => {
   console.log(phoneNumber);
   return regexp.test(phoneNumber);
 }
+
+export enum SubmitButtonType {
+  ADD_REVIEW = 'addReview',
+  REPORT =  'report',
+}

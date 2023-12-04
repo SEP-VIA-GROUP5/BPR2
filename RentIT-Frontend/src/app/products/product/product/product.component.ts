@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Select, Store} from "@ngxs/store";
-import {ICONS, isEmail, isPhoneNumber} from "src/app/constants";
+import {ICONS, isEmail, isPhoneNumber, SubmitButtonType} from "src/app/constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ProductSelector} from "src/app/products/product/product/product.selector";
@@ -26,7 +26,6 @@ import {
   constructorReportToAdd,
   constructorSendingInquiry,
   ReportToAdd,
-  SubmitButtonType
 } from "src/app/products/product/product/constants/constants";
 import {ReviewDTO} from "src/model/reviewDTO";
 import {Inquiry} from "src/model/inquiry";
@@ -86,7 +85,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   productId: number;
   // constants
   protected readonly ICONS = ICONS;
-  protected readonly SUBMIT_BUTTON_TYPE = SubmitButtonType;
+  protected readonly SubmitButtonType = SubmitButtonType;
   protected readonly ProductStatus = ProductStatus;
 
   alive: boolean = true;

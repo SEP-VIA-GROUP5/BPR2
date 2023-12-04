@@ -117,7 +117,7 @@ export class ProductState {
 
     let reviews = [];
     try {
-      reviews = await this.reviewsService.getReviewsByTarget(TARGET.PRODUCT, action.productId, getState().pageNumberReviews, getState().pageSizeReviews);
+      reviews = await this.reviewsService.getReviewsByTarget(TARGET.PRODUCT, action.productId.toString(), getState().pageNumberReviews, getState().pageSizeReviews);
       newState = produce(getState(), draft => {
         let currentReviews = draft.reviews;
         draft.reviews = [...currentReviews, ...reviews];
@@ -150,7 +150,7 @@ export class ProductState {
 
     let reviewSummary = null;
     try {
-      reviewSummary = await this.reviewsService.getReviewSummary(TARGET.PRODUCT, action.productId);
+      reviewSummary = await this.reviewsService.getReviewSummary(TARGET.PRODUCT, action.productId.toString());
       newState = produce(getState(), draft => {
         draft.reviewSummary = reviewSummary;
         draft.isFetchingReviewsOverview = false;

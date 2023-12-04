@@ -2,10 +2,11 @@ import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/cor
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "src/api/user.service";
 import {User} from "src/model/user";
-import {ICONS, isEmail, isPassword, isPhoneNumber} from "src/app/constants";
+import {ICONS, isEmail, isPassword, isPhoneNumber, SubmitButtonType} from "src/app/constants";
 import {
   NbDialogRef,
   NbDialogService,
+  NbTabComponent,
   NbToastrService,
   NbTooltipDirective,
   NbWindowRef,
@@ -14,22 +15,26 @@ import {
 import {defaultUserContent, UserContent} from "src/app/authentication/constants/constants";
 import {Select, Store} from "@ngxs/store";
 import {ProfileSelector} from "src/app/profile/profile.selector";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {
   FetchCurrentUserLoggedIn,
   FetchUser,
   FetchUserProducts,
-  ProfileReset, ResetSubmitReport, SubmitReport,
-  UpdateUser
+  FetchUserReviews,
+  FetchUserSummaryReviews,
+  ProfileReset,
+  ResetSubmitReport,
+  SubmitReport,
+  UpdateUser,
+  UserAddReview
 } from "src/app/profile/profile.actions";
 import {Product} from "src/model/product";
-import {
-  constructorReportToAdd,
-  ReportToAdd,
-  ReportType,
-  SubmitButtonType
-} from "src/app/products/product/product/constants/constants";
-import {ProductSelector} from "src/app/products/product/product/product.selector";
+import {constructorReportToAdd, ReportToAdd,} from "src/app/products/product/product/constants/constants";
+import {UsersInformationTabs} from "src/app/profile/constants/constants";
+import {ReviewDTO} from "src/model/reviewDTO";
+import {ReviewSummary} from "src/model/reviewSummary";
+import {Review} from "src/model/review";
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-profile',
@@ -47,8 +52,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userProducts$: Observable<Product[]>;
   @Select(ProfileSelector.isUserReportAdded)
   isUserReportAdded$: Observable<boolean>;
+  @Select(ProfileSelector.isFetchingReport)
+  isFetchingReport$: Observable<boolean>;
+  @Select(ProfileSelector.userReviews)
+  userReviews$: Observable<ReviewDTO[]>;
+  @Select(ProfileSelector.userSummaryReviews)
+  userSummaryReviews$: Observable<ReviewSummary>;
+  @Select(ProfileSelector.pageNumberReviews)
+  pageNumberReviews$: Observable<number>;
+  @Select(ProfileSelector.pageSizeReviews)
+  pageSizeReviews$: Observable<number>;
+  @Select(ProfileSelector.endOfListReviews)
+  endOfListReviews$: Observable<boolean>;
 
   profileId: string;
+  profileIdSubscription: Subscription;
   userContent: UserContent = defaultUserContent();
   initialUserContent: UserContent = defaultUserContent();
   showPassword = false;
@@ -71,7 +89,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private reportDialogRef: NbDialogRef<any>;
   reportToAdd: ReportToAdd = constructorReportToAdd();
 
+  // dialog adding review
+  @ViewChild('addRatingDialog') addRatingDialog: TemplateRef<any>;
+  private addRatingDialogRef: NbDialogRef<any>;
+  reviewToAdd: Review = {
+    rating: 0,
+    message: '',
+  } as Review;
+
   protected readonly ICONS = ICONS;
+  protected readonly UsersInformationTabs = UsersInformationTabs;
+  protected readonly SubmitButtonType = SubmitButtonType;
   alive: boolean = true;
 
   constructor(private router: Router,
@@ -85,20 +113,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.profileId = this.activatedRoute.snapshot.params['id'];
-    if (this.profileId === 'my-profile') {
-      if (!this.userService.redirectUserIfNotLoggedIn()) {
-        this.store.dispatch(new FetchCurrentUserLoggedIn());
-      }
-    } else {
-      this.store.dispatch(new FetchUser(this.profileId));
-      this.store.dispatch(new FetchUserProducts(this.profileId));
-    }
-
-    this.userContent$.subscribe(userContent => {
-      this.userContent = userContent;
-      this.initialUserContent = {...userContent};
+    this.profileIdSubscription = this.activatedRoute.params.subscribe(params => {
+      this.profileId = params['id'];
+      this.handleProfileIdChange();
     });
   }
+
+  private handleProfileIdChange() {
+    let actionInParallel = [];
+    if (this.profileId === 'my-profile') {
+      if (!this.userService.redirectUserIfNotLoggedIn()) {
+        actionInParallel.push(new FetchCurrentUserLoggedIn());
+      }
+    } else {
+      actionInParallel.push(new FetchUser(this.profileId));
+    }
+
+    this.store.dispatch([...actionInParallel]).pipe(take(1)).subscribe(() => {
+      let userContentSnapshot = this.store.selectSnapshot(ProfileSelector.userContent);
+      this.userContent = {...userContentSnapshot};
+      this.initialUserContent = {...this.userContent};
+      this.store.dispatch(new FetchUserSummaryReviews(this.userContent.email));
+    });
+  }
+
 
   isButtonDisabled() {
     return this.userContent.email === this.initialUserContent.email &&
@@ -180,17 +218,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   showTooltipForReportButton(): string {
     if (!this.userService.isLoggedIn()) {
       return 'You need to be logged-in in order to report a user';
-    }
-    else if(this.canDisplayCurrentUserProfile()) {
+    } else if (this.canDisplayCurrentUserProfile()) {
       return 'You cannot report yourself';
-    }
-    else {
+    } else {
       return 'Report this user? Click here!';
     }
   }
 
   isReportButtonDisabled() {
-    if(this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
       return this.canDisplayCurrentUserProfile();
     }
     console.log('works');
@@ -212,8 +248,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.reportDialogRef = this.nbDialogService.open(this.reportDialog);
   }
 
-  isOnSubmitButtonDisabled(): boolean {
-    return this.reportToAdd.userReport.message === '' || this.reportToAdd.userReport.message.length > 500;
+  isOnSubmitButtonDisabled(submitButtonType: SubmitButtonType): boolean {
+    if (submitButtonType === SubmitButtonType.REPORT) {
+      return this.reportToAdd.userReport.message === '' || this.reportToAdd.userReport.message.length > 500;
+    } else if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
+      return this.reviewToAdd.rating === 0 || this.reviewToAdd.message === '';
+    }
   }
 
   getCharactersReportMessage() {
@@ -221,9 +261,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
 
-  onSubmitReportButtonClicked() {
-    let report = this.reportToAdd.userReport;
-    this.store.dispatch(new SubmitReport(report));
+  onSubmitReportButtonClicked(submitButtonType: SubmitButtonType) {
+    if (submitButtonType === SubmitButtonType.ADD_REVIEW) {
+      this.store.dispatch(new UserAddReview(this.userContent.email, this.reviewToAdd));
+      this.addRatingDialogRef.close();
+    } else if (submitButtonType === SubmitButtonType.REPORT) {
+      let report = this.reportToAdd.userReport;
+      this.store.dispatch(new SubmitReport(report));
+    }
   }
 
   resetReport() {
@@ -239,9 +284,35 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return this.profileId === 'my-profile' || (this.userService.isLoggedIn() && this.userContent.email === this.userService.getUser().email);
   }
 
+  onTabChanged(event: NbTabComponent) {
+    switch (event.tabId) {
+      case UsersInformationTabs.PRODUCTS: {
+        this.store.dispatch(new FetchUserProducts(this.profileId));
+        break;
+      }
+      case UsersInformationTabs.REVIEWS: {
+        let userContentSnapshot = this.store.selectSnapshot(ProfileSelector.userContent);
+        this.store.dispatch(new FetchUserReviews(userContentSnapshot.email));
+        break;
+      }
+    }
+  }
+
+  openAddReviewDialog() {
+    this.addRatingDialogRef = this.nbDialogService.open(this.addRatingDialog, {});
+  }
+
+  onAddingReviewClickOnStar(starsNumber: number) {
+    this.reviewToAdd.rating = starsNumber;
+  }
+
+  loadNextReviews() {
+    this.store.dispatch(new FetchUserReviews(this.userContent.email));
+  }
+
   ngOnDestroy() {
+    this.profileIdSubscription.unsubscribe();
     this.store.dispatch(new ProfileReset());
     this.alive = false;
   }
-
 }

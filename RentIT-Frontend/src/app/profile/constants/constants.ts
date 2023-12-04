@@ -11,3 +11,9 @@ export function convertToUserFromUserContent(userContent: UserContent): User {
     phoneNumber: userContent.phoneNumber,
   }
 }
+
+
+export enum UsersInformationTabs {
+  PRODUCTS = 'Products',
+  REVIEWS = 'Reviews',
+}
