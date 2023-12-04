@@ -7,10 +7,13 @@ import {
   FetchCurrentUserLoggedIn,
   FetchUser,
   FetchUserProducts,
+  FetchUserReviews,
+  FetchUserSummaryReviews,
   ProfileReset,
   ResetSubmitReport,
   SubmitReport,
-  UpdateUser
+  UpdateUser,
+  UserAddReview
 } from "src/app/profile/profile.actions";
 import {produce} from "immer";
 import {ICONS, LocalStorageEnum} from "src/app/constants";
@@ -21,6 +24,10 @@ import {Report} from "src/model/report";
 import {ReportType} from "src/app/products/product/product/constants/constants";
 import {ReportsService} from "src/api/reports.service";
 import {LocalStorageService} from "src/core/services/local-storage.service";
+import {ReviewsService} from "src/api/reviews.service";
+import {Review, TARGET} from "src/model/review";
+import {ReviewSummary} from "src/model/reviewSummary";
+import {ReviewDTO} from "src/model/reviewDTO";
 
 export interface ProfileStateModel {
   isFetching: boolean;
@@ -28,6 +35,11 @@ export interface ProfileStateModel {
   userProducts: Product[];
   isUserReportAdded: boolean;
   isFetchingReport: boolean;
+  userReviews: ReviewDTO[],
+  userSummaryReviews: ReviewSummary,
+  pageNumberReviews: number,
+  pageSizeReviews: number,
+  endOfListReviews: boolean,
 }
 
 export const defaultState: ProfileStateModel = {
@@ -36,6 +48,11 @@ export const defaultState: ProfileStateModel = {
   userProducts: [],
   isUserReportAdded: false,
   isFetchingReport: false,
+  userReviews: [],
+  userSummaryReviews: null,
+  pageNumberReviews: 1,
+  pageSizeReviews: 5,
+  endOfListReviews: false,
 }
 
 @State<ProfileStateModel>({
@@ -50,6 +67,7 @@ export class ProfileState {
     private toastrService: NbToastrService,
     private reportsService: ReportsService,
     private localStorageService: LocalStorageService,
+    private reviewsService: ReviewsService,
   ) {
   }
 
@@ -127,7 +145,7 @@ export class ProfileState {
 
   @Action(FetchCurrentUserLoggedIn)
   fetchCurrentUserLoggedIn(
-    {getState, setState}: StateContext<ProfileStateModel>) {
+    {getState, setState, dispatch}: StateContext<ProfileStateModel>) {
     let newState = produce(getState(), draft => {
       draft.isFetching = true;
     });
@@ -141,6 +159,7 @@ export class ProfileState {
         draft.isFetching = false;
       });
       setState(newState);
+      dispatch(new FetchUserSummaryReviews(user.email));
     } catch (error) {
       this.toastrService.danger(
         environment.production ? 'Please contact the administration' : error,
@@ -231,6 +250,96 @@ export class ProfileState {
       draft.isUserReportAdded = false;
     });
     return setState(newState);
+  }
+
+  @Action(FetchUserReviews)
+  async fetchUserReviews(
+    {getState, setState}: StateContext<ProfileStateModel>,
+    action: FetchUserReviews) {
+    let newState = produce(getState(), draft => {
+      draft.isFetching = true;
+    });
+    setState(newState);
+
+    let reviews: ReviewDTO[];
+    try {
+      reviews = await this.reviewsService.getReviewsByTarget(TARGET.USER, action.email, getState().pageNumberReviews, getState().pageSizeReviews);
+      newState = produce(getState(), draft => {
+        let currentReviews = draft.userReviews;
+        draft.userReviews = [...currentReviews, ...reviews];
+        draft.isFetching = false;
+        draft.pageNumberReviews = draft.pageNumberReviews + 1;
+        draft.endOfListReviews = reviews.length !== draft.pageSizeReviews;
+      });
+      setState(newState);
+    } catch (error) {
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : error,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+      newState = produce(getState(), draft => {
+        draft.isFetching = false;
+      });
+      setState(newState);
+    }
+  }
+
+  @Action(FetchUserSummaryReviews)
+  async fetchUserSummaryReviews(
+    {getState, setState}: StateContext<ProfileStateModel>,
+    action: FetchUserSummaryReviews) {
+    let newState = produce(getState(), draft => {
+      draft.isFetching = true;
+    });
+    setState(newState);
+
+    let reviewSummary: ReviewSummary;
+    try {
+      reviewSummary = await this.reviewsService.getReviewSummary(TARGET.USER, action.email);
+      newState = produce(getState(), draft => {
+        draft.userSummaryReviews = reviewSummary;
+        draft.isFetching = false;
+      });
+      setState(newState);
+    } catch (error) {
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : error,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+      newState = produce(getState(), draft => {
+        draft.isFetching = false;
+      });
+      setState(newState);
+    }
+  }
+
+  @Action(UserAddReview)
+  async userAddReview(
+    {getState, setState}: StateContext<ProfileStateModel>,
+    action: UserAddReview) {
+
+    try {
+      let reviewToAdd = {
+        targetId: action.email,
+        ...action.review,
+      } satisfies Review;
+      await this.reviewsService.addReview(TARGET.USER, reviewToAdd);
+      this.toastrService.success(
+        'Your review has been added',
+        'Success',
+        {icon: ICONS.CHECKMARK_OUTLINE}
+      );
+      window.location.reload();
+    } catch (e) {
+      this.toastrService.danger(
+        environment.production ? 'Please contact the administration' : e,
+        'Something went wrong',
+        {icon: ICONS.ALERT_CIRCLE_OUTLINE}
+      );
+    }
+    return getState();
   }
 
   @Action(ProfileReset)

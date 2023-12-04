@@ -39,6 +39,7 @@ import {MyProductsState} from "src/app/my-products/my-products.state";
 import {InquiryState} from "src/app/inquiries/inquiries.state";
 import {ProfileComponent} from "src/app/profile/profile.component";
 import {ProfileState} from "src/app/profile/profile.state";
+import {ReviewsService} from "src/api/reviews.service";
 
 export const STATES = [
   AppState,
@@ -72,6 +73,7 @@ export const PROVIDERS = [
   ProductService,
   ProductsService,
   InquiryService,
+  ReviewsService,
   UserService,
   {
     provide: UrlSerializer,

@@ -8,6 +8,17 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  gap: 1rem;
+
+  .user-reviews-summary {
+    align-items: center;
+    gap: 1rem;
+
+    h6 {
+      font-weight: normal;
+      margin: 0;
+    }
+  }
 
   nb-user {
     margin-bottom: 1rem;
@@ -74,11 +85,11 @@
   }
 }
 
-.user-products {
+.user-products-and-reviews {
   flex-grow: 1;
 
   nb-card {
-    height: 80vh;
+    max-height: 80vh;
   }
 }
 
@@ -95,6 +106,63 @@
   nb-card-footer {
     display: flex;
     gap: 1rem;
+    align-self: center;
+  }
+}
+
+.user-reviews {
+  nb-card-header {
+    display: inline-flex;
+    justify-content: space-between;
+  }
+}
+
+.review-container {
+  height: 25rem;
+
+  nb-list-item {
+    display: table-column;
+
+    .reviewer-information {
+      display: flex;
+    }
+
+    .review-rating-information {
+      display: flex;
+    }
+
+    .review-description {
+      display: flex;
+
+      p {
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.add-rating-dialog-container {
+  .add-rating-dialog-header {
+
+  }
+
+  .add-rating-dialog-body {
+    display: table-column;
+    text-align: center;
+
+    div {
+      margin-bottom: 1rem;
+
+      p span {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .add-rating-dialog-footer {
+    display: flex;
     align-self: center;
   }
 }

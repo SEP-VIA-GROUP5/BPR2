@@ -8,9 +8,6 @@ import {Router} from "@angular/router";
            nbPopoverTrigger="hover"
            [nbTooltipDisabled]="!showTooltip"
            [nbPopover]="tooltip">
-          <!--      todo add click and cursor pointer and open dialog for adding a new review when clicking on a star-->
-          <!--      todo probably check if the user had this item in renting before-->
-          <!--      todo when hovering, it should exact of rating and reviews-->
           <div *ngIf="enableClickEvent">
             <span [class.enableClicking]="enableClickEvent" *ngFor="let rating of constructedRatings; let i = index" class="rating-star"
                   (mouseenter)="onHover(i)"
@@ -28,7 +25,7 @@ import {Router} from "@angular/router";
       <ng-template #tooltip>
           <div class="tooltip-container">
             <p> <span *ngIf="this.rating"><span class="bold-font"> Exact rating:</span> {{ toFixedRating() }}.</span> <span *ngIf="this.reviewCount"><span class="bold-font"> Number of reviews: </span> {{ this.reviewCount }}</span> </p>
-              <p> Click on a star to add your rating </p>
+              <p *ngIf="tooltipMessage.length > 0"> {{ tooltipMessage }}</p>
           </div>
       </ng-template>
   `,
@@ -40,6 +37,7 @@ export class StarsRatingComponent implements OnInit {
   @Input() reviewCount: number;
   @Input() enableClickEvent: boolean = true;
   @Input() showTooltip: boolean = true;
+  @Input() tooltipMessage = 'Click on a star to add your rating';
   @Output() clickOnStarEvent: EventEmitter<number> = new EventEmitter<number>();
   defaultRating: string[] = ['☆', '☆', '☆', '☆', '☆'];
   constructedRatings: string[] = [];

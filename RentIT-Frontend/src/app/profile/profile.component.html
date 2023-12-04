@@ -1,6 +1,6 @@
 <div class="profile-container">
   <ng-container
-    *ngIf="canDisplayCurrentUserProfile(); then displayCurrentUserProfile; else displayOtherUserProfile"></ng-container>
+    *ngIf="userContent && canDisplayCurrentUserProfile(); then displayCurrentUserProfile; else displayOtherUserProfile"></ng-container>
 </div>
 
 
@@ -13,6 +13,12 @@
         <h4>Your profile information</h4>
       </nb-card-header>
       <nb-card-body *ngIf="userContent">
+        <div class="user-reviews-summary" *ngIf="userSummaryReviews$ | async as userSummary">
+          <stars-rating [rating]="userSummary.avgRating" [reviewCount]="userSummary.reviewCount" [enableClickEvent]="false" tooltipMessage=""></stars-rating>
+        </div>
+        <div class="user-reviews-summary" *ngIf="!(userSummaryReviews$ | async)">
+          <h6> No reviews yet </h6>
+        </div>
         <div class="form-fields">
           <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
                    onlyPicture>
@@ -90,8 +96,43 @@
       </nb-card-body>
     </nb-card>
   </div>
-  <div class="user-products" *ngIf="userContent">
-    <app-my-products></app-my-products>
+  <div class="user-products-and-reviews" *ngIf="userContent">
+    <nb-card>
+      <nb-card-body>
+        <nb-tabset (changeTab)="onTabChanged($event)">
+          <nb-tab [tabId]="UsersInformationTabs.PRODUCTS" [tabTitle]="UsersInformationTabs.PRODUCTS">
+            <app-my-products></app-my-products>
+          </nb-tab>
+          <nb-tab [tabId]="UsersInformationTabs.REVIEWS" [tabTitle]="UsersInformationTabs.REVIEWS">
+            <nb-card class="user-reviews">
+              <nb-card-header>
+                <h4> Your reviews </h4>
+              </nb-card-header>
+              <nb-card-body>
+                <nb-list *ngIf="(userReviews$ | async) as reviews" class="review-container">
+                  <nb-list-item *ngFor="let review of reviews">
+                    <div class="reviewer-information">
+                      <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max'
+                               size="medium"
+                               onlyPicture>
+                      </nb-user>
+                      <p> {{review.userDTO.firstName}} {{review.userDTO.lastName}}</p>
+                    </div>
+                    <div class="review-rating-information">
+                      <stars-rating [rating]="review.review.rating"
+                                    [enableClickEvent]="false" tooltipMessage=""></stars-rating>
+                    </div>
+                    <div class="review-description">
+                      <p><span> Description:</span> {{ review.review.message }}</p>
+                    </div>
+                  </nb-list-item>
+                </nb-list>
+              </nb-card-body>
+            </nb-card>
+          </nb-tab>
+        </nb-tabset>
+      </nb-card-body>
+    </nb-card>
   </div>
 </ng-template>
 
@@ -120,6 +161,12 @@
       </nb-card-header>
       <nb-card-body *ngIf="userContent">
         <div class="user-information">
+          <div class="user-reviews-summary" *ngIf="userSummaryReviews$ | async as userSummary">
+            <stars-rating [rating]="userSummary.avgRating" [reviewCount]="userSummary.reviewCount" [enableClickEvent]="false" tooltipMessage=""></stars-rating>
+          </div>
+          <div class="user-reviews-summary" *ngIf="!(userSummaryReviews$ | async)">
+            <h6> No reviews yet </h6>
+          </div>
           <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max' size="giant"
                    onlyPicture>
           </nb-user>
@@ -133,15 +180,64 @@
       </nb-card-body>
     </nb-card>
   </div>
-  <div class="user-products" *ngIf="userContent">
-    <nb-card>
-      <nb-card-header>
-        <h4> {{userContent.firstName }} {{ userContent.lastName }} products</h4>
-      </nb-card-header>
+  <div class="user-products-and-reviews" *ngIf="userContent">
+    <nb-card [nbSpinner]="isFetching$ | async" nbSpinnerStatus="primary" nbSpinnerSize="medium">
       <nb-card-body>
-        <div class="product-grid" [class]="getProductGridClass(userProducts$ | async)">
-          <product *ngFor="let product of userProducts$ | async" [product]="product"></product>
-        </div>
+        <nb-tabset (changeTab)="onTabChanged($event)">
+          <nb-tab [tabId]="UsersInformationTabs.PRODUCTS" [tabTitle]="UsersInformationTabs.PRODUCTS">
+            <nb-card>
+              <nb-card-header>
+                <h4> {{userContent.firstName }} {{ userContent.lastName }} products</h4>
+              </nb-card-header>
+              <nb-card-body>
+                <div class="product-grid" [class]="getProductGridClass(userProducts$ | async)">
+                  <product *ngFor="let product of userProducts$ | async" [product]="product"></product>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </nb-tab>
+          <nb-tab [tabId]="UsersInformationTabs.REVIEWS" [tabTitle]="UsersInformationTabs.REVIEWS">
+            <nb-card class="user-reviews" [nbSpinner]="isFetching$ | async" nbSpinnerSize="medium" nbSpinnerStatus="primary">
+              <nb-card-header>
+                <h4> {{userContent.firstName }} {{ userContent.lastName }} reviews </h4>
+                <button [disabled]="!this.userService.isLoggedIn()" id="addReviewButton" nbButton status="warning" hero
+                        nbTooltip="You need to be logged in to add a review"
+                        [nbTooltipDisabled]="this.userService.isLoggedIn()"
+                        (click)="openAddReviewDialog()"
+                >
+                  Add review
+                </button>
+              </nb-card-header>
+              <nb-card-body>
+                <nb-list *ngIf="(userReviews$ | async) as reviews" class="review-container">
+                  <nb-list-item *ngFor="let review of reviews">
+                    <div class="reviewer-information">
+                      <nb-user picture='https://images.nightcafe.studio//assets/profile.png?tr=w-1600,c-at_max'
+                               size="medium"
+                               onlyPicture>
+                      </nb-user>
+                      <p> {{review.userDTO.firstName}} {{review.userDTO.lastName}}</p>
+                    </div>
+                    <div class="review-rating-information">
+                      <stars-rating [rating]="review.review.rating" [showTooltip]="false"
+                                    [enableClickEvent]="false"></stars-rating>
+                    </div>
+                    <div class="review-description">
+                      <p><span> Description:</span> {{ review.review.message }}</p>
+                    </div>
+                  </nb-list-item>
+                </nb-list>
+              </nb-card-body>
+              <nb-card-footer>
+                <button [disabled]="endOfListReviews$ | async" nbButton status="primary"
+                        [nbTooltip]="(endOfListReviews$ | async) ? 'No more reviews to load' : 'Load more reviews'"
+                        (click)="loadNextReviews()">
+                  <nb-icon [icon]="ICONS.ARROW_IOS_DOWNWARD_OUTLINE" pack="eva"></nb-icon>
+                </button>
+              </nb-card-footer>
+            </nb-card>
+          </nb-tab>
+        </nb-tabset>
       </nb-card-body>
     </nb-card>
   </div>
@@ -155,7 +251,8 @@
 </ng-template>
 
 <ng-template #reportDialog>
-  <nb-card *ngIf="!(isUserReportAdded$ | async)" class="report-dialog-container">
+  <nb-card *ngIf="!(isUserReportAdded$ | async)" class="report-dialog-container"
+           [nbSpinner]="isFetchingReport$ | async" nbSpinnerStatus="primary" nbSpinnerSize="medium">
     <nb-card-header>
       <p>Why do you want to report this <span class="bold"> user </span>?</p>
     </nb-card-header>
@@ -167,8 +264,8 @@
       </nb-form-field>
     </nb-card-body>
     <nb-card-footer>
-      <button [disabled]="isOnSubmitButtonDisabled()" nbButton status="danger"
-              hero (click)="onSubmitReportButtonClicked()">
+      <button [disabled]="isOnSubmitButtonDisabled(SubmitButtonType.REPORT)" nbButton status="danger"
+              hero (click)="onSubmitReportButtonClicked(SubmitButtonType.REPORT)">
         Submit
       </button>
     </nb-card-footer>
@@ -186,6 +283,38 @@
       </button>
       <button nbButton status="danger" hero (click)="resetReport()">
         Add new report
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #addRatingDialog>
+  <nb-card class="add-rating-dialog-container">
+    <nb-card-header class="add-rating-dialog-header">
+      Add rating
+    </nb-card-header>
+    <nb-card-body class="add-rating-dialog-body">
+      <div>
+        <p> How would you like to rate this product? </p>
+      </div>
+      <div>
+        <stars-rating [showTooltip]="false" [rating]="reviewToAdd.rating"
+                      (clickOnStarEvent)="onAddingReviewClickOnStar($event)"></stars-rating>
+      </div>
+      <div *ngIf="reviewToAdd.rating > 0">
+        <p> You have chosen rating <span>{{ reviewToAdd.rating }} </span></p>
+      </div>
+      <div>
+        <nb-form-field class="description">
+                <textarea [(ngModel)]="reviewToAdd.message" name="message" type="text" fullWidth nbInput
+                          shape="round" placeholder="Message"></textarea>
+        </nb-form-field>
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="add-rating-dialog-footer">
+      <button [disabled]="isOnSubmitButtonDisabled(SubmitButtonType.ADD_REVIEW)" nbButton status="warning" hero
+              (click)="onSubmitReportButtonClicked(SubmitButtonType.ADD_REVIEW)">
+        Submit
       </button>
     </nb-card-footer>
   </nb-card>

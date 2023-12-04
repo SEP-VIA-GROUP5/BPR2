@@ -12,11 +12,6 @@ export interface ReportToAdd {
   userReport?: Report;
 }
 
-export enum SubmitButtonType {
-  ADD_REVIEW = 'addReview',
-  REPORT =  'report',
-}
-
 export function constructorReportToAdd(): ReportToAdd {
   return {
     productReport: {
