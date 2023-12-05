@@ -65,6 +65,13 @@ export class UserAddReview {
   }
 }
 
+export class ResetUserReviews {
+  static readonly type = '[Profile] Reset Page Number';
+
+  constructor() {
+  }
+}
+
 export class ProfileReset {
   static readonly type = '[Profile] Reset';
 

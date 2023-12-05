@@ -22,7 +22,7 @@ import {
   FetchUserProducts,
   FetchUserReviews,
   FetchUserSummaryReviews,
-  ProfileReset,
+  ProfileReset, ResetUserReviews,
   ResetSubmitReport,
   SubmitReport,
   UpdateUser,
@@ -121,6 +121,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private handleProfileIdChange() {
     let actionInParallel = [];
+    this.store.dispatch(new ProfileReset());
     if (this.profileId === 'my-profile') {
       if (!this.userService.redirectUserIfNotLoggedIn()) {
         actionInParallel.push(new FetchCurrentUserLoggedIn());
@@ -287,7 +288,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   onTabChanged(event: NbTabComponent) {
     switch (event.tabId) {
       case UsersInformationTabs.PRODUCTS: {
-        this.store.dispatch(new FetchUserProducts(this.profileId));
+        this.store.dispatch([
+          new FetchUserProducts(this.profileId),
+          new ResetUserReviews()
+        ]);
         break;
       }
       case UsersInformationTabs.REVIEWS: {

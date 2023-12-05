@@ -9,7 +9,7 @@ import {
   FetchUserProducts,
   FetchUserReviews,
   FetchUserSummaryReviews,
-  ProfileReset,
+  ProfileReset, ResetUserReviews,
   ResetSubmitReport,
   SubmitReport,
   UpdateUser,
@@ -340,6 +340,16 @@ export class ProfileState {
       );
     }
     return getState();
+  }
+
+  @Action(ResetUserReviews)
+  async resetPageNumber(
+    {getState, setState}: StateContext<ProfileStateModel>) {
+    let newState = produce(getState(), draft => {
+      draft.pageNumberReviews = defaultState.pageNumberReviews;
+      draft.userReviews = defaultState.userReviews;
+    });
+    return setState(newState);
   }
 
   @Action(ProfileReset)
