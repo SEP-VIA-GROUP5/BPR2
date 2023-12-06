@@ -7,8 +7,8 @@
                     *ngIf="productOverview.product as product">
       <div class="product-overview-product-name">
         <h2>{{ product.name }}</h2>
-        <button [disabled]="!canShowAvailabilityOrReportButton()"
-                [nbTooltip]="getAvailabilityButtonTooltip()"
+        <button [disabled]="!canShowButton()"
+                [nbTooltip]="getButtonTooltip(ButtonType.INQUIRY)"
                 nbButton
                 size="small"
                 status="success" hero
@@ -25,7 +25,7 @@
       <nb-badge class="product-overview-status-badge" [text]="getProductInfoStatusBadge(product.status)"
                 [status]="getProductStatusColorBadge(product.status)" position="top right"></nb-badge>
       <nb-badge
-        *ngIf="canShowAvailabilityOrReportButton()" class="report-badge" text="Report"
+        *ngIf="canShowButton()" class="report-badge" text="Report"
         [nbTooltip]="'Report this product? Click here!'"
         [nbTooltipIcon]="ICONS.ALERT_CIRCLE_OUTLINE" nbTooltipStatus="danger"
         status="danger" position="top left"
@@ -49,9 +49,9 @@
                  nbSpinnerSize="large" nbSpinnerStatus="primary">
           <nb-card-header class="product-reviews-header">
             <h4>Reviews</h4>
-            <button [disabled]="!this.userService.isLoggedIn()" id="addReviewButton" nbButton status="warning" hero
-                    nbTooltip="You need to be logged in to add a review"
-                    [nbTooltipDisabled]="this.userService.isLoggedIn()"
+            <button id="addReviewButton" nbButton status="warning" hero
+                    [disabled]="!canShowButton()"
+                    [nbTooltip]="getButtonTooltip(ButtonType.REVIEW)"
                     (click)="openAddReviewDialog()"
             >
               Add review
