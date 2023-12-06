@@ -1,5 +1,8 @@
 <div class="authentication-container">
-  <nb-card size="medium" [ngStyle]="!isLoggedInTemplate ? { height: '80vh'} : {}">
+  <nb-card size="medium" [ngStyle]="!isLoggedInTemplate ? { height: '80vh'} : {}"
+           [nbSpinner]="isFetching$ | async"
+           nbSpinnerSize="medium"
+           nbSpinnerStatus="primary">
     <nb-card-body>
       <ng-container *ngIf="isLoggedInTemplate; then login; else register"></ng-container>
     </nb-card-body>
@@ -56,7 +59,8 @@
              #tooltipPassword="nbTooltip"
              placeholder="Password" required>
       <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
-        <nb-icon class="show-password-button" [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE" pack="eva"
+        <nb-icon class="show-password-button" [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE"
+                 pack="eva"
                  [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
         </nb-icon>
       </button>
@@ -74,7 +78,8 @@
     </nb-form-field>
     <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero
             [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
-            (click)="onFormSubmit()" type="submit">Register</button>
+            (click)="onFormSubmit()" type="submit">Register
+    </button>
   </div>
 </ng-template>
 
@@ -83,11 +88,13 @@
   <p> Don't have an account? <a class="register-redirect" (click)="switchTemplates()">Register</a></p>
   <div class="form-fields">
     <nb-form-field>
-      <input class="email" [(ngModel)]="userContent.email" type="email" name="email" nbInput shape="round" placeholder="Email"
+      <input class="email" [(ngModel)]="userContent.email" type="email" name="email" nbInput shape="round"
+             placeholder="Email"
              required email ngModel>
     </nb-form-field>
     <nb-form-field>
-      <input class="password" [(ngModel)]="userContent.password" [type]="getInputType()" nbInput type="password" shape="round"
+      <input class="password" [(ngModel)]="userContent.password" [type]="getInputType()" nbInput type="password"
+             shape="round"
              placeholder="Password" required>
       <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
         <nb-icon [icon]="showPassword ? ICONS.EYE_OUTLINE : ICONS.EYE_OFF_OUTLINE"
@@ -98,7 +105,8 @@
     </nb-form-field>
     <button class="submit-button" [disabled]="isButtonDisabled()" nbButton hero
             [status]="(statusCode$ | async) === 401 ? 'warning' : 'primary'" shape="semi-round"
-            (click)="onFormSubmit()" type="submit">Login</button>
+            (click)="onFormSubmit()" type="submit">Login
+    </button>
   </div>
 </ng-template>
 
