@@ -1,8 +1,5 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {
-  defaultUserContent,
-  UserContent
-} from "src/app/authentication/constants/constants";
+import {defaultUserContent, UserContent} from "src/app/authentication/constants/constants";
 import {ICONS, isEmail, isPassword, isPhoneNumber, PRODUCTS_MENU_ITEM_URLS} from '../constants';
 import {Select, Store} from "@ngxs/store";
 import {Login, Register} from "src/app/authentication/authentication.actions";
@@ -18,6 +15,8 @@ import {NbToastrService, NbTooltipDirective, NbWindowRef, NbWindowService} from 
   styleUrls: ['./authentication.component.scss']
 })
 export class AuthenticationComponent implements OnInit, OnDestroy {
+  @Select(AuthenticationSelector.isFetching)
+  isFetching$: Observable<boolean>
   @Select(AuthenticationSelector.statusCode)
   statusCode$: Observable<number>
 
@@ -101,7 +100,11 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
         if (this.userContent.location !== '') {
           this.windowRef = this.windowService.open(
             this.locationChooser,
-            {windowClass: 'window-location', title: 'Choose your location', context: {location: this.userContent.location}},
+            {
+              windowClass: 'window-location',
+              title: 'Choose your location',
+              context: {location: this.userContent.location}
+            },
           );
         }
       }

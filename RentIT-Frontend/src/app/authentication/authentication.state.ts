@@ -1,4 +1,4 @@
-import {Action, State, StateContext, Store} from "@ngxs/store";
+import {Action, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {produce} from "immer";
 import {Login, Logout, Register} from "src/app/authentication/authentication.actions";
@@ -6,7 +6,6 @@ import {UserService} from "src/api/user.service";
 import {User} from "src/model/user";
 import {ICONS} from "src/app/constants";
 import {NbToastrService} from "@nebular/theme";
-import {Router} from "@angular/router";
 import {environment} from "src/environments/environment.dev";
 
 export interface AuthenticationStateModel {
@@ -30,8 +29,6 @@ export class AuthenticationState {
   constructor(
     private userService: UserService,
     private toastrService: NbToastrService,
-    private store: Store,
-    private router: Router,
   ) {
   }
 

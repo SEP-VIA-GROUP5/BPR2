@@ -23,6 +23,7 @@ import {Review} from "src/model/review";
 import {UserService} from "src/api/user.service";
 import {ReviewSummary} from "src/model/reviewSummary";
 import {
+  ButtonType,
   constructorReportToAdd,
   constructorSendingInquiry,
   ReportToAdd,
@@ -87,6 +88,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   protected readonly ICONS = ICONS;
   protected readonly SubmitButtonType = SubmitButtonType;
   protected readonly ProductStatus = ProductStatus;
+  protected readonly ButtonType = ButtonType;
 
   alive: boolean = true;
 
@@ -262,21 +264,22 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.router.navigate([`/profile/${email}`]);
   }
 
-  canShowAvailabilityOrReportButton() {
+  canShowButton() {
     if (this.userService.isLoggedIn()) {
       return this.userService.getUser().email !== this.store.selectSnapshot(ProductSelector.product).user.email;
     }
     return false;
   }
 
-  getAvailabilityButtonTooltip(): string {
+  getButtonTooltip(buttonType: ButtonType): string {
+    const article = buttonType === ButtonType.INQUIRY ? 'an' : 'a';
     if (this.userService.isLoggedIn()) {
       if (this.userService.getUser().email === this.store.selectSnapshot(ProductSelector.product).user.email) {
-        return 'You cannot send an inquiry to yourself';
+        return `You cannot send ${article} ${buttonType} to yourself`;
       }
-      return 'Send an inquiry to the owner of this product';
+      return `Send ${article} ${buttonType} to the owner of this product`;
     }
-    return 'You must be logged in to send an inquiry';
+    return `You must be logged in to send ${article} ${buttonType}`;
   }
 
   ngOnDestroy(): void {

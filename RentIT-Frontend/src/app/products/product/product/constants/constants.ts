@@ -33,3 +33,8 @@ export function constructorSendingInquiry(): Inquiry {
     senderEmail: '',
   } satisfies Inquiry;
 }
+
+export enum ButtonType {
+  INQUIRY = 'inquiry',
+  REVIEW = 'review',
+}
